@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Admin {
+  id        String     @id @default(uuid())
+  email     String     @unique
+  name      String
+  password  String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  contracts Contract[]
+
+  refreshTokens RefreshToken[]
+}
+
+model Signer {
+  id          String     @id @default(uuid())
+  name        String
+  email       String?
+  phone       String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  contracts   Contract[]
+  signatures  Signature[]
+}
+
+model Contract {
+  id           String           @id @default(uuid())
+  title        String
+  status       ContractStatus   @default(DRAFT)
+  originalUrl  String
+  signedUrl    String?
+  token        String?          @unique
+  tokenExpiresAt DateTime?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  adminId      String
+  admin        Admin            @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  signerId     String?
+  signer       Signer?          @relation(fields: [signerId], references: [id], onDelete: SetNull)
+  fields       SignatureField[]
+  signatures   Signature[]
+}
+
+model SignatureField {
+  id         String    @id @default(uuid())
+  page       Int
+  xPct       Float
+  yPct       Float
+  wPct       Float
+  hPct       Float
+  label      String    @default("Firma")
+  createdAt  DateTime  @default(now())
+  contractId String
+  contract   Contract  @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  @@index([contractId])
+  signatures Signature[]
+}
+
+model Signature {
+  id          String    @id @default(uuid())
+  type        SignatureType
+  imageUrl    String?
+  typedValue  String?
+  signedAt    DateTime  @default(now())
+  ipAddress   String?
+  userAgent   String?
+  contractId  String
+  contract    Contract  @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  signerId    String?
+  signer      Signer?   @relation(fields: [signerId], references: [id], onDelete: SetNull)
+  fieldId     String?
+  field       SignatureField? @relation(fields: [fieldId], references: [id], onDelete: SetNull)
+  @@index([contractId])
+  @@index([signerId])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  adminId   String
+  admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+enum ContractStatus {
+  DRAFT
+  SENT
+  VIEWED
+  SIGNED
+  EXPIRED
+}
+
+enum SignatureType {
+  DRAWN
+  TYPED
+  CLICK_TO_SIGN
+}
