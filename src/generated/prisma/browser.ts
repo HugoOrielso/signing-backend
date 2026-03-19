@@ -23,15 +23,30 @@ export * from './enums';
  */
 export type Admin = Prisma.AdminModel
 /**
- * Model Signer
- * 
- */
-export type Signer = Prisma.SignerModel
-/**
  * Model Contract
  * 
  */
 export type Contract = Prisma.ContractModel
+/**
+ * Model LibranzaData
+ * 
+ */
+export type LibranzaData = Prisma.LibranzaDataModel
+/**
+ * Model ContractParty
+ * 
+ */
+export type ContractParty = Prisma.ContractPartyModel
+/**
+ * Model ContractClause
+ * 
+ */
+export type ContractClause = Prisma.ContractClauseModel
+/**
+ * Model ContractSigner
+ * 
+ */
+export type ContractSigner = Prisma.ContractSignerModel
 /**
  * Model SignatureField
  * 
@@ -47,3 +62,8 @@ export type Signature = Prisma.SignatureModel
  * 
  */
 export type RefreshToken = Prisma.RefreshTokenModel
+/**
+ * Model ContractDocument
+ * 
+ */
+export type ContractDocument = Prisma.ContractDocumentModel

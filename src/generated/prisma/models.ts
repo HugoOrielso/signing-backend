@@ -9,9 +9,13 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/Admin'
-export type * from './models/Signer'
 export type * from './models/Contract'
+export type * from './models/LibranzaData'
+export type * from './models/ContractParty'
+export type * from './models/ContractClause'
+export type * from './models/ContractSigner'
 export type * from './models/SignatureField'
 export type * from './models/Signature'
 export type * from './models/RefreshToken'
+export type * from './models/ContractDocument'
 export type * from './commonInputTypes'

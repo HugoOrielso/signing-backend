@@ -52,11 +52,15 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Admin: 'Admin',
-  Signer: 'Signer',
   Contract: 'Contract',
+  LibranzaData: 'LibranzaData',
+  ContractParty: 'ContractParty',
+  ContractClause: 'ContractClause',
+  ContractSigner: 'ContractSigner',
   SignatureField: 'SignatureField',
   Signature: 'Signature',
-  RefreshToken: 'RefreshToken'
+  RefreshToken: 'RefreshToken',
+  ContractDocument: 'ContractDocument'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -87,45 +91,118 @@ export const AdminScalarFieldEnum = {
 export type AdminScalarFieldEnum = (typeof AdminScalarFieldEnum)[keyof typeof AdminScalarFieldEnum]
 
 
-export const SignerScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  email: 'email',
-  phone: 'phone',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type SignerScalarFieldEnum = (typeof SignerScalarFieldEnum)[keyof typeof SignerScalarFieldEnum]
-
-
 export const ContractScalarFieldEnum = {
   id: 'id',
   title: 'title',
+  contractNumber: 'contractNumber',
+  contractType: 'contractType',
   status: 'status',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  subject: 'subject',
+  amount: 'amount',
+  currency: 'currency',
+  paymentMethod: 'paymentMethod',
   originalUrl: 'originalUrl',
   signedUrl: 'signedUrl',
   token: 'token',
   tokenExpiresAt: 'tokenExpiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  adminId: 'adminId',
-  signerId: 'signerId'
+  adminId: 'adminId'
 } as const
 
 export type ContractScalarFieldEnum = (typeof ContractScalarFieldEnum)[keyof typeof ContractScalarFieldEnum]
 
 
+export const LibranzaDataScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  ciudad: 'ciudad',
+  asesor: 'asesor',
+  fecha: 'fecha',
+  clienteNombre: 'clienteNombre',
+  clienteCC: 'clienteCC',
+  clienteCCDe: 'clienteCCDe',
+  clienteDireccion: 'clienteDireccion',
+  clienteTelefono: 'clienteTelefono',
+  clienteEmail: 'clienteEmail',
+  clienteFuncionario: 'clienteFuncionario',
+  clienteDesdeHace: 'clienteDesdeHace',
+  municipioTrabajo: 'municipioTrabajo',
+  empresaTrabajo: 'empresaTrabajo',
+  departamento: 'departamento',
+  sumaTotal: 'sumaTotal',
+  numeroCuotas: 'numeroCuotas',
+  valorCuota: 'valorCuota',
+  mesCobro: 'mesCobro',
+  tipoCuenta: 'tipoCuenta',
+  numeroCuenta: 'numeroCuenta',
+  banco: 'banco',
+  productos: 'productos',
+  formaPago: 'formaPago',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LibranzaDataScalarFieldEnum = (typeof LibranzaDataScalarFieldEnum)[keyof typeof LibranzaDataScalarFieldEnum]
+
+
+export const ContractPartyScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  role: 'role',
+  name: 'name',
+  identification: 'identification',
+  email: 'email',
+  phone: 'phone',
+  address: 'address',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContractPartyScalarFieldEnum = (typeof ContractPartyScalarFieldEnum)[keyof typeof ContractPartyScalarFieldEnum]
+
+
+export const ContractClauseScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  position: 'position',
+  content: 'content',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContractClauseScalarFieldEnum = (typeof ContractClauseScalarFieldEnum)[keyof typeof ContractClauseScalarFieldEnum]
+
+
+export const ContractSignerScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  partyRole: 'partyRole',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  roleTitle: 'roleTitle',
+  signerOrder: 'signerOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContractSignerScalarFieldEnum = (typeof ContractSignerScalarFieldEnum)[keyof typeof ContractSignerScalarFieldEnum]
+
+
 export const SignatureFieldScalarFieldEnum = {
   id: 'id',
+  contractId: 'contractId',
+  signerId: 'signerId',
   page: 'page',
   xPct: 'xPct',
   yPct: 'yPct',
   wPct: 'wPct',
   hPct: 'hPct',
   label: 'label',
-  createdAt: 'createdAt',
-  contractId: 'contractId'
+  createdAt: 'createdAt'
 } as const
 
 export type SignatureFieldScalarFieldEnum = (typeof SignatureFieldScalarFieldEnum)[keyof typeof SignatureFieldScalarFieldEnum]
@@ -133,15 +210,20 @@ export type SignatureFieldScalarFieldEnum = (typeof SignatureFieldScalarFieldEnu
 
 export const SignatureScalarFieldEnum = {
   id: 'id',
+  contractId: 'contractId',
+  signerId: 'signerId',
+  fieldId: 'fieldId',
   type: 'type',
   imageUrl: 'imageUrl',
   typedValue: 'typedValue',
   signedAt: 'signedAt',
   ipAddress: 'ipAddress',
   userAgent: 'userAgent',
-  contractId: 'contractId',
-  signerId: 'signerId',
-  fieldId: 'fieldId'
+  documentHash: 'documentHash',
+  signerEmail: 'signerEmail',
+  otpVerified: 'otpVerified',
+  signaturePublicId: 'signaturePublicId',
+  mimeType: 'mimeType'
 } as const
 
 export type SignatureScalarFieldEnum = (typeof SignatureScalarFieldEnum)[keyof typeof SignatureScalarFieldEnum]
@@ -158,12 +240,35 @@ export const RefreshTokenScalarFieldEnum = {
 export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
 
 
+export const ContractDocumentScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  type: 'type',
+  label: 'label',
+  url: 'url',
+  publicId: 'publicId',
+  mimeType: 'mimeType',
+  sizeBytes: 'sizeBytes',
+  uploadedAt: 'uploadedAt'
+} as const
+
+export type ContractDocumentScalarFieldEnum = (typeof ContractDocumentScalarFieldEnum)[keyof typeof ContractDocumentScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -180,4 +285,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

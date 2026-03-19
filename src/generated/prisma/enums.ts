@@ -13,8 +13,10 @@ export const ContractStatus = {
   DRAFT: 'DRAFT',
   SENT: 'SENT',
   VIEWED: 'VIEWED',
+  PARTIALLY_SIGNED: 'PARTIALLY_SIGNED',
   SIGNED: 'SIGNED',
-  EXPIRED: 'EXPIRED'
+  EXPIRED: 'EXPIRED',
+  CANCELLED: 'CANCELLED'
 } as const
 
 export type ContractStatus = (typeof ContractStatus)[keyof typeof ContractStatus]
@@ -27,3 +29,22 @@ export const SignatureType = {
 } as const
 
 export type SignatureType = (typeof SignatureType)[keyof typeof SignatureType]
+
+
+export const PartyRole = {
+  CONTRACTOR: 'CONTRACTOR',
+  CONTRACTED: 'CONTRACTED'
+} as const
+
+export type PartyRole = (typeof PartyRole)[keyof typeof PartyRole]
+
+
+export const DocumentType = {
+  CEDULA_FRENTE: 'CEDULA_FRENTE',
+  CEDULA_REVERSO: 'CEDULA_REVERSO',
+  SELFIE: 'SELFIE',
+  PDF_ADICIONAL: 'PDF_ADICIONAL',
+  IMAGEN_GENERAL: 'IMAGEN_GENERAL'
+} as const
+
+export type DocumentType = (typeof DocumentType)[keyof typeof DocumentType]

@@ -26,82 +26,112 @@ export type AggregateSignature = {
 
 export type SignatureMinAggregateOutputType = {
   id: string | null
+  contractId: string | null
+  signerId: string | null
+  fieldId: string | null
   type: $Enums.SignatureType | null
   imageUrl: string | null
   typedValue: string | null
   signedAt: Date | null
   ipAddress: string | null
   userAgent: string | null
-  contractId: string | null
-  signerId: string | null
-  fieldId: string | null
+  documentHash: string | null
+  signerEmail: string | null
+  otpVerified: boolean | null
+  signaturePublicId: string | null
+  mimeType: string | null
 }
 
 export type SignatureMaxAggregateOutputType = {
   id: string | null
+  contractId: string | null
+  signerId: string | null
+  fieldId: string | null
   type: $Enums.SignatureType | null
   imageUrl: string | null
   typedValue: string | null
   signedAt: Date | null
   ipAddress: string | null
   userAgent: string | null
-  contractId: string | null
-  signerId: string | null
-  fieldId: string | null
+  documentHash: string | null
+  signerEmail: string | null
+  otpVerified: boolean | null
+  signaturePublicId: string | null
+  mimeType: string | null
 }
 
 export type SignatureCountAggregateOutputType = {
   id: number
+  contractId: number
+  signerId: number
+  fieldId: number
   type: number
   imageUrl: number
   typedValue: number
   signedAt: number
   ipAddress: number
   userAgent: number
-  contractId: number
-  signerId: number
-  fieldId: number
+  documentHash: number
+  signerEmail: number
+  otpVerified: number
+  signaturePublicId: number
+  mimeType: number
   _all: number
 }
 
 
 export type SignatureMinAggregateInputType = {
   id?: true
+  contractId?: true
+  signerId?: true
+  fieldId?: true
   type?: true
   imageUrl?: true
   typedValue?: true
   signedAt?: true
   ipAddress?: true
   userAgent?: true
-  contractId?: true
-  signerId?: true
-  fieldId?: true
+  documentHash?: true
+  signerEmail?: true
+  otpVerified?: true
+  signaturePublicId?: true
+  mimeType?: true
 }
 
 export type SignatureMaxAggregateInputType = {
   id?: true
+  contractId?: true
+  signerId?: true
+  fieldId?: true
   type?: true
   imageUrl?: true
   typedValue?: true
   signedAt?: true
   ipAddress?: true
   userAgent?: true
-  contractId?: true
-  signerId?: true
-  fieldId?: true
+  documentHash?: true
+  signerEmail?: true
+  otpVerified?: true
+  signaturePublicId?: true
+  mimeType?: true
 }
 
 export type SignatureCountAggregateInputType = {
   id?: true
+  contractId?: true
+  signerId?: true
+  fieldId?: true
   type?: true
   imageUrl?: true
   typedValue?: true
   signedAt?: true
   ipAddress?: true
   userAgent?: true
-  contractId?: true
-  signerId?: true
-  fieldId?: true
+  documentHash?: true
+  signerEmail?: true
+  otpVerified?: true
+  signaturePublicId?: true
+  mimeType?: true
   _all?: true
 }
 
@@ -179,15 +209,20 @@ export type SignatureGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 
 export type SignatureGroupByOutputType = {
   id: string
+  contractId: string
+  signerId: string | null
+  fieldId: string | null
   type: $Enums.SignatureType
   imageUrl: string | null
   typedValue: string | null
   signedAt: Date
   ipAddress: string | null
   userAgent: string | null
-  contractId: string
-  signerId: string | null
-  fieldId: string | null
+  documentHash: string | null
+  signerEmail: string | null
+  otpVerified: boolean
+  signaturePublicId: string | null
+  mimeType: string | null
   _count: SignatureCountAggregateOutputType | null
   _min: SignatureMinAggregateOutputType | null
   _max: SignatureMaxAggregateOutputType | null
@@ -213,33 +248,43 @@ export type SignatureWhereInput = {
   OR?: Prisma.SignatureWhereInput[]
   NOT?: Prisma.SignatureWhereInput | Prisma.SignatureWhereInput[]
   id?: Prisma.StringFilter<"Signature"> | string
+  contractId?: Prisma.StringFilter<"Signature"> | string
+  signerId?: Prisma.StringNullableFilter<"Signature"> | string | null
+  fieldId?: Prisma.StringNullableFilter<"Signature"> | string | null
   type?: Prisma.EnumSignatureTypeFilter<"Signature"> | $Enums.SignatureType
   imageUrl?: Prisma.StringNullableFilter<"Signature"> | string | null
   typedValue?: Prisma.StringNullableFilter<"Signature"> | string | null
   signedAt?: Prisma.DateTimeFilter<"Signature"> | Date | string
   ipAddress?: Prisma.StringNullableFilter<"Signature"> | string | null
   userAgent?: Prisma.StringNullableFilter<"Signature"> | string | null
-  contractId?: Prisma.StringFilter<"Signature"> | string
-  signerId?: Prisma.StringNullableFilter<"Signature"> | string | null
-  fieldId?: Prisma.StringNullableFilter<"Signature"> | string | null
+  documentHash?: Prisma.StringNullableFilter<"Signature"> | string | null
+  signerEmail?: Prisma.StringNullableFilter<"Signature"> | string | null
+  otpVerified?: Prisma.BoolFilter<"Signature"> | boolean
+  signaturePublicId?: Prisma.StringNullableFilter<"Signature"> | string | null
+  mimeType?: Prisma.StringNullableFilter<"Signature"> | string | null
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
-  signer?: Prisma.XOR<Prisma.SignerNullableScalarRelationFilter, Prisma.SignerWhereInput> | null
+  signer?: Prisma.XOR<Prisma.ContractSignerNullableScalarRelationFilter, Prisma.ContractSignerWhereInput> | null
   field?: Prisma.XOR<Prisma.SignatureFieldNullableScalarRelationFilter, Prisma.SignatureFieldWhereInput> | null
 }
 
 export type SignatureOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  contractId?: Prisma.SortOrder
+  signerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  fieldId?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   typedValue?: Prisma.SortOrderInput | Prisma.SortOrder
   signedAt?: Prisma.SortOrder
   ipAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   userAgent?: Prisma.SortOrderInput | Prisma.SortOrder
-  contractId?: Prisma.SortOrder
-  signerId?: Prisma.SortOrderInput | Prisma.SortOrder
-  fieldId?: Prisma.SortOrderInput | Prisma.SortOrder
+  documentHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  signerEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  otpVerified?: Prisma.SortOrder
+  signaturePublicId?: Prisma.SortOrderInput | Prisma.SortOrder
+  mimeType?: Prisma.SortOrderInput | Prisma.SortOrder
   contract?: Prisma.ContractOrderByWithRelationInput
-  signer?: Prisma.SignerOrderByWithRelationInput
+  signer?: Prisma.ContractSignerOrderByWithRelationInput
   field?: Prisma.SignatureFieldOrderByWithRelationInput
 }
 
@@ -248,31 +293,41 @@ export type SignatureWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.SignatureWhereInput | Prisma.SignatureWhereInput[]
   OR?: Prisma.SignatureWhereInput[]
   NOT?: Prisma.SignatureWhereInput | Prisma.SignatureWhereInput[]
+  contractId?: Prisma.StringFilter<"Signature"> | string
+  signerId?: Prisma.StringNullableFilter<"Signature"> | string | null
+  fieldId?: Prisma.StringNullableFilter<"Signature"> | string | null
   type?: Prisma.EnumSignatureTypeFilter<"Signature"> | $Enums.SignatureType
   imageUrl?: Prisma.StringNullableFilter<"Signature"> | string | null
   typedValue?: Prisma.StringNullableFilter<"Signature"> | string | null
   signedAt?: Prisma.DateTimeFilter<"Signature"> | Date | string
   ipAddress?: Prisma.StringNullableFilter<"Signature"> | string | null
   userAgent?: Prisma.StringNullableFilter<"Signature"> | string | null
-  contractId?: Prisma.StringFilter<"Signature"> | string
-  signerId?: Prisma.StringNullableFilter<"Signature"> | string | null
-  fieldId?: Prisma.StringNullableFilter<"Signature"> | string | null
+  documentHash?: Prisma.StringNullableFilter<"Signature"> | string | null
+  signerEmail?: Prisma.StringNullableFilter<"Signature"> | string | null
+  otpVerified?: Prisma.BoolFilter<"Signature"> | boolean
+  signaturePublicId?: Prisma.StringNullableFilter<"Signature"> | string | null
+  mimeType?: Prisma.StringNullableFilter<"Signature"> | string | null
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
-  signer?: Prisma.XOR<Prisma.SignerNullableScalarRelationFilter, Prisma.SignerWhereInput> | null
+  signer?: Prisma.XOR<Prisma.ContractSignerNullableScalarRelationFilter, Prisma.ContractSignerWhereInput> | null
   field?: Prisma.XOR<Prisma.SignatureFieldNullableScalarRelationFilter, Prisma.SignatureFieldWhereInput> | null
 }, "id">
 
 export type SignatureOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  contractId?: Prisma.SortOrder
+  signerId?: Prisma.SortOrderInput | Prisma.SortOrder
+  fieldId?: Prisma.SortOrderInput | Prisma.SortOrder
   type?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   typedValue?: Prisma.SortOrderInput | Prisma.SortOrder
   signedAt?: Prisma.SortOrder
   ipAddress?: Prisma.SortOrderInput | Prisma.SortOrder
   userAgent?: Prisma.SortOrderInput | Prisma.SortOrder
-  contractId?: Prisma.SortOrder
-  signerId?: Prisma.SortOrderInput | Prisma.SortOrder
-  fieldId?: Prisma.SortOrderInput | Prisma.SortOrder
+  documentHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  signerEmail?: Prisma.SortOrderInput | Prisma.SortOrder
+  otpVerified?: Prisma.SortOrder
+  signaturePublicId?: Prisma.SortOrderInput | Prisma.SortOrder
+  mimeType?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.SignatureCountOrderByAggregateInput
   _max?: Prisma.SignatureMaxOrderByAggregateInput
   _min?: Prisma.SignatureMinOrderByAggregateInput
@@ -283,15 +338,20 @@ export type SignatureScalarWhereWithAggregatesInput = {
   OR?: Prisma.SignatureScalarWhereWithAggregatesInput[]
   NOT?: Prisma.SignatureScalarWhereWithAggregatesInput | Prisma.SignatureScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Signature"> | string
+  contractId?: Prisma.StringWithAggregatesFilter<"Signature"> | string
+  signerId?: Prisma.StringNullableWithAggregatesFilter<"Signature"> | string | null
+  fieldId?: Prisma.StringNullableWithAggregatesFilter<"Signature"> | string | null
   type?: Prisma.EnumSignatureTypeWithAggregatesFilter<"Signature"> | $Enums.SignatureType
   imageUrl?: Prisma.StringNullableWithAggregatesFilter<"Signature"> | string | null
   typedValue?: Prisma.StringNullableWithAggregatesFilter<"Signature"> | string | null
   signedAt?: Prisma.DateTimeWithAggregatesFilter<"Signature"> | Date | string
   ipAddress?: Prisma.StringNullableWithAggregatesFilter<"Signature"> | string | null
   userAgent?: Prisma.StringNullableWithAggregatesFilter<"Signature"> | string | null
-  contractId?: Prisma.StringWithAggregatesFilter<"Signature"> | string
-  signerId?: Prisma.StringNullableWithAggregatesFilter<"Signature"> | string | null
-  fieldId?: Prisma.StringNullableWithAggregatesFilter<"Signature"> | string | null
+  documentHash?: Prisma.StringNullableWithAggregatesFilter<"Signature"> | string | null
+  signerEmail?: Prisma.StringNullableWithAggregatesFilter<"Signature"> | string | null
+  otpVerified?: Prisma.BoolWithAggregatesFilter<"Signature"> | boolean
+  signaturePublicId?: Prisma.StringNullableWithAggregatesFilter<"Signature"> | string | null
+  mimeType?: Prisma.StringNullableWithAggregatesFilter<"Signature"> | string | null
 }
 
 export type SignatureCreateInput = {
@@ -302,22 +362,32 @@ export type SignatureCreateInput = {
   signedAt?: Date | string
   ipAddress?: string | null
   userAgent?: string | null
+  documentHash?: string | null
+  signerEmail?: string | null
+  otpVerified?: boolean
+  signaturePublicId?: string | null
+  mimeType?: string | null
   contract: Prisma.ContractCreateNestedOneWithoutSignaturesInput
-  signer?: Prisma.SignerCreateNestedOneWithoutSignaturesInput
+  signer?: Prisma.ContractSignerCreateNestedOneWithoutSignaturesInput
   field?: Prisma.SignatureFieldCreateNestedOneWithoutSignaturesInput
 }
 
 export type SignatureUncheckedCreateInput = {
   id?: string
+  contractId: string
+  signerId?: string | null
+  fieldId?: string | null
   type: $Enums.SignatureType
   imageUrl?: string | null
   typedValue?: string | null
   signedAt?: Date | string
   ipAddress?: string | null
   userAgent?: string | null
-  contractId: string
-  signerId?: string | null
-  fieldId?: string | null
+  documentHash?: string | null
+  signerEmail?: string | null
+  otpVerified?: boolean
+  signaturePublicId?: string | null
+  mimeType?: string | null
 }
 
 export type SignatureUpdateInput = {
@@ -328,35 +398,50 @@ export type SignatureUpdateInput = {
   signedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signaturePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract?: Prisma.ContractUpdateOneRequiredWithoutSignaturesNestedInput
-  signer?: Prisma.SignerUpdateOneWithoutSignaturesNestedInput
+  signer?: Prisma.ContractSignerUpdateOneWithoutSignaturesNestedInput
   field?: Prisma.SignatureFieldUpdateOneWithoutSignaturesNestedInput
 }
 
 export type SignatureUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  signerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fieldId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumSignatureTypeFieldUpdateOperationsInput | $Enums.SignatureType
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  signerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  fieldId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signaturePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SignatureCreateManyInput = {
   id?: string
+  contractId: string
+  signerId?: string | null
+  fieldId?: string | null
   type: $Enums.SignatureType
   imageUrl?: string | null
   typedValue?: string | null
   signedAt?: Date | string
   ipAddress?: string | null
   userAgent?: string | null
-  contractId: string
-  signerId?: string | null
-  fieldId?: string | null
+  documentHash?: string | null
+  signerEmail?: string | null
+  otpVerified?: boolean
+  signaturePublicId?: string | null
+  mimeType?: string | null
 }
 
 export type SignatureUpdateManyMutationInput = {
@@ -367,19 +452,29 @@ export type SignatureUpdateManyMutationInput = {
   signedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signaturePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SignatureUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  signerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fieldId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumSignatureTypeFieldUpdateOperationsInput | $Enums.SignatureType
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  signerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  fieldId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signaturePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SignatureListRelationFilter = {
@@ -394,83 +489,56 @@ export type SignatureOrderByRelationAggregateInput = {
 
 export type SignatureCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  contractId?: Prisma.SortOrder
+  signerId?: Prisma.SortOrder
+  fieldId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   typedValue?: Prisma.SortOrder
   signedAt?: Prisma.SortOrder
   ipAddress?: Prisma.SortOrder
   userAgent?: Prisma.SortOrder
-  contractId?: Prisma.SortOrder
-  signerId?: Prisma.SortOrder
-  fieldId?: Prisma.SortOrder
+  documentHash?: Prisma.SortOrder
+  signerEmail?: Prisma.SortOrder
+  otpVerified?: Prisma.SortOrder
+  signaturePublicId?: Prisma.SortOrder
+  mimeType?: Prisma.SortOrder
 }
 
 export type SignatureMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  contractId?: Prisma.SortOrder
+  signerId?: Prisma.SortOrder
+  fieldId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   typedValue?: Prisma.SortOrder
   signedAt?: Prisma.SortOrder
   ipAddress?: Prisma.SortOrder
   userAgent?: Prisma.SortOrder
-  contractId?: Prisma.SortOrder
-  signerId?: Prisma.SortOrder
-  fieldId?: Prisma.SortOrder
+  documentHash?: Prisma.SortOrder
+  signerEmail?: Prisma.SortOrder
+  otpVerified?: Prisma.SortOrder
+  signaturePublicId?: Prisma.SortOrder
+  mimeType?: Prisma.SortOrder
 }
 
 export type SignatureMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  contractId?: Prisma.SortOrder
+  signerId?: Prisma.SortOrder
+  fieldId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   imageUrl?: Prisma.SortOrder
   typedValue?: Prisma.SortOrder
   signedAt?: Prisma.SortOrder
   ipAddress?: Prisma.SortOrder
   userAgent?: Prisma.SortOrder
-  contractId?: Prisma.SortOrder
-  signerId?: Prisma.SortOrder
-  fieldId?: Prisma.SortOrder
-}
-
-export type SignatureCreateNestedManyWithoutSignerInput = {
-  create?: Prisma.XOR<Prisma.SignatureCreateWithoutSignerInput, Prisma.SignatureUncheckedCreateWithoutSignerInput> | Prisma.SignatureCreateWithoutSignerInput[] | Prisma.SignatureUncheckedCreateWithoutSignerInput[]
-  connectOrCreate?: Prisma.SignatureCreateOrConnectWithoutSignerInput | Prisma.SignatureCreateOrConnectWithoutSignerInput[]
-  createMany?: Prisma.SignatureCreateManySignerInputEnvelope
-  connect?: Prisma.SignatureWhereUniqueInput | Prisma.SignatureWhereUniqueInput[]
-}
-
-export type SignatureUncheckedCreateNestedManyWithoutSignerInput = {
-  create?: Prisma.XOR<Prisma.SignatureCreateWithoutSignerInput, Prisma.SignatureUncheckedCreateWithoutSignerInput> | Prisma.SignatureCreateWithoutSignerInput[] | Prisma.SignatureUncheckedCreateWithoutSignerInput[]
-  connectOrCreate?: Prisma.SignatureCreateOrConnectWithoutSignerInput | Prisma.SignatureCreateOrConnectWithoutSignerInput[]
-  createMany?: Prisma.SignatureCreateManySignerInputEnvelope
-  connect?: Prisma.SignatureWhereUniqueInput | Prisma.SignatureWhereUniqueInput[]
-}
-
-export type SignatureUpdateManyWithoutSignerNestedInput = {
-  create?: Prisma.XOR<Prisma.SignatureCreateWithoutSignerInput, Prisma.SignatureUncheckedCreateWithoutSignerInput> | Prisma.SignatureCreateWithoutSignerInput[] | Prisma.SignatureUncheckedCreateWithoutSignerInput[]
-  connectOrCreate?: Prisma.SignatureCreateOrConnectWithoutSignerInput | Prisma.SignatureCreateOrConnectWithoutSignerInput[]
-  upsert?: Prisma.SignatureUpsertWithWhereUniqueWithoutSignerInput | Prisma.SignatureUpsertWithWhereUniqueWithoutSignerInput[]
-  createMany?: Prisma.SignatureCreateManySignerInputEnvelope
-  set?: Prisma.SignatureWhereUniqueInput | Prisma.SignatureWhereUniqueInput[]
-  disconnect?: Prisma.SignatureWhereUniqueInput | Prisma.SignatureWhereUniqueInput[]
-  delete?: Prisma.SignatureWhereUniqueInput | Prisma.SignatureWhereUniqueInput[]
-  connect?: Prisma.SignatureWhereUniqueInput | Prisma.SignatureWhereUniqueInput[]
-  update?: Prisma.SignatureUpdateWithWhereUniqueWithoutSignerInput | Prisma.SignatureUpdateWithWhereUniqueWithoutSignerInput[]
-  updateMany?: Prisma.SignatureUpdateManyWithWhereWithoutSignerInput | Prisma.SignatureUpdateManyWithWhereWithoutSignerInput[]
-  deleteMany?: Prisma.SignatureScalarWhereInput | Prisma.SignatureScalarWhereInput[]
-}
-
-export type SignatureUncheckedUpdateManyWithoutSignerNestedInput = {
-  create?: Prisma.XOR<Prisma.SignatureCreateWithoutSignerInput, Prisma.SignatureUncheckedCreateWithoutSignerInput> | Prisma.SignatureCreateWithoutSignerInput[] | Prisma.SignatureUncheckedCreateWithoutSignerInput[]
-  connectOrCreate?: Prisma.SignatureCreateOrConnectWithoutSignerInput | Prisma.SignatureCreateOrConnectWithoutSignerInput[]
-  upsert?: Prisma.SignatureUpsertWithWhereUniqueWithoutSignerInput | Prisma.SignatureUpsertWithWhereUniqueWithoutSignerInput[]
-  createMany?: Prisma.SignatureCreateManySignerInputEnvelope
-  set?: Prisma.SignatureWhereUniqueInput | Prisma.SignatureWhereUniqueInput[]
-  disconnect?: Prisma.SignatureWhereUniqueInput | Prisma.SignatureWhereUniqueInput[]
-  delete?: Prisma.SignatureWhereUniqueInput | Prisma.SignatureWhereUniqueInput[]
-  connect?: Prisma.SignatureWhereUniqueInput | Prisma.SignatureWhereUniqueInput[]
-  update?: Prisma.SignatureUpdateWithWhereUniqueWithoutSignerInput | Prisma.SignatureUpdateWithWhereUniqueWithoutSignerInput[]
-  updateMany?: Prisma.SignatureUpdateManyWithWhereWithoutSignerInput | Prisma.SignatureUpdateManyWithWhereWithoutSignerInput[]
-  deleteMany?: Prisma.SignatureScalarWhereInput | Prisma.SignatureScalarWhereInput[]
+  documentHash?: Prisma.SortOrder
+  signerEmail?: Prisma.SortOrder
+  otpVerified?: Prisma.SortOrder
+  signaturePublicId?: Prisma.SortOrder
+  mimeType?: Prisma.SortOrder
 }
 
 export type SignatureCreateNestedManyWithoutContractInput = {
@@ -512,6 +580,48 @@ export type SignatureUncheckedUpdateManyWithoutContractNestedInput = {
   connect?: Prisma.SignatureWhereUniqueInput | Prisma.SignatureWhereUniqueInput[]
   update?: Prisma.SignatureUpdateWithWhereUniqueWithoutContractInput | Prisma.SignatureUpdateWithWhereUniqueWithoutContractInput[]
   updateMany?: Prisma.SignatureUpdateManyWithWhereWithoutContractInput | Prisma.SignatureUpdateManyWithWhereWithoutContractInput[]
+  deleteMany?: Prisma.SignatureScalarWhereInput | Prisma.SignatureScalarWhereInput[]
+}
+
+export type SignatureCreateNestedManyWithoutSignerInput = {
+  create?: Prisma.XOR<Prisma.SignatureCreateWithoutSignerInput, Prisma.SignatureUncheckedCreateWithoutSignerInput> | Prisma.SignatureCreateWithoutSignerInput[] | Prisma.SignatureUncheckedCreateWithoutSignerInput[]
+  connectOrCreate?: Prisma.SignatureCreateOrConnectWithoutSignerInput | Prisma.SignatureCreateOrConnectWithoutSignerInput[]
+  createMany?: Prisma.SignatureCreateManySignerInputEnvelope
+  connect?: Prisma.SignatureWhereUniqueInput | Prisma.SignatureWhereUniqueInput[]
+}
+
+export type SignatureUncheckedCreateNestedManyWithoutSignerInput = {
+  create?: Prisma.XOR<Prisma.SignatureCreateWithoutSignerInput, Prisma.SignatureUncheckedCreateWithoutSignerInput> | Prisma.SignatureCreateWithoutSignerInput[] | Prisma.SignatureUncheckedCreateWithoutSignerInput[]
+  connectOrCreate?: Prisma.SignatureCreateOrConnectWithoutSignerInput | Prisma.SignatureCreateOrConnectWithoutSignerInput[]
+  createMany?: Prisma.SignatureCreateManySignerInputEnvelope
+  connect?: Prisma.SignatureWhereUniqueInput | Prisma.SignatureWhereUniqueInput[]
+}
+
+export type SignatureUpdateManyWithoutSignerNestedInput = {
+  create?: Prisma.XOR<Prisma.SignatureCreateWithoutSignerInput, Prisma.SignatureUncheckedCreateWithoutSignerInput> | Prisma.SignatureCreateWithoutSignerInput[] | Prisma.SignatureUncheckedCreateWithoutSignerInput[]
+  connectOrCreate?: Prisma.SignatureCreateOrConnectWithoutSignerInput | Prisma.SignatureCreateOrConnectWithoutSignerInput[]
+  upsert?: Prisma.SignatureUpsertWithWhereUniqueWithoutSignerInput | Prisma.SignatureUpsertWithWhereUniqueWithoutSignerInput[]
+  createMany?: Prisma.SignatureCreateManySignerInputEnvelope
+  set?: Prisma.SignatureWhereUniqueInput | Prisma.SignatureWhereUniqueInput[]
+  disconnect?: Prisma.SignatureWhereUniqueInput | Prisma.SignatureWhereUniqueInput[]
+  delete?: Prisma.SignatureWhereUniqueInput | Prisma.SignatureWhereUniqueInput[]
+  connect?: Prisma.SignatureWhereUniqueInput | Prisma.SignatureWhereUniqueInput[]
+  update?: Prisma.SignatureUpdateWithWhereUniqueWithoutSignerInput | Prisma.SignatureUpdateWithWhereUniqueWithoutSignerInput[]
+  updateMany?: Prisma.SignatureUpdateManyWithWhereWithoutSignerInput | Prisma.SignatureUpdateManyWithWhereWithoutSignerInput[]
+  deleteMany?: Prisma.SignatureScalarWhereInput | Prisma.SignatureScalarWhereInput[]
+}
+
+export type SignatureUncheckedUpdateManyWithoutSignerNestedInput = {
+  create?: Prisma.XOR<Prisma.SignatureCreateWithoutSignerInput, Prisma.SignatureUncheckedCreateWithoutSignerInput> | Prisma.SignatureCreateWithoutSignerInput[] | Prisma.SignatureUncheckedCreateWithoutSignerInput[]
+  connectOrCreate?: Prisma.SignatureCreateOrConnectWithoutSignerInput | Prisma.SignatureCreateOrConnectWithoutSignerInput[]
+  upsert?: Prisma.SignatureUpsertWithWhereUniqueWithoutSignerInput | Prisma.SignatureUpsertWithWhereUniqueWithoutSignerInput[]
+  createMany?: Prisma.SignatureCreateManySignerInputEnvelope
+  set?: Prisma.SignatureWhereUniqueInput | Prisma.SignatureWhereUniqueInput[]
+  disconnect?: Prisma.SignatureWhereUniqueInput | Prisma.SignatureWhereUniqueInput[]
+  delete?: Prisma.SignatureWhereUniqueInput | Prisma.SignatureWhereUniqueInput[]
+  connect?: Prisma.SignatureWhereUniqueInput | Prisma.SignatureWhereUniqueInput[]
+  update?: Prisma.SignatureUpdateWithWhereUniqueWithoutSignerInput | Prisma.SignatureUpdateWithWhereUniqueWithoutSignerInput[]
+  updateMany?: Prisma.SignatureUpdateManyWithWhereWithoutSignerInput | Prisma.SignatureUpdateManyWithWhereWithoutSignerInput[]
   deleteMany?: Prisma.SignatureScalarWhereInput | Prisma.SignatureScalarWhereInput[]
 }
 
@@ -561,70 +671,8 @@ export type EnumSignatureTypeFieldUpdateOperationsInput = {
   set?: $Enums.SignatureType
 }
 
-export type SignatureCreateWithoutSignerInput = {
-  id?: string
-  type: $Enums.SignatureType
-  imageUrl?: string | null
-  typedValue?: string | null
-  signedAt?: Date | string
-  ipAddress?: string | null
-  userAgent?: string | null
-  contract: Prisma.ContractCreateNestedOneWithoutSignaturesInput
-  field?: Prisma.SignatureFieldCreateNestedOneWithoutSignaturesInput
-}
-
-export type SignatureUncheckedCreateWithoutSignerInput = {
-  id?: string
-  type: $Enums.SignatureType
-  imageUrl?: string | null
-  typedValue?: string | null
-  signedAt?: Date | string
-  ipAddress?: string | null
-  userAgent?: string | null
-  contractId: string
-  fieldId?: string | null
-}
-
-export type SignatureCreateOrConnectWithoutSignerInput = {
-  where: Prisma.SignatureWhereUniqueInput
-  create: Prisma.XOR<Prisma.SignatureCreateWithoutSignerInput, Prisma.SignatureUncheckedCreateWithoutSignerInput>
-}
-
-export type SignatureCreateManySignerInputEnvelope = {
-  data: Prisma.SignatureCreateManySignerInput | Prisma.SignatureCreateManySignerInput[]
-  skipDuplicates?: boolean
-}
-
-export type SignatureUpsertWithWhereUniqueWithoutSignerInput = {
-  where: Prisma.SignatureWhereUniqueInput
-  update: Prisma.XOR<Prisma.SignatureUpdateWithoutSignerInput, Prisma.SignatureUncheckedUpdateWithoutSignerInput>
-  create: Prisma.XOR<Prisma.SignatureCreateWithoutSignerInput, Prisma.SignatureUncheckedCreateWithoutSignerInput>
-}
-
-export type SignatureUpdateWithWhereUniqueWithoutSignerInput = {
-  where: Prisma.SignatureWhereUniqueInput
-  data: Prisma.XOR<Prisma.SignatureUpdateWithoutSignerInput, Prisma.SignatureUncheckedUpdateWithoutSignerInput>
-}
-
-export type SignatureUpdateManyWithWhereWithoutSignerInput = {
-  where: Prisma.SignatureScalarWhereInput
-  data: Prisma.XOR<Prisma.SignatureUpdateManyMutationInput, Prisma.SignatureUncheckedUpdateManyWithoutSignerInput>
-}
-
-export type SignatureScalarWhereInput = {
-  AND?: Prisma.SignatureScalarWhereInput | Prisma.SignatureScalarWhereInput[]
-  OR?: Prisma.SignatureScalarWhereInput[]
-  NOT?: Prisma.SignatureScalarWhereInput | Prisma.SignatureScalarWhereInput[]
-  id?: Prisma.StringFilter<"Signature"> | string
-  type?: Prisma.EnumSignatureTypeFilter<"Signature"> | $Enums.SignatureType
-  imageUrl?: Prisma.StringNullableFilter<"Signature"> | string | null
-  typedValue?: Prisma.StringNullableFilter<"Signature"> | string | null
-  signedAt?: Prisma.DateTimeFilter<"Signature"> | Date | string
-  ipAddress?: Prisma.StringNullableFilter<"Signature"> | string | null
-  userAgent?: Prisma.StringNullableFilter<"Signature"> | string | null
-  contractId?: Prisma.StringFilter<"Signature"> | string
-  signerId?: Prisma.StringNullableFilter<"Signature"> | string | null
-  fieldId?: Prisma.StringNullableFilter<"Signature"> | string | null
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 export type SignatureCreateWithoutContractInput = {
@@ -635,20 +683,30 @@ export type SignatureCreateWithoutContractInput = {
   signedAt?: Date | string
   ipAddress?: string | null
   userAgent?: string | null
-  signer?: Prisma.SignerCreateNestedOneWithoutSignaturesInput
+  documentHash?: string | null
+  signerEmail?: string | null
+  otpVerified?: boolean
+  signaturePublicId?: string | null
+  mimeType?: string | null
+  signer?: Prisma.ContractSignerCreateNestedOneWithoutSignaturesInput
   field?: Prisma.SignatureFieldCreateNestedOneWithoutSignaturesInput
 }
 
 export type SignatureUncheckedCreateWithoutContractInput = {
   id?: string
+  signerId?: string | null
+  fieldId?: string | null
   type: $Enums.SignatureType
   imageUrl?: string | null
   typedValue?: string | null
   signedAt?: Date | string
   ipAddress?: string | null
   userAgent?: string | null
-  signerId?: string | null
-  fieldId?: string | null
+  documentHash?: string | null
+  signerEmail?: string | null
+  otpVerified?: boolean
+  signaturePublicId?: string | null
+  mimeType?: string | null
 }
 
 export type SignatureCreateOrConnectWithoutContractInput = {
@@ -677,6 +735,87 @@ export type SignatureUpdateManyWithWhereWithoutContractInput = {
   data: Prisma.XOR<Prisma.SignatureUpdateManyMutationInput, Prisma.SignatureUncheckedUpdateManyWithoutContractInput>
 }
 
+export type SignatureScalarWhereInput = {
+  AND?: Prisma.SignatureScalarWhereInput | Prisma.SignatureScalarWhereInput[]
+  OR?: Prisma.SignatureScalarWhereInput[]
+  NOT?: Prisma.SignatureScalarWhereInput | Prisma.SignatureScalarWhereInput[]
+  id?: Prisma.StringFilter<"Signature"> | string
+  contractId?: Prisma.StringFilter<"Signature"> | string
+  signerId?: Prisma.StringNullableFilter<"Signature"> | string | null
+  fieldId?: Prisma.StringNullableFilter<"Signature"> | string | null
+  type?: Prisma.EnumSignatureTypeFilter<"Signature"> | $Enums.SignatureType
+  imageUrl?: Prisma.StringNullableFilter<"Signature"> | string | null
+  typedValue?: Prisma.StringNullableFilter<"Signature"> | string | null
+  signedAt?: Prisma.DateTimeFilter<"Signature"> | Date | string
+  ipAddress?: Prisma.StringNullableFilter<"Signature"> | string | null
+  userAgent?: Prisma.StringNullableFilter<"Signature"> | string | null
+  documentHash?: Prisma.StringNullableFilter<"Signature"> | string | null
+  signerEmail?: Prisma.StringNullableFilter<"Signature"> | string | null
+  otpVerified?: Prisma.BoolFilter<"Signature"> | boolean
+  signaturePublicId?: Prisma.StringNullableFilter<"Signature"> | string | null
+  mimeType?: Prisma.StringNullableFilter<"Signature"> | string | null
+}
+
+export type SignatureCreateWithoutSignerInput = {
+  id?: string
+  type: $Enums.SignatureType
+  imageUrl?: string | null
+  typedValue?: string | null
+  signedAt?: Date | string
+  ipAddress?: string | null
+  userAgent?: string | null
+  documentHash?: string | null
+  signerEmail?: string | null
+  otpVerified?: boolean
+  signaturePublicId?: string | null
+  mimeType?: string | null
+  contract: Prisma.ContractCreateNestedOneWithoutSignaturesInput
+  field?: Prisma.SignatureFieldCreateNestedOneWithoutSignaturesInput
+}
+
+export type SignatureUncheckedCreateWithoutSignerInput = {
+  id?: string
+  contractId: string
+  fieldId?: string | null
+  type: $Enums.SignatureType
+  imageUrl?: string | null
+  typedValue?: string | null
+  signedAt?: Date | string
+  ipAddress?: string | null
+  userAgent?: string | null
+  documentHash?: string | null
+  signerEmail?: string | null
+  otpVerified?: boolean
+  signaturePublicId?: string | null
+  mimeType?: string | null
+}
+
+export type SignatureCreateOrConnectWithoutSignerInput = {
+  where: Prisma.SignatureWhereUniqueInput
+  create: Prisma.XOR<Prisma.SignatureCreateWithoutSignerInput, Prisma.SignatureUncheckedCreateWithoutSignerInput>
+}
+
+export type SignatureCreateManySignerInputEnvelope = {
+  data: Prisma.SignatureCreateManySignerInput | Prisma.SignatureCreateManySignerInput[]
+  skipDuplicates?: boolean
+}
+
+export type SignatureUpsertWithWhereUniqueWithoutSignerInput = {
+  where: Prisma.SignatureWhereUniqueInput
+  update: Prisma.XOR<Prisma.SignatureUpdateWithoutSignerInput, Prisma.SignatureUncheckedUpdateWithoutSignerInput>
+  create: Prisma.XOR<Prisma.SignatureCreateWithoutSignerInput, Prisma.SignatureUncheckedCreateWithoutSignerInput>
+}
+
+export type SignatureUpdateWithWhereUniqueWithoutSignerInput = {
+  where: Prisma.SignatureWhereUniqueInput
+  data: Prisma.XOR<Prisma.SignatureUpdateWithoutSignerInput, Prisma.SignatureUncheckedUpdateWithoutSignerInput>
+}
+
+export type SignatureUpdateManyWithWhereWithoutSignerInput = {
+  where: Prisma.SignatureScalarWhereInput
+  data: Prisma.XOR<Prisma.SignatureUpdateManyMutationInput, Prisma.SignatureUncheckedUpdateManyWithoutSignerInput>
+}
+
 export type SignatureCreateWithoutFieldInput = {
   id?: string
   type: $Enums.SignatureType
@@ -685,20 +824,30 @@ export type SignatureCreateWithoutFieldInput = {
   signedAt?: Date | string
   ipAddress?: string | null
   userAgent?: string | null
+  documentHash?: string | null
+  signerEmail?: string | null
+  otpVerified?: boolean
+  signaturePublicId?: string | null
+  mimeType?: string | null
   contract: Prisma.ContractCreateNestedOneWithoutSignaturesInput
-  signer?: Prisma.SignerCreateNestedOneWithoutSignaturesInput
+  signer?: Prisma.ContractSignerCreateNestedOneWithoutSignaturesInput
 }
 
 export type SignatureUncheckedCreateWithoutFieldInput = {
   id?: string
+  contractId: string
+  signerId?: string | null
   type: $Enums.SignatureType
   imageUrl?: string | null
   typedValue?: string | null
   signedAt?: Date | string
   ipAddress?: string | null
   userAgent?: string | null
-  contractId: string
-  signerId?: string | null
+  documentHash?: string | null
+  signerEmail?: string | null
+  otpVerified?: boolean
+  signaturePublicId?: string | null
+  mimeType?: string | null
 }
 
 export type SignatureCreateOrConnectWithoutFieldInput = {
@@ -727,64 +876,21 @@ export type SignatureUpdateManyWithWhereWithoutFieldInput = {
   data: Prisma.XOR<Prisma.SignatureUpdateManyMutationInput, Prisma.SignatureUncheckedUpdateManyWithoutFieldInput>
 }
 
-export type SignatureCreateManySignerInput = {
-  id?: string
-  type: $Enums.SignatureType
-  imageUrl?: string | null
-  typedValue?: string | null
-  signedAt?: Date | string
-  ipAddress?: string | null
-  userAgent?: string | null
-  contractId: string
-  fieldId?: string | null
-}
-
-export type SignatureUpdateWithoutSignerInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumSignatureTypeFieldUpdateOperationsInput | $Enums.SignatureType
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  typedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  signedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contract?: Prisma.ContractUpdateOneRequiredWithoutSignaturesNestedInput
-  field?: Prisma.SignatureFieldUpdateOneWithoutSignaturesNestedInput
-}
-
-export type SignatureUncheckedUpdateWithoutSignerInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumSignatureTypeFieldUpdateOperationsInput | $Enums.SignatureType
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  typedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  signedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  fieldId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-}
-
-export type SignatureUncheckedUpdateManyWithoutSignerInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumSignatureTypeFieldUpdateOperationsInput | $Enums.SignatureType
-  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  typedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  signedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  fieldId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-}
-
 export type SignatureCreateManyContractInput = {
   id?: string
+  signerId?: string | null
+  fieldId?: string | null
   type: $Enums.SignatureType
   imageUrl?: string | null
   typedValue?: string | null
   signedAt?: Date | string
   ipAddress?: string | null
   userAgent?: string | null
-  signerId?: string | null
-  fieldId?: string | null
+  documentHash?: string | null
+  signerEmail?: string | null
+  otpVerified?: boolean
+  signaturePublicId?: string | null
+  mimeType?: string | null
 }
 
 export type SignatureUpdateWithoutContractInput = {
@@ -795,44 +901,132 @@ export type SignatureUpdateWithoutContractInput = {
   signedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  signer?: Prisma.SignerUpdateOneWithoutSignaturesNestedInput
+  documentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signaturePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signer?: Prisma.ContractSignerUpdateOneWithoutSignaturesNestedInput
   field?: Prisma.SignatureFieldUpdateOneWithoutSignaturesNestedInput
 }
 
 export type SignatureUncheckedUpdateWithoutContractInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  signerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fieldId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumSignatureTypeFieldUpdateOperationsInput | $Enums.SignatureType
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  signerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  fieldId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signaturePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SignatureUncheckedUpdateManyWithoutContractInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  signerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fieldId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumSignatureTypeFieldUpdateOperationsInput | $Enums.SignatureType
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  signerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  fieldId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signaturePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type SignatureCreateManyFieldInput = {
+export type SignatureCreateManySignerInput = {
   id?: string
+  contractId: string
+  fieldId?: string | null
   type: $Enums.SignatureType
   imageUrl?: string | null
   typedValue?: string | null
   signedAt?: Date | string
   ipAddress?: string | null
   userAgent?: string | null
+  documentHash?: string | null
+  signerEmail?: string | null
+  otpVerified?: boolean
+  signaturePublicId?: string | null
+  mimeType?: string | null
+}
+
+export type SignatureUpdateWithoutSignerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumSignatureTypeFieldUpdateOperationsInput | $Enums.SignatureType
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  typedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signaturePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contract?: Prisma.ContractUpdateOneRequiredWithoutSignaturesNestedInput
+  field?: Prisma.SignatureFieldUpdateOneWithoutSignaturesNestedInput
+}
+
+export type SignatureUncheckedUpdateWithoutSignerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  fieldId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumSignatureTypeFieldUpdateOperationsInput | $Enums.SignatureType
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  typedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signaturePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type SignatureUncheckedUpdateManyWithoutSignerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  fieldId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumSignatureTypeFieldUpdateOperationsInput | $Enums.SignatureType
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  typedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signaturePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type SignatureCreateManyFieldInput = {
+  id?: string
   contractId: string
   signerId?: string | null
+  type: $Enums.SignatureType
+  imageUrl?: string | null
+  typedValue?: string | null
+  signedAt?: Date | string
+  ipAddress?: string | null
+  userAgent?: string | null
+  documentHash?: string | null
+  signerEmail?: string | null
+  otpVerified?: boolean
+  signaturePublicId?: string | null
+  mimeType?: string | null
 }
 
 export type SignatureUpdateWithoutFieldInput = {
@@ -843,47 +1037,67 @@ export type SignatureUpdateWithoutFieldInput = {
   signedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signaturePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contract?: Prisma.ContractUpdateOneRequiredWithoutSignaturesNestedInput
-  signer?: Prisma.SignerUpdateOneWithoutSignaturesNestedInput
+  signer?: Prisma.ContractSignerUpdateOneWithoutSignaturesNestedInput
 }
 
 export type SignatureUncheckedUpdateWithoutFieldInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  signerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumSignatureTypeFieldUpdateOperationsInput | $Enums.SignatureType
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  signerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signaturePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type SignatureUncheckedUpdateManyWithoutFieldInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  signerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   type?: Prisma.EnumSignatureTypeFieldUpdateOperationsInput | $Enums.SignatureType
   imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   typedValue?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   signedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   ipAddress?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   userAgent?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  signerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  documentHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signerEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  otpVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  signaturePublicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
 
 export type SignatureSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  contractId?: boolean
+  signerId?: boolean
+  fieldId?: boolean
   type?: boolean
   imageUrl?: boolean
   typedValue?: boolean
   signedAt?: boolean
   ipAddress?: boolean
   userAgent?: boolean
-  contractId?: boolean
-  signerId?: boolean
-  fieldId?: boolean
+  documentHash?: boolean
+  signerEmail?: boolean
+  otpVerified?: boolean
+  signaturePublicId?: boolean
+  mimeType?: boolean
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
   signer?: boolean | Prisma.Signature$signerArgs<ExtArgs>
   field?: boolean | Prisma.Signature$fieldArgs<ExtArgs>
@@ -891,15 +1105,20 @@ export type SignatureSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
 
 export type SignatureSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  contractId?: boolean
+  signerId?: boolean
+  fieldId?: boolean
   type?: boolean
   imageUrl?: boolean
   typedValue?: boolean
   signedAt?: boolean
   ipAddress?: boolean
   userAgent?: boolean
-  contractId?: boolean
-  signerId?: boolean
-  fieldId?: boolean
+  documentHash?: boolean
+  signerEmail?: boolean
+  otpVerified?: boolean
+  signaturePublicId?: boolean
+  mimeType?: boolean
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
   signer?: boolean | Prisma.Signature$signerArgs<ExtArgs>
   field?: boolean | Prisma.Signature$fieldArgs<ExtArgs>
@@ -907,15 +1126,20 @@ export type SignatureSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
 
 export type SignatureSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  contractId?: boolean
+  signerId?: boolean
+  fieldId?: boolean
   type?: boolean
   imageUrl?: boolean
   typedValue?: boolean
   signedAt?: boolean
   ipAddress?: boolean
   userAgent?: boolean
-  contractId?: boolean
-  signerId?: boolean
-  fieldId?: boolean
+  documentHash?: boolean
+  signerEmail?: boolean
+  otpVerified?: boolean
+  signaturePublicId?: boolean
+  mimeType?: boolean
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
   signer?: boolean | Prisma.Signature$signerArgs<ExtArgs>
   field?: boolean | Prisma.Signature$fieldArgs<ExtArgs>
@@ -923,18 +1147,23 @@ export type SignatureSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
 
 export type SignatureSelectScalar = {
   id?: boolean
+  contractId?: boolean
+  signerId?: boolean
+  fieldId?: boolean
   type?: boolean
   imageUrl?: boolean
   typedValue?: boolean
   signedAt?: boolean
   ipAddress?: boolean
   userAgent?: boolean
-  contractId?: boolean
-  signerId?: boolean
-  fieldId?: boolean
+  documentHash?: boolean
+  signerEmail?: boolean
+  otpVerified?: boolean
+  signaturePublicId?: boolean
+  mimeType?: boolean
 }
 
-export type SignatureOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "type" | "imageUrl" | "typedValue" | "signedAt" | "ipAddress" | "userAgent" | "contractId" | "signerId" | "fieldId", ExtArgs["result"]["signature"]>
+export type SignatureOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contractId" | "signerId" | "fieldId" | "type" | "imageUrl" | "typedValue" | "signedAt" | "ipAddress" | "userAgent" | "documentHash" | "signerEmail" | "otpVerified" | "signaturePublicId" | "mimeType", ExtArgs["result"]["signature"]>
 export type SignatureInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
   signer?: boolean | Prisma.Signature$signerArgs<ExtArgs>
@@ -955,20 +1184,25 @@ export type $SignaturePayload<ExtArgs extends runtime.Types.Extensions.InternalA
   name: "Signature"
   objects: {
     contract: Prisma.$ContractPayload<ExtArgs>
-    signer: Prisma.$SignerPayload<ExtArgs> | null
+    signer: Prisma.$ContractSignerPayload<ExtArgs> | null
     field: Prisma.$SignatureFieldPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    contractId: string
+    signerId: string | null
+    fieldId: string | null
     type: $Enums.SignatureType
     imageUrl: string | null
     typedValue: string | null
     signedAt: Date
     ipAddress: string | null
     userAgent: string | null
-    contractId: string
-    signerId: string | null
-    fieldId: string | null
+    documentHash: string | null
+    signerEmail: string | null
+    otpVerified: boolean
+    signaturePublicId: string | null
+    mimeType: string | null
   }, ExtArgs["result"]["signature"]>
   composites: {}
 }
@@ -1364,7 +1598,7 @@ readonly fields: SignatureFieldRefs;
 export interface Prisma__SignatureClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   contract<T extends Prisma.ContractDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractDefaultArgs<ExtArgs>>): Prisma.Prisma__ContractClient<runtime.Types.Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  signer<T extends Prisma.Signature$signerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Signature$signerArgs<ExtArgs>>): Prisma.Prisma__SignerClient<runtime.Types.Result.GetResult<Prisma.$SignerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  signer<T extends Prisma.Signature$signerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Signature$signerArgs<ExtArgs>>): Prisma.Prisma__ContractSignerClient<runtime.Types.Result.GetResult<Prisma.$ContractSignerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   field<T extends Prisma.Signature$fieldArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Signature$fieldArgs<ExtArgs>>): Prisma.Prisma__SignatureFieldClient<runtime.Types.Result.GetResult<Prisma.$SignatureFieldPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1396,15 +1630,20 @@ export interface Prisma__SignatureClient<T, Null = never, ExtArgs extends runtim
  */
 export interface SignatureFieldRefs {
   readonly id: Prisma.FieldRef<"Signature", 'String'>
+  readonly contractId: Prisma.FieldRef<"Signature", 'String'>
+  readonly signerId: Prisma.FieldRef<"Signature", 'String'>
+  readonly fieldId: Prisma.FieldRef<"Signature", 'String'>
   readonly type: Prisma.FieldRef<"Signature", 'SignatureType'>
   readonly imageUrl: Prisma.FieldRef<"Signature", 'String'>
   readonly typedValue: Prisma.FieldRef<"Signature", 'String'>
   readonly signedAt: Prisma.FieldRef<"Signature", 'DateTime'>
   readonly ipAddress: Prisma.FieldRef<"Signature", 'String'>
   readonly userAgent: Prisma.FieldRef<"Signature", 'String'>
-  readonly contractId: Prisma.FieldRef<"Signature", 'String'>
-  readonly signerId: Prisma.FieldRef<"Signature", 'String'>
-  readonly fieldId: Prisma.FieldRef<"Signature", 'String'>
+  readonly documentHash: Prisma.FieldRef<"Signature", 'String'>
+  readonly signerEmail: Prisma.FieldRef<"Signature", 'String'>
+  readonly otpVerified: Prisma.FieldRef<"Signature", 'Boolean'>
+  readonly signaturePublicId: Prisma.FieldRef<"Signature", 'String'>
+  readonly mimeType: Prisma.FieldRef<"Signature", 'String'>
 }
     
 
@@ -1805,18 +2044,18 @@ export type SignatureDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Int
  */
 export type Signature$signerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Signer
+   * Select specific fields to fetch from the ContractSigner
    */
-  select?: Prisma.SignerSelect<ExtArgs> | null
+  select?: Prisma.ContractSignerSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Signer
+   * Omit specific fields from the ContractSigner
    */
-  omit?: Prisma.SignerOmit<ExtArgs> | null
+  omit?: Prisma.ContractSignerOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.SignerInclude<ExtArgs> | null
-  where?: Prisma.SignerWhereInput
+  include?: Prisma.ContractSignerInclude<ExtArgs> | null
+  where?: Prisma.ContractSignerWhereInput
 }
 
 /**

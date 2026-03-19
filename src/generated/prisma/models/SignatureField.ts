@@ -44,6 +44,8 @@ export type SignatureFieldSumAggregateOutputType = {
 
 export type SignatureFieldMinAggregateOutputType = {
   id: string | null
+  contractId: string | null
+  signerId: string | null
   page: number | null
   xPct: number | null
   yPct: number | null
@@ -51,11 +53,12 @@ export type SignatureFieldMinAggregateOutputType = {
   hPct: number | null
   label: string | null
   createdAt: Date | null
-  contractId: string | null
 }
 
 export type SignatureFieldMaxAggregateOutputType = {
   id: string | null
+  contractId: string | null
+  signerId: string | null
   page: number | null
   xPct: number | null
   yPct: number | null
@@ -63,11 +66,12 @@ export type SignatureFieldMaxAggregateOutputType = {
   hPct: number | null
   label: string | null
   createdAt: Date | null
-  contractId: string | null
 }
 
 export type SignatureFieldCountAggregateOutputType = {
   id: number
+  contractId: number
+  signerId: number
   page: number
   xPct: number
   yPct: number
@@ -75,7 +79,6 @@ export type SignatureFieldCountAggregateOutputType = {
   hPct: number
   label: number
   createdAt: number
-  contractId: number
   _all: number
 }
 
@@ -98,6 +101,8 @@ export type SignatureFieldSumAggregateInputType = {
 
 export type SignatureFieldMinAggregateInputType = {
   id?: true
+  contractId?: true
+  signerId?: true
   page?: true
   xPct?: true
   yPct?: true
@@ -105,11 +110,12 @@ export type SignatureFieldMinAggregateInputType = {
   hPct?: true
   label?: true
   createdAt?: true
-  contractId?: true
 }
 
 export type SignatureFieldMaxAggregateInputType = {
   id?: true
+  contractId?: true
+  signerId?: true
   page?: true
   xPct?: true
   yPct?: true
@@ -117,11 +123,12 @@ export type SignatureFieldMaxAggregateInputType = {
   hPct?: true
   label?: true
   createdAt?: true
-  contractId?: true
 }
 
 export type SignatureFieldCountAggregateInputType = {
   id?: true
+  contractId?: true
+  signerId?: true
   page?: true
   xPct?: true
   yPct?: true
@@ -129,7 +136,6 @@ export type SignatureFieldCountAggregateInputType = {
   hPct?: true
   label?: true
   createdAt?: true
-  contractId?: true
   _all?: true
 }
 
@@ -221,6 +227,8 @@ export type SignatureFieldGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
 
 export type SignatureFieldGroupByOutputType = {
   id: string
+  contractId: string
+  signerId: string | null
   page: number
   xPct: number
   yPct: number
@@ -228,7 +236,6 @@ export type SignatureFieldGroupByOutputType = {
   hPct: number
   label: string
   createdAt: Date
-  contractId: string
   _count: SignatureFieldCountAggregateOutputType | null
   _avg: SignatureFieldAvgAggregateOutputType | null
   _sum: SignatureFieldSumAggregateOutputType | null
@@ -256,6 +263,8 @@ export type SignatureFieldWhereInput = {
   OR?: Prisma.SignatureFieldWhereInput[]
   NOT?: Prisma.SignatureFieldWhereInput | Prisma.SignatureFieldWhereInput[]
   id?: Prisma.StringFilter<"SignatureField"> | string
+  contractId?: Prisma.StringFilter<"SignatureField"> | string
+  signerId?: Prisma.StringNullableFilter<"SignatureField"> | string | null
   page?: Prisma.IntFilter<"SignatureField"> | number
   xPct?: Prisma.FloatFilter<"SignatureField"> | number
   yPct?: Prisma.FloatFilter<"SignatureField"> | number
@@ -263,13 +272,15 @@ export type SignatureFieldWhereInput = {
   hPct?: Prisma.FloatFilter<"SignatureField"> | number
   label?: Prisma.StringFilter<"SignatureField"> | string
   createdAt?: Prisma.DateTimeFilter<"SignatureField"> | Date | string
-  contractId?: Prisma.StringFilter<"SignatureField"> | string
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
+  signer?: Prisma.XOR<Prisma.ContractSignerNullableScalarRelationFilter, Prisma.ContractSignerWhereInput> | null
   signatures?: Prisma.SignatureListRelationFilter
 }
 
 export type SignatureFieldOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  contractId?: Prisma.SortOrder
+  signerId?: Prisma.SortOrderInput | Prisma.SortOrder
   page?: Prisma.SortOrder
   xPct?: Prisma.SortOrder
   yPct?: Prisma.SortOrder
@@ -277,8 +288,8 @@ export type SignatureFieldOrderByWithRelationInput = {
   hPct?: Prisma.SortOrder
   label?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  contractId?: Prisma.SortOrder
   contract?: Prisma.ContractOrderByWithRelationInput
+  signer?: Prisma.ContractSignerOrderByWithRelationInput
   signatures?: Prisma.SignatureOrderByRelationAggregateInput
 }
 
@@ -287,6 +298,8 @@ export type SignatureFieldWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.SignatureFieldWhereInput | Prisma.SignatureFieldWhereInput[]
   OR?: Prisma.SignatureFieldWhereInput[]
   NOT?: Prisma.SignatureFieldWhereInput | Prisma.SignatureFieldWhereInput[]
+  contractId?: Prisma.StringFilter<"SignatureField"> | string
+  signerId?: Prisma.StringNullableFilter<"SignatureField"> | string | null
   page?: Prisma.IntFilter<"SignatureField"> | number
   xPct?: Prisma.FloatFilter<"SignatureField"> | number
   yPct?: Prisma.FloatFilter<"SignatureField"> | number
@@ -294,13 +307,15 @@ export type SignatureFieldWhereUniqueInput = Prisma.AtLeast<{
   hPct?: Prisma.FloatFilter<"SignatureField"> | number
   label?: Prisma.StringFilter<"SignatureField"> | string
   createdAt?: Prisma.DateTimeFilter<"SignatureField"> | Date | string
-  contractId?: Prisma.StringFilter<"SignatureField"> | string
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
+  signer?: Prisma.XOR<Prisma.ContractSignerNullableScalarRelationFilter, Prisma.ContractSignerWhereInput> | null
   signatures?: Prisma.SignatureListRelationFilter
 }, "id">
 
 export type SignatureFieldOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  contractId?: Prisma.SortOrder
+  signerId?: Prisma.SortOrderInput | Prisma.SortOrder
   page?: Prisma.SortOrder
   xPct?: Prisma.SortOrder
   yPct?: Prisma.SortOrder
@@ -308,7 +323,6 @@ export type SignatureFieldOrderByWithAggregationInput = {
   hPct?: Prisma.SortOrder
   label?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  contractId?: Prisma.SortOrder
   _count?: Prisma.SignatureFieldCountOrderByAggregateInput
   _avg?: Prisma.SignatureFieldAvgOrderByAggregateInput
   _max?: Prisma.SignatureFieldMaxOrderByAggregateInput
@@ -321,6 +335,8 @@ export type SignatureFieldScalarWhereWithAggregatesInput = {
   OR?: Prisma.SignatureFieldScalarWhereWithAggregatesInput[]
   NOT?: Prisma.SignatureFieldScalarWhereWithAggregatesInput | Prisma.SignatureFieldScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"SignatureField"> | string
+  contractId?: Prisma.StringWithAggregatesFilter<"SignatureField"> | string
+  signerId?: Prisma.StringNullableWithAggregatesFilter<"SignatureField"> | string | null
   page?: Prisma.IntWithAggregatesFilter<"SignatureField"> | number
   xPct?: Prisma.FloatWithAggregatesFilter<"SignatureField"> | number
   yPct?: Prisma.FloatWithAggregatesFilter<"SignatureField"> | number
@@ -328,7 +344,6 @@ export type SignatureFieldScalarWhereWithAggregatesInput = {
   hPct?: Prisma.FloatWithAggregatesFilter<"SignatureField"> | number
   label?: Prisma.StringWithAggregatesFilter<"SignatureField"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"SignatureField"> | Date | string
-  contractId?: Prisma.StringWithAggregatesFilter<"SignatureField"> | string
 }
 
 export type SignatureFieldCreateInput = {
@@ -341,11 +356,14 @@ export type SignatureFieldCreateInput = {
   label?: string
   createdAt?: Date | string
   contract: Prisma.ContractCreateNestedOneWithoutFieldsInput
+  signer?: Prisma.ContractSignerCreateNestedOneWithoutSignatureFieldsInput
   signatures?: Prisma.SignatureCreateNestedManyWithoutFieldInput
 }
 
 export type SignatureFieldUncheckedCreateInput = {
   id?: string
+  contractId: string
+  signerId?: string | null
   page: number
   xPct: number
   yPct: number
@@ -353,7 +371,6 @@ export type SignatureFieldUncheckedCreateInput = {
   hPct: number
   label?: string
   createdAt?: Date | string
-  contractId: string
   signatures?: Prisma.SignatureUncheckedCreateNestedManyWithoutFieldInput
 }
 
@@ -367,11 +384,14 @@ export type SignatureFieldUpdateInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contract?: Prisma.ContractUpdateOneRequiredWithoutFieldsNestedInput
+  signer?: Prisma.ContractSignerUpdateOneWithoutSignatureFieldsNestedInput
   signatures?: Prisma.SignatureUpdateManyWithoutFieldNestedInput
 }
 
 export type SignatureFieldUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  signerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   page?: Prisma.IntFieldUpdateOperationsInput | number
   xPct?: Prisma.FloatFieldUpdateOperationsInput | number
   yPct?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -379,12 +399,13 @@ export type SignatureFieldUncheckedUpdateInput = {
   hPct?: Prisma.FloatFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
   signatures?: Prisma.SignatureUncheckedUpdateManyWithoutFieldNestedInput
 }
 
 export type SignatureFieldCreateManyInput = {
   id?: string
+  contractId: string
+  signerId?: string | null
   page: number
   xPct: number
   yPct: number
@@ -392,7 +413,6 @@ export type SignatureFieldCreateManyInput = {
   hPct: number
   label?: string
   createdAt?: Date | string
-  contractId: string
 }
 
 export type SignatureFieldUpdateManyMutationInput = {
@@ -408,6 +428,8 @@ export type SignatureFieldUpdateManyMutationInput = {
 
 export type SignatureFieldUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  signerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   page?: Prisma.IntFieldUpdateOperationsInput | number
   xPct?: Prisma.FloatFieldUpdateOperationsInput | number
   yPct?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -415,7 +437,6 @@ export type SignatureFieldUncheckedUpdateManyInput = {
   hPct?: Prisma.FloatFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type SignatureFieldListRelationFilter = {
@@ -430,6 +451,8 @@ export type SignatureFieldOrderByRelationAggregateInput = {
 
 export type SignatureFieldCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  contractId?: Prisma.SortOrder
+  signerId?: Prisma.SortOrder
   page?: Prisma.SortOrder
   xPct?: Prisma.SortOrder
   yPct?: Prisma.SortOrder
@@ -437,7 +460,6 @@ export type SignatureFieldCountOrderByAggregateInput = {
   hPct?: Prisma.SortOrder
   label?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  contractId?: Prisma.SortOrder
 }
 
 export type SignatureFieldAvgOrderByAggregateInput = {
@@ -450,6 +472,8 @@ export type SignatureFieldAvgOrderByAggregateInput = {
 
 export type SignatureFieldMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  contractId?: Prisma.SortOrder
+  signerId?: Prisma.SortOrder
   page?: Prisma.SortOrder
   xPct?: Prisma.SortOrder
   yPct?: Prisma.SortOrder
@@ -457,11 +481,12 @@ export type SignatureFieldMaxOrderByAggregateInput = {
   hPct?: Prisma.SortOrder
   label?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  contractId?: Prisma.SortOrder
 }
 
 export type SignatureFieldMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  contractId?: Prisma.SortOrder
+  signerId?: Prisma.SortOrder
   page?: Prisma.SortOrder
   xPct?: Prisma.SortOrder
   yPct?: Prisma.SortOrder
@@ -469,7 +494,6 @@ export type SignatureFieldMinOrderByAggregateInput = {
   hPct?: Prisma.SortOrder
   label?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  contractId?: Prisma.SortOrder
 }
 
 export type SignatureFieldSumOrderByAggregateInput = {
@@ -527,12 +551,46 @@ export type SignatureFieldUncheckedUpdateManyWithoutContractNestedInput = {
   deleteMany?: Prisma.SignatureFieldScalarWhereInput | Prisma.SignatureFieldScalarWhereInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
+export type SignatureFieldCreateNestedManyWithoutSignerInput = {
+  create?: Prisma.XOR<Prisma.SignatureFieldCreateWithoutSignerInput, Prisma.SignatureFieldUncheckedCreateWithoutSignerInput> | Prisma.SignatureFieldCreateWithoutSignerInput[] | Prisma.SignatureFieldUncheckedCreateWithoutSignerInput[]
+  connectOrCreate?: Prisma.SignatureFieldCreateOrConnectWithoutSignerInput | Prisma.SignatureFieldCreateOrConnectWithoutSignerInput[]
+  createMany?: Prisma.SignatureFieldCreateManySignerInputEnvelope
+  connect?: Prisma.SignatureFieldWhereUniqueInput | Prisma.SignatureFieldWhereUniqueInput[]
+}
+
+export type SignatureFieldUncheckedCreateNestedManyWithoutSignerInput = {
+  create?: Prisma.XOR<Prisma.SignatureFieldCreateWithoutSignerInput, Prisma.SignatureFieldUncheckedCreateWithoutSignerInput> | Prisma.SignatureFieldCreateWithoutSignerInput[] | Prisma.SignatureFieldUncheckedCreateWithoutSignerInput[]
+  connectOrCreate?: Prisma.SignatureFieldCreateOrConnectWithoutSignerInput | Prisma.SignatureFieldCreateOrConnectWithoutSignerInput[]
+  createMany?: Prisma.SignatureFieldCreateManySignerInputEnvelope
+  connect?: Prisma.SignatureFieldWhereUniqueInput | Prisma.SignatureFieldWhereUniqueInput[]
+}
+
+export type SignatureFieldUpdateManyWithoutSignerNestedInput = {
+  create?: Prisma.XOR<Prisma.SignatureFieldCreateWithoutSignerInput, Prisma.SignatureFieldUncheckedCreateWithoutSignerInput> | Prisma.SignatureFieldCreateWithoutSignerInput[] | Prisma.SignatureFieldUncheckedCreateWithoutSignerInput[]
+  connectOrCreate?: Prisma.SignatureFieldCreateOrConnectWithoutSignerInput | Prisma.SignatureFieldCreateOrConnectWithoutSignerInput[]
+  upsert?: Prisma.SignatureFieldUpsertWithWhereUniqueWithoutSignerInput | Prisma.SignatureFieldUpsertWithWhereUniqueWithoutSignerInput[]
+  createMany?: Prisma.SignatureFieldCreateManySignerInputEnvelope
+  set?: Prisma.SignatureFieldWhereUniqueInput | Prisma.SignatureFieldWhereUniqueInput[]
+  disconnect?: Prisma.SignatureFieldWhereUniqueInput | Prisma.SignatureFieldWhereUniqueInput[]
+  delete?: Prisma.SignatureFieldWhereUniqueInput | Prisma.SignatureFieldWhereUniqueInput[]
+  connect?: Prisma.SignatureFieldWhereUniqueInput | Prisma.SignatureFieldWhereUniqueInput[]
+  update?: Prisma.SignatureFieldUpdateWithWhereUniqueWithoutSignerInput | Prisma.SignatureFieldUpdateWithWhereUniqueWithoutSignerInput[]
+  updateMany?: Prisma.SignatureFieldUpdateManyWithWhereWithoutSignerInput | Prisma.SignatureFieldUpdateManyWithWhereWithoutSignerInput[]
+  deleteMany?: Prisma.SignatureFieldScalarWhereInput | Prisma.SignatureFieldScalarWhereInput[]
+}
+
+export type SignatureFieldUncheckedUpdateManyWithoutSignerNestedInput = {
+  create?: Prisma.XOR<Prisma.SignatureFieldCreateWithoutSignerInput, Prisma.SignatureFieldUncheckedCreateWithoutSignerInput> | Prisma.SignatureFieldCreateWithoutSignerInput[] | Prisma.SignatureFieldUncheckedCreateWithoutSignerInput[]
+  connectOrCreate?: Prisma.SignatureFieldCreateOrConnectWithoutSignerInput | Prisma.SignatureFieldCreateOrConnectWithoutSignerInput[]
+  upsert?: Prisma.SignatureFieldUpsertWithWhereUniqueWithoutSignerInput | Prisma.SignatureFieldUpsertWithWhereUniqueWithoutSignerInput[]
+  createMany?: Prisma.SignatureFieldCreateManySignerInputEnvelope
+  set?: Prisma.SignatureFieldWhereUniqueInput | Prisma.SignatureFieldWhereUniqueInput[]
+  disconnect?: Prisma.SignatureFieldWhereUniqueInput | Prisma.SignatureFieldWhereUniqueInput[]
+  delete?: Prisma.SignatureFieldWhereUniqueInput | Prisma.SignatureFieldWhereUniqueInput[]
+  connect?: Prisma.SignatureFieldWhereUniqueInput | Prisma.SignatureFieldWhereUniqueInput[]
+  update?: Prisma.SignatureFieldUpdateWithWhereUniqueWithoutSignerInput | Prisma.SignatureFieldUpdateWithWhereUniqueWithoutSignerInput[]
+  updateMany?: Prisma.SignatureFieldUpdateManyWithWhereWithoutSignerInput | Prisma.SignatureFieldUpdateManyWithWhereWithoutSignerInput[]
+  deleteMany?: Prisma.SignatureFieldScalarWhereInput | Prisma.SignatureFieldScalarWhereInput[]
 }
 
 export type FloatFieldUpdateOperationsInput = {
@@ -568,11 +626,13 @@ export type SignatureFieldCreateWithoutContractInput = {
   hPct: number
   label?: string
   createdAt?: Date | string
+  signer?: Prisma.ContractSignerCreateNestedOneWithoutSignatureFieldsInput
   signatures?: Prisma.SignatureCreateNestedManyWithoutFieldInput
 }
 
 export type SignatureFieldUncheckedCreateWithoutContractInput = {
   id?: string
+  signerId?: string | null
   page: number
   xPct: number
   yPct: number
@@ -614,6 +674,8 @@ export type SignatureFieldScalarWhereInput = {
   OR?: Prisma.SignatureFieldScalarWhereInput[]
   NOT?: Prisma.SignatureFieldScalarWhereInput | Prisma.SignatureFieldScalarWhereInput[]
   id?: Prisma.StringFilter<"SignatureField"> | string
+  contractId?: Prisma.StringFilter<"SignatureField"> | string
+  signerId?: Prisma.StringNullableFilter<"SignatureField"> | string | null
   page?: Prisma.IntFilter<"SignatureField"> | number
   xPct?: Prisma.FloatFilter<"SignatureField"> | number
   yPct?: Prisma.FloatFilter<"SignatureField"> | number
@@ -621,7 +683,58 @@ export type SignatureFieldScalarWhereInput = {
   hPct?: Prisma.FloatFilter<"SignatureField"> | number
   label?: Prisma.StringFilter<"SignatureField"> | string
   createdAt?: Prisma.DateTimeFilter<"SignatureField"> | Date | string
-  contractId?: Prisma.StringFilter<"SignatureField"> | string
+}
+
+export type SignatureFieldCreateWithoutSignerInput = {
+  id?: string
+  page: number
+  xPct: number
+  yPct: number
+  wPct: number
+  hPct: number
+  label?: string
+  createdAt?: Date | string
+  contract: Prisma.ContractCreateNestedOneWithoutFieldsInput
+  signatures?: Prisma.SignatureCreateNestedManyWithoutFieldInput
+}
+
+export type SignatureFieldUncheckedCreateWithoutSignerInput = {
+  id?: string
+  contractId: string
+  page: number
+  xPct: number
+  yPct: number
+  wPct: number
+  hPct: number
+  label?: string
+  createdAt?: Date | string
+  signatures?: Prisma.SignatureUncheckedCreateNestedManyWithoutFieldInput
+}
+
+export type SignatureFieldCreateOrConnectWithoutSignerInput = {
+  where: Prisma.SignatureFieldWhereUniqueInput
+  create: Prisma.XOR<Prisma.SignatureFieldCreateWithoutSignerInput, Prisma.SignatureFieldUncheckedCreateWithoutSignerInput>
+}
+
+export type SignatureFieldCreateManySignerInputEnvelope = {
+  data: Prisma.SignatureFieldCreateManySignerInput | Prisma.SignatureFieldCreateManySignerInput[]
+  skipDuplicates?: boolean
+}
+
+export type SignatureFieldUpsertWithWhereUniqueWithoutSignerInput = {
+  where: Prisma.SignatureFieldWhereUniqueInput
+  update: Prisma.XOR<Prisma.SignatureFieldUpdateWithoutSignerInput, Prisma.SignatureFieldUncheckedUpdateWithoutSignerInput>
+  create: Prisma.XOR<Prisma.SignatureFieldCreateWithoutSignerInput, Prisma.SignatureFieldUncheckedCreateWithoutSignerInput>
+}
+
+export type SignatureFieldUpdateWithWhereUniqueWithoutSignerInput = {
+  where: Prisma.SignatureFieldWhereUniqueInput
+  data: Prisma.XOR<Prisma.SignatureFieldUpdateWithoutSignerInput, Prisma.SignatureFieldUncheckedUpdateWithoutSignerInput>
+}
+
+export type SignatureFieldUpdateManyWithWhereWithoutSignerInput = {
+  where: Prisma.SignatureFieldScalarWhereInput
+  data: Prisma.XOR<Prisma.SignatureFieldUpdateManyMutationInput, Prisma.SignatureFieldUncheckedUpdateManyWithoutSignerInput>
 }
 
 export type SignatureFieldCreateWithoutSignaturesInput = {
@@ -634,10 +747,13 @@ export type SignatureFieldCreateWithoutSignaturesInput = {
   label?: string
   createdAt?: Date | string
   contract: Prisma.ContractCreateNestedOneWithoutFieldsInput
+  signer?: Prisma.ContractSignerCreateNestedOneWithoutSignatureFieldsInput
 }
 
 export type SignatureFieldUncheckedCreateWithoutSignaturesInput = {
   id?: string
+  contractId: string
+  signerId?: string | null
   page: number
   xPct: number
   yPct: number
@@ -645,7 +761,6 @@ export type SignatureFieldUncheckedCreateWithoutSignaturesInput = {
   hPct: number
   label?: string
   createdAt?: Date | string
-  contractId: string
 }
 
 export type SignatureFieldCreateOrConnectWithoutSignaturesInput = {
@@ -674,10 +789,13 @@ export type SignatureFieldUpdateWithoutSignaturesInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contract?: Prisma.ContractUpdateOneRequiredWithoutFieldsNestedInput
+  signer?: Prisma.ContractSignerUpdateOneWithoutSignatureFieldsNestedInput
 }
 
 export type SignatureFieldUncheckedUpdateWithoutSignaturesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  signerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   page?: Prisma.IntFieldUpdateOperationsInput | number
   xPct?: Prisma.FloatFieldUpdateOperationsInput | number
   yPct?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -685,11 +803,11 @@ export type SignatureFieldUncheckedUpdateWithoutSignaturesInput = {
   hPct?: Prisma.FloatFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  contractId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type SignatureFieldCreateManyContractInput = {
   id?: string
+  signerId?: string | null
   page: number
   xPct: number
   yPct: number
@@ -708,11 +826,13 @@ export type SignatureFieldUpdateWithoutContractInput = {
   hPct?: Prisma.FloatFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  signer?: Prisma.ContractSignerUpdateOneWithoutSignatureFieldsNestedInput
   signatures?: Prisma.SignatureUpdateManyWithoutFieldNestedInput
 }
 
 export type SignatureFieldUncheckedUpdateWithoutContractInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  signerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   page?: Prisma.IntFieldUpdateOperationsInput | number
   xPct?: Prisma.FloatFieldUpdateOperationsInput | number
   yPct?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -725,6 +845,57 @@ export type SignatureFieldUncheckedUpdateWithoutContractInput = {
 
 export type SignatureFieldUncheckedUpdateManyWithoutContractInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  signerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  page?: Prisma.IntFieldUpdateOperationsInput | number
+  xPct?: Prisma.FloatFieldUpdateOperationsInput | number
+  yPct?: Prisma.FloatFieldUpdateOperationsInput | number
+  wPct?: Prisma.FloatFieldUpdateOperationsInput | number
+  hPct?: Prisma.FloatFieldUpdateOperationsInput | number
+  label?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SignatureFieldCreateManySignerInput = {
+  id?: string
+  contractId: string
+  page: number
+  xPct: number
+  yPct: number
+  wPct: number
+  hPct: number
+  label?: string
+  createdAt?: Date | string
+}
+
+export type SignatureFieldUpdateWithoutSignerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  page?: Prisma.IntFieldUpdateOperationsInput | number
+  xPct?: Prisma.FloatFieldUpdateOperationsInput | number
+  yPct?: Prisma.FloatFieldUpdateOperationsInput | number
+  wPct?: Prisma.FloatFieldUpdateOperationsInput | number
+  hPct?: Prisma.FloatFieldUpdateOperationsInput | number
+  label?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contract?: Prisma.ContractUpdateOneRequiredWithoutFieldsNestedInput
+  signatures?: Prisma.SignatureUpdateManyWithoutFieldNestedInput
+}
+
+export type SignatureFieldUncheckedUpdateWithoutSignerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  page?: Prisma.IntFieldUpdateOperationsInput | number
+  xPct?: Prisma.FloatFieldUpdateOperationsInput | number
+  yPct?: Prisma.FloatFieldUpdateOperationsInput | number
+  wPct?: Prisma.FloatFieldUpdateOperationsInput | number
+  hPct?: Prisma.FloatFieldUpdateOperationsInput | number
+  label?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  signatures?: Prisma.SignatureUncheckedUpdateManyWithoutFieldNestedInput
+}
+
+export type SignatureFieldUncheckedUpdateManyWithoutSignerInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractId?: Prisma.StringFieldUpdateOperationsInput | string
   page?: Prisma.IntFieldUpdateOperationsInput | number
   xPct?: Prisma.FloatFieldUpdateOperationsInput | number
   yPct?: Prisma.FloatFieldUpdateOperationsInput | number
@@ -767,6 +938,8 @@ export type SignatureFieldCountOutputTypeCountSignaturesArgs<ExtArgs extends run
 
 export type SignatureFieldSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  contractId?: boolean
+  signerId?: boolean
   page?: boolean
   xPct?: boolean
   yPct?: boolean
@@ -774,14 +947,16 @@ export type SignatureFieldSelect<ExtArgs extends runtime.Types.Extensions.Intern
   hPct?: boolean
   label?: boolean
   createdAt?: boolean
-  contractId?: boolean
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+  signer?: boolean | Prisma.SignatureField$signerArgs<ExtArgs>
   signatures?: boolean | Prisma.SignatureField$signaturesArgs<ExtArgs>
   _count?: boolean | Prisma.SignatureFieldCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["signatureField"]>
 
 export type SignatureFieldSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  contractId?: boolean
+  signerId?: boolean
   page?: boolean
   xPct?: boolean
   yPct?: boolean
@@ -789,12 +964,14 @@ export type SignatureFieldSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   hPct?: boolean
   label?: boolean
   createdAt?: boolean
-  contractId?: boolean
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+  signer?: boolean | Prisma.SignatureField$signerArgs<ExtArgs>
 }, ExtArgs["result"]["signatureField"]>
 
 export type SignatureFieldSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  contractId?: boolean
+  signerId?: boolean
   page?: boolean
   xPct?: boolean
   yPct?: boolean
@@ -802,12 +979,14 @@ export type SignatureFieldSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   hPct?: boolean
   label?: boolean
   createdAt?: boolean
-  contractId?: boolean
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+  signer?: boolean | Prisma.SignatureField$signerArgs<ExtArgs>
 }, ExtArgs["result"]["signatureField"]>
 
 export type SignatureFieldSelectScalar = {
   id?: boolean
+  contractId?: boolean
+  signerId?: boolean
   page?: boolean
   xPct?: boolean
   yPct?: boolean
@@ -815,30 +994,35 @@ export type SignatureFieldSelectScalar = {
   hPct?: boolean
   label?: boolean
   createdAt?: boolean
-  contractId?: boolean
 }
 
-export type SignatureFieldOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "page" | "xPct" | "yPct" | "wPct" | "hPct" | "label" | "createdAt" | "contractId", ExtArgs["result"]["signatureField"]>
+export type SignatureFieldOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contractId" | "signerId" | "page" | "xPct" | "yPct" | "wPct" | "hPct" | "label" | "createdAt", ExtArgs["result"]["signatureField"]>
 export type SignatureFieldInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+  signer?: boolean | Prisma.SignatureField$signerArgs<ExtArgs>
   signatures?: boolean | Prisma.SignatureField$signaturesArgs<ExtArgs>
   _count?: boolean | Prisma.SignatureFieldCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type SignatureFieldIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+  signer?: boolean | Prisma.SignatureField$signerArgs<ExtArgs>
 }
 export type SignatureFieldIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+  signer?: boolean | Prisma.SignatureField$signerArgs<ExtArgs>
 }
 
 export type $SignatureFieldPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "SignatureField"
   objects: {
     contract: Prisma.$ContractPayload<ExtArgs>
+    signer: Prisma.$ContractSignerPayload<ExtArgs> | null
     signatures: Prisma.$SignaturePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    contractId: string
+    signerId: string | null
     page: number
     xPct: number
     yPct: number
@@ -846,7 +1030,6 @@ export type $SignatureFieldPayload<ExtArgs extends runtime.Types.Extensions.Inte
     hPct: number
     label: string
     createdAt: Date
-    contractId: string
   }, ExtArgs["result"]["signatureField"]>
   composites: {}
 }
@@ -1242,6 +1425,7 @@ readonly fields: SignatureFieldFieldRefs;
 export interface Prisma__SignatureFieldClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   contract<T extends Prisma.ContractDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractDefaultArgs<ExtArgs>>): Prisma.Prisma__ContractClient<runtime.Types.Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  signer<T extends Prisma.SignatureField$signerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SignatureField$signerArgs<ExtArgs>>): Prisma.Prisma__ContractSignerClient<runtime.Types.Result.GetResult<Prisma.$ContractSignerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   signatures<T extends Prisma.SignatureField$signaturesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SignatureField$signaturesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SignaturePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1273,6 +1457,8 @@ export interface Prisma__SignatureFieldClient<T, Null = never, ExtArgs extends r
  */
 export interface SignatureFieldFieldRefs {
   readonly id: Prisma.FieldRef<"SignatureField", 'String'>
+  readonly contractId: Prisma.FieldRef<"SignatureField", 'String'>
+  readonly signerId: Prisma.FieldRef<"SignatureField", 'String'>
   readonly page: Prisma.FieldRef<"SignatureField", 'Int'>
   readonly xPct: Prisma.FieldRef<"SignatureField", 'Float'>
   readonly yPct: Prisma.FieldRef<"SignatureField", 'Float'>
@@ -1280,7 +1466,6 @@ export interface SignatureFieldFieldRefs {
   readonly hPct: Prisma.FieldRef<"SignatureField", 'Float'>
   readonly label: Prisma.FieldRef<"SignatureField", 'String'>
   readonly createdAt: Prisma.FieldRef<"SignatureField", 'DateTime'>
-  readonly contractId: Prisma.FieldRef<"SignatureField", 'String'>
 }
     
 
@@ -1674,6 +1859,25 @@ export type SignatureFieldDeleteManyArgs<ExtArgs extends runtime.Types.Extension
    * Limit how many SignatureFields to delete.
    */
   limit?: number
+}
+
+/**
+ * SignatureField.signer
+ */
+export type SignatureField$signerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ContractSigner
+   */
+  select?: Prisma.ContractSignerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ContractSigner
+   */
+  omit?: Prisma.ContractSignerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContractSignerInclude<ExtArgs> | null
+  where?: Prisma.ContractSignerWhereInput
 }
 
 /**

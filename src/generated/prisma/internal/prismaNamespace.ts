@@ -385,11 +385,15 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   Admin: 'Admin',
-  Signer: 'Signer',
   Contract: 'Contract',
+  LibranzaData: 'LibranzaData',
+  ContractParty: 'ContractParty',
+  ContractClause: 'ContractClause',
+  ContractSigner: 'ContractSigner',
   SignatureField: 'SignatureField',
   Signature: 'Signature',
-  RefreshToken: 'RefreshToken'
+  RefreshToken: 'RefreshToken',
+  ContractDocument: 'ContractDocument'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -405,7 +409,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "signer" | "contract" | "signatureField" | "signature" | "refreshToken"
+    modelProps: "admin" | "contract" | "libranzaData" | "contractParty" | "contractClause" | "contractSigner" | "signatureField" | "signature" | "refreshToken" | "contractDocument"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -483,80 +487,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    Signer: {
-      payload: Prisma.$SignerPayload<ExtArgs>
-      fields: Prisma.SignerFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.SignerFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignerPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.SignerFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignerPayload>
-        }
-        findFirst: {
-          args: Prisma.SignerFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignerPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.SignerFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignerPayload>
-        }
-        findMany: {
-          args: Prisma.SignerFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignerPayload>[]
-        }
-        create: {
-          args: Prisma.SignerCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignerPayload>
-        }
-        createMany: {
-          args: Prisma.SignerCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.SignerCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignerPayload>[]
-        }
-        delete: {
-          args: Prisma.SignerDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignerPayload>
-        }
-        update: {
-          args: Prisma.SignerUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignerPayload>
-        }
-        deleteMany: {
-          args: Prisma.SignerDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.SignerUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.SignerUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignerPayload>[]
-        }
-        upsert: {
-          args: Prisma.SignerUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignerPayload>
-        }
-        aggregate: {
-          args: Prisma.SignerAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateSigner>
-        }
-        groupBy: {
-          args: Prisma.SignerGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.SignerGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.SignerCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.SignerCountAggregateOutputType> | number
-        }
-      }
-    }
     Contract: {
       payload: Prisma.$ContractPayload<ExtArgs>
       fields: Prisma.ContractFieldRefs
@@ -628,6 +558,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ContractCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ContractCountAggregateOutputType> | number
+        }
+      }
+    }
+    LibranzaData: {
+      payload: Prisma.$LibranzaDataPayload<ExtArgs>
+      fields: Prisma.LibranzaDataFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LibranzaDataFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibranzaDataPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LibranzaDataFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibranzaDataPayload>
+        }
+        findFirst: {
+          args: Prisma.LibranzaDataFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibranzaDataPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LibranzaDataFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibranzaDataPayload>
+        }
+        findMany: {
+          args: Prisma.LibranzaDataFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibranzaDataPayload>[]
+        }
+        create: {
+          args: Prisma.LibranzaDataCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibranzaDataPayload>
+        }
+        createMany: {
+          args: Prisma.LibranzaDataCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LibranzaDataCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibranzaDataPayload>[]
+        }
+        delete: {
+          args: Prisma.LibranzaDataDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibranzaDataPayload>
+        }
+        update: {
+          args: Prisma.LibranzaDataUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibranzaDataPayload>
+        }
+        deleteMany: {
+          args: Prisma.LibranzaDataDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LibranzaDataUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LibranzaDataUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibranzaDataPayload>[]
+        }
+        upsert: {
+          args: Prisma.LibranzaDataUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LibranzaDataPayload>
+        }
+        aggregate: {
+          args: Prisma.LibranzaDataAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLibranzaData>
+        }
+        groupBy: {
+          args: Prisma.LibranzaDataGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LibranzaDataGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LibranzaDataCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LibranzaDataCountAggregateOutputType> | number
+        }
+      }
+    }
+    ContractParty: {
+      payload: Prisma.$ContractPartyPayload<ExtArgs>
+      fields: Prisma.ContractPartyFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ContractPartyFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPartyPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ContractPartyFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPartyPayload>
+        }
+        findFirst: {
+          args: Prisma.ContractPartyFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPartyPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ContractPartyFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPartyPayload>
+        }
+        findMany: {
+          args: Prisma.ContractPartyFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPartyPayload>[]
+        }
+        create: {
+          args: Prisma.ContractPartyCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPartyPayload>
+        }
+        createMany: {
+          args: Prisma.ContractPartyCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ContractPartyCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPartyPayload>[]
+        }
+        delete: {
+          args: Prisma.ContractPartyDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPartyPayload>
+        }
+        update: {
+          args: Prisma.ContractPartyUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPartyPayload>
+        }
+        deleteMany: {
+          args: Prisma.ContractPartyDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ContractPartyUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ContractPartyUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPartyPayload>[]
+        }
+        upsert: {
+          args: Prisma.ContractPartyUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractPartyPayload>
+        }
+        aggregate: {
+          args: Prisma.ContractPartyAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateContractParty>
+        }
+        groupBy: {
+          args: Prisma.ContractPartyGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContractPartyGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ContractPartyCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContractPartyCountAggregateOutputType> | number
+        }
+      }
+    }
+    ContractClause: {
+      payload: Prisma.$ContractClausePayload<ExtArgs>
+      fields: Prisma.ContractClauseFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ContractClauseFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractClausePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ContractClauseFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractClausePayload>
+        }
+        findFirst: {
+          args: Prisma.ContractClauseFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractClausePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ContractClauseFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractClausePayload>
+        }
+        findMany: {
+          args: Prisma.ContractClauseFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractClausePayload>[]
+        }
+        create: {
+          args: Prisma.ContractClauseCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractClausePayload>
+        }
+        createMany: {
+          args: Prisma.ContractClauseCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ContractClauseCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractClausePayload>[]
+        }
+        delete: {
+          args: Prisma.ContractClauseDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractClausePayload>
+        }
+        update: {
+          args: Prisma.ContractClauseUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractClausePayload>
+        }
+        deleteMany: {
+          args: Prisma.ContractClauseDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ContractClauseUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ContractClauseUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractClausePayload>[]
+        }
+        upsert: {
+          args: Prisma.ContractClauseUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractClausePayload>
+        }
+        aggregate: {
+          args: Prisma.ContractClauseAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateContractClause>
+        }
+        groupBy: {
+          args: Prisma.ContractClauseGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContractClauseGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ContractClauseCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContractClauseCountAggregateOutputType> | number
+        }
+      }
+    }
+    ContractSigner: {
+      payload: Prisma.$ContractSignerPayload<ExtArgs>
+      fields: Prisma.ContractSignerFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ContractSignerFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractSignerPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ContractSignerFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractSignerPayload>
+        }
+        findFirst: {
+          args: Prisma.ContractSignerFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractSignerPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ContractSignerFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractSignerPayload>
+        }
+        findMany: {
+          args: Prisma.ContractSignerFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractSignerPayload>[]
+        }
+        create: {
+          args: Prisma.ContractSignerCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractSignerPayload>
+        }
+        createMany: {
+          args: Prisma.ContractSignerCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ContractSignerCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractSignerPayload>[]
+        }
+        delete: {
+          args: Prisma.ContractSignerDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractSignerPayload>
+        }
+        update: {
+          args: Prisma.ContractSignerUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractSignerPayload>
+        }
+        deleteMany: {
+          args: Prisma.ContractSignerDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ContractSignerUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ContractSignerUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractSignerPayload>[]
+        }
+        upsert: {
+          args: Prisma.ContractSignerUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractSignerPayload>
+        }
+        aggregate: {
+          args: Prisma.ContractSignerAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateContractSigner>
+        }
+        groupBy: {
+          args: Prisma.ContractSignerGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContractSignerGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ContractSignerCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContractSignerCountAggregateOutputType> | number
         }
       }
     }
@@ -853,6 +1079,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ContractDocument: {
+      payload: Prisma.$ContractDocumentPayload<ExtArgs>
+      fields: Prisma.ContractDocumentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ContractDocumentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractDocumentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ContractDocumentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractDocumentPayload>
+        }
+        findFirst: {
+          args: Prisma.ContractDocumentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractDocumentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ContractDocumentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractDocumentPayload>
+        }
+        findMany: {
+          args: Prisma.ContractDocumentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractDocumentPayload>[]
+        }
+        create: {
+          args: Prisma.ContractDocumentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractDocumentPayload>
+        }
+        createMany: {
+          args: Prisma.ContractDocumentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ContractDocumentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractDocumentPayload>[]
+        }
+        delete: {
+          args: Prisma.ContractDocumentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractDocumentPayload>
+        }
+        update: {
+          args: Prisma.ContractDocumentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractDocumentPayload>
+        }
+        deleteMany: {
+          args: Prisma.ContractDocumentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ContractDocumentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ContractDocumentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractDocumentPayload>[]
+        }
+        upsert: {
+          args: Prisma.ContractDocumentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractDocumentPayload>
+        }
+        aggregate: {
+          args: Prisma.ContractDocumentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateContractDocument>
+        }
+        groupBy: {
+          args: Prisma.ContractDocumentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContractDocumentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ContractDocumentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContractDocumentCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -904,45 +1204,118 @@ export const AdminScalarFieldEnum = {
 export type AdminScalarFieldEnum = (typeof AdminScalarFieldEnum)[keyof typeof AdminScalarFieldEnum]
 
 
-export const SignerScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  email: 'email',
-  phone: 'phone',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type SignerScalarFieldEnum = (typeof SignerScalarFieldEnum)[keyof typeof SignerScalarFieldEnum]
-
-
 export const ContractScalarFieldEnum = {
   id: 'id',
   title: 'title',
+  contractNumber: 'contractNumber',
+  contractType: 'contractType',
   status: 'status',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  subject: 'subject',
+  amount: 'amount',
+  currency: 'currency',
+  paymentMethod: 'paymentMethod',
   originalUrl: 'originalUrl',
   signedUrl: 'signedUrl',
   token: 'token',
   tokenExpiresAt: 'tokenExpiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  adminId: 'adminId',
-  signerId: 'signerId'
+  adminId: 'adminId'
 } as const
 
 export type ContractScalarFieldEnum = (typeof ContractScalarFieldEnum)[keyof typeof ContractScalarFieldEnum]
 
 
+export const LibranzaDataScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  ciudad: 'ciudad',
+  asesor: 'asesor',
+  fecha: 'fecha',
+  clienteNombre: 'clienteNombre',
+  clienteCC: 'clienteCC',
+  clienteCCDe: 'clienteCCDe',
+  clienteDireccion: 'clienteDireccion',
+  clienteTelefono: 'clienteTelefono',
+  clienteEmail: 'clienteEmail',
+  clienteFuncionario: 'clienteFuncionario',
+  clienteDesdeHace: 'clienteDesdeHace',
+  municipioTrabajo: 'municipioTrabajo',
+  empresaTrabajo: 'empresaTrabajo',
+  departamento: 'departamento',
+  sumaTotal: 'sumaTotal',
+  numeroCuotas: 'numeroCuotas',
+  valorCuota: 'valorCuota',
+  mesCobro: 'mesCobro',
+  tipoCuenta: 'tipoCuenta',
+  numeroCuenta: 'numeroCuenta',
+  banco: 'banco',
+  productos: 'productos',
+  formaPago: 'formaPago',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LibranzaDataScalarFieldEnum = (typeof LibranzaDataScalarFieldEnum)[keyof typeof LibranzaDataScalarFieldEnum]
+
+
+export const ContractPartyScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  role: 'role',
+  name: 'name',
+  identification: 'identification',
+  email: 'email',
+  phone: 'phone',
+  address: 'address',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContractPartyScalarFieldEnum = (typeof ContractPartyScalarFieldEnum)[keyof typeof ContractPartyScalarFieldEnum]
+
+
+export const ContractClauseScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  position: 'position',
+  content: 'content',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContractClauseScalarFieldEnum = (typeof ContractClauseScalarFieldEnum)[keyof typeof ContractClauseScalarFieldEnum]
+
+
+export const ContractSignerScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  partyRole: 'partyRole',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  roleTitle: 'roleTitle',
+  signerOrder: 'signerOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContractSignerScalarFieldEnum = (typeof ContractSignerScalarFieldEnum)[keyof typeof ContractSignerScalarFieldEnum]
+
+
 export const SignatureFieldScalarFieldEnum = {
   id: 'id',
+  contractId: 'contractId',
+  signerId: 'signerId',
   page: 'page',
   xPct: 'xPct',
   yPct: 'yPct',
   wPct: 'wPct',
   hPct: 'hPct',
   label: 'label',
-  createdAt: 'createdAt',
-  contractId: 'contractId'
+  createdAt: 'createdAt'
 } as const
 
 export type SignatureFieldScalarFieldEnum = (typeof SignatureFieldScalarFieldEnum)[keyof typeof SignatureFieldScalarFieldEnum]
@@ -950,15 +1323,20 @@ export type SignatureFieldScalarFieldEnum = (typeof SignatureFieldScalarFieldEnu
 
 export const SignatureScalarFieldEnum = {
   id: 'id',
+  contractId: 'contractId',
+  signerId: 'signerId',
+  fieldId: 'fieldId',
   type: 'type',
   imageUrl: 'imageUrl',
   typedValue: 'typedValue',
   signedAt: 'signedAt',
   ipAddress: 'ipAddress',
   userAgent: 'userAgent',
-  contractId: 'contractId',
-  signerId: 'signerId',
-  fieldId: 'fieldId'
+  documentHash: 'documentHash',
+  signerEmail: 'signerEmail',
+  otpVerified: 'otpVerified',
+  signaturePublicId: 'signaturePublicId',
+  mimeType: 'mimeType'
 } as const
 
 export type SignatureScalarFieldEnum = (typeof SignatureScalarFieldEnum)[keyof typeof SignatureScalarFieldEnum]
@@ -975,12 +1353,35 @@ export const RefreshTokenScalarFieldEnum = {
 export type RefreshTokenScalarFieldEnum = (typeof RefreshTokenScalarFieldEnum)[keyof typeof RefreshTokenScalarFieldEnum]
 
 
+export const ContractDocumentScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  type: 'type',
+  label: 'label',
+  url: 'url',
+  publicId: 'publicId',
+  mimeType: 'mimeType',
+  sizeBytes: 'sizeBytes',
+  uploadedAt: 'uploadedAt'
+} as const
+
+export type ContractDocumentScalarFieldEnum = (typeof ContractDocumentScalarFieldEnum)[keyof typeof ContractDocumentScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -997,6 +1398,15 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -1048,6 +1458,48 @@ export type ListEnumContractStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'PartyRole'
+ */
+export type EnumPartyRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PartyRole'>
+    
+
+
+/**
+ * Reference to a field of type 'PartyRole[]'
+ */
+export type ListEnumPartyRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PartyRole[]'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -1086,6 +1538,27 @@ export type EnumSignatureTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'SignatureType[]'
  */
 export type ListEnumSignatureTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SignatureType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'DocumentType'
+ */
+export type EnumDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentType'>
+    
+
+
+/**
+ * Reference to a field of type 'DocumentType[]'
+ */
+export type ListEnumDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentType[]'>
     
 
 /**
@@ -1184,11 +1657,15 @@ export type PrismaClientOptions = ({
 }
 export type GlobalOmitConfig = {
   admin?: Prisma.AdminOmit
-  signer?: Prisma.SignerOmit
   contract?: Prisma.ContractOmit
+  libranzaData?: Prisma.LibranzaDataOmit
+  contractParty?: Prisma.ContractPartyOmit
+  contractClause?: Prisma.ContractClauseOmit
+  contractSigner?: Prisma.ContractSignerOmit
   signatureField?: Prisma.SignatureFieldOmit
   signature?: Prisma.SignatureOmit
   refreshToken?: Prisma.RefreshTokenOmit
+  contractDocument?: Prisma.ContractDocumentOmit
 }
 
 /* Types for Logging */
