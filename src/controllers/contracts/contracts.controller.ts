@@ -287,10 +287,10 @@ export async function listContracts(req: AuthenticatedRequest, res: Response) {
     }
 
     const contracts = await prisma.contract.findMany({
-      where:   { adminId },
+      where: { adminId },
       orderBy: { createdAt: "desc" },
       include: {
-        parties:   true,
+        parties: true,
         libranzaData: true,
         signers: { orderBy: { signerOrder: "asc" } },
         signatures: {
@@ -398,7 +398,6 @@ export async function getPublicContract(req: Request, res: Response) {
       ? req.params.token[0]
       : req.params.token;
 
-    console.log("GET PUBLIC CONTRACT TOKEN:", token);
 
     const contract = await prisma.contract.findFirst({
       where: {
@@ -433,7 +432,6 @@ export async function getPublicContract(req: Request, res: Response) {
     return res.json({ ok: true, contract });
 
   } catch (error) {
-    console.error("GET PUBLIC CONTRACT ERROR", error);
     return res.status(500).json({ ok: false, message: "No se pudo consultar el contrato" });
   }
 }
@@ -651,9 +649,9 @@ export async function downloadPublicSignedContract(req: Request, res: Response) 
         status: { in: ["PARTIALLY_SIGNED", "SIGNED"] },
       },
       include: {
-        parties:      true,
-        signers:      { orderBy: { signerOrder: "asc" } },
-        signatures:   true,
+        parties: true,
+        signers: { orderBy: { signerOrder: "asc" } },
+        signatures: true,
         libranzaData: true,
       },
     });
@@ -674,15 +672,15 @@ export async function downloadPublicSignedContract(req: Request, res: Response) 
 
     // ── Obtener la firma del contratado ──────────────────────────────────────
     const contractedSigner = contract.signers.find(s => s.partyRole === "CONTRACTED");
-    const contractedSig    = contractedSigner
+    const contractedSig = contractedSigner
       ? contract.signatures.find(sig => sig.signerId === contractedSigner.id)
       : undefined;
 
     const signatureData = contractedSig ? {
-      type:       contractedSig.type as "DRAWN" | "TYPED" | "CLICK_TO_SIGN",
-      imageUrl:   contractedSig.imageUrl   ?? undefined,
+      type: contractedSig.type as "DRAWN" | "TYPED" | "CLICK_TO_SIGN",
+      imageUrl: contractedSig.imageUrl ?? undefined,
       typedValue: contractedSig.typedValue ?? undefined,
-      signedAt:   contractedSig.signedAt?.toISOString(),
+      signedAt: contractedSig.signedAt?.toISOString(),
       signerName: contractedSigner?.name,
     } : undefined;
 
@@ -740,9 +738,9 @@ export async function downloadPublicSignedContract(req: Request, res: Response) 
     await page.evaluateHandle("document.fonts.ready");
 
     const pdfBuffer = await page.pdf({
-      format:            "A4",
-      printBackground:   true,
-      margin:            { top: "0", right: "0", bottom: "0", left: "0" },
+      format: "A4",
+      printBackground: true,
+      margin: { top: "0", right: "0", bottom: "0", left: "0" },
       preferCSSPageSize: true,
     });
 
@@ -755,7 +753,7 @@ export async function downloadPublicSignedContract(req: Request, res: Response) 
       ?? "libranza";
 
     const safeName = clienteName.replace(/[^\w\s-]/gi, "").replace(/\s+/g, "-").toLowerCase();
-    const fileName  = `libranza-${safeName}.pdf`;
+    const fileName = `libranza-${safeName}.pdf`;
 
     const encodedName = encodeURIComponent(fileName);
     res.setHeader("Content-Type", "application/pdf");
@@ -771,9 +769,50 @@ export async function downloadPublicSignedContract(req: Request, res: Response) 
     }
     console.error("DOWNLOAD PDF ERROR:", error);
     return res.status(500).json({
-      ok:      false,
+      ok: false,
       message: "No se pudo generar el PDF",
-      error:   error?.message ?? "Error desconocido",
+      error: error?.message ?? "Error desconocido",
     });
   }
 }
+
+
+export const getContractById = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    const role   = req.user?.role;
+
+    if (!userId) {
+      return res.status(401).json({ ok: false, message: "No autenticado" });
+    }
+
+    const id = String(req.params.id);
+
+    const contract = await prisma.contract.findUnique({
+      where: {
+        id,
+        ...(role === "OPERATOR" && { adminId: userId }),
+      },
+      include: {
+        parties: true,
+        libranzaData: true,
+        signers: { orderBy: { signerOrder: "asc" } },
+        signatures: {
+          select: {
+            id: true, signerId: true, type: true,
+            typedValue: true, signedAt: true,
+          },
+        },
+      },
+    });
+
+    if (!contract) {
+      return res.status(404).json({ ok: false, message: "Contrato no encontrado" });
+    }
+
+    return res.json({ ok: true, data: contract });
+  } catch (error: any) {
+    console.error("GET CONTRACT BY ID ERROR", error);
+    return res.status(500).json({ ok: false, message: "Error al obtener el contrato" });
+  }
+};

@@ -1,14 +1,14 @@
 import { prisma } from "../../database/db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import crypto from "crypto";
+import crypto from "node:crypto";
+import { AdminRole } from "../../types/types";
 
 const ACCESS_SECRET = process.env.JWT_SECRET!;
-const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET!;
 const SALT_ROUNDS = 10;
 
-const generateAccessToken = (id: string, email: string) =>
-  jwt.sign({ id, email }, ACCESS_SECRET, { expiresIn: "1h" });
+const generateAccessToken = (id: string, email: string, role: AdminRole) =>
+  jwt.sign({ id, email, role }, ACCESS_SECRET, { expiresIn: "1h" });
 
 const generateRefreshToken = () => crypto.randomBytes(64).toString("hex");
 
@@ -38,7 +38,9 @@ export const loginAdmin = async (email: string, password: string) => {
   const valid = await bcrypt.compare(password, admin.password);
   if (!valid) throw new Error("Invalid credentials");
 
-  const accessToken = generateAccessToken(admin.id, admin.email);
+  await prisma.refreshToken.deleteMany({ where: { adminId: admin.id } });
+
+  const accessToken = generateAccessToken(admin.id, admin.email, admin.role);
   const refreshToken = generateRefreshToken();
 
   await prisma.refreshToken.create({
@@ -52,7 +54,7 @@ export const loginAdmin = async (email: string, password: string) => {
   return {
     accessToken,
     refreshToken,
-    admin: { id: admin.id, email: admin.email, name: admin.name },
+    admin: { id: admin.id, email: admin.email, name: admin.name, role: admin.role },
   };
 };
 
@@ -63,22 +65,22 @@ export const refreshTokens = async (token: string) => {
   });
 
   if (!stored) throw new Error("Invalid refresh token");
+
   if (stored.expiresAt < new Date()) {
     await prisma.refreshToken.delete({ where: { token } });
     throw new Error("Refresh token expired");
   }
 
-  // Rotate: borra el viejo y crea uno nuevo
   await prisma.refreshToken.delete({ where: { token } });
 
-  const newAccessToken = generateAccessToken(stored.admin.id, stored.admin.email);
+  const newAccessToken = generateAccessToken(stored.admin.id, stored.admin.email, stored.admin.role);
   const newRefreshToken = generateRefreshToken();
 
   await prisma.refreshToken.create({
     data: {
       token: newRefreshToken,
       adminId: stored.admin.id,
-      expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+      expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30d
     },
   });
 
@@ -89,10 +91,11 @@ export const refreshTokens = async (token: string) => {
       id: stored.admin.id,
       email: stored.admin.email,
       name: stored.admin.name,
+      role: stored.admin.role
     },
   };
 };
 
 export const logoutAdmin = async (token: string) => {
-  await prisma.refreshToken.deleteMany({ where: { token } });
+  await prisma.refreshToken.delete({ where: { token } });
 };

@@ -8,7 +8,6 @@ export const register = async (req: Request, res: Response) => {
     const admin = await registerAdmin(email, name, password);
     res.status(201).json({ admin });
   } catch (err) {
-    console.error(err);
     const message = err instanceof Error ? err.message : "Internal server error";
     const status = message === "Email already in use" ? 409 : 500;
     res.status(status).json({ error: message });
@@ -28,13 +27,14 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const refresh = async (req: Request, res: Response) => {
-  try {
-    const { refreshToken } = req.body;
-    if (!refreshToken) {
-      res.status(400).json({ error: "Refresh token is required" });
-      return;
-    }
+  const { refreshToken } = req.body;
 
+  if (!refreshToken) {
+    res.status(400).json({ error: "Refresh token is required" });
+    return;
+  }
+
+  try {
     const result = await refreshTokens(refreshToken);
     res.status(200).json(result);
   } catch (err) {

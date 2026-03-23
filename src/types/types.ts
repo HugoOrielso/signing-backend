@@ -14,3 +14,5 @@ export interface AuthenticatedRequest extends Request {
     role?: string;
   };
 }
+
+export type AdminRole = "ADMIN" | "OPERATOR";
