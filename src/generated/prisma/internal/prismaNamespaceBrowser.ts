@@ -60,7 +60,9 @@ export const ModelName = {
   SignatureField: 'SignatureField',
   Signature: 'Signature',
   RefreshToken: 'RefreshToken',
-  ContractDocument: 'ContractDocument'
+  ContractDocument: 'ContractDocument',
+  ContractAuditEvent: 'ContractAuditEvent',
+  Reference: 'Reference'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -254,6 +256,45 @@ export const ContractDocumentScalarFieldEnum = {
 } as const
 
 export type ContractDocumentScalarFieldEnum = (typeof ContractDocumentScalarFieldEnum)[keyof typeof ContractDocumentScalarFieldEnum]
+
+
+export const ContractAuditEventScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  signerId: 'signerId',
+  adminId: 'adminId',
+  eventType: 'eventType',
+  actorType: 'actorType',
+  actorRole: 'actorRole',
+  actorName: 'actorName',
+  actorEmail: 'actorEmail',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  sessionId: 'sessionId',
+  requestId: 'requestId',
+  documentHash: 'documentHash',
+  previousEventHash: 'previousEventHash',
+  eventHash: 'eventHash',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type ContractAuditEventScalarFieldEnum = (typeof ContractAuditEventScalarFieldEnum)[keyof typeof ContractAuditEventScalarFieldEnum]
+
+
+export const ReferenceScalarFieldEnum = {
+  id: 'id',
+  libranzaId: 'libranzaId',
+  type: 'type',
+  name: 'name',
+  phone: 'phone',
+  email: 'email',
+  company: 'company',
+  position: 'position',
+  createdAt: 'createdAt'
+} as const
+
+export type ReferenceScalarFieldEnum = (typeof ReferenceScalarFieldEnum)[keyof typeof ReferenceScalarFieldEnum]
 
 
 export const SortOrder = {

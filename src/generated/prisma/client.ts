@@ -91,3 +91,13 @@ export type RefreshToken = Prisma.RefreshTokenModel
  * 
  */
 export type ContractDocument = Prisma.ContractDocumentModel
+/**
+ * Model ContractAuditEvent
+ * 
+ */
+export type ContractAuditEvent = Prisma.ContractAuditEventModel
+/**
+ * Model Reference
+ * 
+ */
+export type Reference = Prisma.ReferenceModel

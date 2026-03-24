@@ -3,6 +3,8 @@ import { Request, Response } from "express";
 import crypto from "crypto";
 import { Resend } from "resend";
 import { prisma } from "../../database/db";
+import { logAuditEvent } from "../../services/audit/audit.service";
+import { AuditActorType, AuditEventType } from "../../generated/prisma/enums";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -108,12 +110,38 @@ export async function requestOtp(req: Request, res: Response) {
       `,
     });
 
+    try {
+      await logAuditEvent({
+        contractId: contract.id,
+        eventType: AuditEventType.OTP_SENT,
+        actorType: AuditActorType.SIGNER,
+        actorEmail: emailNorm,
+        ipAddress: req.ip,
+        userAgent: req.get("user-agent") ?? null,
+        requestId:
+          typeof req.headers["x-request-id"] === "string"
+            ? req.headers["x-request-id"]
+            : null,
+        sessionId:
+          typeof req.headers["x-session-id"] === "string"
+            ? req.headers["x-session-id"]
+            : null,
+        metadata: {
+          email: emailNorm,
+          token,
+          contractStatus: contract.status,
+        },
+      });
+    } catch (auditError) {
+      console.error("AUDIT ERROR - OTP_SENT:", auditError);
+    }
 
     return res.json({
       ok: true,
       message: "Si ese correo está registrado, recibirás un código.",
     });
   } catch (error: any) {
+    console.error("REQUEST OTP ERROR:", error);
     return res.status(500).json({
       ok: false,
       message: "Error al procesar la solicitud",
@@ -149,42 +177,60 @@ export async function verifyOtp(req: Request, res: Response) {
       return res.status(400).json({ ok: false, message: "Código inválido o expirado. Solicita uno nuevo." });
     }
 
-    // Expirado
     if (Date.now() > entry.expiresAt) {
       otpStore.delete(key);
       return res.status(400).json({ ok: false, message: "El código ha expirado. Solicita uno nuevo." });
     }
 
-    // Demasiados intentos
     if (entry.attempts >= MAX_ATTEMPTS) {
       otpStore.delete(key);
       return res.status(429).json({ ok: false, message: "Demasiados intentos. Solicita un nuevo código." });
     }
 
-    // Código incorrecto
     if (entry.code !== code.trim()) {
       entry.attempts += 1;
       otpStore.set(key, entry);
       const left = MAX_ATTEMPTS - entry.attempts;
+
       return res.status(400).json({
         ok: false,
         message: `Código incorrecto. ${left} intento${left !== 1 ? "s" : ""} restante${left !== 1 ? "s" : ""}.`,
       });
     }
 
-    // ✅ Código correcto — eliminar de store y devolver sesión
     otpStore.delete(key);
 
-    // Generar un session token simple (JWT ligero o random)
-    // El frontend lo guarda en sessionStorage (dura solo el tab)
+    try {
+      await logAuditEvent({
+        contractId: contract.id,
+        eventType: AuditEventType.OTP_VERIFIED,
+        actorType: AuditActorType.SIGNER,
+        actorEmail: emailNorm,
+        ipAddress: req.ip,
+        userAgent: req.get("user-agent") ?? null,
+        requestId:
+          typeof req.headers["x-request-id"] === "string"
+            ? req.headers["x-request-id"]
+            : null,
+        sessionId:
+          typeof req.headers["x-session-id"] === "string"
+            ? req.headers["x-session-id"]
+            : null,
+        metadata: {
+          email: emailNorm,
+          token,
+        },
+      });
+    } catch (auditError) {
+      console.error("AUDIT ERROR - OTP_VERIFIED:", auditError);
+    }
+
     const sessionToken = crypto.randomBytes(32).toString("hex");
 
-    // Opcional: guardar en memoria para validar en el endpoint de firma
-    // Por simplicidad confiamos en que el backend ya valida el correo al firmar
-    // Solo usamos el sessionToken como señal de que el cliente está autenticado
-    const nextRoute = contract.status === "SIGNED"
-      ? `/contracts/view/${token}`
-      : `/contracts/sign/${token}`;
+    const nextRoute =
+      contract.status === "SIGNED"
+        ? `/contracts/view/${token}`
+        : `/contracts/sign/${token}`;
 
     return res.json({
       ok: true,
@@ -193,7 +239,6 @@ export async function verifyOtp(req: Request, res: Response) {
       nextRoute,
       message: "Verificado correctamente",
     });
-
   } catch (error: any) {
     console.error("VERIFY OTP ERROR:", error);
     return res.status(500).json({ ok: false, message: "Error al verificar el código" });

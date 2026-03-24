@@ -200,6 +200,7 @@ export type AdminWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Admin"> | Date | string
   contracts?: Prisma.ContractListRelationFilter
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
+  contractAuditEvents?: Prisma.ContractAuditEventListRelationFilter
 }
 
 export type AdminOrderByWithRelationInput = {
@@ -212,6 +213,7 @@ export type AdminOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   contracts?: Prisma.ContractOrderByRelationAggregateInput
   refreshTokens?: Prisma.RefreshTokenOrderByRelationAggregateInput
+  contractAuditEvents?: Prisma.ContractAuditEventOrderByRelationAggregateInput
 }
 
 export type AdminWhereUniqueInput = Prisma.AtLeast<{
@@ -227,6 +229,7 @@ export type AdminWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Admin"> | Date | string
   contracts?: Prisma.ContractListRelationFilter
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
+  contractAuditEvents?: Prisma.ContractAuditEventListRelationFilter
 }, "id" | "email">
 
 export type AdminOrderByWithAggregationInput = {
@@ -265,6 +268,7 @@ export type AdminCreateInput = {
   updatedAt?: Date | string
   contracts?: Prisma.ContractCreateNestedManyWithoutAdminInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutAdminInput
+  contractAuditEvents?: Prisma.ContractAuditEventCreateNestedManyWithoutAdminInput
 }
 
 export type AdminUncheckedCreateInput = {
@@ -277,6 +281,7 @@ export type AdminUncheckedCreateInput = {
   updatedAt?: Date | string
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutAdminInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutAdminInput
+  contractAuditEvents?: Prisma.ContractAuditEventUncheckedCreateNestedManyWithoutAdminInput
 }
 
 export type AdminUpdateInput = {
@@ -289,6 +294,7 @@ export type AdminUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contracts?: Prisma.ContractUpdateManyWithoutAdminNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutAdminNestedInput
+  contractAuditEvents?: Prisma.ContractAuditEventUpdateManyWithoutAdminNestedInput
 }
 
 export type AdminUncheckedUpdateInput = {
@@ -301,6 +307,7 @@ export type AdminUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutAdminNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutAdminNestedInput
+  contractAuditEvents?: Prisma.ContractAuditEventUncheckedUpdateManyWithoutAdminNestedInput
 }
 
 export type AdminCreateManyInput = {
@@ -368,6 +375,11 @@ export type AdminScalarRelationFilter = {
   isNot?: Prisma.AdminWhereInput
 }
 
+export type AdminNullableScalarRelationFilter = {
+  is?: Prisma.AdminWhereInput | null
+  isNot?: Prisma.AdminWhereInput | null
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -408,6 +420,22 @@ export type AdminUpdateOneRequiredWithoutRefreshTokensNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUpdateToOneWithWhereWithoutRefreshTokensInput, Prisma.AdminUpdateWithoutRefreshTokensInput>, Prisma.AdminUncheckedUpdateWithoutRefreshTokensInput>
 }
 
+export type AdminCreateNestedOneWithoutContractAuditEventsInput = {
+  create?: Prisma.XOR<Prisma.AdminCreateWithoutContractAuditEventsInput, Prisma.AdminUncheckedCreateWithoutContractAuditEventsInput>
+  connectOrCreate?: Prisma.AdminCreateOrConnectWithoutContractAuditEventsInput
+  connect?: Prisma.AdminWhereUniqueInput
+}
+
+export type AdminUpdateOneWithoutContractAuditEventsNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminCreateWithoutContractAuditEventsInput, Prisma.AdminUncheckedCreateWithoutContractAuditEventsInput>
+  connectOrCreate?: Prisma.AdminCreateOrConnectWithoutContractAuditEventsInput
+  upsert?: Prisma.AdminUpsertWithoutContractAuditEventsInput
+  disconnect?: Prisma.AdminWhereInput | boolean
+  delete?: Prisma.AdminWhereInput | boolean
+  connect?: Prisma.AdminWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUpdateToOneWithWhereWithoutContractAuditEventsInput, Prisma.AdminUpdateWithoutContractAuditEventsInput>, Prisma.AdminUncheckedUpdateWithoutContractAuditEventsInput>
+}
+
 export type AdminCreateWithoutContractsInput = {
   id?: string
   email: string
@@ -417,6 +445,7 @@ export type AdminCreateWithoutContractsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutAdminInput
+  contractAuditEvents?: Prisma.ContractAuditEventCreateNestedManyWithoutAdminInput
 }
 
 export type AdminUncheckedCreateWithoutContractsInput = {
@@ -428,6 +457,7 @@ export type AdminUncheckedCreateWithoutContractsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutAdminInput
+  contractAuditEvents?: Prisma.ContractAuditEventUncheckedCreateNestedManyWithoutAdminInput
 }
 
 export type AdminCreateOrConnectWithoutContractsInput = {
@@ -455,6 +485,7 @@ export type AdminUpdateWithoutContractsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutAdminNestedInput
+  contractAuditEvents?: Prisma.ContractAuditEventUpdateManyWithoutAdminNestedInput
 }
 
 export type AdminUncheckedUpdateWithoutContractsInput = {
@@ -466,6 +497,7 @@ export type AdminUncheckedUpdateWithoutContractsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutAdminNestedInput
+  contractAuditEvents?: Prisma.ContractAuditEventUncheckedUpdateManyWithoutAdminNestedInput
 }
 
 export type AdminCreateWithoutRefreshTokensInput = {
@@ -477,6 +509,7 @@ export type AdminCreateWithoutRefreshTokensInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   contracts?: Prisma.ContractCreateNestedManyWithoutAdminInput
+  contractAuditEvents?: Prisma.ContractAuditEventCreateNestedManyWithoutAdminInput
 }
 
 export type AdminUncheckedCreateWithoutRefreshTokensInput = {
@@ -488,6 +521,7 @@ export type AdminUncheckedCreateWithoutRefreshTokensInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutAdminInput
+  contractAuditEvents?: Prisma.ContractAuditEventUncheckedCreateNestedManyWithoutAdminInput
 }
 
 export type AdminCreateOrConnectWithoutRefreshTokensInput = {
@@ -515,6 +549,7 @@ export type AdminUpdateWithoutRefreshTokensInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contracts?: Prisma.ContractUpdateManyWithoutAdminNestedInput
+  contractAuditEvents?: Prisma.ContractAuditEventUpdateManyWithoutAdminNestedInput
 }
 
 export type AdminUncheckedUpdateWithoutRefreshTokensInput = {
@@ -526,6 +561,71 @@ export type AdminUncheckedUpdateWithoutRefreshTokensInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutAdminNestedInput
+  contractAuditEvents?: Prisma.ContractAuditEventUncheckedUpdateManyWithoutAdminNestedInput
+}
+
+export type AdminCreateWithoutContractAuditEventsInput = {
+  id?: string
+  email: string
+  name: string
+  password: string
+  role?: $Enums.AdminRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contracts?: Prisma.ContractCreateNestedManyWithoutAdminInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutAdminInput
+}
+
+export type AdminUncheckedCreateWithoutContractAuditEventsInput = {
+  id?: string
+  email: string
+  name: string
+  password: string
+  role?: $Enums.AdminRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutAdminInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutAdminInput
+}
+
+export type AdminCreateOrConnectWithoutContractAuditEventsInput = {
+  where: Prisma.AdminWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminCreateWithoutContractAuditEventsInput, Prisma.AdminUncheckedCreateWithoutContractAuditEventsInput>
+}
+
+export type AdminUpsertWithoutContractAuditEventsInput = {
+  update: Prisma.XOR<Prisma.AdminUpdateWithoutContractAuditEventsInput, Prisma.AdminUncheckedUpdateWithoutContractAuditEventsInput>
+  create: Prisma.XOR<Prisma.AdminCreateWithoutContractAuditEventsInput, Prisma.AdminUncheckedCreateWithoutContractAuditEventsInput>
+  where?: Prisma.AdminWhereInput
+}
+
+export type AdminUpdateToOneWithWhereWithoutContractAuditEventsInput = {
+  where?: Prisma.AdminWhereInput
+  data: Prisma.XOR<Prisma.AdminUpdateWithoutContractAuditEventsInput, Prisma.AdminUncheckedUpdateWithoutContractAuditEventsInput>
+}
+
+export type AdminUpdateWithoutContractAuditEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contracts?: Prisma.ContractUpdateManyWithoutAdminNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutAdminNestedInput
+}
+
+export type AdminUncheckedUpdateWithoutContractAuditEventsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contracts?: Prisma.ContractUncheckedUpdateManyWithoutAdminNestedInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutAdminNestedInput
 }
 
 
@@ -536,11 +636,13 @@ export type AdminUncheckedUpdateWithoutRefreshTokensInput = {
 export type AdminCountOutputType = {
   contracts: number
   refreshTokens: number
+  contractAuditEvents: number
 }
 
 export type AdminCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contracts?: boolean | AdminCountOutputTypeCountContractsArgs
   refreshTokens?: boolean | AdminCountOutputTypeCountRefreshTokensArgs
+  contractAuditEvents?: boolean | AdminCountOutputTypeCountContractAuditEventsArgs
 }
 
 /**
@@ -567,6 +669,13 @@ export type AdminCountOutputTypeCountRefreshTokensArgs<ExtArgs extends runtime.T
   where?: Prisma.RefreshTokenWhereInput
 }
 
+/**
+ * AdminCountOutputType without action
+ */
+export type AdminCountOutputTypeCountContractAuditEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ContractAuditEventWhereInput
+}
+
 
 export type AdminSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -578,6 +687,7 @@ export type AdminSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   updatedAt?: boolean
   contracts?: boolean | Prisma.Admin$contractsArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.Admin$refreshTokensArgs<ExtArgs>
+  contractAuditEvents?: boolean | Prisma.Admin$contractAuditEventsArgs<ExtArgs>
   _count?: boolean | Prisma.AdminCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["admin"]>
 
@@ -615,6 +725,7 @@ export type AdminOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
 export type AdminInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contracts?: boolean | Prisma.Admin$contractsArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.Admin$refreshTokensArgs<ExtArgs>
+  contractAuditEvents?: boolean | Prisma.Admin$contractAuditEventsArgs<ExtArgs>
   _count?: boolean | Prisma.AdminCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AdminIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -625,6 +736,7 @@ export type $AdminPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   objects: {
     contracts: Prisma.$ContractPayload<ExtArgs>[]
     refreshTokens: Prisma.$RefreshTokenPayload<ExtArgs>[]
+    contractAuditEvents: Prisma.$ContractAuditEventPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1030,6 +1142,7 @@ export interface Prisma__AdminClient<T, Null = never, ExtArgs extends runtime.Ty
   readonly [Symbol.toStringTag]: "PrismaPromise"
   contracts<T extends Prisma.Admin$contractsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Admin$contractsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   refreshTokens<T extends Prisma.Admin$refreshTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Admin$refreshTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RefreshTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  contractAuditEvents<T extends Prisma.Admin$contractAuditEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Admin$contractAuditEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractAuditEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1499,6 +1612,30 @@ export type Admin$refreshTokensArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.RefreshTokenScalarFieldEnum | Prisma.RefreshTokenScalarFieldEnum[]
+}
+
+/**
+ * Admin.contractAuditEvents
+ */
+export type Admin$contractAuditEventsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ContractAuditEvent
+   */
+  select?: Prisma.ContractAuditEventSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ContractAuditEvent
+   */
+  omit?: Prisma.ContractAuditEventOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContractAuditEventInclude<ExtArgs> | null
+  where?: Prisma.ContractAuditEventWhereInput
+  orderBy?: Prisma.ContractAuditEventOrderByWithRelationInput | Prisma.ContractAuditEventOrderByWithRelationInput[]
+  cursor?: Prisma.ContractAuditEventWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ContractAuditEventScalarFieldEnum | Prisma.ContractAuditEventScalarFieldEnum[]
 }
 
 /**

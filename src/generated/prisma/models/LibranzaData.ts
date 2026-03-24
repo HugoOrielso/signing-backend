@@ -355,6 +355,7 @@ export type LibranzaDataWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"LibranzaData"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LibranzaData"> | Date | string
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
+  references?: Prisma.ReferenceListRelationFilter
 }
 
 export type LibranzaDataOrderByWithRelationInput = {
@@ -386,6 +387,7 @@ export type LibranzaDataOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   contract?: Prisma.ContractOrderByWithRelationInput
+  references?: Prisma.ReferenceOrderByRelationAggregateInput
 }
 
 export type LibranzaDataWhereUniqueInput = Prisma.AtLeast<{
@@ -420,6 +422,7 @@ export type LibranzaDataWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"LibranzaData"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LibranzaData"> | Date | string
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
+  references?: Prisma.ReferenceListRelationFilter
 }, "id" | "contractId">
 
 export type LibranzaDataOrderByWithAggregationInput = {
@@ -516,6 +519,7 @@ export type LibranzaDataCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   contract: Prisma.ContractCreateNestedOneWithoutLibranzaDataInput
+  references?: Prisma.ReferenceCreateNestedManyWithoutLibranzaInput
 }
 
 export type LibranzaDataUncheckedCreateInput = {
@@ -546,6 +550,7 @@ export type LibranzaDataUncheckedCreateInput = {
   formaPago?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  references?: Prisma.ReferenceUncheckedCreateNestedManyWithoutLibranzaInput
 }
 
 export type LibranzaDataUpdateInput = {
@@ -576,6 +581,7 @@ export type LibranzaDataUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contract?: Prisma.ContractUpdateOneRequiredWithoutLibranzaDataNestedInput
+  references?: Prisma.ReferenceUpdateManyWithoutLibranzaNestedInput
 }
 
 export type LibranzaDataUncheckedUpdateInput = {
@@ -606,6 +612,7 @@ export type LibranzaDataUncheckedUpdateInput = {
   formaPago?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  references?: Prisma.ReferenceUncheckedUpdateManyWithoutLibranzaNestedInput
 }
 
 export type LibranzaDataCreateManyInput = {
@@ -790,6 +797,11 @@ export type LibranzaDataMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type LibranzaDataScalarRelationFilter = {
+  is?: Prisma.LibranzaDataWhereInput
+  isNot?: Prisma.LibranzaDataWhereInput
+}
+
 export type LibranzaDataCreateNestedOneWithoutContractInput = {
   create?: Prisma.XOR<Prisma.LibranzaDataCreateWithoutContractInput, Prisma.LibranzaDataUncheckedCreateWithoutContractInput>
   connectOrCreate?: Prisma.LibranzaDataCreateOrConnectWithoutContractInput
@@ -822,6 +834,20 @@ export type LibranzaDataUncheckedUpdateOneWithoutContractNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.LibranzaDataUpdateToOneWithWhereWithoutContractInput, Prisma.LibranzaDataUpdateWithoutContractInput>, Prisma.LibranzaDataUncheckedUpdateWithoutContractInput>
 }
 
+export type LibranzaDataCreateNestedOneWithoutReferencesInput = {
+  create?: Prisma.XOR<Prisma.LibranzaDataCreateWithoutReferencesInput, Prisma.LibranzaDataUncheckedCreateWithoutReferencesInput>
+  connectOrCreate?: Prisma.LibranzaDataCreateOrConnectWithoutReferencesInput
+  connect?: Prisma.LibranzaDataWhereUniqueInput
+}
+
+export type LibranzaDataUpdateOneRequiredWithoutReferencesNestedInput = {
+  create?: Prisma.XOR<Prisma.LibranzaDataCreateWithoutReferencesInput, Prisma.LibranzaDataUncheckedCreateWithoutReferencesInput>
+  connectOrCreate?: Prisma.LibranzaDataCreateOrConnectWithoutReferencesInput
+  upsert?: Prisma.LibranzaDataUpsertWithoutReferencesInput
+  connect?: Prisma.LibranzaDataWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LibranzaDataUpdateToOneWithWhereWithoutReferencesInput, Prisma.LibranzaDataUpdateWithoutReferencesInput>, Prisma.LibranzaDataUncheckedUpdateWithoutReferencesInput>
+}
+
 export type LibranzaDataCreateWithoutContractInput = {
   id?: string
   ciudad?: string | null
@@ -849,6 +875,7 @@ export type LibranzaDataCreateWithoutContractInput = {
   formaPago?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  references?: Prisma.ReferenceCreateNestedManyWithoutLibranzaInput
 }
 
 export type LibranzaDataUncheckedCreateWithoutContractInput = {
@@ -878,6 +905,7 @@ export type LibranzaDataUncheckedCreateWithoutContractInput = {
   formaPago?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  references?: Prisma.ReferenceUncheckedCreateNestedManyWithoutLibranzaInput
 }
 
 export type LibranzaDataCreateOrConnectWithoutContractInput = {
@@ -923,6 +951,7 @@ export type LibranzaDataUpdateWithoutContractInput = {
   formaPago?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  references?: Prisma.ReferenceUpdateManyWithoutLibranzaNestedInput
 }
 
 export type LibranzaDataUncheckedUpdateWithoutContractInput = {
@@ -952,8 +981,174 @@ export type LibranzaDataUncheckedUpdateWithoutContractInput = {
   formaPago?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  references?: Prisma.ReferenceUncheckedUpdateManyWithoutLibranzaNestedInput
 }
 
+export type LibranzaDataCreateWithoutReferencesInput = {
+  id?: string
+  ciudad?: string | null
+  asesor?: string | null
+  fecha?: string | null
+  clienteNombre?: string | null
+  clienteCC?: string | null
+  clienteCCDe?: string | null
+  clienteDireccion?: string | null
+  clienteTelefono?: string | null
+  clienteEmail?: string | null
+  clienteFuncionario?: string | null
+  clienteDesdeHace?: string | null
+  municipioTrabajo?: string | null
+  empresaTrabajo?: string | null
+  departamento?: string | null
+  sumaTotal?: string | null
+  numeroCuotas?: string | null
+  valorCuota?: string | null
+  mesCobro?: string | null
+  tipoCuenta?: string | null
+  numeroCuenta?: string | null
+  banco?: string | null
+  productos?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  formaPago?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contract: Prisma.ContractCreateNestedOneWithoutLibranzaDataInput
+}
+
+export type LibranzaDataUncheckedCreateWithoutReferencesInput = {
+  id?: string
+  contractId: string
+  ciudad?: string | null
+  asesor?: string | null
+  fecha?: string | null
+  clienteNombre?: string | null
+  clienteCC?: string | null
+  clienteCCDe?: string | null
+  clienteDireccion?: string | null
+  clienteTelefono?: string | null
+  clienteEmail?: string | null
+  clienteFuncionario?: string | null
+  clienteDesdeHace?: string | null
+  municipioTrabajo?: string | null
+  empresaTrabajo?: string | null
+  departamento?: string | null
+  sumaTotal?: string | null
+  numeroCuotas?: string | null
+  valorCuota?: string | null
+  mesCobro?: string | null
+  tipoCuenta?: string | null
+  numeroCuenta?: string | null
+  banco?: string | null
+  productos?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  formaPago?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type LibranzaDataCreateOrConnectWithoutReferencesInput = {
+  where: Prisma.LibranzaDataWhereUniqueInput
+  create: Prisma.XOR<Prisma.LibranzaDataCreateWithoutReferencesInput, Prisma.LibranzaDataUncheckedCreateWithoutReferencesInput>
+}
+
+export type LibranzaDataUpsertWithoutReferencesInput = {
+  update: Prisma.XOR<Prisma.LibranzaDataUpdateWithoutReferencesInput, Prisma.LibranzaDataUncheckedUpdateWithoutReferencesInput>
+  create: Prisma.XOR<Prisma.LibranzaDataCreateWithoutReferencesInput, Prisma.LibranzaDataUncheckedCreateWithoutReferencesInput>
+  where?: Prisma.LibranzaDataWhereInput
+}
+
+export type LibranzaDataUpdateToOneWithWhereWithoutReferencesInput = {
+  where?: Prisma.LibranzaDataWhereInput
+  data: Prisma.XOR<Prisma.LibranzaDataUpdateWithoutReferencesInput, Prisma.LibranzaDataUncheckedUpdateWithoutReferencesInput>
+}
+
+export type LibranzaDataUpdateWithoutReferencesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  ciudad?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  asesor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fecha?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteNombre?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteCC?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteCCDe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteDireccion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteTelefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteFuncionario?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteDesdeHace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  municipioTrabajo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  empresaTrabajo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departamento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sumaTotal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numeroCuotas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  valorCuota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mesCobro?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tipoCuenta?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numeroCuenta?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banco?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productos?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  formaPago?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contract?: Prisma.ContractUpdateOneRequiredWithoutLibranzaDataNestedInput
+}
+
+export type LibranzaDataUncheckedUpdateWithoutReferencesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  ciudad?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  asesor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fecha?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteNombre?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteCC?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteCCDe?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteDireccion?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteTelefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteFuncionario?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteDesdeHace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  municipioTrabajo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  empresaTrabajo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  departamento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sumaTotal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numeroCuotas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  valorCuota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mesCobro?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tipoCuenta?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  numeroCuenta?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  banco?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productos?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  formaPago?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+
+/**
+ * Count Type LibranzaDataCountOutputType
+ */
+
+export type LibranzaDataCountOutputType = {
+  references: number
+}
+
+export type LibranzaDataCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  references?: boolean | LibranzaDataCountOutputTypeCountReferencesArgs
+}
+
+/**
+ * LibranzaDataCountOutputType without action
+ */
+export type LibranzaDataCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LibranzaDataCountOutputType
+   */
+  select?: Prisma.LibranzaDataCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * LibranzaDataCountOutputType without action
+ */
+export type LibranzaDataCountOutputTypeCountReferencesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ReferenceWhereInput
+}
 
 
 export type LibranzaDataSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -985,6 +1180,8 @@ export type LibranzaDataSelect<ExtArgs extends runtime.Types.Extensions.Internal
   createdAt?: boolean
   updatedAt?: boolean
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+  references?: boolean | Prisma.LibranzaData$referencesArgs<ExtArgs>
+  _count?: boolean | Prisma.LibranzaDataCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["libranzaData"]>
 
 export type LibranzaDataSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1082,6 +1279,8 @@ export type LibranzaDataSelectScalar = {
 export type LibranzaDataOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contractId" | "ciudad" | "asesor" | "fecha" | "clienteNombre" | "clienteCC" | "clienteCCDe" | "clienteDireccion" | "clienteTelefono" | "clienteEmail" | "clienteFuncionario" | "clienteDesdeHace" | "municipioTrabajo" | "empresaTrabajo" | "departamento" | "sumaTotal" | "numeroCuotas" | "valorCuota" | "mesCobro" | "tipoCuenta" | "numeroCuenta" | "banco" | "productos" | "formaPago" | "createdAt" | "updatedAt", ExtArgs["result"]["libranzaData"]>
 export type LibranzaDataInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+  references?: boolean | Prisma.LibranzaData$referencesArgs<ExtArgs>
+  _count?: boolean | Prisma.LibranzaDataCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type LibranzaDataIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
@@ -1094,6 +1293,7 @@ export type $LibranzaDataPayload<ExtArgs extends runtime.Types.Extensions.Intern
   name: "LibranzaData"
   objects: {
     contract: Prisma.$ContractPayload<ExtArgs>
+    references: Prisma.$ReferencePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1518,6 +1718,7 @@ readonly fields: LibranzaDataFieldRefs;
 export interface Prisma__LibranzaDataClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   contract<T extends Prisma.ContractDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractDefaultArgs<ExtArgs>>): Prisma.Prisma__ContractClient<runtime.Types.Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  references<T extends Prisma.LibranzaData$referencesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LibranzaData$referencesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReferencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1967,6 +2168,30 @@ export type LibranzaDataDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Limit how many LibranzaData to delete.
    */
   limit?: number
+}
+
+/**
+ * LibranzaData.references
+ */
+export type LibranzaData$referencesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Reference
+   */
+  select?: Prisma.ReferenceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Reference
+   */
+  omit?: Prisma.ReferenceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReferenceInclude<ExtArgs> | null
+  where?: Prisma.ReferenceWhereInput
+  orderBy?: Prisma.ReferenceOrderByWithRelationInput | Prisma.ReferenceOrderByWithRelationInput[]
+  cursor?: Prisma.ReferenceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReferenceScalarFieldEnum | Prisma.ReferenceScalarFieldEnum[]
 }
 
 /**

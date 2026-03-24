@@ -393,7 +393,9 @@ export const ModelName = {
   SignatureField: 'SignatureField',
   Signature: 'Signature',
   RefreshToken: 'RefreshToken',
-  ContractDocument: 'ContractDocument'
+  ContractDocument: 'ContractDocument',
+  ContractAuditEvent: 'ContractAuditEvent',
+  Reference: 'Reference'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -409,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "contract" | "libranzaData" | "contractParty" | "contractClause" | "contractSigner" | "signatureField" | "signature" | "refreshToken" | "contractDocument"
+    modelProps: "admin" | "contract" | "libranzaData" | "contractParty" | "contractClause" | "contractSigner" | "signatureField" | "signature" | "refreshToken" | "contractDocument" | "contractAuditEvent" | "reference"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1153,6 +1155,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ContractAuditEvent: {
+      payload: Prisma.$ContractAuditEventPayload<ExtArgs>
+      fields: Prisma.ContractAuditEventFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ContractAuditEventFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractAuditEventPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ContractAuditEventFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractAuditEventPayload>
+        }
+        findFirst: {
+          args: Prisma.ContractAuditEventFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractAuditEventPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ContractAuditEventFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractAuditEventPayload>
+        }
+        findMany: {
+          args: Prisma.ContractAuditEventFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractAuditEventPayload>[]
+        }
+        create: {
+          args: Prisma.ContractAuditEventCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractAuditEventPayload>
+        }
+        createMany: {
+          args: Prisma.ContractAuditEventCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ContractAuditEventCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractAuditEventPayload>[]
+        }
+        delete: {
+          args: Prisma.ContractAuditEventDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractAuditEventPayload>
+        }
+        update: {
+          args: Prisma.ContractAuditEventUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractAuditEventPayload>
+        }
+        deleteMany: {
+          args: Prisma.ContractAuditEventDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ContractAuditEventUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ContractAuditEventUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractAuditEventPayload>[]
+        }
+        upsert: {
+          args: Prisma.ContractAuditEventUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContractAuditEventPayload>
+        }
+        aggregate: {
+          args: Prisma.ContractAuditEventAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateContractAuditEvent>
+        }
+        groupBy: {
+          args: Prisma.ContractAuditEventGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContractAuditEventGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ContractAuditEventCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContractAuditEventCountAggregateOutputType> | number
+        }
+      }
+    }
+    Reference: {
+      payload: Prisma.$ReferencePayload<ExtArgs>
+      fields: Prisma.ReferenceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ReferenceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReferencePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ReferenceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReferencePayload>
+        }
+        findFirst: {
+          args: Prisma.ReferenceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReferencePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ReferenceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReferencePayload>
+        }
+        findMany: {
+          args: Prisma.ReferenceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReferencePayload>[]
+        }
+        create: {
+          args: Prisma.ReferenceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReferencePayload>
+        }
+        createMany: {
+          args: Prisma.ReferenceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ReferenceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReferencePayload>[]
+        }
+        delete: {
+          args: Prisma.ReferenceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReferencePayload>
+        }
+        update: {
+          args: Prisma.ReferenceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReferencePayload>
+        }
+        deleteMany: {
+          args: Prisma.ReferenceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ReferenceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ReferenceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReferencePayload>[]
+        }
+        upsert: {
+          args: Prisma.ReferenceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReferencePayload>
+        }
+        aggregate: {
+          args: Prisma.ReferenceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateReference>
+        }
+        groupBy: {
+          args: Prisma.ReferenceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ReferenceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ReferenceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ReferenceCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1369,6 +1519,45 @@ export const ContractDocumentScalarFieldEnum = {
 export type ContractDocumentScalarFieldEnum = (typeof ContractDocumentScalarFieldEnum)[keyof typeof ContractDocumentScalarFieldEnum]
 
 
+export const ContractAuditEventScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  signerId: 'signerId',
+  adminId: 'adminId',
+  eventType: 'eventType',
+  actorType: 'actorType',
+  actorRole: 'actorRole',
+  actorName: 'actorName',
+  actorEmail: 'actorEmail',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  sessionId: 'sessionId',
+  requestId: 'requestId',
+  documentHash: 'documentHash',
+  previousEventHash: 'previousEventHash',
+  eventHash: 'eventHash',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+} as const
+
+export type ContractAuditEventScalarFieldEnum = (typeof ContractAuditEventScalarFieldEnum)[keyof typeof ContractAuditEventScalarFieldEnum]
+
+
+export const ReferenceScalarFieldEnum = {
+  id: 'id',
+  libranzaId: 'libranzaId',
+  type: 'type',
+  name: 'name',
+  phone: 'phone',
+  email: 'email',
+  company: 'company',
+  position: 'position',
+  createdAt: 'createdAt'
+} as const
+
+export type ReferenceScalarFieldEnum = (typeof ReferenceScalarFieldEnum)[keyof typeof ReferenceScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1576,6 +1765,48 @@ export type EnumDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
 export type ListEnumDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentType[]'>
     
 
+
+/**
+ * Reference to a field of type 'AuditEventType'
+ */
+export type EnumAuditEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuditEventType'>
+    
+
+
+/**
+ * Reference to a field of type 'AuditEventType[]'
+ */
+export type ListEnumAuditEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuditEventType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'AuditActorType'
+ */
+export type EnumAuditActorTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuditActorType'>
+    
+
+
+/**
+ * Reference to a field of type 'AuditActorType[]'
+ */
+export type ListEnumAuditActorTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuditActorType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ReferenceType'
+ */
+export type EnumReferenceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReferenceType'>
+    
+
+
+/**
+ * Reference to a field of type 'ReferenceType[]'
+ */
+export type ListEnumReferenceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReferenceType[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -1681,6 +1912,8 @@ export type GlobalOmitConfig = {
   signature?: Prisma.SignatureOmit
   refreshToken?: Prisma.RefreshTokenOmit
   contractDocument?: Prisma.ContractDocumentOmit
+  contractAuditEvent?: Prisma.ContractAuditEventOmit
+  reference?: Prisma.ReferenceOmit
 }
 
 /* Types for Logging */

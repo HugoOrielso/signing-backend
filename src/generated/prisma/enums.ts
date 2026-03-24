@@ -56,3 +56,42 @@ export const DocumentType = {
 } as const
 
 export type DocumentType = (typeof DocumentType)[keyof typeof DocumentType]
+
+
+export const AuditEventType = {
+  CONTRACT_CREATED: 'CONTRACT_CREATED',
+  CONTRACT_UPDATED: 'CONTRACT_UPDATED',
+  CONTRACT_SENT: 'CONTRACT_SENT',
+  LINK_OPENED: 'LINK_OPENED',
+  OTP_SENT: 'OTP_SENT',
+  OTP_VERIFIED: 'OTP_VERIFIED',
+  SIGNATURE_STARTED: 'SIGNATURE_STARTED',
+  SIGNATURE_COMPLETED: 'SIGNATURE_COMPLETED',
+  DOCUMENT_UPLOADED: 'DOCUMENT_UPLOADED',
+  ID_FRONT_UPLOADED: 'ID_FRONT_UPLOADED',
+  ID_BACK_UPLOADED: 'ID_BACK_UPLOADED',
+  SELFIE_UPLOADED: 'SELFIE_UPLOADED',
+  CONTRACT_SIGNED: 'CONTRACT_SIGNED',
+  CONTRACT_CANCELLED: 'CONTRACT_CANCELLED',
+  CONTRACT_EXPIRED: 'CONTRACT_EXPIRED',
+  HASH_SEALED: 'HASH_SEALED'
+} as const
+
+export type AuditEventType = (typeof AuditEventType)[keyof typeof AuditEventType]
+
+
+export const AuditActorType = {
+  ADMIN: 'ADMIN',
+  SIGNER: 'SIGNER',
+  SYSTEM: 'SYSTEM'
+} as const
+
+export type AuditActorType = (typeof AuditActorType)[keyof typeof AuditActorType]
+
+
+export const ReferenceType = {
+  PERSONAL: 'PERSONAL',
+  LABORAL: 'LABORAL'
+} as const
+
+export type ReferenceType = (typeof ReferenceType)[keyof typeof ReferenceType]
