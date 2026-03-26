@@ -20,7 +20,7 @@ const contractsRouter = Router();
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Solo ADMIN puede listar todos los contratos
-contractsRouter.get("/", requireAuth, requireRole("ADMIN"), listContracts);
+contractsRouter.get("/", requireAuth, requireRole("ADMIN", "OPERATOR"), listContracts);
 
 // ADMIN y OPERATOR pueden crear y enviar contratos
 contractsRouter.post("/", requireAuth, requireRole("ADMIN", "OPERATOR"), createContract);

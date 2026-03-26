@@ -33,6 +33,7 @@ export type ReferenceMinAggregateOutputType = {
   email: string | null
   company: string | null
   position: string | null
+  relationShip: string | null
   createdAt: Date | null
 }
 
@@ -45,6 +46,7 @@ export type ReferenceMaxAggregateOutputType = {
   email: string | null
   company: string | null
   position: string | null
+  relationShip: string | null
   createdAt: Date | null
 }
 
@@ -57,6 +59,7 @@ export type ReferenceCountAggregateOutputType = {
   email: number
   company: number
   position: number
+  relationShip: number
   createdAt: number
   _all: number
 }
@@ -71,6 +74,7 @@ export type ReferenceMinAggregateInputType = {
   email?: true
   company?: true
   position?: true
+  relationShip?: true
   createdAt?: true
 }
 
@@ -83,6 +87,7 @@ export type ReferenceMaxAggregateInputType = {
   email?: true
   company?: true
   position?: true
+  relationShip?: true
   createdAt?: true
 }
 
@@ -95,6 +100,7 @@ export type ReferenceCountAggregateInputType = {
   email?: true
   company?: true
   position?: true
+  relationShip?: true
   createdAt?: true
   _all?: true
 }
@@ -180,6 +186,7 @@ export type ReferenceGroupByOutputType = {
   email: string | null
   company: string | null
   position: string | null
+  relationShip: string | null
   createdAt: Date
   _count: ReferenceCountAggregateOutputType | null
   _min: ReferenceMinAggregateOutputType | null
@@ -213,6 +220,7 @@ export type ReferenceWhereInput = {
   email?: Prisma.StringNullableFilter<"Reference"> | string | null
   company?: Prisma.StringNullableFilter<"Reference"> | string | null
   position?: Prisma.StringNullableFilter<"Reference"> | string | null
+  relationShip?: Prisma.StringNullableFilter<"Reference"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Reference"> | Date | string
   libranza?: Prisma.XOR<Prisma.LibranzaDataScalarRelationFilter, Prisma.LibranzaDataWhereInput>
 }
@@ -226,6 +234,7 @@ export type ReferenceOrderByWithRelationInput = {
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   company?: Prisma.SortOrderInput | Prisma.SortOrder
   position?: Prisma.SortOrderInput | Prisma.SortOrder
+  relationShip?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   libranza?: Prisma.LibranzaDataOrderByWithRelationInput
 }
@@ -242,6 +251,7 @@ export type ReferenceWhereUniqueInput = Prisma.AtLeast<{
   email?: Prisma.StringNullableFilter<"Reference"> | string | null
   company?: Prisma.StringNullableFilter<"Reference"> | string | null
   position?: Prisma.StringNullableFilter<"Reference"> | string | null
+  relationShip?: Prisma.StringNullableFilter<"Reference"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Reference"> | Date | string
   libranza?: Prisma.XOR<Prisma.LibranzaDataScalarRelationFilter, Prisma.LibranzaDataWhereInput>
 }, "id">
@@ -255,6 +265,7 @@ export type ReferenceOrderByWithAggregationInput = {
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   company?: Prisma.SortOrderInput | Prisma.SortOrder
   position?: Prisma.SortOrderInput | Prisma.SortOrder
+  relationShip?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.ReferenceCountOrderByAggregateInput
   _max?: Prisma.ReferenceMaxOrderByAggregateInput
@@ -273,6 +284,7 @@ export type ReferenceScalarWhereWithAggregatesInput = {
   email?: Prisma.StringNullableWithAggregatesFilter<"Reference"> | string | null
   company?: Prisma.StringNullableWithAggregatesFilter<"Reference"> | string | null
   position?: Prisma.StringNullableWithAggregatesFilter<"Reference"> | string | null
+  relationShip?: Prisma.StringNullableWithAggregatesFilter<"Reference"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Reference"> | Date | string
 }
 
@@ -284,6 +296,7 @@ export type ReferenceCreateInput = {
   email?: string | null
   company?: string | null
   position?: string | null
+  relationShip?: string | null
   createdAt?: Date | string
   libranza: Prisma.LibranzaDataCreateNestedOneWithoutReferencesInput
 }
@@ -297,6 +310,7 @@ export type ReferenceUncheckedCreateInput = {
   email?: string | null
   company?: string | null
   position?: string | null
+  relationShip?: string | null
   createdAt?: Date | string
 }
 
@@ -308,6 +322,7 @@ export type ReferenceUpdateInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  relationShip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   libranza?: Prisma.LibranzaDataUpdateOneRequiredWithoutReferencesNestedInput
 }
@@ -321,6 +336,7 @@ export type ReferenceUncheckedUpdateInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  relationShip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -333,6 +349,7 @@ export type ReferenceCreateManyInput = {
   email?: string | null
   company?: string | null
   position?: string | null
+  relationShip?: string | null
   createdAt?: Date | string
 }
 
@@ -344,6 +361,7 @@ export type ReferenceUpdateManyMutationInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  relationShip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -356,6 +374,7 @@ export type ReferenceUncheckedUpdateManyInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  relationShip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -378,6 +397,7 @@ export type ReferenceCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   company?: Prisma.SortOrder
   position?: Prisma.SortOrder
+  relationShip?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -390,6 +410,7 @@ export type ReferenceMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   company?: Prisma.SortOrder
   position?: Prisma.SortOrder
+  relationShip?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -402,6 +423,7 @@ export type ReferenceMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   company?: Prisma.SortOrder
   position?: Prisma.SortOrder
+  relationShip?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -459,6 +481,7 @@ export type ReferenceCreateWithoutLibranzaInput = {
   email?: string | null
   company?: string | null
   position?: string | null
+  relationShip?: string | null
   createdAt?: Date | string
 }
 
@@ -470,6 +493,7 @@ export type ReferenceUncheckedCreateWithoutLibranzaInput = {
   email?: string | null
   company?: string | null
   position?: string | null
+  relationShip?: string | null
   createdAt?: Date | string
 }
 
@@ -511,6 +535,7 @@ export type ReferenceScalarWhereInput = {
   email?: Prisma.StringNullableFilter<"Reference"> | string | null
   company?: Prisma.StringNullableFilter<"Reference"> | string | null
   position?: Prisma.StringNullableFilter<"Reference"> | string | null
+  relationShip?: Prisma.StringNullableFilter<"Reference"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Reference"> | Date | string
 }
 
@@ -522,6 +547,7 @@ export type ReferenceCreateManyLibranzaInput = {
   email?: string | null
   company?: string | null
   position?: string | null
+  relationShip?: string | null
   createdAt?: Date | string
 }
 
@@ -533,6 +559,7 @@ export type ReferenceUpdateWithoutLibranzaInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  relationShip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -544,6 +571,7 @@ export type ReferenceUncheckedUpdateWithoutLibranzaInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  relationShip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -555,6 +583,7 @@ export type ReferenceUncheckedUpdateManyWithoutLibranzaInput = {
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   position?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  relationShip?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -569,6 +598,7 @@ export type ReferenceSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   email?: boolean
   company?: boolean
   position?: boolean
+  relationShip?: boolean
   createdAt?: boolean
   libranza?: boolean | Prisma.LibranzaDataDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["reference"]>
@@ -582,6 +612,7 @@ export type ReferenceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   email?: boolean
   company?: boolean
   position?: boolean
+  relationShip?: boolean
   createdAt?: boolean
   libranza?: boolean | Prisma.LibranzaDataDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["reference"]>
@@ -595,6 +626,7 @@ export type ReferenceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   email?: boolean
   company?: boolean
   position?: boolean
+  relationShip?: boolean
   createdAt?: boolean
   libranza?: boolean | Prisma.LibranzaDataDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["reference"]>
@@ -608,10 +640,11 @@ export type ReferenceSelectScalar = {
   email?: boolean
   company?: boolean
   position?: boolean
+  relationShip?: boolean
   createdAt?: boolean
 }
 
-export type ReferenceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "libranzaId" | "type" | "name" | "phone" | "email" | "company" | "position" | "createdAt", ExtArgs["result"]["reference"]>
+export type ReferenceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "libranzaId" | "type" | "name" | "phone" | "email" | "company" | "position" | "relationShip" | "createdAt", ExtArgs["result"]["reference"]>
 export type ReferenceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   libranza?: boolean | Prisma.LibranzaDataDefaultArgs<ExtArgs>
 }
@@ -636,6 +669,7 @@ export type $ReferencePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     email: string | null
     company: string | null
     position: string | null
+    relationShip: string | null
     createdAt: Date
   }, ExtArgs["result"]["reference"]>
   composites: {}
@@ -1069,6 +1103,7 @@ export interface ReferenceFieldRefs {
   readonly email: Prisma.FieldRef<"Reference", 'String'>
   readonly company: Prisma.FieldRef<"Reference", 'String'>
   readonly position: Prisma.FieldRef<"Reference", 'String'>
+  readonly relationShip: Prisma.FieldRef<"Reference", 'String'>
   readonly createdAt: Prisma.FieldRef<"Reference", 'DateTime'>
 }
     

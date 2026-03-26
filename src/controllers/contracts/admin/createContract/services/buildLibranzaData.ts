@@ -1,6 +1,7 @@
 import type { PartyInput } from "./buildParties";
 
 export function buildLibranzaData(body: any, contractedParty?: PartyInput | undefined) {
+
   return {
     ciudad: body.ciudad ?? null,
     asesor: body.asesor ?? null,
@@ -41,6 +42,7 @@ export function buildLibranzaData(body: any, contractedParty?: PartyInput | unde
               email: ref?.email ?? null,
               company: ref?.company ?? null,
               position: ref?.position ?? null,
+              relationShip: ref?.relationShip ?? null
             }))
         : [],
     },

@@ -191,7 +191,6 @@ export async function sendLibranzaEmail({
     `,
   });
 
-  console.log("EMAIL SENT:", response);
   return response;
 }
 

@@ -40,6 +40,7 @@ export type ContractMinAggregateOutputType = {
   contractNumber: string | null
   contractType: string | null
   status: $Enums.ContractStatus | null
+  templateKey: string | null
   startDate: Date | null
   endDate: Date | null
   subject: string | null
@@ -61,6 +62,7 @@ export type ContractMaxAggregateOutputType = {
   contractNumber: string | null
   contractType: string | null
   status: $Enums.ContractStatus | null
+  templateKey: string | null
   startDate: Date | null
   endDate: Date | null
   subject: string | null
@@ -82,6 +84,7 @@ export type ContractCountAggregateOutputType = {
   contractNumber: number
   contractType: number
   status: number
+  templateKey: number
   startDate: number
   endDate: number
   subject: number
@@ -113,6 +116,7 @@ export type ContractMinAggregateInputType = {
   contractNumber?: true
   contractType?: true
   status?: true
+  templateKey?: true
   startDate?: true
   endDate?: true
   subject?: true
@@ -134,6 +138,7 @@ export type ContractMaxAggregateInputType = {
   contractNumber?: true
   contractType?: true
   status?: true
+  templateKey?: true
   startDate?: true
   endDate?: true
   subject?: true
@@ -155,6 +160,7 @@ export type ContractCountAggregateInputType = {
   contractNumber?: true
   contractType?: true
   status?: true
+  templateKey?: true
   startDate?: true
   endDate?: true
   subject?: true
@@ -263,6 +269,7 @@ export type ContractGroupByOutputType = {
   contractNumber: string | null
   contractType: string | null
   status: $Enums.ContractStatus
+  templateKey: string
   startDate: Date | null
   endDate: Date | null
   subject: string | null
@@ -307,6 +314,7 @@ export type ContractWhereInput = {
   contractNumber?: Prisma.StringNullableFilter<"Contract"> | string | null
   contractType?: Prisma.StringNullableFilter<"Contract"> | string | null
   status?: Prisma.EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
+  templateKey?: Prisma.StringFilter<"Contract"> | string
   startDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   endDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   subject?: Prisma.StringNullableFilter<"Contract"> | string | null
@@ -337,6 +345,7 @@ export type ContractOrderByWithRelationInput = {
   contractNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   contractType?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  templateKey?: Prisma.SortOrder
   startDate?: Prisma.SortOrderInput | Prisma.SortOrder
   endDate?: Prisma.SortOrderInput | Prisma.SortOrder
   subject?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -371,6 +380,7 @@ export type ContractWhereUniqueInput = Prisma.AtLeast<{
   title?: Prisma.StringFilter<"Contract"> | string
   contractType?: Prisma.StringNullableFilter<"Contract"> | string | null
   status?: Prisma.EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
+  templateKey?: Prisma.StringFilter<"Contract"> | string
   startDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   endDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   subject?: Prisma.StringNullableFilter<"Contract"> | string | null
@@ -400,6 +410,7 @@ export type ContractOrderByWithAggregationInput = {
   contractNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   contractType?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
+  templateKey?: Prisma.SortOrder
   startDate?: Prisma.SortOrderInput | Prisma.SortOrder
   endDate?: Prisma.SortOrderInput | Prisma.SortOrder
   subject?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -429,6 +440,7 @@ export type ContractScalarWhereWithAggregatesInput = {
   contractNumber?: Prisma.StringNullableWithAggregatesFilter<"Contract"> | string | null
   contractType?: Prisma.StringNullableWithAggregatesFilter<"Contract"> | string | null
   status?: Prisma.EnumContractStatusWithAggregatesFilter<"Contract"> | $Enums.ContractStatus
+  templateKey?: Prisma.StringWithAggregatesFilter<"Contract"> | string
   startDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Contract"> | Date | string | null
   endDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Contract"> | Date | string | null
   subject?: Prisma.StringNullableWithAggregatesFilter<"Contract"> | string | null
@@ -450,6 +462,7 @@ export type ContractCreateInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -479,6 +492,7 @@ export type ContractUncheckedCreateInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -508,6 +522,7 @@ export type ContractUpdateInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -537,6 +552,7 @@ export type ContractUncheckedUpdateInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -566,6 +582,7 @@ export type ContractCreateManyInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -587,6 +604,7 @@ export type ContractUpdateManyMutationInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -607,6 +625,7 @@ export type ContractUncheckedUpdateManyInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -638,6 +657,7 @@ export type ContractCountOrderByAggregateInput = {
   contractNumber?: Prisma.SortOrder
   contractType?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  templateKey?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   subject?: Prisma.SortOrder
@@ -663,6 +683,7 @@ export type ContractMaxOrderByAggregateInput = {
   contractNumber?: Prisma.SortOrder
   contractType?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  templateKey?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   subject?: Prisma.SortOrder
@@ -684,6 +705,7 @@ export type ContractMinOrderByAggregateInput = {
   contractNumber?: Prisma.SortOrder
   contractType?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  templateKey?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   subject?: Prisma.SortOrder
@@ -888,6 +910,7 @@ export type ContractCreateWithoutAdminInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -916,6 +939,7 @@ export type ContractUncheckedCreateWithoutAdminInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -973,6 +997,7 @@ export type ContractScalarWhereInput = {
   contractNumber?: Prisma.StringNullableFilter<"Contract"> | string | null
   contractType?: Prisma.StringNullableFilter<"Contract"> | string | null
   status?: Prisma.EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
+  templateKey?: Prisma.StringFilter<"Contract"> | string
   startDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   endDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   subject?: Prisma.StringNullableFilter<"Contract"> | string | null
@@ -994,6 +1019,7 @@ export type ContractCreateWithoutLibranzaDataInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -1022,6 +1048,7 @@ export type ContractUncheckedCreateWithoutLibranzaDataInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -1066,6 +1093,7 @@ export type ContractUpdateWithoutLibranzaDataInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1094,6 +1122,7 @@ export type ContractUncheckedUpdateWithoutLibranzaDataInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1122,6 +1151,7 @@ export type ContractCreateWithoutPartiesInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -1150,6 +1180,7 @@ export type ContractUncheckedCreateWithoutPartiesInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -1194,6 +1225,7 @@ export type ContractUpdateWithoutPartiesInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1222,6 +1254,7 @@ export type ContractUncheckedUpdateWithoutPartiesInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1250,6 +1283,7 @@ export type ContractCreateWithoutClausesInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -1278,6 +1312,7 @@ export type ContractUncheckedCreateWithoutClausesInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -1322,6 +1357,7 @@ export type ContractUpdateWithoutClausesInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1350,6 +1386,7 @@ export type ContractUncheckedUpdateWithoutClausesInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1378,6 +1415,7 @@ export type ContractCreateWithoutSignersInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -1406,6 +1444,7 @@ export type ContractUncheckedCreateWithoutSignersInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -1450,6 +1489,7 @@ export type ContractUpdateWithoutSignersInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1478,6 +1518,7 @@ export type ContractUncheckedUpdateWithoutSignersInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1506,6 +1547,7 @@ export type ContractCreateWithoutFieldsInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -1534,6 +1576,7 @@ export type ContractUncheckedCreateWithoutFieldsInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -1578,6 +1621,7 @@ export type ContractUpdateWithoutFieldsInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1606,6 +1650,7 @@ export type ContractUncheckedUpdateWithoutFieldsInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1634,6 +1679,7 @@ export type ContractCreateWithoutSignaturesInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -1662,6 +1708,7 @@ export type ContractUncheckedCreateWithoutSignaturesInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -1706,6 +1753,7 @@ export type ContractUpdateWithoutSignaturesInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1734,6 +1782,7 @@ export type ContractUncheckedUpdateWithoutSignaturesInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1762,6 +1811,7 @@ export type ContractCreateWithoutDocumentsInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -1790,6 +1840,7 @@ export type ContractUncheckedCreateWithoutDocumentsInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -1834,6 +1885,7 @@ export type ContractUpdateWithoutDocumentsInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1862,6 +1914,7 @@ export type ContractUncheckedUpdateWithoutDocumentsInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1890,6 +1943,7 @@ export type ContractCreateWithoutContractAuditEventsInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -1918,6 +1972,7 @@ export type ContractUncheckedCreateWithoutContractAuditEventsInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -1962,6 +2017,7 @@ export type ContractUpdateWithoutContractAuditEventsInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1990,6 +2046,7 @@ export type ContractUncheckedUpdateWithoutContractAuditEventsInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2018,6 +2075,7 @@ export type ContractCreateManyAdminInput = {
   contractNumber?: string | null
   contractType?: string | null
   status?: $Enums.ContractStatus
+  templateKey?: string
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
@@ -2038,6 +2096,7 @@ export type ContractUpdateWithoutAdminInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2066,6 +2125,7 @@ export type ContractUncheckedUpdateWithoutAdminInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2094,6 +2154,7 @@ export type ContractUncheckedUpdateManyWithoutAdminInput = {
   contractNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+  templateKey?: Prisma.StringFieldUpdateOperationsInput | string
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2199,6 +2260,7 @@ export type ContractSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   contractNumber?: boolean
   contractType?: boolean
   status?: boolean
+  templateKey?: boolean
   startDate?: boolean
   endDate?: boolean
   subject?: boolean
@@ -2230,6 +2292,7 @@ export type ContractSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   contractNumber?: boolean
   contractType?: boolean
   status?: boolean
+  templateKey?: boolean
   startDate?: boolean
   endDate?: boolean
   subject?: boolean
@@ -2252,6 +2315,7 @@ export type ContractSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   contractNumber?: boolean
   contractType?: boolean
   status?: boolean
+  templateKey?: boolean
   startDate?: boolean
   endDate?: boolean
   subject?: boolean
@@ -2274,6 +2338,7 @@ export type ContractSelectScalar = {
   contractNumber?: boolean
   contractType?: boolean
   status?: boolean
+  templateKey?: boolean
   startDate?: boolean
   endDate?: boolean
   subject?: boolean
@@ -2289,7 +2354,7 @@ export type ContractSelectScalar = {
   adminId?: boolean
 }
 
-export type ContractOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "contractNumber" | "contractType" | "status" | "startDate" | "endDate" | "subject" | "amount" | "currency" | "paymentMethod" | "originalUrl" | "signedUrl" | "token" | "tokenExpiresAt" | "createdAt" | "updatedAt" | "adminId", ExtArgs["result"]["contract"]>
+export type ContractOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "contractNumber" | "contractType" | "status" | "templateKey" | "startDate" | "endDate" | "subject" | "amount" | "currency" | "paymentMethod" | "originalUrl" | "signedUrl" | "token" | "tokenExpiresAt" | "createdAt" | "updatedAt" | "adminId", ExtArgs["result"]["contract"]>
 export type ContractInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>
   libranzaData?: boolean | Prisma.Contract$libranzaDataArgs<ExtArgs>
@@ -2328,6 +2393,7 @@ export type $ContractPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     contractNumber: string | null
     contractType: string | null
     status: $Enums.ContractStatus
+    templateKey: string
     startDate: Date | null
     endDate: Date | null
     subject: string | null
@@ -2778,6 +2844,7 @@ export interface ContractFieldRefs {
   readonly contractNumber: Prisma.FieldRef<"Contract", 'String'>
   readonly contractType: Prisma.FieldRef<"Contract", 'String'>
   readonly status: Prisma.FieldRef<"Contract", 'ContractStatus'>
+  readonly templateKey: Prisma.FieldRef<"Contract", 'String'>
   readonly startDate: Prisma.FieldRef<"Contract", 'DateTime'>
   readonly endDate: Prisma.FieldRef<"Contract", 'DateTime'>
   readonly subject: Prisma.FieldRef<"Contract", 'String'>

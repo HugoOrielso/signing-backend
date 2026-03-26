@@ -19,7 +19,6 @@ export async function createContractService(body: any, req: any) {
   const contractData = buildContractData(body, isNewFormat);
   const partiesInput = buildParties(body, isNewFormat);
   const signersInput = buildSigners(body, isNewFormat);
-
   const contractedSigner = signersInput.find((s) => s.partyRole === "CONTRACTED");
   const contractedParty = partiesInput.find((p) => p.role === "CONTRACTED");
 
@@ -35,12 +34,12 @@ export async function createContractService(body: any, req: any) {
 
   const clausesInput = !isNewFormat && Array.isArray(body.clauses) ? body.clauses : [];
   const libranzaInput = isLibranza ? buildLibranzaData(body, contractedParty) : null;
-
+  const templateKey = body.templateKey ?? "dimcultura";
   const contract = await prisma.contract.create({
     data: {
       ...contractData,
       adminId,
-
+      templateKey,
       parties: {
         create: partiesInput.map((p) => ({
           role: p.role,
@@ -54,15 +53,15 @@ export async function createContractService(body: any, req: any) {
 
       ...(clausesInput.length > 0
         ? {
-            clauses: {
-              create: clausesInput
-                .filter((c: any) => c.content?.trim())
-                .map((c: any, i: number) => ({
-                  position: c.position ?? i + 1,
-                  content: c.content,
-                })),
-            },
-          }
+          clauses: {
+            create: clausesInput
+              .filter((c: any) => c.content?.trim())
+              .map((c: any, i: number) => ({
+                position: c.position ?? i + 1,
+                content: c.content,
+              })),
+          },
+        }
         : {}),
 
       signers: {
@@ -106,6 +105,7 @@ export async function createContractService(body: any, req: any) {
         signerCount: contract.signers.length,
         hasLibranza: !!libranzaInput,
         format: isNewFormat ? "new" : "legacy",
+        templateKey
       },
     });
   } catch (auditError) {
@@ -169,6 +169,7 @@ export async function createContractService(body: any, req: any) {
         signingLink,
         tokenExpiresAt: tokenExpiresAt.toISOString(),
         emailSentPlanned: !!sendTo,
+        templateKey
       },
     });
   } catch (auditError) {

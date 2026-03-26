@@ -33,38 +33,40 @@ model Contract {
   contractType   String?
   status         ContractStatus @default(DRAFT)
 
-  startDate      DateTime?
-  endDate        DateTime?
-  subject        String?        @db.Text
+  templateKey String    @default("dimcultura")
+  
+  startDate   DateTime?
+  endDate     DateTime?
+  subject     String?   @db.Text
 
-  amount         Decimal?       @db.Decimal(12, 2)
-  currency       String?        @default("COP")
-  paymentMethod  String?
+  amount        Decimal? @db.Decimal(12, 2)
+  currency      String?  @default("COP")
+  paymentMethod String?
 
-  originalUrl    String?
-  signedUrl      String?
+  originalUrl String?
+  signedUrl   String?
 
-  token          String?        @unique
+  token          String?   @unique
   tokenExpiresAt DateTime?
 
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  adminId        String
-  admin          Admin          @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  adminId String
+  admin   Admin  @relation(fields: [adminId], references: [id], onDelete: Cascade)
 
   // ── Relaciones ──────────────────────────────────────────
-  libranzaData   LibranzaData?   // ← NUEVO: datos específicos de la libranza
-  parties        ContractParty[]
-  clauses        ContractClause[]
-  signers        ContractSigner[]
-  fields         SignatureField[]
-  signatures     Signature[]
-  documents      ContractDocument[]
+  libranzaData        LibranzaData? // ← NUEVO: datos específicos de la libranza
+  parties             ContractParty[]
+  clauses             ContractClause[]
+  signers             ContractSigner[]
+  fields              SignatureField[]
+  signatures          Signature[]
+  documents           ContractDocument[]
+  contractAuditEvents ContractAuditEvent[]
 
   @@index([adminId])
   @@index([status])
-  contractAuditEvents ContractAuditEvent[]
 }
 
 // ─────────────────────────────────────────────────────────
@@ -77,47 +79,47 @@ model LibranzaData {
   contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
 
   // Encabezado
-  ciudad     String?
-  asesor     String?
-  fecha      String?   // "DD/MM/AAAA"
+  ciudad String?
+  asesor String?
+  fecha  String? // "DD/MM/AAAA"
 
   // Datos personales
-  clienteNombre       String?
-  clienteCC           String?
-  clienteCCDe         String?
-  clienteDireccion    String?
-  clienteTelefono     String?
-  clienteEmail        String?
-  clienteFuncionario  String?
-  clienteDesdeHace    String?
+  clienteNombre      String?
+  clienteCC          String?
+  clienteCCDe        String?
+  clienteDireccion   String?
+  clienteTelefono    String?
+  clienteEmail       String?
+  clienteFuncionario String?
+  clienteDesdeHace   String?
 
   // Datos laborales
-  municipioTrabajo    String?
-  empresaTrabajo      String?
-  departamento        String?
+  municipioTrabajo String?
+  empresaTrabajo   String?
+  departamento     String?
 
   // Financiero
-  sumaTotal           String?
-  numeroCuotas        String?
-  valorCuota          String?
-  mesCobro            String?
+  sumaTotal    String?
+  numeroCuotas String?
+  valorCuota   String?
+  mesCobro     String?
 
   // Cuenta bancaria
-  tipoCuenta          String?   // "Ahorros" | "Corriente"
-  numeroCuenta        String?
-  banco               String?
+  tipoCuenta   String? // "Ahorros" | "Corriente"
+  numeroCuenta String?
+  banco        String?
 
   // Productos [{codigo, descripcion, valor}]
-  productos           Json?
+  productos Json?
 
   // Forma de pago
-  formaPago           String?   // "NOMINA" | "EFECTY 110520" | "PSE" | "BANCO"
+  formaPago String? // "NOMINA" | "EFECTY 110520" | "PSE" | "BANCO"
 
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  references Reference[]
 
   @@index([contractId])
-  references Reference[]
 }
 
 // ─────────────────────────────────────────────────────────
@@ -125,9 +127,9 @@ model LibranzaData {
 // ─────────────────────────────────────────────────────────
 
 model ContractParty {
-  id             String    @id @default(uuid())
-  contractId     String
-  contract       Contract  @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  id         String   @id @default(uuid())
+  contractId String
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
 
   role           PartyRole
   name           String
@@ -136,8 +138,8 @@ model ContractParty {
   phone          String?
   address        String?
 
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([contractId])
   @@index([role])
@@ -148,53 +150,53 @@ model ContractClause {
   contractId String
   contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
 
-  position   Int
-  content    String   @db.Text
+  position Int
+  content  String @db.Text
 
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([contractId])
 }
 
 model ContractSigner {
-  id          String    @id @default(uuid())
-  contractId  String
-  contract    Contract  @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  id         String   @id @default(uuid())
+  contractId String
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
 
   partyRole   PartyRole?
   name        String
   email       String?
   phone       String?
   roleTitle   String?
-  signerOrder Int       @default(1)
+  signerOrder Int        @default(1)
 
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  signatures      Signature[]
-  signatureFields SignatureField[]
+  signatures          Signature[]
+  signatureFields     SignatureField[]
+  contractAuditEvents ContractAuditEvent[]
 
   @@index([contractId])
-  contractAuditEvents ContractAuditEvent[]
 }
 
 model SignatureField {
-  id         String          @id @default(uuid())
+  id         String   @id @default(uuid())
   contractId String
-  contract   Contract        @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
 
-  signerId   String?
-  signer     ContractSigner? @relation(fields: [signerId], references: [id], onDelete: SetNull)
+  signerId String?
+  signer   ContractSigner? @relation(fields: [signerId], references: [id], onDelete: SetNull)
 
-  page       Int
-  xPct       Float
-  yPct       Float
-  wPct       Float
-  hPct       Float
-  label      String          @default("Firma")
+  page  Int
+  xPct  Float
+  yPct  Float
+  wPct  Float
+  hPct  Float
+  label String @default("Firma")
 
-  createdAt  DateTime        @default(now())
+  createdAt DateTime @default(now())
 
   signatures Signature[]
 
@@ -203,27 +205,27 @@ model SignatureField {
 }
 
 model Signature {
-  id         String          @id @default(uuid())
+  id         String   @id @default(uuid())
   contractId String
-  contract   Contract        @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
 
-  signerId   String?
-  signer     ContractSigner? @relation(fields: [signerId], references: [id], onDelete: SetNull)
+  signerId String?
+  signer   ContractSigner? @relation(fields: [signerId], references: [id], onDelete: SetNull)
 
-  fieldId    String?
-  field      SignatureField? @relation(fields: [fieldId], references: [id], onDelete: SetNull)
+  fieldId String?
+  field   SignatureField? @relation(fields: [fieldId], references: [id], onDelete: SetNull)
 
   type       SignatureType
   imageUrl   String?
   typedValue String?
-  signedAt   DateTime        @default(now())
+  signedAt   DateTime      @default(now())
   ipAddress  String?
   userAgent  String?
 
   // ── Validez legal ─────────────────────────────────────
-  documentHash      String?
-  signerEmail       String?
-  otpVerified       Boolean   @default(false)
+  documentHash String?
+  signerEmail  String?
+  otpVerified  Boolean @default(false)
 
   // ── Storage de firma dibujada ────────────────────────
   signaturePublicId String?
@@ -267,18 +269,18 @@ enum PartyRole {
 // DOCUMENTOS ADJUNTOS — subidos por el cliente al firmar
 // ─────────────────────────────────────────────────────────
 model ContractDocument {
-  id          String   @id @default(uuid())
-  contractId  String
-  contract    Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  id         String   @id @default(uuid())
+  contractId String
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
 
-  type        DocumentType
-  label       String        // "Cédula frente", "Cédula reverso", "Selfie", "Otro"
-  url         String        // URL de Cloudinary
-  publicId    String?       // Cloudinary public_id para borrar si hace falta
-  mimeType    String?       // "image/jpeg", "application/pdf", etc.
-  sizeBytes   Int?
+  type      DocumentType
+  label     String // "Cédula frente", "Cédula reverso", "Selfie", "Otro"
+  url       String // URL de Cloudinary
+  publicId  String? // Cloudinary public_id para borrar si hace falta
+  mimeType  String? // "image/jpeg", "application/pdf", etc.
+  sizeBytes Int?
 
-  uploadedAt  DateTime @default(now())
+  uploadedAt DateTime @default(now())
 
   @@index([contractId])
 }
@@ -291,37 +293,36 @@ enum DocumentType {
   IMAGEN_GENERAL
 }
 
-
 model ContractAuditEvent {
-  id                 String   @id @default(uuid())
-  contractId         String
-  signerId           String?
-  adminId            String?
+  id         String  @id @default(uuid())
+  contractId String
+  signerId   String?
+  adminId    String?
 
-  eventType          AuditEventType
-  actorType          AuditActorType
-  actorRole          AdminRole?
+  eventType AuditEventType
+  actorType AuditActorType
+  actorRole AdminRole?
 
-  actorName          String?
-  actorEmail         String?
+  actorName  String?
+  actorEmail String?
 
-  ipAddress          String?
-  userAgent          String?
-  sessionId          String?
-  requestId          String?
+  ipAddress String?
+  userAgent String?
+  sessionId String?
+  requestId String?
 
-  documentHash       String?
+  documentHash String?
 
-  previousEventHash  String?
-  eventHash          String
+  previousEventHash String?
+  eventHash         String
 
-  metadata           Json?
+  metadata Json?
 
-  createdAt          DateTime @default(now())
+  createdAt DateTime @default(now())
 
-  contract           Contract        @relation(fields: [contractId], references: [id])
-  signer             ContractSigner? @relation(fields: [signerId], references: [id])
-  admin              Admin?          @relation(fields: [adminId], references: [id])
+  contract Contract        @relation(fields: [contractId], references: [id])
+  signer   ContractSigner? @relation(fields: [signerId], references: [id])
+  admin    Admin?          @relation(fields: [adminId], references: [id])
 }
 
 enum AuditEventType {
@@ -349,20 +350,19 @@ enum AuditActorType {
   SYSTEM
 }
 
-
 model Reference {
-  id          String   @id @default(uuid())
-  libranzaId  String
-  libranza    LibranzaData @relation(fields: [libranzaId], references: [id], onDelete: Cascade)
+  id         String       @id @default(uuid())
+  libranzaId String
+  libranza   LibranzaData @relation(fields: [libranzaId], references: [id], onDelete: Cascade)
 
-  type        ReferenceType
-  name        String
-  phone       String?
-  email       String?
-  company     String?
-  position    String?
-
-  createdAt   DateTime @default(now())
+  type     ReferenceType
+  name     String
+  phone    String?
+  email    String?
+  company  String?
+  position String?
+  relationShip String?
+  createdAt DateTime @default(now())
 
   @@index([libranzaId])
 }

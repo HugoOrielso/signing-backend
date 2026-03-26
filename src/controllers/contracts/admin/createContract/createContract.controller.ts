@@ -11,8 +11,6 @@ export async function createContract(req: AuthenticatedRequest, res: Response) {
       ...result,
     });
   } catch (error: any) {
-    console.error("CREATE CONTRACT ERROR", error);
-
     const message =
       error?.message === "Usuario no autenticado"
         ? "Usuario no autenticado"

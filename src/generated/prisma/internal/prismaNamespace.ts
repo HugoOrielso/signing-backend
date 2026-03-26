@@ -1361,6 +1361,7 @@ export const ContractScalarFieldEnum = {
   contractNumber: 'contractNumber',
   contractType: 'contractType',
   status: 'status',
+  templateKey: 'templateKey',
   startDate: 'startDate',
   endDate: 'endDate',
   subject: 'subject',
@@ -1552,6 +1553,7 @@ export const ReferenceScalarFieldEnum = {
   email: 'email',
   company: 'company',
   position: 'position',
+  relationShip: 'relationShip',
   createdAt: 'createdAt'
 } as const
 

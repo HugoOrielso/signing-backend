@@ -2,10 +2,23 @@
 // Genera el HTML de la libranza idéntico al preview del frontend
 // Este HTML es el que Puppeteer convierte a PDF
 
+import { ReferenceType } from "../../generated/prisma/enums";
+import { getTemplateConfig, resolveTemplateKey } from "../../lib/email/templateConfig";
+
 interface ProductoItem {
   codigo: string;
   descripcion: string;
   valor: string;
+}
+
+interface UserReference {
+  type: ReferenceType,
+  name: string,
+  phone: string,
+  email: string,
+  company?: string,
+  position?: string
+  relationShip?: string
 }
 
 interface LibranzaData {
@@ -32,6 +45,8 @@ interface LibranzaData {
   banco?: string | null;
   productos?: ProductoItem[] | null;
   formaPago?: string | null;
+  templateKey: string
+  references: UserReference[]
 }
 
 interface SignatureData {
@@ -42,7 +57,7 @@ interface SignatureData {
   signerName?: string;
 }
 
-const F  = (v?: string | null) => v?.trim() ? escHtml(v.trim()) : "&nbsp;";
+const F = (v?: string | null) => v?.trim() ? escHtml(v.trim()) : "&nbsp;";
 const FM = (v?: string | null) => {
   if (!v?.trim()) return "$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
   const n = parseFloat(v.replace(/[^0-9.]/g, ""));
@@ -50,26 +65,44 @@ const FM = (v?: string | null) => {
 };
 
 function escHtml(s: string): string {
-  return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
-          .replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
 
 function U(content: string, minWidth = 80): string {
-  return `<span style="border-bottom:1px solid #000;display:inline-block;min-width:${minWidth}px;padding:0 2px;line-height:1.3;vertical-align:bottom">${content}</span>`;
+  return `<span style="border-bottom:1px solid #555;padding:0 2px;vertical-align:bottom; display: "block">${content}</span>`;
+}
+
+function UF(content: string, minWidth = 80): string {
+  return `<span style="border-bottom:1px solid #555;padding:0 2px;vertical-align:bottom;display:block;width:100%;min-width:${minWidth}px;box-sizing:border-box;">${content}</span>`;
 }
 function Box(content: string, minWidth = 70): string {
-  return `<span style="border:1px solid #000;display:inline-block;padding:0 3px;min-width:${minWidth}px;line-height:1.4;vertical-align:bottom">${content}</span>`;
+  return `<span style="border:1px solid #000;padding:0 2px;vertical-align:bottom">${content}</span>`;
 }
 function Chk(on: boolean): string {
   return `<span style="display:inline-block;width:10px;height:10px;border:1px solid #000;vertical-align:middle;background:${on ? "#000" : "transparent"};margin-right:3px"></span>`;
 }
 
+interface GenerateLibranzaHtmlOptions {
+  templateKey?: string | null;
+  signature?: SignatureData;
+  logoBase64?: string;
+  logoMime?: string;
+}
+
 export function generateLibranzaHtml(
   d: LibranzaData,
-  signature?: SignatureData,
-  logoBase64?: string,
-  logoMime = "image/webp"
+  options: GenerateLibranzaHtmlOptions = {}
 ): string {
+  const {
+    templateKey,
+    signature,
+    logoBase64,
+    logoMime = "image/webp",
+  } = options;
+
+  const resolvedTemplateKey = resolveTemplateKey(templateKey);
+  const template = getTemplateConfig(resolvedTemplateKey);
   const total = (d.productos ?? []).reduce(
     (s, p) => s + (parseFloat(p.valor?.replace(/[^0-9.]/g, "") || "0") || 0), 0
   );
@@ -99,10 +132,10 @@ export function generateLibranzaHtml(
       <td style="${tdStyle}">${escHtml(p.codigo || "")}</td>
       <td style="${tdStyle}"></td>
       <td style="${tdStyle}">${escHtml(p.descripcion || "")}</td>
-      <td style="${tdStyle};text-align:right">${p.valor ? `$${parseFloat(p.valor.replace(/[^0-9.]/g,"")).toLocaleString("es-CO",{minimumFractionDigits:2})}` : ""}</td>
+      <td style="${tdStyle};text-align:right">${p.valor ? `$${parseFloat(p.valor.replace(/[^0-9.]/g, "")).toLocaleString("es-CO", { minimumFractionDigits: 2 })}` : ""}</td>
     </tr>`).join("");
 
-  const emptyRows = Math.max(0, 6 - (d.productos?.length ?? 0));
+  const emptyRows = Math.max(0, 2 - (d.productos?.length ?? 0));
   const emptyRowsHtml = Array.from({ length: emptyRows }).map(() => `
     <tr>
       <td style="${tdStyle}">&nbsp;</td>
@@ -131,32 +164,28 @@ export function generateLibranzaHtml(
 <body>
 
 <!-- HEADER -->
-<div style="display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #000;padding-bottom:5px;margin-bottom:5px">
+<div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #a1a1a1;padding-bottom:5px;margin-bottom:5px">
   <div style="flex-shrink:0">${logoHtml}</div>
 
   <div style="text-align:center;flex:1;margin:0 8px">
-    <div style="font-size:10px;font-weight:700">Nueva Dimensión Cultural</div>
-    <div style="font-size:14px;font-weight:900">Dimcultura S.A.S</div>
-    <div style="font-size:8px;font-style:italic">"Un mundo en el que debes estar"</div>
-    <div style="font-size:7px;margin-top:1px">Nit. 900.585.322-4 · Tel. 310 207 98 00 / 311 861 01 61</div>
+<div style="font-size:10px;font-weight:700">${escHtml(template.subtitulo)}</div>
+<div style="font-size:14px;font-weight:900">${escHtml(template.nombre)}</div>
+<div style="font-size:8px;font-style:italic">"${escHtml(template.slogan)}"</div>
+<div style="font-size:7px;margin-top:1px">Nit. ${escHtml(template.nit)} · Tel. 310 207 98 00 / 311 861 01 61</div>
   </div>
 
-  <div style="font-size:8px;border:1px solid #000;padding:4px 7px;min-width:155px">
+  <div style="font-size:9px;border:1px solid #a1a1a1;padding:4px; border-radius:2.4px">
     <div style="display:flex;gap:4px;margin-bottom:3px">
       <span style="font-weight:700;white-space:nowrap">CIUDAD:</span>
-      <span style="border-bottom:1px solid #000;flex:1">${F(d.ciudad)}</span>
+      <span style="border-bottom:1px solid #a1a1a1;flex:1">${F(d.ciudad)}</span>
     </div>
     <div style="display:flex;gap:4px;margin-bottom:3px">
       <span style="font-weight:700;white-space:nowrap">ASESOR:</span>
-      <span style="border-bottom:1px solid #000;flex:1">${F(d.asesor)}</span>
+      <span style="border-bottom:1px solid #a1a1a1;flex:1">${F(d.asesor)}</span>
     </div>
     <div style="display:flex;align-items:center;gap:2px">
-      <span style="font-size:7px">DD</span>
-      <span style="border:1px solid #000;min-width:16px;text-align:center;padding:0 1px">${escHtml(fechaParts[0] || "")}</span>
-      <span style="font-size:7px">MM</span>
-      <span style="border:1px solid #000;min-width:16px;text-align:center;padding:0 1px">${escHtml(fechaParts[1] || "")}</span>
-      <span style="font-size:7px">AA</span>
-      <span style="border:1px solid #000;min-width:26px;text-align:center;padding:0 1px">${escHtml((fechaParts[2] || "").slice(-2))}</span>
+      <span style="font-weight:700;white-space:nowrap">FECHA:</span>
+      <span style="text-align:center;padding:0px">${escHtml(fechaParts[0] || "")}</span>
       <span style="font-weight:700;font-size:9px;margin-left:3px">LIBRANZA</span>
     </div>
   </div>
@@ -170,54 +199,105 @@ export function generateLibranzaHtml(
 </div>
 
 <!-- CUERPO -->
-<div style="font-size:9px;line-height:1.65;margin-bottom:5px">
-  Yo ${U(F(d.clienteNombre), 130)}
-  con C.C.${U(F(d.clienteCC), 90)}
-  De ${U(F(d.clienteCCDe), 90)},<br>
-  residente en ${U(F(d.clienteDireccion), 150)}
-  con número de contacto ${U(F(d.clienteTelefono), 90)} y correo<br>
-  de notificación ${U(F(d.clienteEmail), 130)}
-  Funcionario de ${U(F(d.clienteFuncionario), 110)}
-  Desde hace ${U(F(d.clienteDesdeHace), 70)}<br>
-  Actualmente trabajo en el municipio de ${U(F(d.municipioTrabajo), 110)},
-  me permito autorizar por medio de este, al Señor pagador de<br>
-  ${U(F(d.empresaTrabajo), 160)},
-  departamento ${U(F(d.departamento), 100)},
-  para que descuente de mi sueldo o de cualquier otro concepto la<br>
-  suma de ${Box(FM(d.sumaTotal), 90)}
-  en ${Box(F(d.numeroCuotas), 30)}
-  cuotas mensuales consecutivas por valor de ${Box(FM(d.valorCuota), 90)}, cada una, a partir<br>
-  del mes de ${Box(F(d.mesCobro), 110)}
-  y pagarlos a la orden de <strong>DIMCULTURA S.A.S.</strong>
-  <span style="font-size:8px"> Nota: en caso de que el cupo de mi nómina no sea suficiente para cubrir la obligación mensual, autorizo a la empresa para que debite los valores pactados en este documento, de mi cuenta</span><br>
+<div style="font-size:9px;margin-bottom:5px;text-wrap: balance;">
+  Yo ${U(F(d.clienteNombre))}
+  con C.C.${U(F(d.clienteCC))}
+  De ${U(F(d.clienteCCDe))},
+  residente en ${U(F(d.clienteDireccion))}
+  con número de contacto ${U(F(d.clienteTelefono))} y correo
+  de notificación ${U(F(d.clienteEmail))}
+  Funcionario de ${U(F(d.clienteFuncionario))}
+  Desde hace ${U(F(d.clienteDesdeHace))}
+  Actualmente trabajo en el municipio de ${U(F(d.municipioTrabajo))},
+  me permito autorizar por medio de este, al Señor pagador de
+  ${U(F(d.empresaTrabajo))},
+  departamento ${U(F(d.departamento))},
+  para que descuente de mi sueldo o de cualquier otro concepto la
+  suma de ${Box(FM(d.sumaTotal))}
+  en ${Box(F(d.numeroCuotas))}
+  cuotas mensuales consecutivas por valor de ${Box(FM(d.valorCuota))}, cada una, a partir
+  del mes de ${Box(F(d.mesCobro))}
+  y pagarlos a la orden de <strong>${escHtml(template.nombre.toUpperCase())}</strong>
+  <br/>
+  <span> <b>Nota:</b>  en caso de que el cupo de mi nómina no sea suficiente para cubrir la obligación mensual, autorizo a la empresa para que debite los valores pactados en este documento, de mi cuenta</span>
   <strong>Ahorros</strong> ${Chk(d.tipoCuenta === "Ahorros")}
   <strong>Corriente</strong> ${Chk(d.tipoCuenta === "Corriente")}
-  No. ${U(F(d.numeroCuenta), 100)}
-  DEL BANCO ${U(F(d.banco), 100)}
-  <span style="font-size:7px"> Declaro formalmente no tener nada que reclamar a <strong>DIMCULTURA S.A.S</strong> judicial o extrajudicialmente, por los cargos que a través de la presente autorización, se realice de mi cuenta.</span>
+  No. ${U(F(d.numeroCuenta))}
+  DEL BANCO ${U(F(d.banco))}
+  <span style="font-size:7px"> Declaro formalmente no tener nada que reclamar a <strong>${escHtml(template.nombre.toUpperCase())}</strong> judicial o extrajudicialmente, por los cargos que a través de la presente autorización, se realice de mi cuenta.</span>
 </div>
 
 <!-- REFERIDOS -->
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;border:1px solid #000;padding:5px;margin-bottom:5px;font-size:8px">
-  <div>
-    <strong>Nombre: </strong>${U("&nbsp;", 120)}<br>
-    <strong>Parentesco: </strong>${U("&nbsp;", 70)} <strong>Teléfono: </strong>${U("&nbsp;", 70)}<br>
-    <strong>Correo: </strong>${U("&nbsp;", 140)}
+<div style="border:1px solid #ccc;border-radius:4px;padding:4px;margin-bottom:6px;font-size:9px;">
+  <div style="font-weight:700;margin-bottom:6px;">
+    Referencias laborales y/o personales:
   </div>
-  <div>
-    <strong>Nombre: </strong>${U("&nbsp;", 120)}<br>
-    <strong>Parentesco: </strong>${U("&nbsp;", 70)} <strong>Teléfono: </strong>${U("&nbsp;", 70)}<br>
-    <strong>Correo: </strong>${U("&nbsp;", 140)}
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+    ${d.references
+      .map((r) => {
+        if (r.type === "PERSONAL") {
+          return `
+              <div>
+                <div style="display:grid;grid-template-columns:auto 1fr;column-gap:4px;align-items:end;margin-bottom:3px;">
+                  <span><strong>Nombre:</strong></span>
+                  <span >${UF(r.name ?? "&nbsp;", 120)}</span>
+                </div>
+
+                <div style="display:grid;grid-template-columns:auto 1fr auto 1fr;column-gap:6px;align-items:end;margin-bottom:3px;">
+                  <span><strong>Parentesco:</strong></span>
+                  <span >${UF(r.relationShip ?? "&nbsp;", 80)}</span
+                  <span><strong>Teléfono:</strong></span>
+                  <span >${UF(r.phone ?? "&nbsp;", 80)}</span>
+                </div>
+
+                <div style="display:grid;grid-template-columns:auto 1fr;column-gap:4px;align-items:end;">
+                  <span><strong>Correo:</strong></span>
+                  <span >${UF(r.email ?? "&nbsp;", 120)}</span>
+                </div>
+              </div>
+            `;
+        }
+
+        if (r.type === "LABORAL") {
+          return `
+              <div>
+                <div style="display:grid;grid-template-columns:auto 1fr;column-gap:4px;align-items:end;margin-bottom:3px;">
+                  <span><strong>Nombre:</strong></span>
+                  <span >${UF(r.name ?? "&nbsp;", 120)}</span>
+                </div>
+
+                <div style="display:grid;grid-template-columns:auto 1fr auto 1fr;column-gap:6px;align-items:end;margin-bottom:3px;">
+                  <span><strong>Empresa:</strong></span>
+                  <span >${UF(r.company ?? "&nbsp;", 80)}</span>
+                  <span><strong>Teléfono:</strong></span>
+                  <span >${UF(r.phone ?? "&nbsp;", 80)}</span>
+                </div>
+
+                <div style="display:grid;grid-template-columns:auto 1fr auto 1fr;column-gap:6px;align-items:end;">
+                  <span><strong>Correo:</strong></span>
+                  <span >${UF(r.email ?? "&nbsp;", 80)}</span>
+                  <span><strong>Cargo:</strong></span>
+                  <span >${UF(r.position ?? "&nbsp;", 80)}</span>
+                </div>
+              </div>
+            `;
+        }
+
+        return "";
+      })
+      .join("")
+    }
   </div>
 </div>
 
 <!-- TEXTO LEGAL -->
-<div style="font-size:6.5px;border:1px solid #ccc;padding:5px;margin-bottom:5px;line-height:1.5;text-align:justify">
+<div style="font-size:8.5px;border:1px solid #ccc;padding:4px;margin-bottom:5px;line-height:1.5;text-align:justify;border-radius: 4px">
   <strong>AUTORIZACIÓN PARA CONSULTA Y REPORTE DE INFORMACIÓN: </strong>
   Dando cumplimiento a lo dispuesto en la Ley 1581 de 2012 "por la cual se dictan disposiciones generales para la protección
   de datos personales" y de conformidad con lo señalado en el Decreto 1377 de 2013, con la firma de este documento, manifiesto
-  que he sido informado por DIMCULTURA S.A.S., y en ejercicio de mi Derecho a la Libertad y Autodeterminación Informática,
-  autorizo a DIMCULTURA S.A.S., o a la entidad que mi acreedor delegue para representarlo o a su cesionario, endosatario o a
+  que he sido informado por ${escHtml(template.nombre.toUpperCase())}, y en ejercicio de mi Derecho a la Libertad y Autodeterminación Informática,
+  autorizo a ${escHtml(template.nombre.toUpperCase())}, o a la entidad que mi acreedor delegue para representarlo o a su cesionario, endosatario o a
   quien ostente en el futuro la calidad de acreedor, previo a la relación contractual y de manera irrevocable, escrita, expresa,
   concreta, suficiente, voluntaria e informada, con la finalidad que la información comercial, crediticia, financiera y de servicios
   de la cual soy titular referida al nacimiento, ejecución y extinción de obligaciones dinerarias, a mi comportamiento e historial
@@ -231,10 +311,10 @@ export function generateLibranzaHtml(
 
 <!-- ACEPTO + ÍNDICE + FIRMA -->
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:5px">
-  <div style="font-size:7.5px;border:1px solid #ccc;padding:5px">
-    <p style="margin:0 0 5px;font-size:7px;line-height:1.4">
+  <div style="font-size:8.5px;border:1px solid #ccc;padding:5px; border-radius: 4px">
+    <p style="margin:0 0 5px;font-size:7px;">
       <strong>He recibo en perfecto estado y a mi entera conformidad, los libros que describe y
-      manifestado tener conocimiento que la empresa DIMCULTURA S.A.S., por ningún motivo
+      manifestado tener conocimiento que la empresa ${escHtml(template.nombre.toUpperCase())}, por ningún motivo
       permitirá la anulación o devolución después de firmada esta LIBRANZA, sin embargo torna
       la responsabilidad de que toda devolución que gote una devolución una indemnización
       del 37% del valor de la misma.</strong>
@@ -243,43 +323,55 @@ export function generateLibranzaHtml(
     <div style="border-bottom:1px solid #000;margin-top:22px;margin-bottom:3px"></div>
   </div>
 
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
-    <div style="border:1px solid #ccc;padding:5px;font-size:7.5px">
-      <strong>Índice Derecho</strong>
-      <div style="height:44px;border:1px dashed #bbb;margin-top:4px;border-radius:2px"></div>
-    </div>
-    <div style="border:${sigBorder};padding:5px;border-radius:4px;font-size:7.5px">
+  <div style="display:grid;grid-template-columns:1fr;gap:5px">
+    <div style="border:${sigBorder};padding:4px;border-radius:4px;font-size:7.5px">
       <strong style="font-size:7px">Aprobada la Autorización<br>para Descuento Respectivo</strong>
       <br><strong style="color:#a07830">Firma</strong>
-      <div style="height:48px;margin-top:2px;display:flex;align-items:center;justify-content:center">
+      <div style="height:48px;margin-top:2px;display:flex;align-items:center;justify-content:center; background-color:#ccc; border-radius:3px">
         ${sigZone}
       </div>
-      ${signature?.signedAt ? `<div style="font-size:6px;color:#7a6e5f;text-align:center;margin-top:2px">${new Date(signature.signedAt).toLocaleDateString("es-CO")}</div>` : ""}
     </div>
   </div>
 </div>
 
-<!-- TABLA PRODUCTOS -->
-<table style="width:100%;border-collapse:collapse;margin-bottom:3px;font-size:8px">
-  <thead>
-    <tr>
-      <th style="${thStyle};width:70px">CODIGO</th>
-      <th style="${thStyle};width:20px">C</th>
-      <th style="${thStyle}">DESCRIPCIÓN</th>
-      <th style="${thStyle};width:90px;text-align:right">VALOR</th>
-    </tr>
-  </thead>
-  <tbody>
-    ${productoRows}
-    ${emptyRowsHtml}
-  </tbody>
-</table>
+<!-- CONTENEDOR TABLA -->
+<div style="position:relative;margin-bottom:3px">
 
-<!-- Sello -->
-<div style="text-align:center;font-size:13px;font-weight:900;color:#cc0000;letter-spacing:4px;margin:2px 0;opacity:0.1;text-transform:uppercase;pointer-events:none">
-  NO SON DEVOLUCIONES
+  <!-- TABLA PRODUCTOS -->
+  <table style="width:100%;border-collapse:collapse;font-size:8px;border-radius:4px">
+    <thead>
+      <tr>
+        <th style="${thStyle};width:70px">CODIGO</th>
+        <th style="${thStyle};width:20px">C</th>
+        <th style="${thStyle}">DESCRIPCIÓN</th>
+        <th style="${thStyle};width:90px;text-align:right">VALOR</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${productoRows}
+      ${emptyRowsHtml}
+    </tbody>
+  </table>
+
+  <!-- MARCA DE AGUA -->
+  <div style="
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:18px;
+    font-weight:900;
+    color:#cc0000;
+    letter-spacing:4px;
+    opacity:0.12;
+    text-transform:uppercase;
+    pointer-events:none;
+    white-space:nowrap;
+  ">
+    NO SE ACEPTAN DEVOLUCIONES
+  </div>
+
 </div>
-
 <!-- TOTAL -->
 <div style="display:flex;justify-content:flex-end;margin-bottom:5px">
   <table style="border-collapse:collapse;font-size:9px">
@@ -346,5 +438,15 @@ export function generateLibranzaHtml(
 </html>`;
 }
 
-const thStyle = "padding:3px 6px;border:1px solid #000;font-weight:700;font-size:8px;text-align:left;background:#1a1a2e;color:white";
-const tdStyle = "padding:3px 6px;border:1px solid #ddd;font-size:8px;height:18px";
+const thStyle = `
+  background:#1c1e34;
+  color:#fff;
+  font-weight:600;
+  padding:4px 6px;
+  border:1px solid #3a3c52;
+  text-align:left;
+`;
+const tdStyle = `
+  border:1px solid #3a3c52;
+  padding:3px 6px;
+`;
