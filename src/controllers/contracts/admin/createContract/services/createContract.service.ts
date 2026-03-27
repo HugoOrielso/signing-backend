@@ -3,9 +3,16 @@ import { buildParties } from "./buildParties";
 import { buildSigners } from "./buildSigners";
 import { buildLibranzaData } from "./buildLibranzaData";
 import { prisma } from "../../../../../database/db";
-import { logAuditEvent } from "../../../../../services/audit/audit.service";
-import { AdminRole, AuditActorType, AuditEventType } from "../../../../../generated/prisma/enums";
 import { sendContractEmail, sendLibranzaEmail } from "../../../../../lib/email/sendContract";
+import {
+  trackContractCreated,
+  trackContractSent,
+  trackEmailFailed,
+  trackEmailSendRequested,
+  trackEmailSent,
+} from "../../../../../services/audit/contract-audit.service";
+import { AdminRole } from "../../../../../generated/prisma/enums";
+import { getAuditRequestContext } from "../../../../../utils/audit-request";
 
 export async function createContractService(body: any, req: any) {
   const adminId = req.user?.id;
@@ -13,12 +20,15 @@ export async function createContractService(body: any, req: any) {
     throw new Error("Usuario no autenticado");
   }
 
+  const auditContext = getAuditRequestContext(req);
+
   const isNewFormat = !body.generalData;
   const isLibranza = isNewFormat && body.contractType === "LIBRANZA";
 
   const contractData = buildContractData(body, isNewFormat);
   const partiesInput = buildParties(body, isNewFormat);
   const signersInput = buildSigners(body, isNewFormat);
+
   const contractedSigner = signersInput.find((s) => s.partyRole === "CONTRACTED");
   const contractedParty = partiesInput.find((p) => p.role === "CONTRACTED");
 
@@ -32,9 +42,15 @@ export async function createContractService(body: any, req: any) {
 
   const asesor = body.asesor ?? undefined;
 
-  const clausesInput = !isNewFormat && Array.isArray(body.clauses) ? body.clauses : [];
-  const libranzaInput = isLibranza ? buildLibranzaData(body, contractedParty) : null;
+  const clausesInput =
+    !isNewFormat && Array.isArray(body.clauses) ? body.clauses : [];
+
+  const libranzaInput = isLibranza
+    ? buildLibranzaData(body, contractedParty)
+    : null;
+
   const templateKey = body.templateKey ?? "dimcultura";
+
   const contract = await prisma.contract.create({
     data: {
       ...contractData,
@@ -50,7 +66,6 @@ export async function createContractService(body: any, req: any) {
           address: p.address ?? null,
         })),
       },
-
       ...(clausesInput.length > 0
         ? {
           clauses: {
@@ -63,7 +78,6 @@ export async function createContractService(body: any, req: any) {
           },
         }
         : {}),
-
       signers: {
         create: signersInput.map((s, i) => ({
           name: s.name,
@@ -74,39 +88,25 @@ export async function createContractService(body: any, req: any) {
           signerOrder: s.signerOrder ?? i + 1,
         })),
       },
-
       ...(libranzaInput ? { libranzaData: { create: libranzaInput } } : {}),
     },
     include: { signers: true },
   });
 
   try {
-    await logAuditEvent({
+    await trackContractCreated({
       contractId: contract.id,
       adminId,
-      eventType: AuditEventType.CONTRACT_CREATED,
-      actorType: AuditActorType.ADMIN,
       actorRole: req.user?.role as AdminRole,
       actorEmail: req.user?.email ?? null,
-      ipAddress: req.ip,
-      userAgent: req.get("user-agent") ?? null,
-      requestId:
-        typeof req.headers["x-request-id"] === "string"
-          ? req.headers["x-request-id"]
-          : null,
-      sessionId:
-        typeof req.headers["x-session-id"] === "string"
-          ? req.headers["x-session-id"]
-          : null,
-      metadata: {
-        title: contract.title,
-        contractType: contract.contractType,
-        contractNumber: contract.contractNumber,
-        signerCount: contract.signers.length,
-        hasLibranza: !!libranzaInput,
-        format: isNewFormat ? "new" : "legacy",
-        templateKey
-      },
+      ...auditContext,
+      title: contract.title,
+      contractType: contract.contractType ?? '',
+      contractNumber: contract.contractNumber ?? null,
+      signerCount: contract.signers.length,
+      hasLibranza: !!libranzaInput,
+      format: isNewFormat ? "new" : "legacy",
+      templateKey,
     });
   } catch (auditError) {
     console.error("AUDIT ERROR - CONTRACT_CREATED:", auditError);
@@ -146,31 +146,17 @@ export async function createContractService(body: any, req: any) {
   const signingLink = `${frontendUrl}/contracts/auth/${token}`;
 
   try {
-    await logAuditEvent({
+    await trackContractSent({
       contractId: contract.id,
       adminId,
-      eventType: AuditEventType.CONTRACT_SENT,
-      actorType: AuditActorType.ADMIN,
       actorRole: req.user?.role as AdminRole,
       actorEmail: req.user?.email ?? null,
-      ipAddress: req.ip,
-      userAgent: req.get("user-agent") ?? null,
-      requestId:
-        typeof req.headers["x-request-id"] === "string"
-          ? req.headers["x-request-id"]
-          : null,
-      sessionId:
-        typeof req.headers["x-session-id"] === "string"
-          ? req.headers["x-session-id"]
-          : null,
-      metadata: {
-        sendTo: sendTo || null,
-        clienteNombre: clienteNombre || null,
-        signingLink,
-        tokenExpiresAt: tokenExpiresAt.toISOString(),
-        emailSentPlanned: !!sendTo,
-        templateKey
-      },
+      ...auditContext,
+      sendTo: sendTo || null,
+      clienteNombre: clienteNombre || null,
+      signingLink,
+      tokenExpiresAt,
+      templateKey,
     });
   } catch (auditError) {
     console.error("AUDIT ERROR - CONTRACT_SENT:", auditError);
@@ -178,6 +164,17 @@ export async function createContractService(body: any, req: any) {
 
   if (sendTo) {
     try {
+      await trackEmailSendRequested({
+        contractId: contract.id,
+        adminId,
+        actorRole: req.user?.role as AdminRole,
+        actorEmail: req.user?.email ?? null,
+        ...auditContext,
+        to: sendTo,
+        templateKey,
+        provider: "resend",
+      });
+
       if (isLibranza) {
         await sendLibranzaEmail({
           to: sendTo,
@@ -194,7 +191,34 @@ export async function createContractService(body: any, req: any) {
           signingLink,
         });
       }
+
+      await trackEmailSent({
+        contractId: contract.id,
+        adminId,
+        actorRole: req.user?.role as AdminRole,
+        actorEmail: req.user?.email ?? null,
+        ...auditContext,
+        to: sendTo,
+        templateKey,
+        provider: "resend",
+      });
     } catch (emailError: any) {
+      try {
+        await trackEmailFailed({
+          contractId: contract.id,
+          adminId,
+          actorRole: req.user?.role as AdminRole,
+          actorEmail: req.user?.email ?? null,
+          ...auditContext,
+          to: sendTo,
+          templateKey,
+          provider: "resend",
+          errorMessage: emailError?.message ?? "Unknown email error",
+        });
+      } catch (auditError) {
+        console.error("AUDIT ERROR - EMAIL_FAILED:", auditError);
+      }
+
       console.error("EMAIL ERROR (contrato creado):", emailError?.message);
     }
   }

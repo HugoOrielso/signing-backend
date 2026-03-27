@@ -13,8 +13,8 @@ model Admin {
   name          String
   password      String
   role          AdminRole      @default(OPERATOR) // ← agregar
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  createdAt     DateTime       @default(now()) @db.Timestamptz(3)
+  updatedAt     DateTime       @updatedAt @db.Timestamptz(3)
   contracts     Contract[]
   refreshTokens RefreshToken[]
 
@@ -35,8 +35,8 @@ model Contract {
 
   templateKey String    @default("dimcultura")
   
-  startDate   DateTime?
-  endDate     DateTime?
+  startDate   DateTime? @db.Timestamptz(3)
+  endDate     DateTime? @db.Timestamptz(3)
   subject     String?   @db.Text
 
   amount        Decimal? @db.Decimal(12, 2)
@@ -47,7 +47,7 @@ model Contract {
   signedUrl   String?
 
   token          String?   @unique
-  tokenExpiresAt DateTime?
+  tokenExpiresAt DateTime? @db.Timestamptz(3)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -115,8 +115,8 @@ model LibranzaData {
   // Forma de pago
   formaPago String? // "NOMINA" | "EFECTY 110520" | "PSE" | "BANCO"
 
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
+  createdAt  DateTime    @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime    @updatedAt @db.Timestamptz(3)
   references Reference[]
 
   @@index([contractId])
@@ -138,8 +138,8 @@ model ContractParty {
   phone          String?
   address        String?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
   @@index([contractId])
   @@index([role])
@@ -153,8 +153,8 @@ model ContractClause {
   position Int
   content  String @db.Text
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
   @@index([contractId])
 }
@@ -171,8 +171,8 @@ model ContractSigner {
   roleTitle   String?
   signerOrder Int        @default(1)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
   signatures          Signature[]
   signatureFields     SignatureField[]
@@ -196,7 +196,7 @@ model SignatureField {
   hPct  Float
   label String @default("Firma")
 
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
 
   signatures Signature[]
 
@@ -218,7 +218,7 @@ model Signature {
   type       SignatureType
   imageUrl   String?
   typedValue String?
-  signedAt   DateTime      @default(now())
+  signedAt   DateTime      @default(now()) @db.Timestamptz(3)
   ipAddress  String?
   userAgent  String?
 
@@ -240,8 +240,8 @@ model RefreshToken {
   token     String   @unique
   adminId   String
   admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
-  expiresAt DateTime
-  createdAt DateTime @default(now())
+  expiresAt DateTime @db.Timestamptz(3)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
 }
 
 enum ContractStatus {
@@ -280,7 +280,7 @@ model ContractDocument {
   mimeType  String? // "image/jpeg", "application/pdf", etc.
   sizeBytes Int?
 
-  uploadedAt DateTime @default(now())
+  uploadedAt DateTime @default(now()) @db.Timestamptz(3)
 
   @@index([contractId])
 }
@@ -318,27 +318,43 @@ model ContractAuditEvent {
 
   metadata Json?
 
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
 
-  contract Contract        @relation(fields: [contractId], references: [id])
-  signer   ContractSigner? @relation(fields: [signerId], references: [id])
-  admin    Admin?          @relation(fields: [adminId], references: [id])
+  contract Contract        @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  signer   ContractSigner? @relation(fields: [signerId], references: [id], onDelete: SetNull)
+  admin    Admin?          @relation(fields: [adminId], references: [id], onDelete: SetNull)
+
+  @@index([contractId, createdAt])
+  @@index([contractId, id])
+  @@index([eventType])
+  @@index([signerId])
+  @@index([adminId])
 }
 
 enum AuditEventType {
   CONTRACT_CREATED
   CONTRACT_UPDATED
   CONTRACT_SENT
+
+  EMAIL_SEND_REQUESTED
+  EMAIL_SENT
+  EMAIL_FAILED
+
   LINK_OPENED
   OTP_SENT
   OTP_VERIFIED
+
   SIGNATURE_STARTED
   SIGNATURE_COMPLETED
+
   DOCUMENT_UPLOADED
   ID_FRONT_UPLOADED
   ID_BACK_UPLOADED
   SELFIE_UPLOADED
+
   CONTRACT_SIGNED
+  CONTRACT_DOWNLOADED
+
   CONTRACT_CANCELLED
   CONTRACT_EXPIRED
   HASH_SEALED
@@ -362,7 +378,7 @@ model Reference {
   company  String?
   position String?
   relationShip String?
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
 
   @@index([libranzaId])
 }

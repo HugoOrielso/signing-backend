@@ -3,30 +3,72 @@ import { Request, Response } from "express";
 import crypto from "crypto";
 import { Resend } from "resend";
 import { prisma } from "../../database/db";
-import { logAuditEvent } from "../../services/audit/audit.service";
-import { AuditActorType, AuditEventType } from "../../generated/prisma/enums";
+import {
+  trackOtpSent,
+  trackOtpVerified,
+} from "../../services/audit/contract-audit.service";
+import { getAuditRequestContext } from "../../utils/audit-request";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// ── OTP store en memoria (dura 10 min, se elimina al verificar) ───────────────
-// key: `${contractId}:${email}` → { code, expiresAt, attempts }
-const otpStore = new Map<string, { code: string; expiresAt: number; attempts: number }>();
+const otpStore = new Map<
+  string,
+  { code: string; expiresAt: number; attempts: number }
+>();
 
-const OTP_TTL_MS = 10 * 60 * 1000; // 10 minutos
+const OTP_TTL_MS = 10 * 60 * 1000;
 const MAX_ATTEMPTS = 5;
 
 function storeKey(contractId: string, email: string) {
   return `${contractId}:${email.toLowerCase()}`;
 }
 
+function getContractedIdentity(contract: {
+  signers: Array<{
+    id: string;
+    name: string | null;
+    email: string | null;
+    partyRole: string | null;
+  }>;
+  parties: Array<{
+    name: string | null;
+    email: string | null;
+    role: string;
+  }>;
+}, emailNorm: string) {
+  const contractedSigner = contract.signers.find(
+    (signer) =>
+      signer.partyRole === "CONTRACTED" &&
+      signer.email?.toLowerCase() === emailNorm
+  );
+
+  const contractedParty = contract.parties.find(
+    (party) =>
+      party.role === "CONTRACTED" &&
+      party.email?.toLowerCase() === emailNorm
+  );
+
+  return {
+    signerId: contractedSigner?.id ?? null,
+    actorName: contractedSigner?.name ?? contractedParty?.name ?? null,
+    actorEmail: contractedSigner?.email ?? contractedParty?.email ?? emailNorm,
+  };
+}
+
 // ── POST /contracts/public/:token/request-otp ─────────────────────────────────
 export async function requestOtp(req: Request, res: Response) {
   try {
-    const token = Array.isArray(req.params.token) ? req.params.token[0] : req.params.token;
+    const token = Array.isArray(req.params.token)
+      ? req.params.token[0]
+      : req.params.token;
+
     const { email } = req.body as { email?: string };
 
     if (!email?.trim()) {
-      return res.status(400).json({ ok: false, message: "El correo es requerido" });
+      return res.status(400).json({
+        ok: false,
+        message: "El correo es requerido",
+      });
     }
 
     const emailNorm = email.trim().toLowerCase();
@@ -36,7 +78,10 @@ export async function requestOtp(req: Request, res: Response) {
         token,
         status: { in: ["SENT", "VIEWED", "PARTIALLY_SIGNED", "SIGNED"] },
       },
-      include: { signers: true, parties: true },
+      include: {
+        signers: true,
+        parties: true,
+      },
     });
 
     if (!contract) {
@@ -55,14 +100,14 @@ export async function requestOtp(req: Request, res: Response) {
 
     const validEmails = [
       ...contract.signers
-        .filter((s) => s.partyRole === "CONTRACTED")
-        .map((s) => s.email?.toLowerCase())
+        .filter((signer) => signer.partyRole === "CONTRACTED")
+        .map((signer) => signer.email?.toLowerCase())
         .filter(Boolean),
       ...contract.parties
-        .filter((p) => p.role === "CONTRACTED")
-        .map((p) => p.email?.toLowerCase())
+        .filter((party) => party.role === "CONTRACTED")
+        .map((party) => party.email?.toLowerCase())
         .filter(Boolean),
-    ];
+    ] as string[];
 
     if (!validEmails.includes(emailNorm)) {
       return res.json({
@@ -83,7 +128,7 @@ export async function requestOtp(req: Request, res: Response) {
     await resend.emails.send({
       from: process.env.EMAIL_FROM || "onboarding@resend.dev",
       to: emailNorm,
-      subject: `Tu código de verificación — Dimcultura S.A.S`,
+      subject: "Tu código de verificación — Dimcultura S.A.S",
       html: `
         <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;">
           <div style="background:#1a1a2e;padding:24px 32px;text-align:center;">
@@ -111,26 +156,16 @@ export async function requestOtp(req: Request, res: Response) {
     });
 
     try {
-      await logAuditEvent({
+      const auditContext = getAuditRequestContext(req);
+      const identity = getContractedIdentity(contract, emailNorm);
+
+      await trackOtpSent({
         contractId: contract.id,
-        eventType: AuditEventType.OTP_SENT,
-        actorType: AuditActorType.SIGNER,
-        actorEmail: emailNorm,
-        ipAddress: req.ip,
-        userAgent: req.get("user-agent") ?? null,
-        requestId:
-          typeof req.headers["x-request-id"] === "string"
-            ? req.headers["x-request-id"]
-            : null,
-        sessionId:
-          typeof req.headers["x-session-id"] === "string"
-            ? req.headers["x-session-id"]
-            : null,
-        metadata: {
-          email: emailNorm,
-          token,
-          contractStatus: contract.status,
-        },
+        signerId: identity.signerId,
+        actorName: identity.actorName,
+        actorEmail: identity.actorEmail,
+        ...auditContext,
+        contractStatus: contract.status,
       });
     } catch (auditError) {
       console.error("AUDIT ERROR - OTP_SENT:", auditError);
@@ -152,44 +187,73 @@ export async function requestOtp(req: Request, res: Response) {
 // ── POST /contracts/public/:token/verify-otp ──────────────────────────────────
 export async function verifyOtp(req: Request, res: Response) {
   try {
-    const token = Array.isArray(req.params.token) ? req.params.token[0] : req.params.token;
+    const token = Array.isArray(req.params.token)
+      ? req.params.token[0]
+      : req.params.token;
+
     const { email, code } = req.body as { email?: string; code?: string };
 
     if (!email?.trim() || !code?.trim()) {
-      return res.status(400).json({ ok: false, message: "Correo y código son requeridos" });
+      return res.status(400).json({
+        ok: false,
+        message: "Correo y código son requeridos",
+      });
     }
 
     const emailNorm = email.trim().toLowerCase();
 
     const contract = await prisma.contract.findFirst({
       where: { token },
-      select: { id: true, tokenExpiresAt: true, status: true },
+      include: {
+        signers: true,
+        parties: true,
+      },
     });
 
     if (!contract) {
-      return res.status(404).json({ ok: false, message: "Contrato no encontrado" });
+      return res.status(404).json({
+        ok: false,
+        message: "Contrato no encontrado",
+      });
+    }
+
+    if (contract.tokenExpiresAt && contract.tokenExpiresAt < new Date()) {
+      return res.status(400).json({
+        ok: false,
+        message: "El enlace ha expirado",
+      });
     }
 
     const key = storeKey(contract.id, emailNorm);
     const entry = otpStore.get(key);
 
     if (!entry) {
-      return res.status(400).json({ ok: false, message: "Código inválido o expirado. Solicita uno nuevo." });
+      return res.status(400).json({
+        ok: false,
+        message: "Código inválido o expirado. Solicita uno nuevo.",
+      });
     }
 
     if (Date.now() > entry.expiresAt) {
       otpStore.delete(key);
-      return res.status(400).json({ ok: false, message: "El código ha expirado. Solicita uno nuevo." });
+      return res.status(400).json({
+        ok: false,
+        message: "El código ha expirado. Solicita uno nuevo.",
+      });
     }
 
     if (entry.attempts >= MAX_ATTEMPTS) {
       otpStore.delete(key);
-      return res.status(429).json({ ok: false, message: "Demasiados intentos. Solicita un nuevo código." });
+      return res.status(429).json({
+        ok: false,
+        message: "Demasiados intentos. Solicita un nuevo código.",
+      });
     }
 
     if (entry.code !== code.trim()) {
       entry.attempts += 1;
       otpStore.set(key, entry);
+
       const left = MAX_ATTEMPTS - entry.attempts;
 
       return res.status(400).json({
@@ -201,25 +265,15 @@ export async function verifyOtp(req: Request, res: Response) {
     otpStore.delete(key);
 
     try {
-      await logAuditEvent({
+      const auditContext = getAuditRequestContext(req);
+      const identity = getContractedIdentity(contract, emailNorm);
+
+      await trackOtpVerified({
         contractId: contract.id,
-        eventType: AuditEventType.OTP_VERIFIED,
-        actorType: AuditActorType.SIGNER,
-        actorEmail: emailNorm,
-        ipAddress: req.ip,
-        userAgent: req.get("user-agent") ?? null,
-        requestId:
-          typeof req.headers["x-request-id"] === "string"
-            ? req.headers["x-request-id"]
-            : null,
-        sessionId:
-          typeof req.headers["x-session-id"] === "string"
-            ? req.headers["x-session-id"]
-            : null,
-        metadata: {
-          email: emailNorm,
-          token,
-        },
+        signerId: identity.signerId,
+        actorName: identity.actorName,
+        actorEmail: identity.actorEmail,
+        ...auditContext,
       });
     } catch (auditError) {
       console.error("AUDIT ERROR - OTP_VERIFIED:", auditError);
@@ -241,6 +295,9 @@ export async function verifyOtp(req: Request, res: Response) {
     });
   } catch (error: any) {
     console.error("VERIFY OTP ERROR:", error);
-    return res.status(500).json({ ok: false, message: "Error al verificar el código" });
+    return res.status(500).json({
+      ok: false,
+      message: "Error al verificar el código",
+    });
   }
 }

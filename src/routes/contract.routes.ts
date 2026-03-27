@@ -8,7 +8,7 @@ import { downloadPublicSignedContract } from "../controllers/contracts/client/do
 import { viewContractDocument } from "../controllers/contracts/client/documents/view/view.controller";
 import { uploadContractDocument } from "../controllers/contracts/client/documents/upload/upload.controller";
 import { getContractDocuments } from "../controllers/contracts/client/documents/getDocuments/getDocuments.controller";
-import { getPublicContract } from "../controllers/contracts/client/getPublicContract/getPublicCintract.controller";
+import { getPublicContract } from "../controllers/contracts/client/getPublicContract/getPublicSingtract.controller";
 import { signPublicContract } from "../controllers/contracts/client/SignPublicContract/signPublicContract.controller";
 import { getContractById } from "../controllers/contracts/admin/getContractById/getContractById.controller";
 import { getContractAuditTrail } from "../controllers/audit/getContractAuditTrail";
