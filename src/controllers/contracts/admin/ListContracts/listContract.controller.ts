@@ -11,7 +11,7 @@ export async function listContracts(req: AuthenticatedRequest, res: Response) {
     }
 
     const contracts = await prisma.contract.findMany({
-      where: req.user?.role === "ADMIN" ? undefined : { adminId },
+      where: req.user?.role === "ADMIN" || req.user?.role === "CREDIT_ANALYST" ? undefined : { adminId },
       orderBy: { createdAt: "desc" },
       include: {
         parties: true,

@@ -1394,9 +1394,15 @@ export const LibranzaDataScalarFieldEnum = {
   clienteEmail: 'clienteEmail',
   clienteFuncionario: 'clienteFuncionario',
   clienteDesdeHace: 'clienteDesdeHace',
+  clienteFechaNacimiento: 'clienteFechaNacimiento',
+  clienteFechaExpedicionCC: 'clienteFechaExpedicionCC',
   municipioTrabajo: 'municipioTrabajo',
   empresaTrabajo: 'empresaTrabajo',
   departamento: 'departamento',
+  pagaduriaNombre: 'pagaduriaNombre',
+  pagaduriaMunicipio: 'pagaduriaMunicipio',
+  pagaduriaDepartamento: 'pagaduriaDepartamento',
+  tipoContrato: 'tipoContrato',
   sumaTotal: 'sumaTotal',
   numeroCuotas: 'numeroCuotas',
   valorCuota: 'valorCuota',
@@ -1509,12 +1515,22 @@ export const ContractDocumentScalarFieldEnum = {
   id: 'id',
   contractId: 'contractId',
   type: 'type',
-  label: 'label',
-  url: 'url',
-  publicId: 'publicId',
+  status: 'status',
+  notes: 'notes',
+  fileUrl: 'fileUrl',
+  fileName: 'fileName',
   mimeType: 'mimeType',
-  sizeBytes: 'sizeBytes',
-  uploadedAt: 'uploadedAt'
+  source: 'source',
+  publicId: 'publicId',
+  resourceType: 'resourceType',
+  format: 'format',
+  bytes: 'bytes',
+  reviewedById: 'reviewedById',
+  reviewedAt: 'reviewedAt',
+  uploadedById: 'uploadedById',
+  uploadedAt: 'uploadedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type ContractDocumentScalarFieldEnum = (typeof ContractDocumentScalarFieldEnum)[keyof typeof ContractDocumentScalarFieldEnum]
@@ -1678,6 +1694,20 @@ export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMo
 
 
 /**
+ * Reference to a field of type 'ContractEmploymentType'
+ */
+export type EnumContractEmploymentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContractEmploymentType'>
+    
+
+
+/**
+ * Reference to a field of type 'ContractEmploymentType[]'
+ */
+export type ListEnumContractEmploymentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContractEmploymentType[]'>
+    
+
+
+/**
  * Reference to a field of type 'Json'
  */
 export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
@@ -1755,16 +1785,44 @@ export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
- * Reference to a field of type 'DocumentType'
+ * Reference to a field of type 'ContractDocumentType'
  */
-export type EnumDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentType'>
+export type EnumContractDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContractDocumentType'>
     
 
 
 /**
- * Reference to a field of type 'DocumentType[]'
+ * Reference to a field of type 'ContractDocumentType[]'
  */
-export type ListEnumDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentType[]'>
+export type ListEnumContractDocumentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContractDocumentType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DocumentStatus'
+ */
+export type EnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'DocumentStatus[]'
+ */
+export type ListEnumDocumentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DocumentSource'
+ */
+export type EnumDocumentSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentSource'>
+    
+
+
+/**
+ * Reference to a field of type 'DocumentSource[]'
+ */
+export type ListEnumDocumentSourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocumentSource[]'>
     
 
 

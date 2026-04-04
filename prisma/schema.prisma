@@ -19,11 +19,16 @@ model Admin {
   refreshTokens RefreshToken[]
 
   contractAuditEvents ContractAuditEvent[]
+
+  contractDocuments ContractDocument[] @relation("ReviewedContractDocuments")
+
+  uploadedContractDocuments ContractDocument[] @relation("UploadedContractDocuments")
 }
 
 enum AdminRole {
   ADMIN
   OPERATOR
+  CREDIT_ANALYST
 }
 
 model Contract {
@@ -33,11 +38,11 @@ model Contract {
   contractType   String?
   status         ContractStatus @default(DRAFT)
 
-  templateKey String    @default("dimcultura")
-  
-  startDate   DateTime? @db.Timestamptz(3)
-  endDate     DateTime? @db.Timestamptz(3)
-  subject     String?   @db.Text
+  templateKey String @default("dimcultura")
+
+  startDate DateTime? @db.Timestamptz(3)
+  endDate   DateTime? @db.Timestamptz(3)
+  subject   String?   @db.Text
 
   amount        Decimal? @db.Decimal(12, 2)
   currency      String?  @default("COP")
@@ -69,6 +74,23 @@ model Contract {
   @@index([status])
 }
 
+enum ContractStatus {
+  DRAFT // creado, editable por asesor
+  PENDING_DOCUMENTS // falta subir documentos
+  DOCUMENTS_UPLOADED // documentos completos
+  PENDING_VERIFICATION // validación (opcional: manual o automática)
+  READY_TO_SIGN // listo para firma
+  SENT // link enviado al cliente
+  VIEWED // cliente abrió link
+  OTP_PENDING // esperando verificación OTP
+  OTP_VERIFIED // OTP validado
+  PARTIALLY_SIGNED // firma parcial
+  SIGNED // contrato firmado
+  REJECTED // rechazado (docs inválidos o cliente)
+  EXPIRED // expirado
+  CANCELLED // cancelado manualmente
+}
+
 // ─────────────────────────────────────────────────────────
 // LIBRANZA — datos específicos del documento
 // Relación 1-a-1 con Contract
@@ -93,10 +115,20 @@ model LibranzaData {
   clienteFuncionario String?
   clienteDesdeHace   String?
 
+  // NUEVO
+  clienteFechaNacimiento   DateTime? @db.Date
+  clienteFechaExpedicionCC DateTime? @db.Date
+
   // Datos laborales
   municipioTrabajo String?
   empresaTrabajo   String?
   departamento     String?
+
+  // NUEVO - pagaduría
+  pagaduriaNombre       String?
+  pagaduriaMunicipio    String?
+  pagaduriaDepartamento String?
+  tipoContrato          ContractEmploymentType?
 
   // Financiero
   sumaTotal    String?
@@ -105,21 +137,29 @@ model LibranzaData {
   mesCobro     String?
 
   // Cuenta bancaria
-  tipoCuenta   String? // "Ahorros" | "Corriente"
+  tipoCuenta   String?
   numeroCuenta String?
   banco        String?
 
-  // Productos [{codigo, descripcion, valor}]
   productos Json?
 
-  // Forma de pago
-  formaPago String? // "NOMINA" | "EFECTY 110520" | "PSE" | "BANCO"
+  formaPago String?
 
   createdAt  DateTime    @default(now()) @db.Timestamptz(3)
   updatedAt  DateTime    @updatedAt @db.Timestamptz(3)
   references Reference[]
 
   @@index([contractId])
+  @@index([pagaduriaNombre])
+  @@index([tipoContrato])
+}
+
+enum ContractEmploymentType {
+  PROVISIONAL
+  TEMPORAL
+  PROVISIONAL_VACANTE_DEFINITIVA
+  CARRERA_ADMINISTRATIVA
+  PENSIONADO
 }
 
 // ─────────────────────────────────────────────────────────
@@ -244,16 +284,6 @@ model RefreshToken {
   createdAt DateTime @default(now()) @db.Timestamptz(3)
 }
 
-enum ContractStatus {
-  DRAFT
-  SENT
-  VIEWED
-  PARTIALLY_SIGNED
-  SIGNED
-  EXPIRED
-  CANCELLED
-}
-
 enum SignatureType {
   DRAWN
   TYPED
@@ -269,28 +299,60 @@ enum PartyRole {
 // DOCUMENTOS ADJUNTOS — subidos por el cliente al firmar
 // ─────────────────────────────────────────────────────────
 model ContractDocument {
-  id         String   @id @default(uuid())
+  id         String               @id @default(uuid())
   contractId String
+  type       ContractDocumentType
+
+  status DocumentStatus @default(PENDING)
+  notes  String?
+
+  fileUrl  String?
+  fileName String?
+  mimeType String?
+  source   DocumentSource?
+
+  publicId     String?
+  resourceType String?
+  format       String?
+  bytes        Int?
+
+  reviewedById String?
+  reviewedAt   DateTime?
+
+  uploadedById String?
+  uploadedAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  reviewedBy Admin?   @relation("ReviewedContractDocuments", fields: [reviewedById], references: [id])
+  uploadedBy Admin?   @relation("UploadedContractDocuments", fields: [uploadedById], references: [id])
 
-  type      DocumentType
-  label     String // "Cédula frente", "Cédula reverso", "Selfie", "Otro"
-  url       String // URL de Cloudinary
-  publicId  String? // Cloudinary public_id para borrar si hace falta
-  mimeType  String? // "image/jpeg", "application/pdf", etc.
-  sizeBytes Int?
-
-  uploadedAt DateTime @default(now()) @db.Timestamptz(3)
-
+  @@unique([contractId, type])
   @@index([contractId])
+  @@index([type])
+  @@index([status])
 }
 
-enum DocumentType {
-  CEDULA_FRENTE
-  CEDULA_REVERSO
-  SELFIE
-  PDF_ADICIONAL
-  IMAGEN_GENERAL
+enum ContractDocumentType {
+  ID_FRONT
+  ID_BACK
+  SELFIE_WITH_ID
+  BANK_CERTIFICATE
+  PAYROLL_STUB
+  ADDITIONAL_DOCUMENT
+}
+
+enum DocumentSource {
+  CAMERA
+  FILE_UPLOAD
+}
+
+enum DocumentStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 model ContractAuditEvent {
@@ -347,10 +409,12 @@ enum AuditEventType {
   SIGNATURE_STARTED
   SIGNATURE_COMPLETED
 
-  DOCUMENT_UPLOADED
   ID_FRONT_UPLOADED
   ID_BACK_UPLOADED
-  SELFIE_UPLOADED
+  SELFIE_WITH_ID_UPLOADED
+  BANK_CERTIFICATE_UPLOADED
+  PAYROLL_STUB_UPLOADED
+  ADDITIONAL_DOCUMENT_UPLOADED
 
   CONTRACT_SIGNED
   CONTRACT_DOWNLOADED
@@ -362,6 +426,8 @@ enum AuditEventType {
 
 enum AuditActorType {
   ADMIN
+  OPERATOR
+  CREDIT_ANALYST
   SIGNER
   SYSTEM
 }
@@ -371,14 +437,14 @@ model Reference {
   libranzaId String
   libranza   LibranzaData @relation(fields: [libranzaId], references: [id], onDelete: Cascade)
 
-  type     ReferenceType
-  name     String
-  phone    String?
-  email    String?
-  company  String?
-  position String?
+  type         ReferenceType
+  name         String
+  phone        String?
+  email        String?
+  company      String?
+  position     String?
   relationShip String?
-  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  createdAt    DateTime      @default(now()) @db.Timestamptz(3)
 
   @@index([libranzaId])
 }

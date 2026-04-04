@@ -27,93 +27,153 @@ export type AggregateContractDocument = {
 }
 
 export type ContractDocumentAvgAggregateOutputType = {
-  sizeBytes: number | null
+  bytes: number | null
 }
 
 export type ContractDocumentSumAggregateOutputType = {
-  sizeBytes: number | null
+  bytes: number | null
 }
 
 export type ContractDocumentMinAggregateOutputType = {
   id: string | null
   contractId: string | null
-  type: $Enums.DocumentType | null
-  label: string | null
-  url: string | null
-  publicId: string | null
+  type: $Enums.ContractDocumentType | null
+  status: $Enums.DocumentStatus | null
+  notes: string | null
+  fileUrl: string | null
+  fileName: string | null
   mimeType: string | null
-  sizeBytes: number | null
+  source: $Enums.DocumentSource | null
+  publicId: string | null
+  resourceType: string | null
+  format: string | null
+  bytes: number | null
+  reviewedById: string | null
+  reviewedAt: Date | null
+  uploadedById: string | null
   uploadedAt: Date | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type ContractDocumentMaxAggregateOutputType = {
   id: string | null
   contractId: string | null
-  type: $Enums.DocumentType | null
-  label: string | null
-  url: string | null
-  publicId: string | null
+  type: $Enums.ContractDocumentType | null
+  status: $Enums.DocumentStatus | null
+  notes: string | null
+  fileUrl: string | null
+  fileName: string | null
   mimeType: string | null
-  sizeBytes: number | null
+  source: $Enums.DocumentSource | null
+  publicId: string | null
+  resourceType: string | null
+  format: string | null
+  bytes: number | null
+  reviewedById: string | null
+  reviewedAt: Date | null
+  uploadedById: string | null
   uploadedAt: Date | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type ContractDocumentCountAggregateOutputType = {
   id: number
   contractId: number
   type: number
-  label: number
-  url: number
-  publicId: number
+  status: number
+  notes: number
+  fileUrl: number
+  fileName: number
   mimeType: number
-  sizeBytes: number
+  source: number
+  publicId: number
+  resourceType: number
+  format: number
+  bytes: number
+  reviewedById: number
+  reviewedAt: number
+  uploadedById: number
   uploadedAt: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
 
 export type ContractDocumentAvgAggregateInputType = {
-  sizeBytes?: true
+  bytes?: true
 }
 
 export type ContractDocumentSumAggregateInputType = {
-  sizeBytes?: true
+  bytes?: true
 }
 
 export type ContractDocumentMinAggregateInputType = {
   id?: true
   contractId?: true
   type?: true
-  label?: true
-  url?: true
-  publicId?: true
+  status?: true
+  notes?: true
+  fileUrl?: true
+  fileName?: true
   mimeType?: true
-  sizeBytes?: true
+  source?: true
+  publicId?: true
+  resourceType?: true
+  format?: true
+  bytes?: true
+  reviewedById?: true
+  reviewedAt?: true
+  uploadedById?: true
   uploadedAt?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type ContractDocumentMaxAggregateInputType = {
   id?: true
   contractId?: true
   type?: true
-  label?: true
-  url?: true
-  publicId?: true
+  status?: true
+  notes?: true
+  fileUrl?: true
+  fileName?: true
   mimeType?: true
-  sizeBytes?: true
+  source?: true
+  publicId?: true
+  resourceType?: true
+  format?: true
+  bytes?: true
+  reviewedById?: true
+  reviewedAt?: true
+  uploadedById?: true
   uploadedAt?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type ContractDocumentCountAggregateInputType = {
   id?: true
   contractId?: true
   type?: true
-  label?: true
-  url?: true
-  publicId?: true
+  status?: true
+  notes?: true
+  fileUrl?: true
+  fileName?: true
   mimeType?: true
-  sizeBytes?: true
+  source?: true
+  publicId?: true
+  resourceType?: true
+  format?: true
+  bytes?: true
+  reviewedById?: true
+  reviewedAt?: true
+  uploadedById?: true
   uploadedAt?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -206,13 +266,23 @@ export type ContractDocumentGroupByArgs<ExtArgs extends runtime.Types.Extensions
 export type ContractDocumentGroupByOutputType = {
   id: string
   contractId: string
-  type: $Enums.DocumentType
-  label: string
-  url: string
-  publicId: string | null
+  type: $Enums.ContractDocumentType
+  status: $Enums.DocumentStatus
+  notes: string | null
+  fileUrl: string | null
+  fileName: string | null
   mimeType: string | null
-  sizeBytes: number | null
-  uploadedAt: Date
+  source: $Enums.DocumentSource | null
+  publicId: string | null
+  resourceType: string | null
+  format: string | null
+  bytes: number | null
+  reviewedById: string | null
+  reviewedAt: Date | null
+  uploadedById: string | null
+  uploadedAt: Date | null
+  createdAt: Date
+  updatedAt: Date
   _count: ContractDocumentCountAggregateOutputType | null
   _avg: ContractDocumentAvgAggregateOutputType | null
   _sum: ContractDocumentSumAggregateOutputType | null
@@ -241,55 +311,102 @@ export type ContractDocumentWhereInput = {
   NOT?: Prisma.ContractDocumentWhereInput | Prisma.ContractDocumentWhereInput[]
   id?: Prisma.StringFilter<"ContractDocument"> | string
   contractId?: Prisma.StringFilter<"ContractDocument"> | string
-  type?: Prisma.EnumDocumentTypeFilter<"ContractDocument"> | $Enums.DocumentType
-  label?: Prisma.StringFilter<"ContractDocument"> | string
-  url?: Prisma.StringFilter<"ContractDocument"> | string
-  publicId?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  type?: Prisma.EnumContractDocumentTypeFilter<"ContractDocument"> | $Enums.ContractDocumentType
+  status?: Prisma.EnumDocumentStatusFilter<"ContractDocument"> | $Enums.DocumentStatus
+  notes?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  fileUrl?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  fileName?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
   mimeType?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
-  sizeBytes?: Prisma.IntNullableFilter<"ContractDocument"> | number | null
-  uploadedAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
+  source?: Prisma.EnumDocumentSourceNullableFilter<"ContractDocument"> | $Enums.DocumentSource | null
+  publicId?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  resourceType?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  format?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  bytes?: Prisma.IntNullableFilter<"ContractDocument"> | number | null
+  reviewedById?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"ContractDocument"> | Date | string | null
+  uploadedById?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  uploadedAt?: Prisma.DateTimeNullableFilter<"ContractDocument"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
+  reviewedBy?: Prisma.XOR<Prisma.AdminNullableScalarRelationFilter, Prisma.AdminWhereInput> | null
+  uploadedBy?: Prisma.XOR<Prisma.AdminNullableScalarRelationFilter, Prisma.AdminWhereInput> | null
 }
 
 export type ContractDocumentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
   type?: Prisma.SortOrder
-  label?: Prisma.SortOrder
-  url?: Prisma.SortOrder
-  publicId?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileName?: Prisma.SortOrderInput | Prisma.SortOrder
   mimeType?: Prisma.SortOrderInput | Prisma.SortOrder
-  sizeBytes?: Prisma.SortOrderInput | Prisma.SortOrder
-  uploadedAt?: Prisma.SortOrder
+  source?: Prisma.SortOrderInput | Prisma.SortOrder
+  publicId?: Prisma.SortOrderInput | Prisma.SortOrder
+  resourceType?: Prisma.SortOrderInput | Prisma.SortOrder
+  format?: Prisma.SortOrderInput | Prisma.SortOrder
+  bytes?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  uploadedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  uploadedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   contract?: Prisma.ContractOrderByWithRelationInput
+  reviewedBy?: Prisma.AdminOrderByWithRelationInput
+  uploadedBy?: Prisma.AdminOrderByWithRelationInput
 }
 
 export type ContractDocumentWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  contractId_type?: Prisma.ContractDocumentContractIdTypeCompoundUniqueInput
   AND?: Prisma.ContractDocumentWhereInput | Prisma.ContractDocumentWhereInput[]
   OR?: Prisma.ContractDocumentWhereInput[]
   NOT?: Prisma.ContractDocumentWhereInput | Prisma.ContractDocumentWhereInput[]
   contractId?: Prisma.StringFilter<"ContractDocument"> | string
-  type?: Prisma.EnumDocumentTypeFilter<"ContractDocument"> | $Enums.DocumentType
-  label?: Prisma.StringFilter<"ContractDocument"> | string
-  url?: Prisma.StringFilter<"ContractDocument"> | string
-  publicId?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  type?: Prisma.EnumContractDocumentTypeFilter<"ContractDocument"> | $Enums.ContractDocumentType
+  status?: Prisma.EnumDocumentStatusFilter<"ContractDocument"> | $Enums.DocumentStatus
+  notes?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  fileUrl?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  fileName?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
   mimeType?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
-  sizeBytes?: Prisma.IntNullableFilter<"ContractDocument"> | number | null
-  uploadedAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
+  source?: Prisma.EnumDocumentSourceNullableFilter<"ContractDocument"> | $Enums.DocumentSource | null
+  publicId?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  resourceType?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  format?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  bytes?: Prisma.IntNullableFilter<"ContractDocument"> | number | null
+  reviewedById?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"ContractDocument"> | Date | string | null
+  uploadedById?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  uploadedAt?: Prisma.DateTimeNullableFilter<"ContractDocument"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
-}, "id">
+  reviewedBy?: Prisma.XOR<Prisma.AdminNullableScalarRelationFilter, Prisma.AdminWhereInput> | null
+  uploadedBy?: Prisma.XOR<Prisma.AdminNullableScalarRelationFilter, Prisma.AdminWhereInput> | null
+}, "id" | "contractId_type">
 
 export type ContractDocumentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
   type?: Prisma.SortOrder
-  label?: Prisma.SortOrder
-  url?: Prisma.SortOrder
-  publicId?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileName?: Prisma.SortOrderInput | Prisma.SortOrder
   mimeType?: Prisma.SortOrderInput | Prisma.SortOrder
-  sizeBytes?: Prisma.SortOrderInput | Prisma.SortOrder
-  uploadedAt?: Prisma.SortOrder
+  source?: Prisma.SortOrderInput | Prisma.SortOrder
+  publicId?: Prisma.SortOrderInput | Prisma.SortOrder
+  resourceType?: Prisma.SortOrderInput | Prisma.SortOrder
+  format?: Prisma.SortOrderInput | Prisma.SortOrder
+  bytes?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  uploadedById?: Prisma.SortOrderInput | Prisma.SortOrder
+  uploadedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.ContractDocumentCountOrderByAggregateInput
   _avg?: Prisma.ContractDocumentAvgOrderByAggregateInput
   _max?: Prisma.ContractDocumentMaxOrderByAggregateInput
@@ -303,96 +420,174 @@ export type ContractDocumentScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ContractDocumentScalarWhereWithAggregatesInput | Prisma.ContractDocumentScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ContractDocument"> | string
   contractId?: Prisma.StringWithAggregatesFilter<"ContractDocument"> | string
-  type?: Prisma.EnumDocumentTypeWithAggregatesFilter<"ContractDocument"> | $Enums.DocumentType
-  label?: Prisma.StringWithAggregatesFilter<"ContractDocument"> | string
-  url?: Prisma.StringWithAggregatesFilter<"ContractDocument"> | string
-  publicId?: Prisma.StringNullableWithAggregatesFilter<"ContractDocument"> | string | null
+  type?: Prisma.EnumContractDocumentTypeWithAggregatesFilter<"ContractDocument"> | $Enums.ContractDocumentType
+  status?: Prisma.EnumDocumentStatusWithAggregatesFilter<"ContractDocument"> | $Enums.DocumentStatus
+  notes?: Prisma.StringNullableWithAggregatesFilter<"ContractDocument"> | string | null
+  fileUrl?: Prisma.StringNullableWithAggregatesFilter<"ContractDocument"> | string | null
+  fileName?: Prisma.StringNullableWithAggregatesFilter<"ContractDocument"> | string | null
   mimeType?: Prisma.StringNullableWithAggregatesFilter<"ContractDocument"> | string | null
-  sizeBytes?: Prisma.IntNullableWithAggregatesFilter<"ContractDocument"> | number | null
-  uploadedAt?: Prisma.DateTimeWithAggregatesFilter<"ContractDocument"> | Date | string
+  source?: Prisma.EnumDocumentSourceNullableWithAggregatesFilter<"ContractDocument"> | $Enums.DocumentSource | null
+  publicId?: Prisma.StringNullableWithAggregatesFilter<"ContractDocument"> | string | null
+  resourceType?: Prisma.StringNullableWithAggregatesFilter<"ContractDocument"> | string | null
+  format?: Prisma.StringNullableWithAggregatesFilter<"ContractDocument"> | string | null
+  bytes?: Prisma.IntNullableWithAggregatesFilter<"ContractDocument"> | number | null
+  reviewedById?: Prisma.StringNullableWithAggregatesFilter<"ContractDocument"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ContractDocument"> | Date | string | null
+  uploadedById?: Prisma.StringNullableWithAggregatesFilter<"ContractDocument"> | string | null
+  uploadedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"ContractDocument"> | Date | string | null
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"ContractDocument"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ContractDocument"> | Date | string
 }
 
 export type ContractDocumentCreateInput = {
   id?: string
-  type: $Enums.DocumentType
-  label: string
-  url: string
-  publicId?: string | null
+  type: $Enums.ContractDocumentType
+  status?: $Enums.DocumentStatus
+  notes?: string | null
+  fileUrl?: string | null
+  fileName?: string | null
   mimeType?: string | null
-  sizeBytes?: number | null
-  uploadedAt?: Date | string
+  source?: $Enums.DocumentSource | null
+  publicId?: string | null
+  resourceType?: string | null
+  format?: string | null
+  bytes?: number | null
+  reviewedAt?: Date | string | null
+  uploadedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
   contract: Prisma.ContractCreateNestedOneWithoutDocumentsInput
+  reviewedBy?: Prisma.AdminCreateNestedOneWithoutContractDocumentsInput
+  uploadedBy?: Prisma.AdminCreateNestedOneWithoutUploadedContractDocumentsInput
 }
 
 export type ContractDocumentUncheckedCreateInput = {
   id?: string
   contractId: string
-  type: $Enums.DocumentType
-  label: string
-  url: string
-  publicId?: string | null
+  type: $Enums.ContractDocumentType
+  status?: $Enums.DocumentStatus
+  notes?: string | null
+  fileUrl?: string | null
+  fileName?: string | null
   mimeType?: string | null
-  sizeBytes?: number | null
-  uploadedAt?: Date | string
+  source?: $Enums.DocumentSource | null
+  publicId?: string | null
+  resourceType?: string | null
+  format?: string | null
+  bytes?: number | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  uploadedById?: string | null
+  uploadedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ContractDocumentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  label?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.StringFieldUpdateOperationsInput | string
-  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumContractDocumentTypeFieldUpdateOperationsInput | $Enums.ContractDocumentType
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  source?: Prisma.NullableEnumDocumentSourceFieldUpdateOperationsInput | $Enums.DocumentSource | null
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contract?: Prisma.ContractUpdateOneRequiredWithoutDocumentsNestedInput
+  reviewedBy?: Prisma.AdminUpdateOneWithoutContractDocumentsNestedInput
+  uploadedBy?: Prisma.AdminUpdateOneWithoutUploadedContractDocumentsNestedInput
 }
 
 export type ContractDocumentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  label?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.StringFieldUpdateOperationsInput | string
-  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumContractDocumentTypeFieldUpdateOperationsInput | $Enums.ContractDocumentType
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  source?: Prisma.NullableEnumDocumentSourceFieldUpdateOperationsInput | $Enums.DocumentSource | null
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ContractDocumentCreateManyInput = {
   id?: string
   contractId: string
-  type: $Enums.DocumentType
-  label: string
-  url: string
-  publicId?: string | null
+  type: $Enums.ContractDocumentType
+  status?: $Enums.DocumentStatus
+  notes?: string | null
+  fileUrl?: string | null
+  fileName?: string | null
   mimeType?: string | null
-  sizeBytes?: number | null
-  uploadedAt?: Date | string
+  source?: $Enums.DocumentSource | null
+  publicId?: string | null
+  resourceType?: string | null
+  format?: string | null
+  bytes?: number | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  uploadedById?: string | null
+  uploadedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ContractDocumentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  label?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.StringFieldUpdateOperationsInput | string
-  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumContractDocumentTypeFieldUpdateOperationsInput | $Enums.ContractDocumentType
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  source?: Prisma.NullableEnumDocumentSourceFieldUpdateOperationsInput | $Enums.DocumentSource | null
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ContractDocumentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contractId?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  label?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.StringFieldUpdateOperationsInput | string
-  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumContractDocumentTypeFieldUpdateOperationsInput | $Enums.ContractDocumentType
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  source?: Prisma.NullableEnumDocumentSourceFieldUpdateOperationsInput | $Enums.DocumentSource | null
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ContractDocumentListRelationFilter = {
@@ -405,48 +600,167 @@ export type ContractDocumentOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type ContractDocumentContractIdTypeCompoundUniqueInput = {
+  contractId: string
+  type: $Enums.ContractDocumentType
+}
+
 export type ContractDocumentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
   type?: Prisma.SortOrder
-  label?: Prisma.SortOrder
-  url?: Prisma.SortOrder
-  publicId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
+  fileUrl?: Prisma.SortOrder
+  fileName?: Prisma.SortOrder
   mimeType?: Prisma.SortOrder
-  sizeBytes?: Prisma.SortOrder
+  source?: Prisma.SortOrder
+  publicId?: Prisma.SortOrder
+  resourceType?: Prisma.SortOrder
+  format?: Prisma.SortOrder
+  bytes?: Prisma.SortOrder
+  reviewedById?: Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrder
+  uploadedById?: Prisma.SortOrder
   uploadedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type ContractDocumentAvgOrderByAggregateInput = {
-  sizeBytes?: Prisma.SortOrder
+  bytes?: Prisma.SortOrder
 }
 
 export type ContractDocumentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
   type?: Prisma.SortOrder
-  label?: Prisma.SortOrder
-  url?: Prisma.SortOrder
-  publicId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
+  fileUrl?: Prisma.SortOrder
+  fileName?: Prisma.SortOrder
   mimeType?: Prisma.SortOrder
-  sizeBytes?: Prisma.SortOrder
+  source?: Prisma.SortOrder
+  publicId?: Prisma.SortOrder
+  resourceType?: Prisma.SortOrder
+  format?: Prisma.SortOrder
+  bytes?: Prisma.SortOrder
+  reviewedById?: Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrder
+  uploadedById?: Prisma.SortOrder
   uploadedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type ContractDocumentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   contractId?: Prisma.SortOrder
   type?: Prisma.SortOrder
-  label?: Prisma.SortOrder
-  url?: Prisma.SortOrder
-  publicId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
+  fileUrl?: Prisma.SortOrder
+  fileName?: Prisma.SortOrder
   mimeType?: Prisma.SortOrder
-  sizeBytes?: Prisma.SortOrder
+  source?: Prisma.SortOrder
+  publicId?: Prisma.SortOrder
+  resourceType?: Prisma.SortOrder
+  format?: Prisma.SortOrder
+  bytes?: Prisma.SortOrder
+  reviewedById?: Prisma.SortOrder
+  reviewedAt?: Prisma.SortOrder
+  uploadedById?: Prisma.SortOrder
   uploadedAt?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type ContractDocumentSumOrderByAggregateInput = {
-  sizeBytes?: Prisma.SortOrder
+  bytes?: Prisma.SortOrder
+}
+
+export type ContractDocumentCreateNestedManyWithoutReviewedByInput = {
+  create?: Prisma.XOR<Prisma.ContractDocumentCreateWithoutReviewedByInput, Prisma.ContractDocumentUncheckedCreateWithoutReviewedByInput> | Prisma.ContractDocumentCreateWithoutReviewedByInput[] | Prisma.ContractDocumentUncheckedCreateWithoutReviewedByInput[]
+  connectOrCreate?: Prisma.ContractDocumentCreateOrConnectWithoutReviewedByInput | Prisma.ContractDocumentCreateOrConnectWithoutReviewedByInput[]
+  createMany?: Prisma.ContractDocumentCreateManyReviewedByInputEnvelope
+  connect?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+}
+
+export type ContractDocumentCreateNestedManyWithoutUploadedByInput = {
+  create?: Prisma.XOR<Prisma.ContractDocumentCreateWithoutUploadedByInput, Prisma.ContractDocumentUncheckedCreateWithoutUploadedByInput> | Prisma.ContractDocumentCreateWithoutUploadedByInput[] | Prisma.ContractDocumentUncheckedCreateWithoutUploadedByInput[]
+  connectOrCreate?: Prisma.ContractDocumentCreateOrConnectWithoutUploadedByInput | Prisma.ContractDocumentCreateOrConnectWithoutUploadedByInput[]
+  createMany?: Prisma.ContractDocumentCreateManyUploadedByInputEnvelope
+  connect?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+}
+
+export type ContractDocumentUncheckedCreateNestedManyWithoutReviewedByInput = {
+  create?: Prisma.XOR<Prisma.ContractDocumentCreateWithoutReviewedByInput, Prisma.ContractDocumentUncheckedCreateWithoutReviewedByInput> | Prisma.ContractDocumentCreateWithoutReviewedByInput[] | Prisma.ContractDocumentUncheckedCreateWithoutReviewedByInput[]
+  connectOrCreate?: Prisma.ContractDocumentCreateOrConnectWithoutReviewedByInput | Prisma.ContractDocumentCreateOrConnectWithoutReviewedByInput[]
+  createMany?: Prisma.ContractDocumentCreateManyReviewedByInputEnvelope
+  connect?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+}
+
+export type ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput = {
+  create?: Prisma.XOR<Prisma.ContractDocumentCreateWithoutUploadedByInput, Prisma.ContractDocumentUncheckedCreateWithoutUploadedByInput> | Prisma.ContractDocumentCreateWithoutUploadedByInput[] | Prisma.ContractDocumentUncheckedCreateWithoutUploadedByInput[]
+  connectOrCreate?: Prisma.ContractDocumentCreateOrConnectWithoutUploadedByInput | Prisma.ContractDocumentCreateOrConnectWithoutUploadedByInput[]
+  createMany?: Prisma.ContractDocumentCreateManyUploadedByInputEnvelope
+  connect?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+}
+
+export type ContractDocumentUpdateManyWithoutReviewedByNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractDocumentCreateWithoutReviewedByInput, Prisma.ContractDocumentUncheckedCreateWithoutReviewedByInput> | Prisma.ContractDocumentCreateWithoutReviewedByInput[] | Prisma.ContractDocumentUncheckedCreateWithoutReviewedByInput[]
+  connectOrCreate?: Prisma.ContractDocumentCreateOrConnectWithoutReviewedByInput | Prisma.ContractDocumentCreateOrConnectWithoutReviewedByInput[]
+  upsert?: Prisma.ContractDocumentUpsertWithWhereUniqueWithoutReviewedByInput | Prisma.ContractDocumentUpsertWithWhereUniqueWithoutReviewedByInput[]
+  createMany?: Prisma.ContractDocumentCreateManyReviewedByInputEnvelope
+  set?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  disconnect?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  delete?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  connect?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  update?: Prisma.ContractDocumentUpdateWithWhereUniqueWithoutReviewedByInput | Prisma.ContractDocumentUpdateWithWhereUniqueWithoutReviewedByInput[]
+  updateMany?: Prisma.ContractDocumentUpdateManyWithWhereWithoutReviewedByInput | Prisma.ContractDocumentUpdateManyWithWhereWithoutReviewedByInput[]
+  deleteMany?: Prisma.ContractDocumentScalarWhereInput | Prisma.ContractDocumentScalarWhereInput[]
+}
+
+export type ContractDocumentUpdateManyWithoutUploadedByNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractDocumentCreateWithoutUploadedByInput, Prisma.ContractDocumentUncheckedCreateWithoutUploadedByInput> | Prisma.ContractDocumentCreateWithoutUploadedByInput[] | Prisma.ContractDocumentUncheckedCreateWithoutUploadedByInput[]
+  connectOrCreate?: Prisma.ContractDocumentCreateOrConnectWithoutUploadedByInput | Prisma.ContractDocumentCreateOrConnectWithoutUploadedByInput[]
+  upsert?: Prisma.ContractDocumentUpsertWithWhereUniqueWithoutUploadedByInput | Prisma.ContractDocumentUpsertWithWhereUniqueWithoutUploadedByInput[]
+  createMany?: Prisma.ContractDocumentCreateManyUploadedByInputEnvelope
+  set?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  disconnect?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  delete?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  connect?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  update?: Prisma.ContractDocumentUpdateWithWhereUniqueWithoutUploadedByInput | Prisma.ContractDocumentUpdateWithWhereUniqueWithoutUploadedByInput[]
+  updateMany?: Prisma.ContractDocumentUpdateManyWithWhereWithoutUploadedByInput | Prisma.ContractDocumentUpdateManyWithWhereWithoutUploadedByInput[]
+  deleteMany?: Prisma.ContractDocumentScalarWhereInput | Prisma.ContractDocumentScalarWhereInput[]
+}
+
+export type ContractDocumentUncheckedUpdateManyWithoutReviewedByNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractDocumentCreateWithoutReviewedByInput, Prisma.ContractDocumentUncheckedCreateWithoutReviewedByInput> | Prisma.ContractDocumentCreateWithoutReviewedByInput[] | Prisma.ContractDocumentUncheckedCreateWithoutReviewedByInput[]
+  connectOrCreate?: Prisma.ContractDocumentCreateOrConnectWithoutReviewedByInput | Prisma.ContractDocumentCreateOrConnectWithoutReviewedByInput[]
+  upsert?: Prisma.ContractDocumentUpsertWithWhereUniqueWithoutReviewedByInput | Prisma.ContractDocumentUpsertWithWhereUniqueWithoutReviewedByInput[]
+  createMany?: Prisma.ContractDocumentCreateManyReviewedByInputEnvelope
+  set?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  disconnect?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  delete?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  connect?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  update?: Prisma.ContractDocumentUpdateWithWhereUniqueWithoutReviewedByInput | Prisma.ContractDocumentUpdateWithWhereUniqueWithoutReviewedByInput[]
+  updateMany?: Prisma.ContractDocumentUpdateManyWithWhereWithoutReviewedByInput | Prisma.ContractDocumentUpdateManyWithWhereWithoutReviewedByInput[]
+  deleteMany?: Prisma.ContractDocumentScalarWhereInput | Prisma.ContractDocumentScalarWhereInput[]
+}
+
+export type ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput = {
+  create?: Prisma.XOR<Prisma.ContractDocumentCreateWithoutUploadedByInput, Prisma.ContractDocumentUncheckedCreateWithoutUploadedByInput> | Prisma.ContractDocumentCreateWithoutUploadedByInput[] | Prisma.ContractDocumentUncheckedCreateWithoutUploadedByInput[]
+  connectOrCreate?: Prisma.ContractDocumentCreateOrConnectWithoutUploadedByInput | Prisma.ContractDocumentCreateOrConnectWithoutUploadedByInput[]
+  upsert?: Prisma.ContractDocumentUpsertWithWhereUniqueWithoutUploadedByInput | Prisma.ContractDocumentUpsertWithWhereUniqueWithoutUploadedByInput[]
+  createMany?: Prisma.ContractDocumentCreateManyUploadedByInputEnvelope
+  set?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  disconnect?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  delete?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  connect?: Prisma.ContractDocumentWhereUniqueInput | Prisma.ContractDocumentWhereUniqueInput[]
+  update?: Prisma.ContractDocumentUpdateWithWhereUniqueWithoutUploadedByInput | Prisma.ContractDocumentUpdateWithWhereUniqueWithoutUploadedByInput[]
+  updateMany?: Prisma.ContractDocumentUpdateManyWithWhereWithoutUploadedByInput | Prisma.ContractDocumentUpdateManyWithWhereWithoutUploadedByInput[]
+  deleteMany?: Prisma.ContractDocumentScalarWhereInput | Prisma.ContractDocumentScalarWhereInput[]
 }
 
 export type ContractDocumentCreateNestedManyWithoutContractInput = {
@@ -491,8 +805,16 @@ export type ContractDocumentUncheckedUpdateManyWithoutContractNestedInput = {
   deleteMany?: Prisma.ContractDocumentScalarWhereInput | Prisma.ContractDocumentScalarWhereInput[]
 }
 
-export type EnumDocumentTypeFieldUpdateOperationsInput = {
-  set?: $Enums.DocumentType
+export type EnumContractDocumentTypeFieldUpdateOperationsInput = {
+  set?: $Enums.ContractDocumentType
+}
+
+export type EnumDocumentStatusFieldUpdateOperationsInput = {
+  set?: $Enums.DocumentStatus
+}
+
+export type NullableEnumDocumentSourceFieldUpdateOperationsInput = {
+  set?: $Enums.DocumentSource | null
 }
 
 export type NullableIntFieldUpdateOperationsInput = {
@@ -503,26 +825,207 @@ export type NullableIntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type ContractDocumentCreateWithoutReviewedByInput = {
+  id?: string
+  type: $Enums.ContractDocumentType
+  status?: $Enums.DocumentStatus
+  notes?: string | null
+  fileUrl?: string | null
+  fileName?: string | null
+  mimeType?: string | null
+  source?: $Enums.DocumentSource | null
+  publicId?: string | null
+  resourceType?: string | null
+  format?: string | null
+  bytes?: number | null
+  reviewedAt?: Date | string | null
+  uploadedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contract: Prisma.ContractCreateNestedOneWithoutDocumentsInput
+  uploadedBy?: Prisma.AdminCreateNestedOneWithoutUploadedContractDocumentsInput
+}
+
+export type ContractDocumentUncheckedCreateWithoutReviewedByInput = {
+  id?: string
+  contractId: string
+  type: $Enums.ContractDocumentType
+  status?: $Enums.DocumentStatus
+  notes?: string | null
+  fileUrl?: string | null
+  fileName?: string | null
+  mimeType?: string | null
+  source?: $Enums.DocumentSource | null
+  publicId?: string | null
+  resourceType?: string | null
+  format?: string | null
+  bytes?: number | null
+  reviewedAt?: Date | string | null
+  uploadedById?: string | null
+  uploadedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ContractDocumentCreateOrConnectWithoutReviewedByInput = {
+  where: Prisma.ContractDocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContractDocumentCreateWithoutReviewedByInput, Prisma.ContractDocumentUncheckedCreateWithoutReviewedByInput>
+}
+
+export type ContractDocumentCreateManyReviewedByInputEnvelope = {
+  data: Prisma.ContractDocumentCreateManyReviewedByInput | Prisma.ContractDocumentCreateManyReviewedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type ContractDocumentCreateWithoutUploadedByInput = {
+  id?: string
+  type: $Enums.ContractDocumentType
+  status?: $Enums.DocumentStatus
+  notes?: string | null
+  fileUrl?: string | null
+  fileName?: string | null
+  mimeType?: string | null
+  source?: $Enums.DocumentSource | null
+  publicId?: string | null
+  resourceType?: string | null
+  format?: string | null
+  bytes?: number | null
+  reviewedAt?: Date | string | null
+  uploadedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contract: Prisma.ContractCreateNestedOneWithoutDocumentsInput
+  reviewedBy?: Prisma.AdminCreateNestedOneWithoutContractDocumentsInput
+}
+
+export type ContractDocumentUncheckedCreateWithoutUploadedByInput = {
+  id?: string
+  contractId: string
+  type: $Enums.ContractDocumentType
+  status?: $Enums.DocumentStatus
+  notes?: string | null
+  fileUrl?: string | null
+  fileName?: string | null
+  mimeType?: string | null
+  source?: $Enums.DocumentSource | null
+  publicId?: string | null
+  resourceType?: string | null
+  format?: string | null
+  bytes?: number | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  uploadedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ContractDocumentCreateOrConnectWithoutUploadedByInput = {
+  where: Prisma.ContractDocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContractDocumentCreateWithoutUploadedByInput, Prisma.ContractDocumentUncheckedCreateWithoutUploadedByInput>
+}
+
+export type ContractDocumentCreateManyUploadedByInputEnvelope = {
+  data: Prisma.ContractDocumentCreateManyUploadedByInput | Prisma.ContractDocumentCreateManyUploadedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type ContractDocumentUpsertWithWhereUniqueWithoutReviewedByInput = {
+  where: Prisma.ContractDocumentWhereUniqueInput
+  update: Prisma.XOR<Prisma.ContractDocumentUpdateWithoutReviewedByInput, Prisma.ContractDocumentUncheckedUpdateWithoutReviewedByInput>
+  create: Prisma.XOR<Prisma.ContractDocumentCreateWithoutReviewedByInput, Prisma.ContractDocumentUncheckedCreateWithoutReviewedByInput>
+}
+
+export type ContractDocumentUpdateWithWhereUniqueWithoutReviewedByInput = {
+  where: Prisma.ContractDocumentWhereUniqueInput
+  data: Prisma.XOR<Prisma.ContractDocumentUpdateWithoutReviewedByInput, Prisma.ContractDocumentUncheckedUpdateWithoutReviewedByInput>
+}
+
+export type ContractDocumentUpdateManyWithWhereWithoutReviewedByInput = {
+  where: Prisma.ContractDocumentScalarWhereInput
+  data: Prisma.XOR<Prisma.ContractDocumentUpdateManyMutationInput, Prisma.ContractDocumentUncheckedUpdateManyWithoutReviewedByInput>
+}
+
+export type ContractDocumentScalarWhereInput = {
+  AND?: Prisma.ContractDocumentScalarWhereInput | Prisma.ContractDocumentScalarWhereInput[]
+  OR?: Prisma.ContractDocumentScalarWhereInput[]
+  NOT?: Prisma.ContractDocumentScalarWhereInput | Prisma.ContractDocumentScalarWhereInput[]
+  id?: Prisma.StringFilter<"ContractDocument"> | string
+  contractId?: Prisma.StringFilter<"ContractDocument"> | string
+  type?: Prisma.EnumContractDocumentTypeFilter<"ContractDocument"> | $Enums.ContractDocumentType
+  status?: Prisma.EnumDocumentStatusFilter<"ContractDocument"> | $Enums.DocumentStatus
+  notes?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  fileUrl?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  fileName?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  mimeType?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  source?: Prisma.EnumDocumentSourceNullableFilter<"ContractDocument"> | $Enums.DocumentSource | null
+  publicId?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  resourceType?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  format?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  bytes?: Prisma.IntNullableFilter<"ContractDocument"> | number | null
+  reviewedById?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  reviewedAt?: Prisma.DateTimeNullableFilter<"ContractDocument"> | Date | string | null
+  uploadedById?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
+  uploadedAt?: Prisma.DateTimeNullableFilter<"ContractDocument"> | Date | string | null
+  createdAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
+}
+
+export type ContractDocumentUpsertWithWhereUniqueWithoutUploadedByInput = {
+  where: Prisma.ContractDocumentWhereUniqueInput
+  update: Prisma.XOR<Prisma.ContractDocumentUpdateWithoutUploadedByInput, Prisma.ContractDocumentUncheckedUpdateWithoutUploadedByInput>
+  create: Prisma.XOR<Prisma.ContractDocumentCreateWithoutUploadedByInput, Prisma.ContractDocumentUncheckedCreateWithoutUploadedByInput>
+}
+
+export type ContractDocumentUpdateWithWhereUniqueWithoutUploadedByInput = {
+  where: Prisma.ContractDocumentWhereUniqueInput
+  data: Prisma.XOR<Prisma.ContractDocumentUpdateWithoutUploadedByInput, Prisma.ContractDocumentUncheckedUpdateWithoutUploadedByInput>
+}
+
+export type ContractDocumentUpdateManyWithWhereWithoutUploadedByInput = {
+  where: Prisma.ContractDocumentScalarWhereInput
+  data: Prisma.XOR<Prisma.ContractDocumentUpdateManyMutationInput, Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByInput>
+}
+
 export type ContractDocumentCreateWithoutContractInput = {
   id?: string
-  type: $Enums.DocumentType
-  label: string
-  url: string
-  publicId?: string | null
+  type: $Enums.ContractDocumentType
+  status?: $Enums.DocumentStatus
+  notes?: string | null
+  fileUrl?: string | null
+  fileName?: string | null
   mimeType?: string | null
-  sizeBytes?: number | null
-  uploadedAt?: Date | string
+  source?: $Enums.DocumentSource | null
+  publicId?: string | null
+  resourceType?: string | null
+  format?: string | null
+  bytes?: number | null
+  reviewedAt?: Date | string | null
+  uploadedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  reviewedBy?: Prisma.AdminCreateNestedOneWithoutContractDocumentsInput
+  uploadedBy?: Prisma.AdminCreateNestedOneWithoutUploadedContractDocumentsInput
 }
 
 export type ContractDocumentUncheckedCreateWithoutContractInput = {
   id?: string
-  type: $Enums.DocumentType
-  label: string
-  url: string
-  publicId?: string | null
+  type: $Enums.ContractDocumentType
+  status?: $Enums.DocumentStatus
+  notes?: string | null
+  fileUrl?: string | null
+  fileName?: string | null
   mimeType?: string | null
-  sizeBytes?: number | null
-  uploadedAt?: Date | string
+  source?: $Enums.DocumentSource | null
+  publicId?: string | null
+  resourceType?: string | null
+  format?: string | null
+  bytes?: number | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  uploadedById?: string | null
+  uploadedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ContractDocumentCreateOrConnectWithoutContractInput = {
@@ -551,63 +1054,256 @@ export type ContractDocumentUpdateManyWithWhereWithoutContractInput = {
   data: Prisma.XOR<Prisma.ContractDocumentUpdateManyMutationInput, Prisma.ContractDocumentUncheckedUpdateManyWithoutContractInput>
 }
 
-export type ContractDocumentScalarWhereInput = {
-  AND?: Prisma.ContractDocumentScalarWhereInput | Prisma.ContractDocumentScalarWhereInput[]
-  OR?: Prisma.ContractDocumentScalarWhereInput[]
-  NOT?: Prisma.ContractDocumentScalarWhereInput | Prisma.ContractDocumentScalarWhereInput[]
-  id?: Prisma.StringFilter<"ContractDocument"> | string
-  contractId?: Prisma.StringFilter<"ContractDocument"> | string
-  type?: Prisma.EnumDocumentTypeFilter<"ContractDocument"> | $Enums.DocumentType
-  label?: Prisma.StringFilter<"ContractDocument"> | string
-  url?: Prisma.StringFilter<"ContractDocument"> | string
-  publicId?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
-  mimeType?: Prisma.StringNullableFilter<"ContractDocument"> | string | null
-  sizeBytes?: Prisma.IntNullableFilter<"ContractDocument"> | number | null
-  uploadedAt?: Prisma.DateTimeFilter<"ContractDocument"> | Date | string
+export type ContractDocumentCreateManyReviewedByInput = {
+  id?: string
+  contractId: string
+  type: $Enums.ContractDocumentType
+  status?: $Enums.DocumentStatus
+  notes?: string | null
+  fileUrl?: string | null
+  fileName?: string | null
+  mimeType?: string | null
+  source?: $Enums.DocumentSource | null
+  publicId?: string | null
+  resourceType?: string | null
+  format?: string | null
+  bytes?: number | null
+  reviewedAt?: Date | string | null
+  uploadedById?: string | null
+  uploadedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ContractDocumentCreateManyUploadedByInput = {
+  id?: string
+  contractId: string
+  type: $Enums.ContractDocumentType
+  status?: $Enums.DocumentStatus
+  notes?: string | null
+  fileUrl?: string | null
+  fileName?: string | null
+  mimeType?: string | null
+  source?: $Enums.DocumentSource | null
+  publicId?: string | null
+  resourceType?: string | null
+  format?: string | null
+  bytes?: number | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  uploadedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ContractDocumentUpdateWithoutReviewedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumContractDocumentTypeFieldUpdateOperationsInput | $Enums.ContractDocumentType
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableEnumDocumentSourceFieldUpdateOperationsInput | $Enums.DocumentSource | null
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contract?: Prisma.ContractUpdateOneRequiredWithoutDocumentsNestedInput
+  uploadedBy?: Prisma.AdminUpdateOneWithoutUploadedContractDocumentsNestedInput
+}
+
+export type ContractDocumentUncheckedUpdateWithoutReviewedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumContractDocumentTypeFieldUpdateOperationsInput | $Enums.ContractDocumentType
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableEnumDocumentSourceFieldUpdateOperationsInput | $Enums.DocumentSource | null
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ContractDocumentUncheckedUpdateManyWithoutReviewedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumContractDocumentTypeFieldUpdateOperationsInput | $Enums.ContractDocumentType
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableEnumDocumentSourceFieldUpdateOperationsInput | $Enums.DocumentSource | null
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ContractDocumentUpdateWithoutUploadedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumContractDocumentTypeFieldUpdateOperationsInput | $Enums.ContractDocumentType
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableEnumDocumentSourceFieldUpdateOperationsInput | $Enums.DocumentSource | null
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contract?: Prisma.ContractUpdateOneRequiredWithoutDocumentsNestedInput
+  reviewedBy?: Prisma.AdminUpdateOneWithoutContractDocumentsNestedInput
+}
+
+export type ContractDocumentUncheckedUpdateWithoutUploadedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumContractDocumentTypeFieldUpdateOperationsInput | $Enums.ContractDocumentType
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableEnumDocumentSourceFieldUpdateOperationsInput | $Enums.DocumentSource | null
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ContractDocumentUncheckedUpdateManyWithoutUploadedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.EnumContractDocumentTypeFieldUpdateOperationsInput | $Enums.ContractDocumentType
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  source?: Prisma.NullableEnumDocumentSourceFieldUpdateOperationsInput | $Enums.DocumentSource | null
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ContractDocumentCreateManyContractInput = {
   id?: string
-  type: $Enums.DocumentType
-  label: string
-  url: string
-  publicId?: string | null
+  type: $Enums.ContractDocumentType
+  status?: $Enums.DocumentStatus
+  notes?: string | null
+  fileUrl?: string | null
+  fileName?: string | null
   mimeType?: string | null
-  sizeBytes?: number | null
-  uploadedAt?: Date | string
+  source?: $Enums.DocumentSource | null
+  publicId?: string | null
+  resourceType?: string | null
+  format?: string | null
+  bytes?: number | null
+  reviewedById?: string | null
+  reviewedAt?: Date | string | null
+  uploadedById?: string | null
+  uploadedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type ContractDocumentUpdateWithoutContractInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  label?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.StringFieldUpdateOperationsInput | string
-  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumContractDocumentTypeFieldUpdateOperationsInput | $Enums.ContractDocumentType
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  source?: Prisma.NullableEnumDocumentSourceFieldUpdateOperationsInput | $Enums.DocumentSource | null
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reviewedBy?: Prisma.AdminUpdateOneWithoutContractDocumentsNestedInput
+  uploadedBy?: Prisma.AdminUpdateOneWithoutUploadedContractDocumentsNestedInput
 }
 
 export type ContractDocumentUncheckedUpdateWithoutContractInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  label?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.StringFieldUpdateOperationsInput | string
-  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumContractDocumentTypeFieldUpdateOperationsInput | $Enums.ContractDocumentType
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  source?: Prisma.NullableEnumDocumentSourceFieldUpdateOperationsInput | $Enums.DocumentSource | null
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ContractDocumentUncheckedUpdateManyWithoutContractInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumDocumentTypeFieldUpdateOperationsInput | $Enums.DocumentType
-  label?: Prisma.StringFieldUpdateOperationsInput | string
-  url?: Prisma.StringFieldUpdateOperationsInput | string
-  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  type?: Prisma.EnumContractDocumentTypeFieldUpdateOperationsInput | $Enums.ContractDocumentType
+  status?: Prisma.EnumDocumentStatusFieldUpdateOperationsInput | $Enums.DocumentStatus
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  sizeBytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  uploadedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  source?: Prisma.NullableEnumDocumentSourceFieldUpdateOperationsInput | $Enums.DocumentSource | null
+  publicId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  resourceType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  format?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bytes?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  reviewedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  reviewedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  uploadedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  uploadedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -616,79 +1312,143 @@ export type ContractDocumentSelect<ExtArgs extends runtime.Types.Extensions.Inte
   id?: boolean
   contractId?: boolean
   type?: boolean
-  label?: boolean
-  url?: boolean
-  publicId?: boolean
+  status?: boolean
+  notes?: boolean
+  fileUrl?: boolean
+  fileName?: boolean
   mimeType?: boolean
-  sizeBytes?: boolean
+  source?: boolean
+  publicId?: boolean
+  resourceType?: boolean
+  format?: boolean
+  bytes?: boolean
+  reviewedById?: boolean
+  reviewedAt?: boolean
+  uploadedById?: boolean
   uploadedAt?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.ContractDocument$reviewedByArgs<ExtArgs>
+  uploadedBy?: boolean | Prisma.ContractDocument$uploadedByArgs<ExtArgs>
 }, ExtArgs["result"]["contractDocument"]>
 
 export type ContractDocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   contractId?: boolean
   type?: boolean
-  label?: boolean
-  url?: boolean
-  publicId?: boolean
+  status?: boolean
+  notes?: boolean
+  fileUrl?: boolean
+  fileName?: boolean
   mimeType?: boolean
-  sizeBytes?: boolean
+  source?: boolean
+  publicId?: boolean
+  resourceType?: boolean
+  format?: boolean
+  bytes?: boolean
+  reviewedById?: boolean
+  reviewedAt?: boolean
+  uploadedById?: boolean
   uploadedAt?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.ContractDocument$reviewedByArgs<ExtArgs>
+  uploadedBy?: boolean | Prisma.ContractDocument$uploadedByArgs<ExtArgs>
 }, ExtArgs["result"]["contractDocument"]>
 
 export type ContractDocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   contractId?: boolean
   type?: boolean
-  label?: boolean
-  url?: boolean
-  publicId?: boolean
+  status?: boolean
+  notes?: boolean
+  fileUrl?: boolean
+  fileName?: boolean
   mimeType?: boolean
-  sizeBytes?: boolean
+  source?: boolean
+  publicId?: boolean
+  resourceType?: boolean
+  format?: boolean
+  bytes?: boolean
+  reviewedById?: boolean
+  reviewedAt?: boolean
+  uploadedById?: boolean
   uploadedAt?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.ContractDocument$reviewedByArgs<ExtArgs>
+  uploadedBy?: boolean | Prisma.ContractDocument$uploadedByArgs<ExtArgs>
 }, ExtArgs["result"]["contractDocument"]>
 
 export type ContractDocumentSelectScalar = {
   id?: boolean
   contractId?: boolean
   type?: boolean
-  label?: boolean
-  url?: boolean
-  publicId?: boolean
+  status?: boolean
+  notes?: boolean
+  fileUrl?: boolean
+  fileName?: boolean
   mimeType?: boolean
-  sizeBytes?: boolean
+  source?: boolean
+  publicId?: boolean
+  resourceType?: boolean
+  format?: boolean
+  bytes?: boolean
+  reviewedById?: boolean
+  reviewedAt?: boolean
+  uploadedById?: boolean
   uploadedAt?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type ContractDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contractId" | "type" | "label" | "url" | "publicId" | "mimeType" | "sizeBytes" | "uploadedAt", ExtArgs["result"]["contractDocument"]>
+export type ContractDocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contractId" | "type" | "status" | "notes" | "fileUrl" | "fileName" | "mimeType" | "source" | "publicId" | "resourceType" | "format" | "bytes" | "reviewedById" | "reviewedAt" | "uploadedById" | "uploadedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["contractDocument"]>
 export type ContractDocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.ContractDocument$reviewedByArgs<ExtArgs>
+  uploadedBy?: boolean | Prisma.ContractDocument$uploadedByArgs<ExtArgs>
 }
 export type ContractDocumentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.ContractDocument$reviewedByArgs<ExtArgs>
+  uploadedBy?: boolean | Prisma.ContractDocument$uploadedByArgs<ExtArgs>
 }
 export type ContractDocumentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
+  reviewedBy?: boolean | Prisma.ContractDocument$reviewedByArgs<ExtArgs>
+  uploadedBy?: boolean | Prisma.ContractDocument$uploadedByArgs<ExtArgs>
 }
 
 export type $ContractDocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ContractDocument"
   objects: {
     contract: Prisma.$ContractPayload<ExtArgs>
+    reviewedBy: Prisma.$AdminPayload<ExtArgs> | null
+    uploadedBy: Prisma.$AdminPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     contractId: string
-    type: $Enums.DocumentType
-    label: string
-    url: string
-    publicId: string | null
+    type: $Enums.ContractDocumentType
+    status: $Enums.DocumentStatus
+    notes: string | null
+    fileUrl: string | null
+    fileName: string | null
     mimeType: string | null
-    sizeBytes: number | null
-    uploadedAt: Date
+    source: $Enums.DocumentSource | null
+    publicId: string | null
+    resourceType: string | null
+    format: string | null
+    bytes: number | null
+    reviewedById: string | null
+    reviewedAt: Date | null
+    uploadedById: string | null
+    uploadedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["contractDocument"]>
   composites: {}
 }
@@ -1084,6 +1844,8 @@ readonly fields: ContractDocumentFieldRefs;
 export interface Prisma__ContractDocumentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   contract<T extends Prisma.ContractDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractDefaultArgs<ExtArgs>>): Prisma.Prisma__ContractClient<runtime.Types.Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  reviewedBy<T extends Prisma.ContractDocument$reviewedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractDocument$reviewedByArgs<ExtArgs>>): Prisma.Prisma__AdminClient<runtime.Types.Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  uploadedBy<T extends Prisma.ContractDocument$uploadedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractDocument$uploadedByArgs<ExtArgs>>): Prisma.Prisma__AdminClient<runtime.Types.Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1115,13 +1877,23 @@ export interface Prisma__ContractDocumentClient<T, Null = never, ExtArgs extends
 export interface ContractDocumentFieldRefs {
   readonly id: Prisma.FieldRef<"ContractDocument", 'String'>
   readonly contractId: Prisma.FieldRef<"ContractDocument", 'String'>
-  readonly type: Prisma.FieldRef<"ContractDocument", 'DocumentType'>
-  readonly label: Prisma.FieldRef<"ContractDocument", 'String'>
-  readonly url: Prisma.FieldRef<"ContractDocument", 'String'>
-  readonly publicId: Prisma.FieldRef<"ContractDocument", 'String'>
+  readonly type: Prisma.FieldRef<"ContractDocument", 'ContractDocumentType'>
+  readonly status: Prisma.FieldRef<"ContractDocument", 'DocumentStatus'>
+  readonly notes: Prisma.FieldRef<"ContractDocument", 'String'>
+  readonly fileUrl: Prisma.FieldRef<"ContractDocument", 'String'>
+  readonly fileName: Prisma.FieldRef<"ContractDocument", 'String'>
   readonly mimeType: Prisma.FieldRef<"ContractDocument", 'String'>
-  readonly sizeBytes: Prisma.FieldRef<"ContractDocument", 'Int'>
+  readonly source: Prisma.FieldRef<"ContractDocument", 'DocumentSource'>
+  readonly publicId: Prisma.FieldRef<"ContractDocument", 'String'>
+  readonly resourceType: Prisma.FieldRef<"ContractDocument", 'String'>
+  readonly format: Prisma.FieldRef<"ContractDocument", 'String'>
+  readonly bytes: Prisma.FieldRef<"ContractDocument", 'Int'>
+  readonly reviewedById: Prisma.FieldRef<"ContractDocument", 'String'>
+  readonly reviewedAt: Prisma.FieldRef<"ContractDocument", 'DateTime'>
+  readonly uploadedById: Prisma.FieldRef<"ContractDocument", 'String'>
   readonly uploadedAt: Prisma.FieldRef<"ContractDocument", 'DateTime'>
+  readonly createdAt: Prisma.FieldRef<"ContractDocument", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"ContractDocument", 'DateTime'>
 }
     
 
@@ -1515,6 +2287,44 @@ export type ContractDocumentDeleteManyArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many ContractDocuments to delete.
    */
   limit?: number
+}
+
+/**
+ * ContractDocument.reviewedBy
+ */
+export type ContractDocument$reviewedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Admin
+   */
+  select?: Prisma.AdminSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Admin
+   */
+  omit?: Prisma.AdminOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminInclude<ExtArgs> | null
+  where?: Prisma.AdminWhereInput
+}
+
+/**
+ * ContractDocument.uploadedBy
+ */
+export type ContractDocument$uploadedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Admin
+   */
+  select?: Prisma.AdminSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Admin
+   */
+  omit?: Prisma.AdminOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminInclude<ExtArgs> | null
+  where?: Prisma.AdminWhereInput
 }
 
 /**

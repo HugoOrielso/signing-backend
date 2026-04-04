@@ -1,7 +1,22 @@
 import type { PartyInput } from "./buildParties";
 
-export function buildLibranzaData(body: any, contractedParty?: PartyInput | undefined) {
+const validContractTypes = [
+  "PROVISIONAL",
+  "TEMPORAL",
+  "PROVISIONAL_VACANTE_DEFINITIVA",
+  "CARRERA_ADMINISTRATIVA",
+  "PENSIONADO",
+] as const;
 
+
+
+export function buildLibranzaData(
+  body: any,
+  contractedParty?: PartyInput | undefined
+) {
+  const tipoContrato = validContractTypes.includes(body.tipoContrato)
+    ? body.tipoContrato
+    : null;
   return {
     ciudad: body.ciudad ?? null,
     asesor: body.asesor ?? null,
@@ -16,9 +31,22 @@ export function buildLibranzaData(body: any, contractedParty?: PartyInput | unde
     clienteFuncionario: body.clienteFuncionario ?? null,
     clienteDesdeHace: body.clienteDesdeHace ?? null,
 
+    clienteFechaNacimiento: body.clienteFechaNacimiento
+      ? new Date(body.clienteFechaNacimiento)
+      : null,
+    clienteFechaExpedicionCC: body.clienteFechaExpedicionCC
+      ? new Date(body.clienteFechaExpedicionCC)
+      : null,
+
     municipioTrabajo: body.municipioTrabajo ?? null,
     empresaTrabajo: body.empresaTrabajo ?? null,
     departamento: body.departamento ?? null,
+
+    pagaduriaNombre: body.pagaduriaNombre ?? null,
+    pagaduriaMunicipio: body.pagaduriaMunicipio ?? null,
+    pagaduriaDepartamento: body.pagaduriaDepartamento ?? null,
+
+    tipoContrato: tipoContrato,
 
     sumaTotal: body.sumaTotal ?? null,
     numeroCuotas: body.numeroCuotas ?? null,
@@ -34,16 +62,16 @@ export function buildLibranzaData(body: any, contractedParty?: PartyInput | unde
     references: {
       create: Array.isArray(body.references)
         ? body.references
-            .filter((ref: any) => ref?.name?.trim())
-            .map((ref: any) => ({
-              type: ref?.type === "LABORAL" ? "LABORAL" : "PERSONAL",
-              name: ref.name.trim(),
-              phone: ref?.phone ?? null,
-              email: ref?.email ?? null,
-              company: ref?.company ?? null,
-              position: ref?.position ?? null,
-              relationShip: ref?.relationShip ?? null
-            }))
+          .filter((ref: any) => ref?.name?.trim())
+          .map((ref: any) => ({
+            type: ref?.type === "LABORAL" ? "LABORAL" : "PERSONAL",
+            name: ref.name.trim(),
+            phone: ref?.phone ?? null,
+            email: ref?.email ?? null,
+            company: ref?.company ?? null,
+            position: ref?.position ?? null,
+            relationShip: ref?.relationShip ?? null,
+          }))
         : [],
     },
 

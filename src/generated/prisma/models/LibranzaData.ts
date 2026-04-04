@@ -38,9 +38,15 @@ export type LibranzaDataMinAggregateOutputType = {
   clienteEmail: string | null
   clienteFuncionario: string | null
   clienteDesdeHace: string | null
+  clienteFechaNacimiento: Date | null
+  clienteFechaExpedicionCC: Date | null
   municipioTrabajo: string | null
   empresaTrabajo: string | null
   departamento: string | null
+  pagaduriaNombre: string | null
+  pagaduriaMunicipio: string | null
+  pagaduriaDepartamento: string | null
+  tipoContrato: $Enums.ContractEmploymentType | null
   sumaTotal: string | null
   numeroCuotas: string | null
   valorCuota: string | null
@@ -67,9 +73,15 @@ export type LibranzaDataMaxAggregateOutputType = {
   clienteEmail: string | null
   clienteFuncionario: string | null
   clienteDesdeHace: string | null
+  clienteFechaNacimiento: Date | null
+  clienteFechaExpedicionCC: Date | null
   municipioTrabajo: string | null
   empresaTrabajo: string | null
   departamento: string | null
+  pagaduriaNombre: string | null
+  pagaduriaMunicipio: string | null
+  pagaduriaDepartamento: string | null
+  tipoContrato: $Enums.ContractEmploymentType | null
   sumaTotal: string | null
   numeroCuotas: string | null
   valorCuota: string | null
@@ -96,9 +108,15 @@ export type LibranzaDataCountAggregateOutputType = {
   clienteEmail: number
   clienteFuncionario: number
   clienteDesdeHace: number
+  clienteFechaNacimiento: number
+  clienteFechaExpedicionCC: number
   municipioTrabajo: number
   empresaTrabajo: number
   departamento: number
+  pagaduriaNombre: number
+  pagaduriaMunicipio: number
+  pagaduriaDepartamento: number
+  tipoContrato: number
   sumaTotal: number
   numeroCuotas: number
   valorCuota: number
@@ -128,9 +146,15 @@ export type LibranzaDataMinAggregateInputType = {
   clienteEmail?: true
   clienteFuncionario?: true
   clienteDesdeHace?: true
+  clienteFechaNacimiento?: true
+  clienteFechaExpedicionCC?: true
   municipioTrabajo?: true
   empresaTrabajo?: true
   departamento?: true
+  pagaduriaNombre?: true
+  pagaduriaMunicipio?: true
+  pagaduriaDepartamento?: true
+  tipoContrato?: true
   sumaTotal?: true
   numeroCuotas?: true
   valorCuota?: true
@@ -157,9 +181,15 @@ export type LibranzaDataMaxAggregateInputType = {
   clienteEmail?: true
   clienteFuncionario?: true
   clienteDesdeHace?: true
+  clienteFechaNacimiento?: true
+  clienteFechaExpedicionCC?: true
   municipioTrabajo?: true
   empresaTrabajo?: true
   departamento?: true
+  pagaduriaNombre?: true
+  pagaduriaMunicipio?: true
+  pagaduriaDepartamento?: true
+  tipoContrato?: true
   sumaTotal?: true
   numeroCuotas?: true
   valorCuota?: true
@@ -186,9 +216,15 @@ export type LibranzaDataCountAggregateInputType = {
   clienteEmail?: true
   clienteFuncionario?: true
   clienteDesdeHace?: true
+  clienteFechaNacimiento?: true
+  clienteFechaExpedicionCC?: true
   municipioTrabajo?: true
   empresaTrabajo?: true
   departamento?: true
+  pagaduriaNombre?: true
+  pagaduriaMunicipio?: true
+  pagaduriaDepartamento?: true
+  tipoContrato?: true
   sumaTotal?: true
   numeroCuotas?: true
   valorCuota?: true
@@ -289,9 +325,15 @@ export type LibranzaDataGroupByOutputType = {
   clienteEmail: string | null
   clienteFuncionario: string | null
   clienteDesdeHace: string | null
+  clienteFechaNacimiento: Date | null
+  clienteFechaExpedicionCC: Date | null
   municipioTrabajo: string | null
   empresaTrabajo: string | null
   departamento: string | null
+  pagaduriaNombre: string | null
+  pagaduriaMunicipio: string | null
+  pagaduriaDepartamento: string | null
+  tipoContrato: $Enums.ContractEmploymentType | null
   sumaTotal: string | null
   numeroCuotas: string | null
   valorCuota: string | null
@@ -340,9 +382,15 @@ export type LibranzaDataWhereInput = {
   clienteEmail?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
   clienteFuncionario?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
   clienteDesdeHace?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
+  clienteFechaNacimiento?: Prisma.DateTimeNullableFilter<"LibranzaData"> | Date | string | null
+  clienteFechaExpedicionCC?: Prisma.DateTimeNullableFilter<"LibranzaData"> | Date | string | null
   municipioTrabajo?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
   empresaTrabajo?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
   departamento?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
+  pagaduriaNombre?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
+  pagaduriaMunicipio?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
+  pagaduriaDepartamento?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
+  tipoContrato?: Prisma.EnumContractEmploymentTypeNullableFilter<"LibranzaData"> | $Enums.ContractEmploymentType | null
   sumaTotal?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
   numeroCuotas?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
   valorCuota?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
@@ -372,9 +420,15 @@ export type LibranzaDataOrderByWithRelationInput = {
   clienteEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   clienteFuncionario?: Prisma.SortOrderInput | Prisma.SortOrder
   clienteDesdeHace?: Prisma.SortOrderInput | Prisma.SortOrder
+  clienteFechaNacimiento?: Prisma.SortOrderInput | Prisma.SortOrder
+  clienteFechaExpedicionCC?: Prisma.SortOrderInput | Prisma.SortOrder
   municipioTrabajo?: Prisma.SortOrderInput | Prisma.SortOrder
   empresaTrabajo?: Prisma.SortOrderInput | Prisma.SortOrder
   departamento?: Prisma.SortOrderInput | Prisma.SortOrder
+  pagaduriaNombre?: Prisma.SortOrderInput | Prisma.SortOrder
+  pagaduriaMunicipio?: Prisma.SortOrderInput | Prisma.SortOrder
+  pagaduriaDepartamento?: Prisma.SortOrderInput | Prisma.SortOrder
+  tipoContrato?: Prisma.SortOrderInput | Prisma.SortOrder
   sumaTotal?: Prisma.SortOrderInput | Prisma.SortOrder
   numeroCuotas?: Prisma.SortOrderInput | Prisma.SortOrder
   valorCuota?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -407,9 +461,15 @@ export type LibranzaDataWhereUniqueInput = Prisma.AtLeast<{
   clienteEmail?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
   clienteFuncionario?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
   clienteDesdeHace?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
+  clienteFechaNacimiento?: Prisma.DateTimeNullableFilter<"LibranzaData"> | Date | string | null
+  clienteFechaExpedicionCC?: Prisma.DateTimeNullableFilter<"LibranzaData"> | Date | string | null
   municipioTrabajo?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
   empresaTrabajo?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
   departamento?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
+  pagaduriaNombre?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
+  pagaduriaMunicipio?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
+  pagaduriaDepartamento?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
+  tipoContrato?: Prisma.EnumContractEmploymentTypeNullableFilter<"LibranzaData"> | $Enums.ContractEmploymentType | null
   sumaTotal?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
   numeroCuotas?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
   valorCuota?: Prisma.StringNullableFilter<"LibranzaData"> | string | null
@@ -439,9 +499,15 @@ export type LibranzaDataOrderByWithAggregationInput = {
   clienteEmail?: Prisma.SortOrderInput | Prisma.SortOrder
   clienteFuncionario?: Prisma.SortOrderInput | Prisma.SortOrder
   clienteDesdeHace?: Prisma.SortOrderInput | Prisma.SortOrder
+  clienteFechaNacimiento?: Prisma.SortOrderInput | Prisma.SortOrder
+  clienteFechaExpedicionCC?: Prisma.SortOrderInput | Prisma.SortOrder
   municipioTrabajo?: Prisma.SortOrderInput | Prisma.SortOrder
   empresaTrabajo?: Prisma.SortOrderInput | Prisma.SortOrder
   departamento?: Prisma.SortOrderInput | Prisma.SortOrder
+  pagaduriaNombre?: Prisma.SortOrderInput | Prisma.SortOrder
+  pagaduriaMunicipio?: Prisma.SortOrderInput | Prisma.SortOrder
+  pagaduriaDepartamento?: Prisma.SortOrderInput | Prisma.SortOrder
+  tipoContrato?: Prisma.SortOrderInput | Prisma.SortOrder
   sumaTotal?: Prisma.SortOrderInput | Prisma.SortOrder
   numeroCuotas?: Prisma.SortOrderInput | Prisma.SortOrder
   valorCuota?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -475,9 +541,15 @@ export type LibranzaDataScalarWhereWithAggregatesInput = {
   clienteEmail?: Prisma.StringNullableWithAggregatesFilter<"LibranzaData"> | string | null
   clienteFuncionario?: Prisma.StringNullableWithAggregatesFilter<"LibranzaData"> | string | null
   clienteDesdeHace?: Prisma.StringNullableWithAggregatesFilter<"LibranzaData"> | string | null
+  clienteFechaNacimiento?: Prisma.DateTimeNullableWithAggregatesFilter<"LibranzaData"> | Date | string | null
+  clienteFechaExpedicionCC?: Prisma.DateTimeNullableWithAggregatesFilter<"LibranzaData"> | Date | string | null
   municipioTrabajo?: Prisma.StringNullableWithAggregatesFilter<"LibranzaData"> | string | null
   empresaTrabajo?: Prisma.StringNullableWithAggregatesFilter<"LibranzaData"> | string | null
   departamento?: Prisma.StringNullableWithAggregatesFilter<"LibranzaData"> | string | null
+  pagaduriaNombre?: Prisma.StringNullableWithAggregatesFilter<"LibranzaData"> | string | null
+  pagaduriaMunicipio?: Prisma.StringNullableWithAggregatesFilter<"LibranzaData"> | string | null
+  pagaduriaDepartamento?: Prisma.StringNullableWithAggregatesFilter<"LibranzaData"> | string | null
+  tipoContrato?: Prisma.EnumContractEmploymentTypeNullableWithAggregatesFilter<"LibranzaData"> | $Enums.ContractEmploymentType | null
   sumaTotal?: Prisma.StringNullableWithAggregatesFilter<"LibranzaData"> | string | null
   numeroCuotas?: Prisma.StringNullableWithAggregatesFilter<"LibranzaData"> | string | null
   valorCuota?: Prisma.StringNullableWithAggregatesFilter<"LibranzaData"> | string | null
@@ -504,9 +576,15 @@ export type LibranzaDataCreateInput = {
   clienteEmail?: string | null
   clienteFuncionario?: string | null
   clienteDesdeHace?: string | null
+  clienteFechaNacimiento?: Date | string | null
+  clienteFechaExpedicionCC?: Date | string | null
   municipioTrabajo?: string | null
   empresaTrabajo?: string | null
   departamento?: string | null
+  pagaduriaNombre?: string | null
+  pagaduriaMunicipio?: string | null
+  pagaduriaDepartamento?: string | null
+  tipoContrato?: $Enums.ContractEmploymentType | null
   sumaTotal?: string | null
   numeroCuotas?: string | null
   valorCuota?: string | null
@@ -536,9 +614,15 @@ export type LibranzaDataUncheckedCreateInput = {
   clienteEmail?: string | null
   clienteFuncionario?: string | null
   clienteDesdeHace?: string | null
+  clienteFechaNacimiento?: Date | string | null
+  clienteFechaExpedicionCC?: Date | string | null
   municipioTrabajo?: string | null
   empresaTrabajo?: string | null
   departamento?: string | null
+  pagaduriaNombre?: string | null
+  pagaduriaMunicipio?: string | null
+  pagaduriaDepartamento?: string | null
+  tipoContrato?: $Enums.ContractEmploymentType | null
   sumaTotal?: string | null
   numeroCuotas?: string | null
   valorCuota?: string | null
@@ -566,9 +650,15 @@ export type LibranzaDataUpdateInput = {
   clienteEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   clienteFuncionario?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   clienteDesdeHace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteFechaNacimiento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  clienteFechaExpedicionCC?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   municipioTrabajo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   empresaTrabajo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departamento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaNombre?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaMunicipio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaDepartamento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tipoContrato?: Prisma.NullableEnumContractEmploymentTypeFieldUpdateOperationsInput | $Enums.ContractEmploymentType | null
   sumaTotal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   numeroCuotas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   valorCuota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -598,9 +688,15 @@ export type LibranzaDataUncheckedUpdateInput = {
   clienteEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   clienteFuncionario?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   clienteDesdeHace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteFechaNacimiento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  clienteFechaExpedicionCC?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   municipioTrabajo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   empresaTrabajo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departamento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaNombre?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaMunicipio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaDepartamento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tipoContrato?: Prisma.NullableEnumContractEmploymentTypeFieldUpdateOperationsInput | $Enums.ContractEmploymentType | null
   sumaTotal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   numeroCuotas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   valorCuota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -629,9 +725,15 @@ export type LibranzaDataCreateManyInput = {
   clienteEmail?: string | null
   clienteFuncionario?: string | null
   clienteDesdeHace?: string | null
+  clienteFechaNacimiento?: Date | string | null
+  clienteFechaExpedicionCC?: Date | string | null
   municipioTrabajo?: string | null
   empresaTrabajo?: string | null
   departamento?: string | null
+  pagaduriaNombre?: string | null
+  pagaduriaMunicipio?: string | null
+  pagaduriaDepartamento?: string | null
+  tipoContrato?: $Enums.ContractEmploymentType | null
   sumaTotal?: string | null
   numeroCuotas?: string | null
   valorCuota?: string | null
@@ -658,9 +760,15 @@ export type LibranzaDataUpdateManyMutationInput = {
   clienteEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   clienteFuncionario?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   clienteDesdeHace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteFechaNacimiento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  clienteFechaExpedicionCC?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   municipioTrabajo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   empresaTrabajo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departamento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaNombre?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaMunicipio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaDepartamento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tipoContrato?: Prisma.NullableEnumContractEmploymentTypeFieldUpdateOperationsInput | $Enums.ContractEmploymentType | null
   sumaTotal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   numeroCuotas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   valorCuota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -688,9 +796,15 @@ export type LibranzaDataUncheckedUpdateManyInput = {
   clienteEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   clienteFuncionario?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   clienteDesdeHace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteFechaNacimiento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  clienteFechaExpedicionCC?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   municipioTrabajo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   empresaTrabajo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departamento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaNombre?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaMunicipio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaDepartamento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tipoContrato?: Prisma.NullableEnumContractEmploymentTypeFieldUpdateOperationsInput | $Enums.ContractEmploymentType | null
   sumaTotal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   numeroCuotas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   valorCuota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -723,9 +837,15 @@ export type LibranzaDataCountOrderByAggregateInput = {
   clienteEmail?: Prisma.SortOrder
   clienteFuncionario?: Prisma.SortOrder
   clienteDesdeHace?: Prisma.SortOrder
+  clienteFechaNacimiento?: Prisma.SortOrder
+  clienteFechaExpedicionCC?: Prisma.SortOrder
   municipioTrabajo?: Prisma.SortOrder
   empresaTrabajo?: Prisma.SortOrder
   departamento?: Prisma.SortOrder
+  pagaduriaNombre?: Prisma.SortOrder
+  pagaduriaMunicipio?: Prisma.SortOrder
+  pagaduriaDepartamento?: Prisma.SortOrder
+  tipoContrato?: Prisma.SortOrder
   sumaTotal?: Prisma.SortOrder
   numeroCuotas?: Prisma.SortOrder
   valorCuota?: Prisma.SortOrder
@@ -753,9 +873,15 @@ export type LibranzaDataMaxOrderByAggregateInput = {
   clienteEmail?: Prisma.SortOrder
   clienteFuncionario?: Prisma.SortOrder
   clienteDesdeHace?: Prisma.SortOrder
+  clienteFechaNacimiento?: Prisma.SortOrder
+  clienteFechaExpedicionCC?: Prisma.SortOrder
   municipioTrabajo?: Prisma.SortOrder
   empresaTrabajo?: Prisma.SortOrder
   departamento?: Prisma.SortOrder
+  pagaduriaNombre?: Prisma.SortOrder
+  pagaduriaMunicipio?: Prisma.SortOrder
+  pagaduriaDepartamento?: Prisma.SortOrder
+  tipoContrato?: Prisma.SortOrder
   sumaTotal?: Prisma.SortOrder
   numeroCuotas?: Prisma.SortOrder
   valorCuota?: Prisma.SortOrder
@@ -782,9 +908,15 @@ export type LibranzaDataMinOrderByAggregateInput = {
   clienteEmail?: Prisma.SortOrder
   clienteFuncionario?: Prisma.SortOrder
   clienteDesdeHace?: Prisma.SortOrder
+  clienteFechaNacimiento?: Prisma.SortOrder
+  clienteFechaExpedicionCC?: Prisma.SortOrder
   municipioTrabajo?: Prisma.SortOrder
   empresaTrabajo?: Prisma.SortOrder
   departamento?: Prisma.SortOrder
+  pagaduriaNombre?: Prisma.SortOrder
+  pagaduriaMunicipio?: Prisma.SortOrder
+  pagaduriaDepartamento?: Prisma.SortOrder
+  tipoContrato?: Prisma.SortOrder
   sumaTotal?: Prisma.SortOrder
   numeroCuotas?: Prisma.SortOrder
   valorCuota?: Prisma.SortOrder
@@ -834,6 +966,10 @@ export type LibranzaDataUncheckedUpdateOneWithoutContractNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.LibranzaDataUpdateToOneWithWhereWithoutContractInput, Prisma.LibranzaDataUpdateWithoutContractInput>, Prisma.LibranzaDataUncheckedUpdateWithoutContractInput>
 }
 
+export type NullableEnumContractEmploymentTypeFieldUpdateOperationsInput = {
+  set?: $Enums.ContractEmploymentType | null
+}
+
 export type LibranzaDataCreateNestedOneWithoutReferencesInput = {
   create?: Prisma.XOR<Prisma.LibranzaDataCreateWithoutReferencesInput, Prisma.LibranzaDataUncheckedCreateWithoutReferencesInput>
   connectOrCreate?: Prisma.LibranzaDataCreateOrConnectWithoutReferencesInput
@@ -861,9 +997,15 @@ export type LibranzaDataCreateWithoutContractInput = {
   clienteEmail?: string | null
   clienteFuncionario?: string | null
   clienteDesdeHace?: string | null
+  clienteFechaNacimiento?: Date | string | null
+  clienteFechaExpedicionCC?: Date | string | null
   municipioTrabajo?: string | null
   empresaTrabajo?: string | null
   departamento?: string | null
+  pagaduriaNombre?: string | null
+  pagaduriaMunicipio?: string | null
+  pagaduriaDepartamento?: string | null
+  tipoContrato?: $Enums.ContractEmploymentType | null
   sumaTotal?: string | null
   numeroCuotas?: string | null
   valorCuota?: string | null
@@ -891,9 +1033,15 @@ export type LibranzaDataUncheckedCreateWithoutContractInput = {
   clienteEmail?: string | null
   clienteFuncionario?: string | null
   clienteDesdeHace?: string | null
+  clienteFechaNacimiento?: Date | string | null
+  clienteFechaExpedicionCC?: Date | string | null
   municipioTrabajo?: string | null
   empresaTrabajo?: string | null
   departamento?: string | null
+  pagaduriaNombre?: string | null
+  pagaduriaMunicipio?: string | null
+  pagaduriaDepartamento?: string | null
+  tipoContrato?: $Enums.ContractEmploymentType | null
   sumaTotal?: string | null
   numeroCuotas?: string | null
   valorCuota?: string | null
@@ -937,9 +1085,15 @@ export type LibranzaDataUpdateWithoutContractInput = {
   clienteEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   clienteFuncionario?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   clienteDesdeHace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteFechaNacimiento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  clienteFechaExpedicionCC?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   municipioTrabajo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   empresaTrabajo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departamento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaNombre?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaMunicipio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaDepartamento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tipoContrato?: Prisma.NullableEnumContractEmploymentTypeFieldUpdateOperationsInput | $Enums.ContractEmploymentType | null
   sumaTotal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   numeroCuotas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   valorCuota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -967,9 +1121,15 @@ export type LibranzaDataUncheckedUpdateWithoutContractInput = {
   clienteEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   clienteFuncionario?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   clienteDesdeHace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteFechaNacimiento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  clienteFechaExpedicionCC?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   municipioTrabajo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   empresaTrabajo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departamento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaNombre?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaMunicipio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaDepartamento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tipoContrato?: Prisma.NullableEnumContractEmploymentTypeFieldUpdateOperationsInput | $Enums.ContractEmploymentType | null
   sumaTotal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   numeroCuotas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   valorCuota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -997,9 +1157,15 @@ export type LibranzaDataCreateWithoutReferencesInput = {
   clienteEmail?: string | null
   clienteFuncionario?: string | null
   clienteDesdeHace?: string | null
+  clienteFechaNacimiento?: Date | string | null
+  clienteFechaExpedicionCC?: Date | string | null
   municipioTrabajo?: string | null
   empresaTrabajo?: string | null
   departamento?: string | null
+  pagaduriaNombre?: string | null
+  pagaduriaMunicipio?: string | null
+  pagaduriaDepartamento?: string | null
+  tipoContrato?: $Enums.ContractEmploymentType | null
   sumaTotal?: string | null
   numeroCuotas?: string | null
   valorCuota?: string | null
@@ -1028,9 +1194,15 @@ export type LibranzaDataUncheckedCreateWithoutReferencesInput = {
   clienteEmail?: string | null
   clienteFuncionario?: string | null
   clienteDesdeHace?: string | null
+  clienteFechaNacimiento?: Date | string | null
+  clienteFechaExpedicionCC?: Date | string | null
   municipioTrabajo?: string | null
   empresaTrabajo?: string | null
   departamento?: string | null
+  pagaduriaNombre?: string | null
+  pagaduriaMunicipio?: string | null
+  pagaduriaDepartamento?: string | null
+  tipoContrato?: $Enums.ContractEmploymentType | null
   sumaTotal?: string | null
   numeroCuotas?: string | null
   valorCuota?: string | null
@@ -1073,9 +1245,15 @@ export type LibranzaDataUpdateWithoutReferencesInput = {
   clienteEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   clienteFuncionario?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   clienteDesdeHace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteFechaNacimiento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  clienteFechaExpedicionCC?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   municipioTrabajo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   empresaTrabajo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departamento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaNombre?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaMunicipio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaDepartamento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tipoContrato?: Prisma.NullableEnumContractEmploymentTypeFieldUpdateOperationsInput | $Enums.ContractEmploymentType | null
   sumaTotal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   numeroCuotas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   valorCuota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1104,9 +1282,15 @@ export type LibranzaDataUncheckedUpdateWithoutReferencesInput = {
   clienteEmail?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   clienteFuncionario?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   clienteDesdeHace?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  clienteFechaNacimiento?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  clienteFechaExpedicionCC?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   municipioTrabajo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   empresaTrabajo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   departamento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaNombre?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaMunicipio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pagaduriaDepartamento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tipoContrato?: Prisma.NullableEnumContractEmploymentTypeFieldUpdateOperationsInput | $Enums.ContractEmploymentType | null
   sumaTotal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   numeroCuotas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   valorCuota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1165,9 +1349,15 @@ export type LibranzaDataSelect<ExtArgs extends runtime.Types.Extensions.Internal
   clienteEmail?: boolean
   clienteFuncionario?: boolean
   clienteDesdeHace?: boolean
+  clienteFechaNacimiento?: boolean
+  clienteFechaExpedicionCC?: boolean
   municipioTrabajo?: boolean
   empresaTrabajo?: boolean
   departamento?: boolean
+  pagaduriaNombre?: boolean
+  pagaduriaMunicipio?: boolean
+  pagaduriaDepartamento?: boolean
+  tipoContrato?: boolean
   sumaTotal?: boolean
   numeroCuotas?: boolean
   valorCuota?: boolean
@@ -1198,9 +1388,15 @@ export type LibranzaDataSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   clienteEmail?: boolean
   clienteFuncionario?: boolean
   clienteDesdeHace?: boolean
+  clienteFechaNacimiento?: boolean
+  clienteFechaExpedicionCC?: boolean
   municipioTrabajo?: boolean
   empresaTrabajo?: boolean
   departamento?: boolean
+  pagaduriaNombre?: boolean
+  pagaduriaMunicipio?: boolean
+  pagaduriaDepartamento?: boolean
+  tipoContrato?: boolean
   sumaTotal?: boolean
   numeroCuotas?: boolean
   valorCuota?: boolean
@@ -1229,9 +1425,15 @@ export type LibranzaDataSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   clienteEmail?: boolean
   clienteFuncionario?: boolean
   clienteDesdeHace?: boolean
+  clienteFechaNacimiento?: boolean
+  clienteFechaExpedicionCC?: boolean
   municipioTrabajo?: boolean
   empresaTrabajo?: boolean
   departamento?: boolean
+  pagaduriaNombre?: boolean
+  pagaduriaMunicipio?: boolean
+  pagaduriaDepartamento?: boolean
+  tipoContrato?: boolean
   sumaTotal?: boolean
   numeroCuotas?: boolean
   valorCuota?: boolean
@@ -1260,9 +1462,15 @@ export type LibranzaDataSelectScalar = {
   clienteEmail?: boolean
   clienteFuncionario?: boolean
   clienteDesdeHace?: boolean
+  clienteFechaNacimiento?: boolean
+  clienteFechaExpedicionCC?: boolean
   municipioTrabajo?: boolean
   empresaTrabajo?: boolean
   departamento?: boolean
+  pagaduriaNombre?: boolean
+  pagaduriaMunicipio?: boolean
+  pagaduriaDepartamento?: boolean
+  tipoContrato?: boolean
   sumaTotal?: boolean
   numeroCuotas?: boolean
   valorCuota?: boolean
@@ -1276,7 +1484,7 @@ export type LibranzaDataSelectScalar = {
   updatedAt?: boolean
 }
 
-export type LibranzaDataOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contractId" | "ciudad" | "asesor" | "fecha" | "clienteNombre" | "clienteCC" | "clienteCCDe" | "clienteDireccion" | "clienteTelefono" | "clienteEmail" | "clienteFuncionario" | "clienteDesdeHace" | "municipioTrabajo" | "empresaTrabajo" | "departamento" | "sumaTotal" | "numeroCuotas" | "valorCuota" | "mesCobro" | "tipoCuenta" | "numeroCuenta" | "banco" | "productos" | "formaPago" | "createdAt" | "updatedAt", ExtArgs["result"]["libranzaData"]>
+export type LibranzaDataOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contractId" | "ciudad" | "asesor" | "fecha" | "clienteNombre" | "clienteCC" | "clienteCCDe" | "clienteDireccion" | "clienteTelefono" | "clienteEmail" | "clienteFuncionario" | "clienteDesdeHace" | "clienteFechaNacimiento" | "clienteFechaExpedicionCC" | "municipioTrabajo" | "empresaTrabajo" | "departamento" | "pagaduriaNombre" | "pagaduriaMunicipio" | "pagaduriaDepartamento" | "tipoContrato" | "sumaTotal" | "numeroCuotas" | "valorCuota" | "mesCobro" | "tipoCuenta" | "numeroCuenta" | "banco" | "productos" | "formaPago" | "createdAt" | "updatedAt", ExtArgs["result"]["libranzaData"]>
 export type LibranzaDataInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
   references?: boolean | Prisma.LibranzaData$referencesArgs<ExtArgs>
@@ -1309,9 +1517,15 @@ export type $LibranzaDataPayload<ExtArgs extends runtime.Types.Extensions.Intern
     clienteEmail: string | null
     clienteFuncionario: string | null
     clienteDesdeHace: string | null
+    clienteFechaNacimiento: Date | null
+    clienteFechaExpedicionCC: Date | null
     municipioTrabajo: string | null
     empresaTrabajo: string | null
     departamento: string | null
+    pagaduriaNombre: string | null
+    pagaduriaMunicipio: string | null
+    pagaduriaDepartamento: string | null
+    tipoContrato: $Enums.ContractEmploymentType | null
     sumaTotal: string | null
     numeroCuotas: string | null
     valorCuota: string | null
@@ -1761,9 +1975,15 @@ export interface LibranzaDataFieldRefs {
   readonly clienteEmail: Prisma.FieldRef<"LibranzaData", 'String'>
   readonly clienteFuncionario: Prisma.FieldRef<"LibranzaData", 'String'>
   readonly clienteDesdeHace: Prisma.FieldRef<"LibranzaData", 'String'>
+  readonly clienteFechaNacimiento: Prisma.FieldRef<"LibranzaData", 'DateTime'>
+  readonly clienteFechaExpedicionCC: Prisma.FieldRef<"LibranzaData", 'DateTime'>
   readonly municipioTrabajo: Prisma.FieldRef<"LibranzaData", 'String'>
   readonly empresaTrabajo: Prisma.FieldRef<"LibranzaData", 'String'>
   readonly departamento: Prisma.FieldRef<"LibranzaData", 'String'>
+  readonly pagaduriaNombre: Prisma.FieldRef<"LibranzaData", 'String'>
+  readonly pagaduriaMunicipio: Prisma.FieldRef<"LibranzaData", 'String'>
+  readonly pagaduriaDepartamento: Prisma.FieldRef<"LibranzaData", 'String'>
+  readonly tipoContrato: Prisma.FieldRef<"LibranzaData", 'ContractEmploymentType'>
   readonly sumaTotal: Prisma.FieldRef<"LibranzaData", 'String'>
   readonly numeroCuotas: Prisma.FieldRef<"LibranzaData", 'String'>
   readonly valorCuota: Prisma.FieldRef<"LibranzaData", 'String'>

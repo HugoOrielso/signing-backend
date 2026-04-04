@@ -15,4 +15,11 @@ export interface AuthenticatedRequest extends Request {
   };
 }
 
-export type AdminRole = "ADMIN" | "OPERATOR";
+export type AdminRole = "ADMIN" | "OPERATOR" | "CREDIT_ANALYST";
+
+export interface CreateUserInput {
+  email: string;
+  name: string;
+  password: string;
+  role?: Exclude<AdminRole, "ADMIN">;
+}

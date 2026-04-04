@@ -13,8 +13,11 @@ import {
 } from "../../../../../services/audit/contract-audit.service";
 import { AdminRole } from "../../../../../generated/prisma/enums";
 import { getAuditRequestContext } from "../../../../../utils/audit-request";
+import { AuthenticatedRequest } from "../../../../../types/types";
+import { CreateContractBody } from "../../../../../schemas/libranza/createContract.schema";
 
-export async function createContractService(body: any, req: any) {
+export async function createContractService(body: CreateContractBody,
+  req: AuthenticatedRequest) {
   const adminId = req.user?.id;
   if (!adminId) {
     throw new Error("Usuario no autenticado");
@@ -70,8 +73,8 @@ export async function createContractService(body: any, req: any) {
         ? {
           clauses: {
             create: clausesInput
-              .filter((c: any) => c.content?.trim())
-              .map((c: any, i: number) => ({
+              .filter((c) => c.content?.trim())
+              .map((c, i: number) => ({
                 position: c.position ?? i + 1,
                 content: c.content,
               })),

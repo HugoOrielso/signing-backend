@@ -1,20 +1,44 @@
 import { Request, Response } from "express";
 import { loginAdmin, logoutAdmin, refreshTokens, registerAdmin } from "../../services/auth/auth.service";
 import { LoginInput, RegisterInput } from "../../schemas/auth.schemas";
+import { AuthenticatedRequest } from "../../types/types";
+import { createUserService } from "../../services/admin/createUser.service";
 
-export const register = async (req: Request, res: Response) => {
+
+export const createUser = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const { email, name, password } = req.body as RegisterInput;
-    const admin = await registerAdmin(email, name, password);
-    res.status(201).json({ admin });
+    if (!req.user) {
+      return res.status(401).json({ error: "Usuario no autenticado" });
+    }
+
+    if (req.user.role !== "ADMIN") {
+      return res.status(403).json({ error: "No autorizado" });
+    }
+
+    const { email, name, password, role } = req.body as {
+      email: string;
+      name: string;
+      password: string;
+      role?: "OPERATOR" | "CREDIT_ANALYST";
+    };
+
+    const user = await createUserService({
+      email,
+      name,
+      password,
+      role: role ?? "OPERATOR",
+    });
+
+    return res.status(201).json({ user });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Internal server error";
     const status = message === "Email already in use" ? 409 : 500;
-    res.status(status).json({ error: message });
+
+    return res.status(status).json({ error: message });
   }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { email, password } = req.body as LoginInput;
     const result = await loginAdmin(email, password);
@@ -26,7 +50,7 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-export const refresh = async (req: Request, res: Response) => {
+export const refresh = async (req: AuthenticatedRequest, res: Response) => {
   const { refreshToken } = req.body;
 
   if (!refreshToken) {
@@ -41,12 +65,12 @@ export const refresh = async (req: Request, res: Response) => {
     const message = err instanceof Error ? err.message : "Internal server error";
     const status =
       message === "Invalid refresh token" ? 401 :
-      message === "Refresh token expired" ? 401 : 500;
+        message === "Refresh token expired" ? 401 : 500;
     res.status(status).json({ error: message });
   }
 };
 
-export const logout = async (req: Request, res: Response) => {
+export const logout = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { refreshToken } = req.body;
     if (refreshToken) await logoutAdmin(refreshToken);

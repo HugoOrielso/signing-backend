@@ -11,7 +11,8 @@
 
 export const AdminRole = {
   ADMIN: 'ADMIN',
-  OPERATOR: 'OPERATOR'
+  OPERATOR: 'OPERATOR',
+  CREDIT_ANALYST: 'CREDIT_ANALYST'
 } as const
 
 export type AdminRole = (typeof AdminRole)[keyof typeof AdminRole]
@@ -19,15 +20,33 @@ export type AdminRole = (typeof AdminRole)[keyof typeof AdminRole]
 
 export const ContractStatus = {
   DRAFT: 'DRAFT',
+  PENDING_DOCUMENTS: 'PENDING_DOCUMENTS',
+  DOCUMENTS_UPLOADED: 'DOCUMENTS_UPLOADED',
+  PENDING_VERIFICATION: 'PENDING_VERIFICATION',
+  READY_TO_SIGN: 'READY_TO_SIGN',
   SENT: 'SENT',
   VIEWED: 'VIEWED',
+  OTP_PENDING: 'OTP_PENDING',
+  OTP_VERIFIED: 'OTP_VERIFIED',
   PARTIALLY_SIGNED: 'PARTIALLY_SIGNED',
   SIGNED: 'SIGNED',
+  REJECTED: 'REJECTED',
   EXPIRED: 'EXPIRED',
   CANCELLED: 'CANCELLED'
 } as const
 
 export type ContractStatus = (typeof ContractStatus)[keyof typeof ContractStatus]
+
+
+export const ContractEmploymentType = {
+  PROVISIONAL: 'PROVISIONAL',
+  TEMPORAL: 'TEMPORAL',
+  PROVISIONAL_VACANTE_DEFINITIVA: 'PROVISIONAL_VACANTE_DEFINITIVA',
+  CARRERA_ADMINISTRATIVA: 'CARRERA_ADMINISTRATIVA',
+  PENSIONADO: 'PENSIONADO'
+} as const
+
+export type ContractEmploymentType = (typeof ContractEmploymentType)[keyof typeof ContractEmploymentType]
 
 
 export const SignatureType = {
@@ -47,15 +66,33 @@ export const PartyRole = {
 export type PartyRole = (typeof PartyRole)[keyof typeof PartyRole]
 
 
-export const DocumentType = {
-  CEDULA_FRENTE: 'CEDULA_FRENTE',
-  CEDULA_REVERSO: 'CEDULA_REVERSO',
-  SELFIE: 'SELFIE',
-  PDF_ADICIONAL: 'PDF_ADICIONAL',
-  IMAGEN_GENERAL: 'IMAGEN_GENERAL'
+export const ContractDocumentType = {
+  ID_FRONT: 'ID_FRONT',
+  ID_BACK: 'ID_BACK',
+  SELFIE_WITH_ID: 'SELFIE_WITH_ID',
+  BANK_CERTIFICATE: 'BANK_CERTIFICATE',
+  PAYROLL_STUB: 'PAYROLL_STUB',
+  ADDITIONAL_DOCUMENT: 'ADDITIONAL_DOCUMENT'
 } as const
 
-export type DocumentType = (typeof DocumentType)[keyof typeof DocumentType]
+export type ContractDocumentType = (typeof ContractDocumentType)[keyof typeof ContractDocumentType]
+
+
+export const DocumentSource = {
+  CAMERA: 'CAMERA',
+  FILE_UPLOAD: 'FILE_UPLOAD'
+} as const
+
+export type DocumentSource = (typeof DocumentSource)[keyof typeof DocumentSource]
+
+
+export const DocumentStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type DocumentStatus = (typeof DocumentStatus)[keyof typeof DocumentStatus]
 
 
 export const AuditEventType = {
@@ -70,10 +107,12 @@ export const AuditEventType = {
   OTP_VERIFIED: 'OTP_VERIFIED',
   SIGNATURE_STARTED: 'SIGNATURE_STARTED',
   SIGNATURE_COMPLETED: 'SIGNATURE_COMPLETED',
-  DOCUMENT_UPLOADED: 'DOCUMENT_UPLOADED',
   ID_FRONT_UPLOADED: 'ID_FRONT_UPLOADED',
   ID_BACK_UPLOADED: 'ID_BACK_UPLOADED',
-  SELFIE_UPLOADED: 'SELFIE_UPLOADED',
+  SELFIE_WITH_ID_UPLOADED: 'SELFIE_WITH_ID_UPLOADED',
+  BANK_CERTIFICATE_UPLOADED: 'BANK_CERTIFICATE_UPLOADED',
+  PAYROLL_STUB_UPLOADED: 'PAYROLL_STUB_UPLOADED',
+  ADDITIONAL_DOCUMENT_UPLOADED: 'ADDITIONAL_DOCUMENT_UPLOADED',
   CONTRACT_SIGNED: 'CONTRACT_SIGNED',
   CONTRACT_DOWNLOADED: 'CONTRACT_DOWNLOADED',
   CONTRACT_CANCELLED: 'CONTRACT_CANCELLED',
@@ -86,6 +125,8 @@ export type AuditEventType = (typeof AuditEventType)[keyof typeof AuditEventType
 
 export const AuditActorType = {
   ADMIN: 'ADMIN',
+  OPERATOR: 'OPERATOR',
+  CREDIT_ANALYST: 'CREDIT_ANALYST',
   SIGNER: 'SIGNER',
   SYSTEM: 'SYSTEM'
 } as const
