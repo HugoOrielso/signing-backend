@@ -154,7 +154,7 @@ export const signerSchema = z.object({
   email: nullableEmail,
   phone: nullableString,
   roleTitle: nullableString,
-  partyRole: z.enum(["CONTRACTOR", "CONTRACTED"]).optional().nullable(),
+  partyRole: z.enum(["ACREEDOR", "DEUDOR"]).optional().nullable(),
   signerOrder: z.number().int().positive().optional(),
   signed: z.boolean().optional(),
   sigType: z.enum(["canvas", "typed"]).optional().nullable(),
@@ -162,7 +162,7 @@ export const signerSchema = z.object({
 });
 
 export const partySchema = z.object({
-  role: z.enum(["CONTRACTOR", "CONTRACTED"]),
+  role: z.enum(["ACREEDOR", "DEUDOR"]),
   name: z.string().trim().min(1, "El nombre de la parte es obligatorio"),
   identification: nullableString,
   email: nullableEmail,

@@ -3,8 +3,11 @@ import cors, { CorsOptions } from "cors";
 import authRouter from "./routes/auth.route";
 import contractsRouter from "./routes/contract.routes";
 import { requestIdMiddleware } from "./middleware/requestMiddleware";
+import cookieParser from "cookie-parser";
+import userRouter from "./routes/user.routes";
 
 const app = express();
+
 
 const allowedOrigins = [
   "http://localhost:3000",
@@ -28,6 +31,7 @@ const corsOptions: CorsOptions = {
 
 app.use(cors(corsOptions));
 app.options(/.*/, cors(corsOptions));
+app.use(cookieParser());
 
 app.use(express.json({ limit: "20mb" }));
 app.use(express.urlencoded({ extended: true, limit: "20mb" }));
@@ -39,6 +43,7 @@ app.get("/", (_req: Request, res: Response) => {
 })
 app.use("/api/auth", authRouter);
 app.use("/api/contracts", contractsRouter);
+app.use("/api/users", userRouter);
 
 app.use((_req: Request, res: Response) => {
   res.status(404).json({ error: "Not found" });

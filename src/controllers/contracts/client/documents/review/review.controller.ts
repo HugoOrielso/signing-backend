@@ -1,6 +1,7 @@
 import { Response } from "express";
 import { AuthenticatedRequest } from "../../../../../types/types";
 import { prisma } from "../../../../../database/db";
+import { sendReadyToSignEmail } from "../../../../../lib/email/readyTosign";
 
 export async function reviewContractDocument(
   req: AuthenticatedRequest,
@@ -97,12 +98,39 @@ export async function reviewContractDocument(
       const allApproved =
         allDocs.length > 0 && allDocs.every((doc) => doc.status === "APPROVED");
 
-      await tx.contract.update({
-        where: { id: existing.contractId },
-        data: {
-          status: allApproved ? "READY_TO_SIGN" : "PENDING_VERIFICATION",
-        },
-      });
+      if (allApproved) {
+        await tx.contract.update({
+          where: { id: existing.contractId },
+          data: { status: "READY_TO_SIGN" },
+        });
+
+        // Obtener email del contratado
+        const contractedParty = await tx.contractParty.findFirst({
+          where: {
+            contractId: existing.contractId,
+            role: "DEUDOR",
+          },
+          select: { email: true, name: true },
+        });
+
+        if (contractedParty?.email) {
+          const portalLink = `${process.env.FRONTEND_URL}/auth`;
+          try {
+            await sendReadyToSignEmail({
+              to: contractedParty.email,
+              clienteNombre: contractedParty.name,
+              portalLink,
+            });
+          } catch (emailError) {
+            console.error("EMAIL ERROR - READY_TO_SIGN:", emailError);
+          }
+        }
+      } else {
+        await tx.contract.update({
+          where: { id: existing.contractId },
+          data: { status: "PENDING_VERIFICATION" },
+        });
+      }
 
       return document;
     });

@@ -1,5 +1,5 @@
 export type PartyInput = {
-  role: "CONTRACTOR" | "CONTRACTED";
+  role: "ACREEDOR" | "DEUDOR";
   name: string;
   identification?: string | null;
   email?: string | null;
@@ -16,7 +16,7 @@ export function buildParties(body: any, isNewFormat: boolean): PartyInput[] {
 
   return [
     {
-      role: "CONTRACTOR",
+      role: "ACREEDOR",
       name: generalData.contractorName,
       identification: generalData.contractorIdentification ?? null,
       email: generalData.contractorEmail ?? null,
@@ -24,7 +24,7 @@ export function buildParties(body: any, isNewFormat: boolean): PartyInput[] {
       address: generalData.contractorAddress ?? null,
     },
     {
-      role: "CONTRACTED",
+      role: "DEUDOR",
       name: generalData.contractedName,
       identification: generalData.contractedIdentification ?? null,
       email: generalData.contractedEmail ?? null,

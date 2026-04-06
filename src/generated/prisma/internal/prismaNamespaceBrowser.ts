@@ -62,7 +62,8 @@ export const ModelName = {
   RefreshToken: 'RefreshToken',
   ContractDocument: 'ContractDocument',
   ContractAuditEvent: 'ContractAuditEvent',
-  Reference: 'Reference'
+  Reference: 'Reference',
+  PublicContractSession: 'PublicContractSession'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -113,7 +114,8 @@ export const ContractScalarFieldEnum = {
   tokenExpiresAt: 'tokenExpiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  adminId: 'adminId'
+  adminId: 'adminId',
+  isSigned: 'isSigned'
 } as const
 
 export type ContractScalarFieldEnum = (typeof ContractScalarFieldEnum)[keyof typeof ContractScalarFieldEnum]
@@ -313,6 +315,22 @@ export const ReferenceScalarFieldEnum = {
 } as const
 
 export type ReferenceScalarFieldEnum = (typeof ReferenceScalarFieldEnum)[keyof typeof ReferenceScalarFieldEnum]
+
+
+export const PublicContractSessionScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  otpCode: 'otpCode',
+  otpExpiresAt: 'otpExpiresAt',
+  otpAttempts: 'otpAttempts',
+  sessionToken: 'sessionToken',
+  expiresAt: 'expiresAt',
+  verifiedAt: 'verifiedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PublicContractSessionScalarFieldEnum = (typeof PublicContractSessionScalarFieldEnum)[keyof typeof PublicContractSessionScalarFieldEnum]
 
 
 export const SortOrder = {

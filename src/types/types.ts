@@ -15,6 +15,15 @@ export interface AuthenticatedRequest extends Request {
   };
 }
 
+export interface AuthenticatedPublicRequest extends Request {
+  publicSession?: {
+    id: string;
+    email: string;
+    expiresAt: Date;
+  };
+}
+
+
 export type AdminRole = "ADMIN" | "OPERATOR" | "CREDIT_ANALYST";
 
 export interface CreateUserInput {

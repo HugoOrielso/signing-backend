@@ -395,7 +395,8 @@ export const ModelName = {
   RefreshToken: 'RefreshToken',
   ContractDocument: 'ContractDocument',
   ContractAuditEvent: 'ContractAuditEvent',
-  Reference: 'Reference'
+  Reference: 'Reference',
+  PublicContractSession: 'PublicContractSession'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -411,7 +412,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "contract" | "libranzaData" | "contractParty" | "contractClause" | "contractSigner" | "signatureField" | "signature" | "refreshToken" | "contractDocument" | "contractAuditEvent" | "reference"
+    modelProps: "admin" | "contract" | "libranzaData" | "contractParty" | "contractClause" | "contractSigner" | "signatureField" | "signature" | "refreshToken" | "contractDocument" | "contractAuditEvent" | "reference" | "publicContractSession"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1303,6 +1304,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PublicContractSession: {
+      payload: Prisma.$PublicContractSessionPayload<ExtArgs>
+      fields: Prisma.PublicContractSessionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PublicContractSessionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicContractSessionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PublicContractSessionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicContractSessionPayload>
+        }
+        findFirst: {
+          args: Prisma.PublicContractSessionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicContractSessionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PublicContractSessionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicContractSessionPayload>
+        }
+        findMany: {
+          args: Prisma.PublicContractSessionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicContractSessionPayload>[]
+        }
+        create: {
+          args: Prisma.PublicContractSessionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicContractSessionPayload>
+        }
+        createMany: {
+          args: Prisma.PublicContractSessionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PublicContractSessionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicContractSessionPayload>[]
+        }
+        delete: {
+          args: Prisma.PublicContractSessionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicContractSessionPayload>
+        }
+        update: {
+          args: Prisma.PublicContractSessionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicContractSessionPayload>
+        }
+        deleteMany: {
+          args: Prisma.PublicContractSessionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PublicContractSessionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PublicContractSessionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicContractSessionPayload>[]
+        }
+        upsert: {
+          args: Prisma.PublicContractSessionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicContractSessionPayload>
+        }
+        aggregate: {
+          args: Prisma.PublicContractSessionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePublicContractSession>
+        }
+        groupBy: {
+          args: Prisma.PublicContractSessionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PublicContractSessionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PublicContractSessionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PublicContractSessionCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1374,7 +1449,8 @@ export const ContractScalarFieldEnum = {
   tokenExpiresAt: 'tokenExpiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  adminId: 'adminId'
+  adminId: 'adminId',
+  isSigned: 'isSigned'
 } as const
 
 export type ContractScalarFieldEnum = (typeof ContractScalarFieldEnum)[keyof typeof ContractScalarFieldEnum]
@@ -1576,6 +1652,22 @@ export const ReferenceScalarFieldEnum = {
 export type ReferenceScalarFieldEnum = (typeof ReferenceScalarFieldEnum)[keyof typeof ReferenceScalarFieldEnum]
 
 
+export const PublicContractSessionScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  otpCode: 'otpCode',
+  otpExpiresAt: 'otpExpiresAt',
+  otpAttempts: 'otpAttempts',
+  sessionToken: 'sessionToken',
+  expiresAt: 'expiresAt',
+  verifiedAt: 'verifiedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PublicContractSessionScalarFieldEnum = (typeof PublicContractSessionScalarFieldEnum)[keyof typeof PublicContractSessionScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1694,6 +1786,13 @@ export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMo
 
 
 /**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
  * Reference to a field of type 'ContractEmploymentType'
  */
 export type EnumContractEmploymentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContractEmploymentType'>
@@ -1774,13 +1873,6 @@ export type EnumSignatureTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'SignatureType[]'
  */
 export type ListEnumSignatureTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SignatureType[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -1974,6 +2066,7 @@ export type GlobalOmitConfig = {
   contractDocument?: Prisma.ContractDocumentOmit
   contractAuditEvent?: Prisma.ContractAuditEventOmit
   reference?: Prisma.ReferenceOmit
+  publicContractSession?: Prisma.PublicContractSessionOmit
 }
 
 /* Types for Logging */

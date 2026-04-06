@@ -671,10 +671,6 @@ export type EnumSignatureTypeFieldUpdateOperationsInput = {
   set?: $Enums.SignatureType
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type SignatureCreateWithoutContractInput = {
   id?: string
   type: $Enums.SignatureType

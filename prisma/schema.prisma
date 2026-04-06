@@ -65,11 +65,10 @@ model Contract {
   parties             ContractParty[]
   clauses             ContractClause[]
   signers             ContractSigner[]
-  fields              SignatureField[]
   signatures          Signature[]
   documents           ContractDocument[]
   contractAuditEvents ContractAuditEvent[]
-
+  isSigned Boolean @default(false)
   @@index([adminId])
   @@index([status])
 }
@@ -215,33 +214,9 @@ model ContractSigner {
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
   signatures          Signature[]
-  signatureFields     SignatureField[]
   contractAuditEvents ContractAuditEvent[]
 
   @@index([contractId])
-}
-
-model SignatureField {
-  id         String   @id @default(uuid())
-  contractId String
-  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
-
-  signerId String?
-  signer   ContractSigner? @relation(fields: [signerId], references: [id], onDelete: SetNull)
-
-  page  Int
-  xPct  Float
-  yPct  Float
-  wPct  Float
-  hPct  Float
-  label String @default("Firma")
-
-  createdAt DateTime @default(now()) @db.Timestamptz(3)
-
-  signatures Signature[]
-
-  @@index([contractId])
-  @@index([signerId])
 }
 
 model Signature {
@@ -252,8 +227,6 @@ model Signature {
   signerId String?
   signer   ContractSigner? @relation(fields: [signerId], references: [id], onDelete: SetNull)
 
-  fieldId String?
-  field   SignatureField? @relation(fields: [fieldId], references: [id], onDelete: SetNull)
 
   type       SignatureType
   imageUrl   String?
@@ -275,14 +248,6 @@ model Signature {
   @@index([signerId])
 }
 
-model RefreshToken {
-  id        String   @id @default(uuid())
-  token     String   @unique
-  adminId   String
-  admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
-  expiresAt DateTime @db.Timestamptz(3)
-  createdAt DateTime @default(now()) @db.Timestamptz(3)
-}
 
 enum SignatureType {
   DRAWN
@@ -291,10 +256,18 @@ enum SignatureType {
 }
 
 enum PartyRole {
-  CONTRACTOR
-  CONTRACTED
+  ACREEDOR
+  DEUDOR
 }
 
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  adminId   String
+  admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  expiresAt DateTime @db.Timestamptz(3)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+}
 // ─────────────────────────────────────────────────────────
 // DOCUMENTOS ADJUNTOS — subidos por el cliente al firmar
 // ─────────────────────────────────────────────────────────
@@ -452,4 +425,26 @@ model Reference {
 enum ReferenceType {
   PERSONAL
   LABORAL
+}
+
+
+model PublicContractSession {
+  id             String    @id @default(uuid())
+  email           String
+
+  otpCode         String?
+  otpExpiresAt    DateTime?
+  otpAttempts     Int       @default(0)
+
+  sessionToken    String?   @unique
+  expiresAt       DateTime?
+  verifiedAt      DateTime?
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+
+  @@index([email])
+  @@index([sessionToken])
+  @@unique([email])
 }

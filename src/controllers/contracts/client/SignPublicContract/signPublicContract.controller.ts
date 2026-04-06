@@ -8,6 +8,7 @@ import {
   trackContractStatusChange,
 } from "../../../../services/audit/contract-audit.service";
 import { getAuditRequestContext } from "../../../../utils/audit-request";
+import { sendSignedContractPdf } from "../../../../services/pdf/sendSignedPdf";
 
 export async function signPublicContract(req: Request, res: Response) {
   try {
@@ -28,13 +29,17 @@ export async function signPublicContract(req: Request, res: Response) {
       });
     }
 
-    const contract = await prisma.contract.findFirst({
-      where: { token, status: { in: ["SENT", "VIEWED", "PARTIALLY_SIGNED"] } },
+    const contract = await prisma.contract.findUnique({
+      where: { token },
       include: {
-        signers: true,
-        signatures: true,
         parties: true,
-        libranzaData: true,
+        signers: { orderBy: { signerOrder: "asc" } },
+        signatures: true,
+        libranzaData: {
+          include: {
+            references: { orderBy: { createdAt: "asc" } },
+          },
+        },
       },
     });
 
@@ -53,7 +58,7 @@ export async function signPublicContract(req: Request, res: Response) {
     }
 
     const signer = contract.signers.find(
-      (s) => s.partyRole === "CONTRACTED"
+      (s) => s.partyRole === "DEUDOR"
     );
 
     if (!signer) {
@@ -147,9 +152,9 @@ export async function signPublicContract(req: Request, res: Response) {
       include: { signatures: true },
     });
 
-    const allSigned = allSigners.every(
-      (s) => !s.partyRole || s.signatures.length > 0
-    );
+    const allSigned = allSigners
+      .filter((s) => s.partyRole === "DEUDOR")
+      .every((s) => s.signatures.length > 0);
 
     const updatedContract = await prisma.contract.update({
       where: { id: contract.id },
@@ -175,18 +180,10 @@ export async function signPublicContract(req: Request, res: Response) {
     }
 
     // EMAIL
+    // EMAIL
     if (allSigned) {
       try {
-        const downloadLink = `${process.env.FRONTEND_URL}/contracts/sign/${token}`;
-
-        if (signer.email) {
-          await sendSignedContractEmail({
-            to: signer.email,
-            clienteNombre: signer.name ?? "Cliente",
-            downloadLink,
-            role: "cliente",
-          });
-        }
+        await sendSignedContractPdf(contract.id);
       } catch (e) {
         console.error("EMAIL ERROR:", e);
       }

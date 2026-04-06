@@ -232,21 +232,26 @@ export async function sendContractEmail({
   return response;
 }
 
-// ── Email post-firma (cliente y admin) ────────────────────────────────────────
+
 interface SendSignedEmailParams {
-  to:            string;
+  to: string;
   clienteNombre: string;
-  downloadLink:  string;
-  role:          "cliente" | "admin";
+  pdfBuffer: Buffer;
+  fileName: string;
+  role: "cliente" | "admin";
 }
 
 export async function sendSignedContractEmail({
-  to, clienteNombre, downloadLink, role,
+  to,
+  clienteNombre,
+  pdfBuffer,
+  fileName,
+  role,
 }: SendSignedEmailParams) {
   const from = process.env.EMAIL_FROM || "onboarding@resend.dev";
 
-  const isAdmin   = role === "admin";
-  const subject   = isAdmin
+  const isAdmin = role === "admin";
+  const subject = isAdmin
     ? `✅ Libranza firmada — ${clienteNombre}`
     : `✅ Tu libranza ha sido firmada — Dimcultura S.A.S`;
 
@@ -254,10 +259,32 @@ export async function sendSignedContractEmail({
     ? `La libranza de <strong>${clienteNombre}</strong> fue firmada correctamente.`
     : `Hola <strong>${clienteNombre}</strong>, tu libranza ha sido firmada y registrada correctamente.`;
 
-  const response = await resend.emails.send({
+  const passwordNote = !isAdmin
+    ? `<table width="100%" cellpadding="0" cellspacing="0"
+        style="background:#f5f0e8;border-radius:10px;border-left:4px solid #c9a84c;margin-bottom:20px;">
+        <tr>
+          <td style="padding:14px 16px;">
+            <p style="font-size:11px;color:#7a6e5f;margin:0 0 4px;font-weight:700;
+              text-transform:uppercase;letter-spacing:1px;">🔒 Documento protegido</p>
+            <p style="font-size:12px;color:#7a6e5f;margin:0;">
+              El PDF adjunto está protegido con contraseña. 
+              Para abrirlo usa tu número de cédula.
+            </p>
+          </td>
+        </tr>
+      </table>`
+    : "";
+
+  return resend.emails.send({
     from,
     to,
     subject,
+    attachments: [
+      {
+        filename: fileName,
+        content: pdfBuffer,
+      },
+    ],
     html: `
 <!DOCTYPE html>
 <html lang="es">
@@ -276,7 +303,6 @@ export async function sendSignedContractEmail({
         </tr>
         <tr>
           <td style="padding:32px;">
-            <!-- Check icon -->
             <div style="text-align:center;margin-bottom:20px;">
               <div style="display:inline-block;width:56px;height:56px;border-radius:50%;
                 background:#e8f5ee;line-height:56px;font-size:26px;">✅</div>
@@ -287,31 +313,10 @@ export async function sendSignedContractEmail({
             <p style="color:#4a4a6a;font-size:14px;line-height:1.7;margin:0 0 24px;text-align:center;">
               ${bodyTitle}
             </p>
-            <!-- CTA -->
-            <table cellpadding="0" cellspacing="0" style="margin:0 auto 28px;">
-              <tr>
-                <td style="background:#1a1a2e;border-radius:10px;">
-                  <a href="${downloadLink}"
-                    style="display:inline-block;padding:14px 32px;color:#c9a84c;
-                      font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.5px;">
-                    📄 &nbsp; Ver y Descargar PDF
-                  </a>
-                </td>
-              </tr>
-            </table>
-            <!-- Link fallback -->
-            <table width="100%" cellpadding="0" cellspacing="0"
-              style="background:#f5f0e8;border-radius:10px;border-left:4px solid #c9a84c;margin-bottom:20px;">
-              <tr>
-                <td style="padding:14px 16px;">
-                  <p style="font-size:11px;color:#7a6e5f;margin:0 0 4px;font-weight:700;
-                    text-transform:uppercase;letter-spacing:1px;">¿El botón no funciona?</p>
-                  <p style="font-size:11px;color:#7a6e5f;margin:0;word-break:break-all;">
-                    <a href="${downloadLink}" style="color:#a07830;">${downloadLink}</a>
-                  </p>
-                </td>
-              </tr>
-            </table>
+            <p style="color:#4a4a6a;font-size:14px;line-height:1.7;margin:0 0 24px;text-align:center;">
+              Encuentra el contrato firmado adjunto en este correo.
+            </p>
+            ${passwordNote}
             <p style="font-size:11px;color:#b0a898;text-align:center;margin:0;">
               Nit. 900.585.322-4 · servicioalcliente@dimcultura.com · www.dimcultura.com
             </p>
@@ -323,6 +328,4 @@ export async function sendSignedContractEmail({
 </body>
 </html>`,
   });
-
-  return response;
 }

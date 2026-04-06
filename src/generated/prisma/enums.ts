@@ -59,8 +59,8 @@ export type SignatureType = (typeof SignatureType)[keyof typeof SignatureType]
 
 
 export const PartyRole = {
-  CONTRACTOR: 'CONTRACTOR',
-  CONTRACTED: 'CONTRACTED'
+  ACREEDOR: 'ACREEDOR',
+  DEUDOR: 'DEUDOR'
 } as const
 
 export type PartyRole = (typeof PartyRole)[keyof typeof PartyRole]

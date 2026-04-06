@@ -1,0 +1,98 @@
+import path from "node:path";
+import fs from "node:fs";
+import puppeteer from "puppeteer";
+import { encryptPDF } from "@pdfsmaller/pdf-encrypt-lite";
+import { getTemplateConfig } from "../../lib/email/templateConfig";
+import { generateLibranzaHtml } from "./libranza";
+
+export async function generateContractPdf(
+  contract: any,
+  password?: string
+): Promise<Buffer> {
+  let browser;
+
+  try {
+    const template = getTemplateConfig(contract.templateKey);
+
+    const contractedSigner = contract.signers.find((s: any) => s.partyRole === "CONTRACTED");
+    const contractedSig = contractedSigner
+      ? contract.signatures.find((sig: any) => sig.signerId === contractedSigner.id)
+      : undefined;
+
+    const signatureData = contractedSig
+      ? {
+          type: contractedSig.type as "DRAWN" | "TYPED" | "CLICK_TO_SIGN",
+          imageUrl: contractedSig.imageUrl ?? undefined,
+          typedValue: contractedSig.typedValue ?? undefined,
+          signedAt: contractedSig.signedAt?.toISOString(),
+          signerName: contractedSigner?.name,
+        }
+      : undefined;
+
+    let logoBase64: string | undefined;
+    let logoMime = "image/webp";
+
+    try {
+      const possibleDirs = [
+        path.join(process.cwd(), "public", "assets"),
+        path.join(process.cwd(), "src", "public", "assets"),
+      ];
+
+      const assetsDir = possibleDirs.find((d) => fs.existsSync(d)) ?? possibleDirs[0];
+      const candidates = [template.logoFile, "logo.webp", "logo.png", "logo.jpg"];
+
+      for (const file of candidates) {
+        const logoPath = path.join(assetsDir, file);
+        if (fs.existsSync(logoPath)) {
+          logoBase64 = fs.readFileSync(logoPath).toString("base64");
+          const ext = path.extname(file).slice(1).toLowerCase();
+          logoMime = ext === "jpg" ? "image/jpeg" : `image/${ext}`;
+          break;
+        }
+      }
+    } catch (e) {
+      console.warn("Sin logo:", e);
+    }
+
+    const html = generateLibranzaHtml(contract.libranzaData, {
+      templateKey: contract.templateKey,
+      signature: signatureData,
+      logoBase64,
+      logoMime,
+    });
+
+    browser = await puppeteer.launch({
+      headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage", "--disable-gpu"],
+    });
+
+    const page = await browser.newPage();
+    await page.setContent(html, { waitUntil: "networkidle0", timeout: 30000 });
+    await page.evaluateHandle("document.fonts.ready");
+
+    const pdfBuffer = await page.pdf({
+      format: "A4",
+      printBackground: true,
+      margin: { top: "0", right: "0", bottom: "0", left: "0" },
+      preferCSSPageSize: true,
+    });
+
+    await browser.close();
+    browser = undefined;
+
+    if (password) {
+      const encrypted = await encryptPDF(
+        new Uint8Array(pdfBuffer),
+        password,
+        `${password}_owner`
+      );
+      return Buffer.from(encrypted);
+    }
+
+    return Buffer.from(pdfBuffer);
+  } finally {
+    if (browser) {
+      try { await browser.close(); } catch {}
+    }
+  }
+}

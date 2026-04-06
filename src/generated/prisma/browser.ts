@@ -77,3 +77,8 @@ export type ContractAuditEvent = Prisma.ContractAuditEventModel
  * 
  */
 export type Reference = Prisma.ReferenceModel
+/**
+ * Model PublicContractSession
+ * 
+ */
+export type PublicContractSession = Prisma.PublicContractSessionModel

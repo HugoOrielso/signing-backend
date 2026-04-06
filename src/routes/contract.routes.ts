@@ -16,6 +16,7 @@ import { uploadDocument } from "../middleware/uploadDocuments.moddleware";
 import { getContractDocuments } from "../controllers/contracts/client/documents/getDocuments/getDocuments.controller";
 import { reviewContractDocument } from "../controllers/contracts/client/documents/review/review.controller";
 import { AdminRole } from "../generated/prisma/enums";
+import { requirePublicSession } from "../middleware/publicSession.middleware";
 
 const contractsRouter = Router();
 
@@ -32,15 +33,8 @@ contractsRouter.post("/:id/send", requireAuth, requireRole(AdminRole.ADMIN, Admi
 // En la sección PRIVADAS
 contractsRouter.get("/:id", requireAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR,  AdminRole.CREDIT_ANALYST), getContractById);
 contractsRouter.get("/:id/audit-trail", requireAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR,), getContractAuditTrail);
-// ─────────────────────────────────────────────────────────────────────────────
-// PÚBLICAS — acceso por token del contrato
-// ─────────────────────────────────────────────────────────────────────────────
-contractsRouter.get("/public/:token", getPublicContract);
 
 contractsRouter.post("/public/:token/sign", signPublicContract);
-
-contractsRouter.post("/public/:token/request-otp", requestOtp);
-contractsRouter.post("/public/:token/verify-otp", verifyOtp);
 
 contractsRouter.post("/public/:token/upload-document", uploadDocument.single("file"), uploadContractDocument);
 contractsRouter.get("/public/:token/info", getInfo);
