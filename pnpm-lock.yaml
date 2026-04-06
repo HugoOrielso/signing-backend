@@ -41,12 +41,6 @@ importers:
       multer:
         specifier: ^2.1.1
         version: 2.1.1
-      node-qpdf2:
-        specifier: ^6.0.0
-        version: 6.0.0
-      pdf-lib:
-        specifier: ^1.17.1
-        version: 1.17.1
       pg:
         specifier: ^8.20.0
         version: 8.20.0
@@ -1513,10 +1507,6 @@ packages:
   node-gyp-build@4.8.4:
     resolution: {integrity: sha512-LA4ZjwlnUblHVgq0oBF3Jl/6h/Nvs5fzBLwdEF4nuxnFdsfajde4WfxtJr3CaiH+F6ewcIB/q4jQ4UzPyid+CQ==}
     hasBin: true
-
-  node-qpdf2@6.0.0:
-    resolution: {integrity: sha512-ys8KADQ7xx7K6cgtjDjfvsjRQA0gUWxiynTvvzSxTpRnUpA0KADPx/HRt67dJGIj69t76rz4aQl8OEd67yTX/g==}
-    engines: {node: '>=16'}
 
   nypm@0.6.5:
     resolution: {integrity: sha512-K6AJy1GMVyfyMXRVB88700BJqNUkByijGJM8kEHpLdcAt+vSQAVfkWWHYzuRXHSY6xA2sNc5RjTj0p9rE2izVQ==}
@@ -3361,8 +3351,6 @@ snapshots:
   node-fetch-native@1.6.7: {}
 
   node-gyp-build@4.8.4: {}
-
-  node-qpdf2@6.0.0: {}
 
   nypm@0.6.5:
     dependencies:

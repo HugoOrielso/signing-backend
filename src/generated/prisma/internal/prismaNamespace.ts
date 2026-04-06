@@ -390,7 +390,6 @@ export const ModelName = {
   ContractParty: 'ContractParty',
   ContractClause: 'ContractClause',
   ContractSigner: 'ContractSigner',
-  SignatureField: 'SignatureField',
   Signature: 'Signature',
   RefreshToken: 'RefreshToken',
   ContractDocument: 'ContractDocument',
@@ -412,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "contract" | "libranzaData" | "contractParty" | "contractClause" | "contractSigner" | "signatureField" | "signature" | "refreshToken" | "contractDocument" | "contractAuditEvent" | "reference" | "publicContractSession"
+    modelProps: "admin" | "contract" | "libranzaData" | "contractParty" | "contractClause" | "contractSigner" | "signature" | "refreshToken" | "contractDocument" | "contractAuditEvent" | "reference" | "publicContractSession"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -857,80 +856,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ContractSignerCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ContractSignerCountAggregateOutputType> | number
-        }
-      }
-    }
-    SignatureField: {
-      payload: Prisma.$SignatureFieldPayload<ExtArgs>
-      fields: Prisma.SignatureFieldFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.SignatureFieldFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignatureFieldPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.SignatureFieldFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignatureFieldPayload>
-        }
-        findFirst: {
-          args: Prisma.SignatureFieldFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignatureFieldPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.SignatureFieldFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignatureFieldPayload>
-        }
-        findMany: {
-          args: Prisma.SignatureFieldFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignatureFieldPayload>[]
-        }
-        create: {
-          args: Prisma.SignatureFieldCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignatureFieldPayload>
-        }
-        createMany: {
-          args: Prisma.SignatureFieldCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.SignatureFieldCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignatureFieldPayload>[]
-        }
-        delete: {
-          args: Prisma.SignatureFieldDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignatureFieldPayload>
-        }
-        update: {
-          args: Prisma.SignatureFieldUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignatureFieldPayload>
-        }
-        deleteMany: {
-          args: Prisma.SignatureFieldDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.SignatureFieldUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.SignatureFieldUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignatureFieldPayload>[]
-        }
-        upsert: {
-          args: Prisma.SignatureFieldUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$SignatureFieldPayload>
-        }
-        aggregate: {
-          args: Prisma.SignatureFieldAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateSignatureField>
-        }
-        groupBy: {
-          args: Prisma.SignatureFieldGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.SignatureFieldGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.SignatureFieldCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.SignatureFieldCountAggregateOutputType> | number
         }
       }
     }
@@ -1539,27 +1464,10 @@ export const ContractSignerScalarFieldEnum = {
 export type ContractSignerScalarFieldEnum = (typeof ContractSignerScalarFieldEnum)[keyof typeof ContractSignerScalarFieldEnum]
 
 
-export const SignatureFieldScalarFieldEnum = {
-  id: 'id',
-  contractId: 'contractId',
-  signerId: 'signerId',
-  page: 'page',
-  xPct: 'xPct',
-  yPct: 'yPct',
-  wPct: 'wPct',
-  hPct: 'hPct',
-  label: 'label',
-  createdAt: 'createdAt'
-} as const
-
-export type SignatureFieldScalarFieldEnum = (typeof SignatureFieldScalarFieldEnum)[keyof typeof SignatureFieldScalarFieldEnum]
-
-
 export const SignatureScalarFieldEnum = {
   id: 'id',
   contractId: 'contractId',
   signerId: 'signerId',
-  fieldId: 'fieldId',
   type: 'type',
   imageUrl: 'imageUrl',
   typedValue: 'typedValue',
@@ -1849,20 +1757,6 @@ export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
- * Reference to a field of type 'Float'
- */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-/**
  * Reference to a field of type 'SignatureType'
  */
 export type EnumSignatureTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SignatureType'>
@@ -1957,6 +1851,20 @@ export type EnumReferenceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'ReferenceType[]'
  */
 export type ListEnumReferenceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReferenceType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -2060,7 +1968,6 @@ export type GlobalOmitConfig = {
   contractParty?: Prisma.ContractPartyOmit
   contractClause?: Prisma.ContractClauseOmit
   contractSigner?: Prisma.ContractSignerOmit
-  signatureField?: Prisma.SignatureFieldOmit
   signature?: Prisma.SignatureOmit
   refreshToken?: Prisma.RefreshTokenOmit
   contractDocument?: Prisma.ContractDocumentOmit

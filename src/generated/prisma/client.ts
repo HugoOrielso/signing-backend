@@ -72,11 +72,6 @@ export type ContractClause = Prisma.ContractClauseModel
  */
 export type ContractSigner = Prisma.ContractSignerModel
 /**
- * Model SignatureField
- * 
- */
-export type SignatureField = Prisma.SignatureFieldModel
-/**
  * Model Signature
  * 
  */

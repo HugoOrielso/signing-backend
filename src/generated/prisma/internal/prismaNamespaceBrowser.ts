@@ -57,7 +57,6 @@ export const ModelName = {
   ContractParty: 'ContractParty',
   ContractClause: 'ContractClause',
   ContractSigner: 'ContractSigner',
-  SignatureField: 'SignatureField',
   Signature: 'Signature',
   RefreshToken: 'RefreshToken',
   ContractDocument: 'ContractDocument',
@@ -204,27 +203,10 @@ export const ContractSignerScalarFieldEnum = {
 export type ContractSignerScalarFieldEnum = (typeof ContractSignerScalarFieldEnum)[keyof typeof ContractSignerScalarFieldEnum]
 
 
-export const SignatureFieldScalarFieldEnum = {
-  id: 'id',
-  contractId: 'contractId',
-  signerId: 'signerId',
-  page: 'page',
-  xPct: 'xPct',
-  yPct: 'yPct',
-  wPct: 'wPct',
-  hPct: 'hPct',
-  label: 'label',
-  createdAt: 'createdAt'
-} as const
-
-export type SignatureFieldScalarFieldEnum = (typeof SignatureFieldScalarFieldEnum)[keyof typeof SignatureFieldScalarFieldEnum]
-
-
 export const SignatureScalarFieldEnum = {
   id: 'id',
   contractId: 'contractId',
   signerId: 'signerId',
-  fieldId: 'fieldId',
   type: 'type',
   imageUrl: 'imageUrl',
   typedValue: 'typedValue',
