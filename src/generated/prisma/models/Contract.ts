@@ -27,11 +27,13 @@ export type AggregateContract = {
 }
 
 export type ContractAvgAggregateOutputType = {
-  amount: runtime.Decimal | null
+  sequence: number | null
+  amount: number | null
 }
 
 export type ContractSumAggregateOutputType = {
-  amount: runtime.Decimal | null
+  sequence: number | null
+  amount: number | null
 }
 
 export type ContractMinAggregateOutputType = {
@@ -41,10 +43,12 @@ export type ContractMinAggregateOutputType = {
   contractType: string | null
   status: $Enums.ContractStatus | null
   templateKey: string | null
+  consecutivo: string | null
+  sequence: number | null
   startDate: Date | null
   endDate: Date | null
   subject: string | null
-  amount: runtime.Decimal | null
+  amount: number | null
   currency: string | null
   paymentMethod: string | null
   originalUrl: string | null
@@ -55,6 +59,8 @@ export type ContractMinAggregateOutputType = {
   updatedAt: Date | null
   adminId: string | null
   isSigned: boolean | null
+  dataReviewStatus: $Enums.DataReviewStatus | null
+  dataReviewNotes: string | null
 }
 
 export type ContractMaxAggregateOutputType = {
@@ -64,10 +70,12 @@ export type ContractMaxAggregateOutputType = {
   contractType: string | null
   status: $Enums.ContractStatus | null
   templateKey: string | null
+  consecutivo: string | null
+  sequence: number | null
   startDate: Date | null
   endDate: Date | null
   subject: string | null
-  amount: runtime.Decimal | null
+  amount: number | null
   currency: string | null
   paymentMethod: string | null
   originalUrl: string | null
@@ -78,6 +86,8 @@ export type ContractMaxAggregateOutputType = {
   updatedAt: Date | null
   adminId: string | null
   isSigned: boolean | null
+  dataReviewStatus: $Enums.DataReviewStatus | null
+  dataReviewNotes: string | null
 }
 
 export type ContractCountAggregateOutputType = {
@@ -87,6 +97,8 @@ export type ContractCountAggregateOutputType = {
   contractType: number
   status: number
   templateKey: number
+  consecutivo: number
+  sequence: number
   startDate: number
   endDate: number
   subject: number
@@ -101,15 +113,19 @@ export type ContractCountAggregateOutputType = {
   updatedAt: number
   adminId: number
   isSigned: number
+  dataReviewStatus: number
+  dataReviewNotes: number
   _all: number
 }
 
 
 export type ContractAvgAggregateInputType = {
+  sequence?: true
   amount?: true
 }
 
 export type ContractSumAggregateInputType = {
+  sequence?: true
   amount?: true
 }
 
@@ -120,6 +136,8 @@ export type ContractMinAggregateInputType = {
   contractType?: true
   status?: true
   templateKey?: true
+  consecutivo?: true
+  sequence?: true
   startDate?: true
   endDate?: true
   subject?: true
@@ -134,6 +152,8 @@ export type ContractMinAggregateInputType = {
   updatedAt?: true
   adminId?: true
   isSigned?: true
+  dataReviewStatus?: true
+  dataReviewNotes?: true
 }
 
 export type ContractMaxAggregateInputType = {
@@ -143,6 +163,8 @@ export type ContractMaxAggregateInputType = {
   contractType?: true
   status?: true
   templateKey?: true
+  consecutivo?: true
+  sequence?: true
   startDate?: true
   endDate?: true
   subject?: true
@@ -157,6 +179,8 @@ export type ContractMaxAggregateInputType = {
   updatedAt?: true
   adminId?: true
   isSigned?: true
+  dataReviewStatus?: true
+  dataReviewNotes?: true
 }
 
 export type ContractCountAggregateInputType = {
@@ -166,6 +190,8 @@ export type ContractCountAggregateInputType = {
   contractType?: true
   status?: true
   templateKey?: true
+  consecutivo?: true
+  sequence?: true
   startDate?: true
   endDate?: true
   subject?: true
@@ -180,6 +206,8 @@ export type ContractCountAggregateInputType = {
   updatedAt?: true
   adminId?: true
   isSigned?: true
+  dataReviewStatus?: true
+  dataReviewNotes?: true
   _all?: true
 }
 
@@ -276,10 +304,12 @@ export type ContractGroupByOutputType = {
   contractType: string | null
   status: $Enums.ContractStatus
   templateKey: string
+  consecutivo: string
+  sequence: number
   startDate: Date | null
   endDate: Date | null
   subject: string | null
-  amount: runtime.Decimal | null
+  amount: number
   currency: string | null
   paymentMethod: string | null
   originalUrl: string | null
@@ -290,6 +320,8 @@ export type ContractGroupByOutputType = {
   updatedAt: Date
   adminId: string
   isSigned: boolean
+  dataReviewStatus: $Enums.DataReviewStatus
+  dataReviewNotes: string | null
   _count: ContractCountAggregateOutputType | null
   _avg: ContractAvgAggregateOutputType | null
   _sum: ContractSumAggregateOutputType | null
@@ -322,10 +354,12 @@ export type ContractWhereInput = {
   contractType?: Prisma.StringNullableFilter<"Contract"> | string | null
   status?: Prisma.EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
   templateKey?: Prisma.StringFilter<"Contract"> | string
+  consecutivo?: Prisma.StringFilter<"Contract"> | string
+  sequence?: Prisma.IntFilter<"Contract"> | number
   startDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   endDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   subject?: Prisma.StringNullableFilter<"Contract"> | string | null
-  amount?: Prisma.DecimalNullableFilter<"Contract"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFilter<"Contract"> | number
   currency?: Prisma.StringNullableFilter<"Contract"> | string | null
   paymentMethod?: Prisma.StringNullableFilter<"Contract"> | string | null
   originalUrl?: Prisma.StringNullableFilter<"Contract"> | string | null
@@ -336,6 +370,8 @@ export type ContractWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Contract"> | Date | string
   adminId?: Prisma.StringFilter<"Contract"> | string
   isSigned?: Prisma.BoolFilter<"Contract"> | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFilter<"Contract"> | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.StringNullableFilter<"Contract"> | string | null
   admin?: Prisma.XOR<Prisma.AdminScalarRelationFilter, Prisma.AdminWhereInput>
   libranzaData?: Prisma.XOR<Prisma.LibranzaDataNullableScalarRelationFilter, Prisma.LibranzaDataWhereInput> | null
   parties?: Prisma.ContractPartyListRelationFilter
@@ -353,10 +389,12 @@ export type ContractOrderByWithRelationInput = {
   contractType?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   templateKey?: Prisma.SortOrder
+  consecutivo?: Prisma.SortOrder
+  sequence?: Prisma.SortOrder
   startDate?: Prisma.SortOrderInput | Prisma.SortOrder
   endDate?: Prisma.SortOrderInput | Prisma.SortOrder
   subject?: Prisma.SortOrderInput | Prisma.SortOrder
-  amount?: Prisma.SortOrderInput | Prisma.SortOrder
+  amount?: Prisma.SortOrder
   currency?: Prisma.SortOrderInput | Prisma.SortOrder
   paymentMethod?: Prisma.SortOrderInput | Prisma.SortOrder
   originalUrl?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -367,6 +405,8 @@ export type ContractOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   adminId?: Prisma.SortOrder
   isSigned?: Prisma.SortOrder
+  dataReviewStatus?: Prisma.SortOrder
+  dataReviewNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   admin?: Prisma.AdminOrderByWithRelationInput
   libranzaData?: Prisma.LibranzaDataOrderByWithRelationInput
   parties?: Prisma.ContractPartyOrderByRelationAggregateInput
@@ -381,6 +421,7 @@ export type ContractWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   contractNumber?: string
   token?: string
+  templateKey_sequence?: Prisma.ContractTemplateKeySequenceCompoundUniqueInput
   AND?: Prisma.ContractWhereInput | Prisma.ContractWhereInput[]
   OR?: Prisma.ContractWhereInput[]
   NOT?: Prisma.ContractWhereInput | Prisma.ContractWhereInput[]
@@ -388,10 +429,12 @@ export type ContractWhereUniqueInput = Prisma.AtLeast<{
   contractType?: Prisma.StringNullableFilter<"Contract"> | string | null
   status?: Prisma.EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
   templateKey?: Prisma.StringFilter<"Contract"> | string
+  consecutivo?: Prisma.StringFilter<"Contract"> | string
+  sequence?: Prisma.IntFilter<"Contract"> | number
   startDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   endDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   subject?: Prisma.StringNullableFilter<"Contract"> | string | null
-  amount?: Prisma.DecimalNullableFilter<"Contract"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFilter<"Contract"> | number
   currency?: Prisma.StringNullableFilter<"Contract"> | string | null
   paymentMethod?: Prisma.StringNullableFilter<"Contract"> | string | null
   originalUrl?: Prisma.StringNullableFilter<"Contract"> | string | null
@@ -401,6 +444,8 @@ export type ContractWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Contract"> | Date | string
   adminId?: Prisma.StringFilter<"Contract"> | string
   isSigned?: Prisma.BoolFilter<"Contract"> | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFilter<"Contract"> | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.StringNullableFilter<"Contract"> | string | null
   admin?: Prisma.XOR<Prisma.AdminScalarRelationFilter, Prisma.AdminWhereInput>
   libranzaData?: Prisma.XOR<Prisma.LibranzaDataNullableScalarRelationFilter, Prisma.LibranzaDataWhereInput> | null
   parties?: Prisma.ContractPartyListRelationFilter
@@ -409,7 +454,7 @@ export type ContractWhereUniqueInput = Prisma.AtLeast<{
   signatures?: Prisma.SignatureListRelationFilter
   documents?: Prisma.ContractDocumentListRelationFilter
   contractAuditEvents?: Prisma.ContractAuditEventListRelationFilter
-}, "id" | "contractNumber" | "token">
+}, "id" | "contractNumber" | "token" | "templateKey_sequence">
 
 export type ContractOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -418,10 +463,12 @@ export type ContractOrderByWithAggregationInput = {
   contractType?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   templateKey?: Prisma.SortOrder
+  consecutivo?: Prisma.SortOrder
+  sequence?: Prisma.SortOrder
   startDate?: Prisma.SortOrderInput | Prisma.SortOrder
   endDate?: Prisma.SortOrderInput | Prisma.SortOrder
   subject?: Prisma.SortOrderInput | Prisma.SortOrder
-  amount?: Prisma.SortOrderInput | Prisma.SortOrder
+  amount?: Prisma.SortOrder
   currency?: Prisma.SortOrderInput | Prisma.SortOrder
   paymentMethod?: Prisma.SortOrderInput | Prisma.SortOrder
   originalUrl?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -432,6 +479,8 @@ export type ContractOrderByWithAggregationInput = {
   updatedAt?: Prisma.SortOrder
   adminId?: Prisma.SortOrder
   isSigned?: Prisma.SortOrder
+  dataReviewStatus?: Prisma.SortOrder
+  dataReviewNotes?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ContractCountOrderByAggregateInput
   _avg?: Prisma.ContractAvgOrderByAggregateInput
   _max?: Prisma.ContractMaxOrderByAggregateInput
@@ -449,10 +498,12 @@ export type ContractScalarWhereWithAggregatesInput = {
   contractType?: Prisma.StringNullableWithAggregatesFilter<"Contract"> | string | null
   status?: Prisma.EnumContractStatusWithAggregatesFilter<"Contract"> | $Enums.ContractStatus
   templateKey?: Prisma.StringWithAggregatesFilter<"Contract"> | string
+  consecutivo?: Prisma.StringWithAggregatesFilter<"Contract"> | string
+  sequence?: Prisma.IntWithAggregatesFilter<"Contract"> | number
   startDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Contract"> | Date | string | null
   endDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Contract"> | Date | string | null
   subject?: Prisma.StringNullableWithAggregatesFilter<"Contract"> | string | null
-  amount?: Prisma.DecimalNullableWithAggregatesFilter<"Contract"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntWithAggregatesFilter<"Contract"> | number
   currency?: Prisma.StringNullableWithAggregatesFilter<"Contract"> | string | null
   paymentMethod?: Prisma.StringNullableWithAggregatesFilter<"Contract"> | string | null
   originalUrl?: Prisma.StringNullableWithAggregatesFilter<"Contract"> | string | null
@@ -463,6 +514,8 @@ export type ContractScalarWhereWithAggregatesInput = {
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Contract"> | Date | string
   adminId?: Prisma.StringWithAggregatesFilter<"Contract"> | string
   isSigned?: Prisma.BoolWithAggregatesFilter<"Contract"> | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusWithAggregatesFilter<"Contract"> | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.StringNullableWithAggregatesFilter<"Contract"> | string | null
 }
 
 export type ContractCreateInput = {
@@ -472,10 +525,12 @@ export type ContractCreateInput = {
   contractType?: string | null
   status?: $Enums.ContractStatus
   templateKey?: string
+  consecutivo: string
+  sequence: number
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount: number
   currency?: string | null
   paymentMethod?: string | null
   originalUrl?: string | null
@@ -485,6 +540,8 @@ export type ContractCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isSigned?: boolean
+  dataReviewStatus?: $Enums.DataReviewStatus
+  dataReviewNotes?: string | null
   admin: Prisma.AdminCreateNestedOneWithoutContractsInput
   libranzaData?: Prisma.LibranzaDataCreateNestedOneWithoutContractInput
   parties?: Prisma.ContractPartyCreateNestedManyWithoutContractInput
@@ -502,10 +559,12 @@ export type ContractUncheckedCreateInput = {
   contractType?: string | null
   status?: $Enums.ContractStatus
   templateKey?: string
+  consecutivo: string
+  sequence: number
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount: number
   currency?: string | null
   paymentMethod?: string | null
   originalUrl?: string | null
@@ -516,6 +575,8 @@ export type ContractUncheckedCreateInput = {
   updatedAt?: Date | string
   adminId: string
   isSigned?: boolean
+  dataReviewStatus?: $Enums.DataReviewStatus
+  dataReviewNotes?: string | null
   libranzaData?: Prisma.LibranzaDataUncheckedCreateNestedOneWithoutContractInput
   parties?: Prisma.ContractPartyUncheckedCreateNestedManyWithoutContractInput
   clauses?: Prisma.ContractClauseUncheckedCreateNestedManyWithoutContractInput
@@ -532,10 +593,12 @@ export type ContractUpdateInput = {
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   templateKey?: Prisma.StringFieldUpdateOperationsInput | string
+  consecutivo?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -545,6 +608,8 @@ export type ContractUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFieldUpdateOperationsInput | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   admin?: Prisma.AdminUpdateOneRequiredWithoutContractsNestedInput
   libranzaData?: Prisma.LibranzaDataUpdateOneWithoutContractNestedInput
   parties?: Prisma.ContractPartyUpdateManyWithoutContractNestedInput
@@ -562,10 +627,12 @@ export type ContractUncheckedUpdateInput = {
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   templateKey?: Prisma.StringFieldUpdateOperationsInput | string
+  consecutivo?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -576,6 +643,8 @@ export type ContractUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   adminId?: Prisma.StringFieldUpdateOperationsInput | string
   isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFieldUpdateOperationsInput | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   libranzaData?: Prisma.LibranzaDataUncheckedUpdateOneWithoutContractNestedInput
   parties?: Prisma.ContractPartyUncheckedUpdateManyWithoutContractNestedInput
   clauses?: Prisma.ContractClauseUncheckedUpdateManyWithoutContractNestedInput
@@ -592,10 +661,12 @@ export type ContractCreateManyInput = {
   contractType?: string | null
   status?: $Enums.ContractStatus
   templateKey?: string
+  consecutivo: string
+  sequence: number
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount: number
   currency?: string | null
   paymentMethod?: string | null
   originalUrl?: string | null
@@ -606,6 +677,8 @@ export type ContractCreateManyInput = {
   updatedAt?: Date | string
   adminId: string
   isSigned?: boolean
+  dataReviewStatus?: $Enums.DataReviewStatus
+  dataReviewNotes?: string | null
 }
 
 export type ContractUpdateManyMutationInput = {
@@ -615,10 +688,12 @@ export type ContractUpdateManyMutationInput = {
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   templateKey?: Prisma.StringFieldUpdateOperationsInput | string
+  consecutivo?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -628,6 +703,8 @@ export type ContractUpdateManyMutationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFieldUpdateOperationsInput | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ContractUncheckedUpdateManyInput = {
@@ -637,10 +714,12 @@ export type ContractUncheckedUpdateManyInput = {
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   templateKey?: Prisma.StringFieldUpdateOperationsInput | string
+  consecutivo?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -651,6 +730,8 @@ export type ContractUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   adminId?: Prisma.StringFieldUpdateOperationsInput | string
   isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFieldUpdateOperationsInput | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ContractListRelationFilter = {
@@ -663,6 +744,11 @@ export type ContractOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type ContractTemplateKeySequenceCompoundUniqueInput = {
+  templateKey: string
+  sequence: number
+}
+
 export type ContractCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -670,6 +756,8 @@ export type ContractCountOrderByAggregateInput = {
   contractType?: Prisma.SortOrder
   status?: Prisma.SortOrder
   templateKey?: Prisma.SortOrder
+  consecutivo?: Prisma.SortOrder
+  sequence?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   subject?: Prisma.SortOrder
@@ -684,9 +772,12 @@ export type ContractCountOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   adminId?: Prisma.SortOrder
   isSigned?: Prisma.SortOrder
+  dataReviewStatus?: Prisma.SortOrder
+  dataReviewNotes?: Prisma.SortOrder
 }
 
 export type ContractAvgOrderByAggregateInput = {
+  sequence?: Prisma.SortOrder
   amount?: Prisma.SortOrder
 }
 
@@ -697,6 +788,8 @@ export type ContractMaxOrderByAggregateInput = {
   contractType?: Prisma.SortOrder
   status?: Prisma.SortOrder
   templateKey?: Prisma.SortOrder
+  consecutivo?: Prisma.SortOrder
+  sequence?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   subject?: Prisma.SortOrder
@@ -711,6 +804,8 @@ export type ContractMaxOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   adminId?: Prisma.SortOrder
   isSigned?: Prisma.SortOrder
+  dataReviewStatus?: Prisma.SortOrder
+  dataReviewNotes?: Prisma.SortOrder
 }
 
 export type ContractMinOrderByAggregateInput = {
@@ -720,6 +815,8 @@ export type ContractMinOrderByAggregateInput = {
   contractType?: Prisma.SortOrder
   status?: Prisma.SortOrder
   templateKey?: Prisma.SortOrder
+  consecutivo?: Prisma.SortOrder
+  sequence?: Prisma.SortOrder
   startDate?: Prisma.SortOrder
   endDate?: Prisma.SortOrder
   subject?: Prisma.SortOrder
@@ -734,9 +831,12 @@ export type ContractMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   adminId?: Prisma.SortOrder
   isSigned?: Prisma.SortOrder
+  dataReviewStatus?: Prisma.SortOrder
+  dataReviewNotes?: Prisma.SortOrder
 }
 
 export type ContractSumOrderByAggregateInput = {
+  sequence?: Prisma.SortOrder
   amount?: Prisma.SortOrder
 }
 
@@ -795,20 +895,24 @@ export type EnumContractStatusFieldUpdateOperationsInput = {
   set?: $Enums.ContractStatus
 }
 
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
-export type NullableDecimalFieldUpdateOperationsInput = {
-  set?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
-  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
-}
-
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
+}
+
+export type EnumDataReviewStatusFieldUpdateOperationsInput = {
+  set?: $Enums.DataReviewStatus
 }
 
 export type ContractCreateNestedOneWithoutLibranzaDataInput = {
@@ -916,10 +1020,12 @@ export type ContractCreateWithoutAdminInput = {
   contractType?: string | null
   status?: $Enums.ContractStatus
   templateKey?: string
+  consecutivo: string
+  sequence: number
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount: number
   currency?: string | null
   paymentMethod?: string | null
   originalUrl?: string | null
@@ -929,6 +1035,8 @@ export type ContractCreateWithoutAdminInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isSigned?: boolean
+  dataReviewStatus?: $Enums.DataReviewStatus
+  dataReviewNotes?: string | null
   libranzaData?: Prisma.LibranzaDataCreateNestedOneWithoutContractInput
   parties?: Prisma.ContractPartyCreateNestedManyWithoutContractInput
   clauses?: Prisma.ContractClauseCreateNestedManyWithoutContractInput
@@ -945,10 +1053,12 @@ export type ContractUncheckedCreateWithoutAdminInput = {
   contractType?: string | null
   status?: $Enums.ContractStatus
   templateKey?: string
+  consecutivo: string
+  sequence: number
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount: number
   currency?: string | null
   paymentMethod?: string | null
   originalUrl?: string | null
@@ -958,6 +1068,8 @@ export type ContractUncheckedCreateWithoutAdminInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isSigned?: boolean
+  dataReviewStatus?: $Enums.DataReviewStatus
+  dataReviewNotes?: string | null
   libranzaData?: Prisma.LibranzaDataUncheckedCreateNestedOneWithoutContractInput
   parties?: Prisma.ContractPartyUncheckedCreateNestedManyWithoutContractInput
   clauses?: Prisma.ContractClauseUncheckedCreateNestedManyWithoutContractInput
@@ -1003,10 +1115,12 @@ export type ContractScalarWhereInput = {
   contractType?: Prisma.StringNullableFilter<"Contract"> | string | null
   status?: Prisma.EnumContractStatusFilter<"Contract"> | $Enums.ContractStatus
   templateKey?: Prisma.StringFilter<"Contract"> | string
+  consecutivo?: Prisma.StringFilter<"Contract"> | string
+  sequence?: Prisma.IntFilter<"Contract"> | number
   startDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   endDate?: Prisma.DateTimeNullableFilter<"Contract"> | Date | string | null
   subject?: Prisma.StringNullableFilter<"Contract"> | string | null
-  amount?: Prisma.DecimalNullableFilter<"Contract"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFilter<"Contract"> | number
   currency?: Prisma.StringNullableFilter<"Contract"> | string | null
   paymentMethod?: Prisma.StringNullableFilter<"Contract"> | string | null
   originalUrl?: Prisma.StringNullableFilter<"Contract"> | string | null
@@ -1017,6 +1131,8 @@ export type ContractScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Contract"> | Date | string
   adminId?: Prisma.StringFilter<"Contract"> | string
   isSigned?: Prisma.BoolFilter<"Contract"> | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFilter<"Contract"> | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.StringNullableFilter<"Contract"> | string | null
 }
 
 export type ContractCreateWithoutLibranzaDataInput = {
@@ -1026,10 +1142,12 @@ export type ContractCreateWithoutLibranzaDataInput = {
   contractType?: string | null
   status?: $Enums.ContractStatus
   templateKey?: string
+  consecutivo: string
+  sequence: number
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount: number
   currency?: string | null
   paymentMethod?: string | null
   originalUrl?: string | null
@@ -1039,6 +1157,8 @@ export type ContractCreateWithoutLibranzaDataInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isSigned?: boolean
+  dataReviewStatus?: $Enums.DataReviewStatus
+  dataReviewNotes?: string | null
   admin: Prisma.AdminCreateNestedOneWithoutContractsInput
   parties?: Prisma.ContractPartyCreateNestedManyWithoutContractInput
   clauses?: Prisma.ContractClauseCreateNestedManyWithoutContractInput
@@ -1055,10 +1175,12 @@ export type ContractUncheckedCreateWithoutLibranzaDataInput = {
   contractType?: string | null
   status?: $Enums.ContractStatus
   templateKey?: string
+  consecutivo: string
+  sequence: number
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount: number
   currency?: string | null
   paymentMethod?: string | null
   originalUrl?: string | null
@@ -1069,6 +1191,8 @@ export type ContractUncheckedCreateWithoutLibranzaDataInput = {
   updatedAt?: Date | string
   adminId: string
   isSigned?: boolean
+  dataReviewStatus?: $Enums.DataReviewStatus
+  dataReviewNotes?: string | null
   parties?: Prisma.ContractPartyUncheckedCreateNestedManyWithoutContractInput
   clauses?: Prisma.ContractClauseUncheckedCreateNestedManyWithoutContractInput
   signers?: Prisma.ContractSignerUncheckedCreateNestedManyWithoutContractInput
@@ -1100,10 +1224,12 @@ export type ContractUpdateWithoutLibranzaDataInput = {
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   templateKey?: Prisma.StringFieldUpdateOperationsInput | string
+  consecutivo?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1113,6 +1239,8 @@ export type ContractUpdateWithoutLibranzaDataInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFieldUpdateOperationsInput | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   admin?: Prisma.AdminUpdateOneRequiredWithoutContractsNestedInput
   parties?: Prisma.ContractPartyUpdateManyWithoutContractNestedInput
   clauses?: Prisma.ContractClauseUpdateManyWithoutContractNestedInput
@@ -1129,10 +1257,12 @@ export type ContractUncheckedUpdateWithoutLibranzaDataInput = {
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   templateKey?: Prisma.StringFieldUpdateOperationsInput | string
+  consecutivo?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1143,6 +1273,8 @@ export type ContractUncheckedUpdateWithoutLibranzaDataInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   adminId?: Prisma.StringFieldUpdateOperationsInput | string
   isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFieldUpdateOperationsInput | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   parties?: Prisma.ContractPartyUncheckedUpdateManyWithoutContractNestedInput
   clauses?: Prisma.ContractClauseUncheckedUpdateManyWithoutContractNestedInput
   signers?: Prisma.ContractSignerUncheckedUpdateManyWithoutContractNestedInput
@@ -1158,10 +1290,12 @@ export type ContractCreateWithoutPartiesInput = {
   contractType?: string | null
   status?: $Enums.ContractStatus
   templateKey?: string
+  consecutivo: string
+  sequence: number
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount: number
   currency?: string | null
   paymentMethod?: string | null
   originalUrl?: string | null
@@ -1171,6 +1305,8 @@ export type ContractCreateWithoutPartiesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isSigned?: boolean
+  dataReviewStatus?: $Enums.DataReviewStatus
+  dataReviewNotes?: string | null
   admin: Prisma.AdminCreateNestedOneWithoutContractsInput
   libranzaData?: Prisma.LibranzaDataCreateNestedOneWithoutContractInput
   clauses?: Prisma.ContractClauseCreateNestedManyWithoutContractInput
@@ -1187,10 +1323,12 @@ export type ContractUncheckedCreateWithoutPartiesInput = {
   contractType?: string | null
   status?: $Enums.ContractStatus
   templateKey?: string
+  consecutivo: string
+  sequence: number
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount: number
   currency?: string | null
   paymentMethod?: string | null
   originalUrl?: string | null
@@ -1201,6 +1339,8 @@ export type ContractUncheckedCreateWithoutPartiesInput = {
   updatedAt?: Date | string
   adminId: string
   isSigned?: boolean
+  dataReviewStatus?: $Enums.DataReviewStatus
+  dataReviewNotes?: string | null
   libranzaData?: Prisma.LibranzaDataUncheckedCreateNestedOneWithoutContractInput
   clauses?: Prisma.ContractClauseUncheckedCreateNestedManyWithoutContractInput
   signers?: Prisma.ContractSignerUncheckedCreateNestedManyWithoutContractInput
@@ -1232,10 +1372,12 @@ export type ContractUpdateWithoutPartiesInput = {
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   templateKey?: Prisma.StringFieldUpdateOperationsInput | string
+  consecutivo?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1245,6 +1387,8 @@ export type ContractUpdateWithoutPartiesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFieldUpdateOperationsInput | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   admin?: Prisma.AdminUpdateOneRequiredWithoutContractsNestedInput
   libranzaData?: Prisma.LibranzaDataUpdateOneWithoutContractNestedInput
   clauses?: Prisma.ContractClauseUpdateManyWithoutContractNestedInput
@@ -1261,10 +1405,12 @@ export type ContractUncheckedUpdateWithoutPartiesInput = {
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   templateKey?: Prisma.StringFieldUpdateOperationsInput | string
+  consecutivo?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1275,6 +1421,8 @@ export type ContractUncheckedUpdateWithoutPartiesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   adminId?: Prisma.StringFieldUpdateOperationsInput | string
   isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFieldUpdateOperationsInput | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   libranzaData?: Prisma.LibranzaDataUncheckedUpdateOneWithoutContractNestedInput
   clauses?: Prisma.ContractClauseUncheckedUpdateManyWithoutContractNestedInput
   signers?: Prisma.ContractSignerUncheckedUpdateManyWithoutContractNestedInput
@@ -1290,10 +1438,12 @@ export type ContractCreateWithoutClausesInput = {
   contractType?: string | null
   status?: $Enums.ContractStatus
   templateKey?: string
+  consecutivo: string
+  sequence: number
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount: number
   currency?: string | null
   paymentMethod?: string | null
   originalUrl?: string | null
@@ -1303,6 +1453,8 @@ export type ContractCreateWithoutClausesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isSigned?: boolean
+  dataReviewStatus?: $Enums.DataReviewStatus
+  dataReviewNotes?: string | null
   admin: Prisma.AdminCreateNestedOneWithoutContractsInput
   libranzaData?: Prisma.LibranzaDataCreateNestedOneWithoutContractInput
   parties?: Prisma.ContractPartyCreateNestedManyWithoutContractInput
@@ -1319,10 +1471,12 @@ export type ContractUncheckedCreateWithoutClausesInput = {
   contractType?: string | null
   status?: $Enums.ContractStatus
   templateKey?: string
+  consecutivo: string
+  sequence: number
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount: number
   currency?: string | null
   paymentMethod?: string | null
   originalUrl?: string | null
@@ -1333,6 +1487,8 @@ export type ContractUncheckedCreateWithoutClausesInput = {
   updatedAt?: Date | string
   adminId: string
   isSigned?: boolean
+  dataReviewStatus?: $Enums.DataReviewStatus
+  dataReviewNotes?: string | null
   libranzaData?: Prisma.LibranzaDataUncheckedCreateNestedOneWithoutContractInput
   parties?: Prisma.ContractPartyUncheckedCreateNestedManyWithoutContractInput
   signers?: Prisma.ContractSignerUncheckedCreateNestedManyWithoutContractInput
@@ -1364,10 +1520,12 @@ export type ContractUpdateWithoutClausesInput = {
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   templateKey?: Prisma.StringFieldUpdateOperationsInput | string
+  consecutivo?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1377,6 +1535,8 @@ export type ContractUpdateWithoutClausesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFieldUpdateOperationsInput | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   admin?: Prisma.AdminUpdateOneRequiredWithoutContractsNestedInput
   libranzaData?: Prisma.LibranzaDataUpdateOneWithoutContractNestedInput
   parties?: Prisma.ContractPartyUpdateManyWithoutContractNestedInput
@@ -1393,10 +1553,12 @@ export type ContractUncheckedUpdateWithoutClausesInput = {
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   templateKey?: Prisma.StringFieldUpdateOperationsInput | string
+  consecutivo?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1407,6 +1569,8 @@ export type ContractUncheckedUpdateWithoutClausesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   adminId?: Prisma.StringFieldUpdateOperationsInput | string
   isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFieldUpdateOperationsInput | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   libranzaData?: Prisma.LibranzaDataUncheckedUpdateOneWithoutContractNestedInput
   parties?: Prisma.ContractPartyUncheckedUpdateManyWithoutContractNestedInput
   signers?: Prisma.ContractSignerUncheckedUpdateManyWithoutContractNestedInput
@@ -1422,10 +1586,12 @@ export type ContractCreateWithoutSignersInput = {
   contractType?: string | null
   status?: $Enums.ContractStatus
   templateKey?: string
+  consecutivo: string
+  sequence: number
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount: number
   currency?: string | null
   paymentMethod?: string | null
   originalUrl?: string | null
@@ -1435,6 +1601,8 @@ export type ContractCreateWithoutSignersInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isSigned?: boolean
+  dataReviewStatus?: $Enums.DataReviewStatus
+  dataReviewNotes?: string | null
   admin: Prisma.AdminCreateNestedOneWithoutContractsInput
   libranzaData?: Prisma.LibranzaDataCreateNestedOneWithoutContractInput
   parties?: Prisma.ContractPartyCreateNestedManyWithoutContractInput
@@ -1451,10 +1619,12 @@ export type ContractUncheckedCreateWithoutSignersInput = {
   contractType?: string | null
   status?: $Enums.ContractStatus
   templateKey?: string
+  consecutivo: string
+  sequence: number
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount: number
   currency?: string | null
   paymentMethod?: string | null
   originalUrl?: string | null
@@ -1465,6 +1635,8 @@ export type ContractUncheckedCreateWithoutSignersInput = {
   updatedAt?: Date | string
   adminId: string
   isSigned?: boolean
+  dataReviewStatus?: $Enums.DataReviewStatus
+  dataReviewNotes?: string | null
   libranzaData?: Prisma.LibranzaDataUncheckedCreateNestedOneWithoutContractInput
   parties?: Prisma.ContractPartyUncheckedCreateNestedManyWithoutContractInput
   clauses?: Prisma.ContractClauseUncheckedCreateNestedManyWithoutContractInput
@@ -1496,10 +1668,12 @@ export type ContractUpdateWithoutSignersInput = {
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   templateKey?: Prisma.StringFieldUpdateOperationsInput | string
+  consecutivo?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1509,6 +1683,8 @@ export type ContractUpdateWithoutSignersInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFieldUpdateOperationsInput | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   admin?: Prisma.AdminUpdateOneRequiredWithoutContractsNestedInput
   libranzaData?: Prisma.LibranzaDataUpdateOneWithoutContractNestedInput
   parties?: Prisma.ContractPartyUpdateManyWithoutContractNestedInput
@@ -1525,10 +1701,12 @@ export type ContractUncheckedUpdateWithoutSignersInput = {
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   templateKey?: Prisma.StringFieldUpdateOperationsInput | string
+  consecutivo?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1539,6 +1717,8 @@ export type ContractUncheckedUpdateWithoutSignersInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   adminId?: Prisma.StringFieldUpdateOperationsInput | string
   isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFieldUpdateOperationsInput | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   libranzaData?: Prisma.LibranzaDataUncheckedUpdateOneWithoutContractNestedInput
   parties?: Prisma.ContractPartyUncheckedUpdateManyWithoutContractNestedInput
   clauses?: Prisma.ContractClauseUncheckedUpdateManyWithoutContractNestedInput
@@ -1554,10 +1734,12 @@ export type ContractCreateWithoutSignaturesInput = {
   contractType?: string | null
   status?: $Enums.ContractStatus
   templateKey?: string
+  consecutivo: string
+  sequence: number
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount: number
   currency?: string | null
   paymentMethod?: string | null
   originalUrl?: string | null
@@ -1567,6 +1749,8 @@ export type ContractCreateWithoutSignaturesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isSigned?: boolean
+  dataReviewStatus?: $Enums.DataReviewStatus
+  dataReviewNotes?: string | null
   admin: Prisma.AdminCreateNestedOneWithoutContractsInput
   libranzaData?: Prisma.LibranzaDataCreateNestedOneWithoutContractInput
   parties?: Prisma.ContractPartyCreateNestedManyWithoutContractInput
@@ -1583,10 +1767,12 @@ export type ContractUncheckedCreateWithoutSignaturesInput = {
   contractType?: string | null
   status?: $Enums.ContractStatus
   templateKey?: string
+  consecutivo: string
+  sequence: number
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount: number
   currency?: string | null
   paymentMethod?: string | null
   originalUrl?: string | null
@@ -1597,6 +1783,8 @@ export type ContractUncheckedCreateWithoutSignaturesInput = {
   updatedAt?: Date | string
   adminId: string
   isSigned?: boolean
+  dataReviewStatus?: $Enums.DataReviewStatus
+  dataReviewNotes?: string | null
   libranzaData?: Prisma.LibranzaDataUncheckedCreateNestedOneWithoutContractInput
   parties?: Prisma.ContractPartyUncheckedCreateNestedManyWithoutContractInput
   clauses?: Prisma.ContractClauseUncheckedCreateNestedManyWithoutContractInput
@@ -1628,10 +1816,12 @@ export type ContractUpdateWithoutSignaturesInput = {
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   templateKey?: Prisma.StringFieldUpdateOperationsInput | string
+  consecutivo?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1641,6 +1831,8 @@ export type ContractUpdateWithoutSignaturesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFieldUpdateOperationsInput | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   admin?: Prisma.AdminUpdateOneRequiredWithoutContractsNestedInput
   libranzaData?: Prisma.LibranzaDataUpdateOneWithoutContractNestedInput
   parties?: Prisma.ContractPartyUpdateManyWithoutContractNestedInput
@@ -1657,10 +1849,12 @@ export type ContractUncheckedUpdateWithoutSignaturesInput = {
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   templateKey?: Prisma.StringFieldUpdateOperationsInput | string
+  consecutivo?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1671,6 +1865,8 @@ export type ContractUncheckedUpdateWithoutSignaturesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   adminId?: Prisma.StringFieldUpdateOperationsInput | string
   isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFieldUpdateOperationsInput | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   libranzaData?: Prisma.LibranzaDataUncheckedUpdateOneWithoutContractNestedInput
   parties?: Prisma.ContractPartyUncheckedUpdateManyWithoutContractNestedInput
   clauses?: Prisma.ContractClauseUncheckedUpdateManyWithoutContractNestedInput
@@ -1686,10 +1882,12 @@ export type ContractCreateWithoutDocumentsInput = {
   contractType?: string | null
   status?: $Enums.ContractStatus
   templateKey?: string
+  consecutivo: string
+  sequence: number
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount: number
   currency?: string | null
   paymentMethod?: string | null
   originalUrl?: string | null
@@ -1699,6 +1897,8 @@ export type ContractCreateWithoutDocumentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isSigned?: boolean
+  dataReviewStatus?: $Enums.DataReviewStatus
+  dataReviewNotes?: string | null
   admin: Prisma.AdminCreateNestedOneWithoutContractsInput
   libranzaData?: Prisma.LibranzaDataCreateNestedOneWithoutContractInput
   parties?: Prisma.ContractPartyCreateNestedManyWithoutContractInput
@@ -1715,10 +1915,12 @@ export type ContractUncheckedCreateWithoutDocumentsInput = {
   contractType?: string | null
   status?: $Enums.ContractStatus
   templateKey?: string
+  consecutivo: string
+  sequence: number
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount: number
   currency?: string | null
   paymentMethod?: string | null
   originalUrl?: string | null
@@ -1729,6 +1931,8 @@ export type ContractUncheckedCreateWithoutDocumentsInput = {
   updatedAt?: Date | string
   adminId: string
   isSigned?: boolean
+  dataReviewStatus?: $Enums.DataReviewStatus
+  dataReviewNotes?: string | null
   libranzaData?: Prisma.LibranzaDataUncheckedCreateNestedOneWithoutContractInput
   parties?: Prisma.ContractPartyUncheckedCreateNestedManyWithoutContractInput
   clauses?: Prisma.ContractClauseUncheckedCreateNestedManyWithoutContractInput
@@ -1760,10 +1964,12 @@ export type ContractUpdateWithoutDocumentsInput = {
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   templateKey?: Prisma.StringFieldUpdateOperationsInput | string
+  consecutivo?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1773,6 +1979,8 @@ export type ContractUpdateWithoutDocumentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFieldUpdateOperationsInput | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   admin?: Prisma.AdminUpdateOneRequiredWithoutContractsNestedInput
   libranzaData?: Prisma.LibranzaDataUpdateOneWithoutContractNestedInput
   parties?: Prisma.ContractPartyUpdateManyWithoutContractNestedInput
@@ -1789,10 +1997,12 @@ export type ContractUncheckedUpdateWithoutDocumentsInput = {
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   templateKey?: Prisma.StringFieldUpdateOperationsInput | string
+  consecutivo?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1803,6 +2013,8 @@ export type ContractUncheckedUpdateWithoutDocumentsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   adminId?: Prisma.StringFieldUpdateOperationsInput | string
   isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFieldUpdateOperationsInput | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   libranzaData?: Prisma.LibranzaDataUncheckedUpdateOneWithoutContractNestedInput
   parties?: Prisma.ContractPartyUncheckedUpdateManyWithoutContractNestedInput
   clauses?: Prisma.ContractClauseUncheckedUpdateManyWithoutContractNestedInput
@@ -1818,10 +2030,12 @@ export type ContractCreateWithoutContractAuditEventsInput = {
   contractType?: string | null
   status?: $Enums.ContractStatus
   templateKey?: string
+  consecutivo: string
+  sequence: number
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount: number
   currency?: string | null
   paymentMethod?: string | null
   originalUrl?: string | null
@@ -1831,6 +2045,8 @@ export type ContractCreateWithoutContractAuditEventsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isSigned?: boolean
+  dataReviewStatus?: $Enums.DataReviewStatus
+  dataReviewNotes?: string | null
   admin: Prisma.AdminCreateNestedOneWithoutContractsInput
   libranzaData?: Prisma.LibranzaDataCreateNestedOneWithoutContractInput
   parties?: Prisma.ContractPartyCreateNestedManyWithoutContractInput
@@ -1847,10 +2063,12 @@ export type ContractUncheckedCreateWithoutContractAuditEventsInput = {
   contractType?: string | null
   status?: $Enums.ContractStatus
   templateKey?: string
+  consecutivo: string
+  sequence: number
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount: number
   currency?: string | null
   paymentMethod?: string | null
   originalUrl?: string | null
@@ -1861,6 +2079,8 @@ export type ContractUncheckedCreateWithoutContractAuditEventsInput = {
   updatedAt?: Date | string
   adminId: string
   isSigned?: boolean
+  dataReviewStatus?: $Enums.DataReviewStatus
+  dataReviewNotes?: string | null
   libranzaData?: Prisma.LibranzaDataUncheckedCreateNestedOneWithoutContractInput
   parties?: Prisma.ContractPartyUncheckedCreateNestedManyWithoutContractInput
   clauses?: Prisma.ContractClauseUncheckedCreateNestedManyWithoutContractInput
@@ -1892,10 +2112,12 @@ export type ContractUpdateWithoutContractAuditEventsInput = {
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   templateKey?: Prisma.StringFieldUpdateOperationsInput | string
+  consecutivo?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1905,6 +2127,8 @@ export type ContractUpdateWithoutContractAuditEventsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFieldUpdateOperationsInput | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   admin?: Prisma.AdminUpdateOneRequiredWithoutContractsNestedInput
   libranzaData?: Prisma.LibranzaDataUpdateOneWithoutContractNestedInput
   parties?: Prisma.ContractPartyUpdateManyWithoutContractNestedInput
@@ -1921,10 +2145,12 @@ export type ContractUncheckedUpdateWithoutContractAuditEventsInput = {
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   templateKey?: Prisma.StringFieldUpdateOperationsInput | string
+  consecutivo?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1935,6 +2161,8 @@ export type ContractUncheckedUpdateWithoutContractAuditEventsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   adminId?: Prisma.StringFieldUpdateOperationsInput | string
   isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFieldUpdateOperationsInput | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   libranzaData?: Prisma.LibranzaDataUncheckedUpdateOneWithoutContractNestedInput
   parties?: Prisma.ContractPartyUncheckedUpdateManyWithoutContractNestedInput
   clauses?: Prisma.ContractClauseUncheckedUpdateManyWithoutContractNestedInput
@@ -1950,10 +2178,12 @@ export type ContractCreateManyAdminInput = {
   contractType?: string | null
   status?: $Enums.ContractStatus
   templateKey?: string
+  consecutivo: string
+  sequence: number
   startDate?: Date | string | null
   endDate?: Date | string | null
   subject?: string | null
-  amount?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount: number
   currency?: string | null
   paymentMethod?: string | null
   originalUrl?: string | null
@@ -1963,6 +2193,8 @@ export type ContractCreateManyAdminInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   isSigned?: boolean
+  dataReviewStatus?: $Enums.DataReviewStatus
+  dataReviewNotes?: string | null
 }
 
 export type ContractUpdateWithoutAdminInput = {
@@ -1972,10 +2204,12 @@ export type ContractUpdateWithoutAdminInput = {
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   templateKey?: Prisma.StringFieldUpdateOperationsInput | string
+  consecutivo?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1985,6 +2219,8 @@ export type ContractUpdateWithoutAdminInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFieldUpdateOperationsInput | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   libranzaData?: Prisma.LibranzaDataUpdateOneWithoutContractNestedInput
   parties?: Prisma.ContractPartyUpdateManyWithoutContractNestedInput
   clauses?: Prisma.ContractClauseUpdateManyWithoutContractNestedInput
@@ -2001,10 +2237,12 @@ export type ContractUncheckedUpdateWithoutAdminInput = {
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   templateKey?: Prisma.StringFieldUpdateOperationsInput | string
+  consecutivo?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2014,6 +2252,8 @@ export type ContractUncheckedUpdateWithoutAdminInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFieldUpdateOperationsInput | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   libranzaData?: Prisma.LibranzaDataUncheckedUpdateOneWithoutContractNestedInput
   parties?: Prisma.ContractPartyUncheckedUpdateManyWithoutContractNestedInput
   clauses?: Prisma.ContractClauseUncheckedUpdateManyWithoutContractNestedInput
@@ -2030,10 +2270,12 @@ export type ContractUncheckedUpdateManyWithoutAdminInput = {
   contractType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
   templateKey?: Prisma.StringFieldUpdateOperationsInput | string
+  consecutivo?: Prisma.StringFieldUpdateOperationsInput | string
+  sequence?: Prisma.IntFieldUpdateOperationsInput | number
   startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   subject?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  amount?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  amount?: Prisma.IntFieldUpdateOperationsInput | number
   currency?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   paymentMethod?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   originalUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2043,6 +2285,8 @@ export type ContractUncheckedUpdateManyWithoutAdminInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dataReviewStatus?: Prisma.EnumDataReviewStatusFieldUpdateOperationsInput | $Enums.DataReviewStatus
+  dataReviewNotes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -2128,6 +2372,8 @@ export type ContractSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   contractType?: boolean
   status?: boolean
   templateKey?: boolean
+  consecutivo?: boolean
+  sequence?: boolean
   startDate?: boolean
   endDate?: boolean
   subject?: boolean
@@ -2142,6 +2388,8 @@ export type ContractSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   updatedAt?: boolean
   adminId?: boolean
   isSigned?: boolean
+  dataReviewStatus?: boolean
+  dataReviewNotes?: boolean
   admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>
   libranzaData?: boolean | Prisma.Contract$libranzaDataArgs<ExtArgs>
   parties?: boolean | Prisma.Contract$partiesArgs<ExtArgs>
@@ -2160,6 +2408,8 @@ export type ContractSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   contractType?: boolean
   status?: boolean
   templateKey?: boolean
+  consecutivo?: boolean
+  sequence?: boolean
   startDate?: boolean
   endDate?: boolean
   subject?: boolean
@@ -2174,6 +2424,8 @@ export type ContractSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   updatedAt?: boolean
   adminId?: boolean
   isSigned?: boolean
+  dataReviewStatus?: boolean
+  dataReviewNotes?: boolean
   admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["contract"]>
 
@@ -2184,6 +2436,8 @@ export type ContractSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   contractType?: boolean
   status?: boolean
   templateKey?: boolean
+  consecutivo?: boolean
+  sequence?: boolean
   startDate?: boolean
   endDate?: boolean
   subject?: boolean
@@ -2198,6 +2452,8 @@ export type ContractSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   updatedAt?: boolean
   adminId?: boolean
   isSigned?: boolean
+  dataReviewStatus?: boolean
+  dataReviewNotes?: boolean
   admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["contract"]>
 
@@ -2208,6 +2464,8 @@ export type ContractSelectScalar = {
   contractType?: boolean
   status?: boolean
   templateKey?: boolean
+  consecutivo?: boolean
+  sequence?: boolean
   startDate?: boolean
   endDate?: boolean
   subject?: boolean
@@ -2222,9 +2480,11 @@ export type ContractSelectScalar = {
   updatedAt?: boolean
   adminId?: boolean
   isSigned?: boolean
+  dataReviewStatus?: boolean
+  dataReviewNotes?: boolean
 }
 
-export type ContractOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "contractNumber" | "contractType" | "status" | "templateKey" | "startDate" | "endDate" | "subject" | "amount" | "currency" | "paymentMethod" | "originalUrl" | "signedUrl" | "token" | "tokenExpiresAt" | "createdAt" | "updatedAt" | "adminId" | "isSigned", ExtArgs["result"]["contract"]>
+export type ContractOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "contractNumber" | "contractType" | "status" | "templateKey" | "consecutivo" | "sequence" | "startDate" | "endDate" | "subject" | "amount" | "currency" | "paymentMethod" | "originalUrl" | "signedUrl" | "token" | "tokenExpiresAt" | "createdAt" | "updatedAt" | "adminId" | "isSigned" | "dataReviewStatus" | "dataReviewNotes", ExtArgs["result"]["contract"]>
 export type ContractInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>
   libranzaData?: boolean | Prisma.Contract$libranzaDataArgs<ExtArgs>
@@ -2262,10 +2522,12 @@ export type $ContractPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     contractType: string | null
     status: $Enums.ContractStatus
     templateKey: string
+    consecutivo: string
+    sequence: number
     startDate: Date | null
     endDate: Date | null
     subject: string | null
-    amount: runtime.Decimal | null
+    amount: number
     currency: string | null
     paymentMethod: string | null
     originalUrl: string | null
@@ -2276,6 +2538,8 @@ export type $ContractPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     updatedAt: Date
     adminId: string
     isSigned: boolean
+    dataReviewStatus: $Enums.DataReviewStatus
+    dataReviewNotes: string | null
   }, ExtArgs["result"]["contract"]>
   composites: {}
 }
@@ -2713,10 +2977,12 @@ export interface ContractFieldRefs {
   readonly contractType: Prisma.FieldRef<"Contract", 'String'>
   readonly status: Prisma.FieldRef<"Contract", 'ContractStatus'>
   readonly templateKey: Prisma.FieldRef<"Contract", 'String'>
+  readonly consecutivo: Prisma.FieldRef<"Contract", 'String'>
+  readonly sequence: Prisma.FieldRef<"Contract", 'Int'>
   readonly startDate: Prisma.FieldRef<"Contract", 'DateTime'>
   readonly endDate: Prisma.FieldRef<"Contract", 'DateTime'>
   readonly subject: Prisma.FieldRef<"Contract", 'String'>
-  readonly amount: Prisma.FieldRef<"Contract", 'Decimal'>
+  readonly amount: Prisma.FieldRef<"Contract", 'Int'>
   readonly currency: Prisma.FieldRef<"Contract", 'String'>
   readonly paymentMethod: Prisma.FieldRef<"Contract", 'String'>
   readonly originalUrl: Prisma.FieldRef<"Contract", 'String'>
@@ -2727,6 +2993,8 @@ export interface ContractFieldRefs {
   readonly updatedAt: Prisma.FieldRef<"Contract", 'DateTime'>
   readonly adminId: Prisma.FieldRef<"Contract", 'String'>
   readonly isSigned: Prisma.FieldRef<"Contract", 'Boolean'>
+  readonly dataReviewStatus: Prisma.FieldRef<"Contract", 'DataReviewStatus'>
+  readonly dataReviewNotes: Prisma.FieldRef<"Contract", 'String'>
 }
     
 

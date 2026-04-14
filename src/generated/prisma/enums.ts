@@ -18,6 +18,15 @@ export const AdminRole = {
 export type AdminRole = (typeof AdminRole)[keyof typeof AdminRole]
 
 
+export const DataReviewStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type DataReviewStatus = (typeof DataReviewStatus)[keyof typeof DataReviewStatus]
+
+
 export const ContractStatus = {
   DRAFT: 'DRAFT',
   PENDING_DOCUMENTS: 'PENDING_DOCUMENTS',
@@ -140,3 +149,11 @@ export const ReferenceType = {
 } as const
 
 export type ReferenceType = (typeof ReferenceType)[keyof typeof ReferenceType]
+
+
+export const PublicContractIdentifierType = {
+  EMAIL: 'EMAIL',
+  PHONE: 'PHONE'
+} as const
+
+export type PublicContractIdentifierType = (typeof PublicContractIdentifierType)[keyof typeof PublicContractIdentifierType]

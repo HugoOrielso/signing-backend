@@ -31,20 +31,27 @@ enum AdminRole {
   CREDIT_ANALYST
 }
 
-model Contract {
-  id             String         @id @default(uuid())
-  title          String
-  contractNumber String?        @unique
-  contractType   String?
-  status         ContractStatus @default(DRAFT)
+enum DataReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
 
-  templateKey String @default("dimcultura")
+model Contract {
+  id             String           @id @default(uuid())
+  title          String
+  contractNumber String?          @unique
+  contractType   String?
+  status         ContractStatus   @default(DRAFT)
+  templateKey    String           @default("dimcultura")
+  consecutivo    String
+  sequence       Int
 
   startDate DateTime? @db.Timestamptz(3)
   endDate   DateTime? @db.Timestamptz(3)
   subject   String?   @db.Text
 
-  amount        Decimal? @db.Decimal(12, 2)
+  amount        Int
   currency      String?  @default("COP")
   paymentMethod String?
 
@@ -60,17 +67,22 @@ model Contract {
   adminId String
   admin   Admin  @relation(fields: [adminId], references: [id], onDelete: Cascade)
 
-  // ── Relaciones ──────────────────────────────────────────
-  libranzaData        LibranzaData? // ← NUEVO: datos específicos de la libranza
+  libranzaData        LibranzaData?
   parties             ContractParty[]
   clauses             ContractClause[]
   signers             ContractSigner[]
   signatures          Signature[]
   documents           ContractDocument[]
   contractAuditEvents ContractAuditEvent[]
-  isSigned Boolean @default(false)
+
+  isSigned         Boolean          @default(false)
+  dataReviewStatus DataReviewStatus @default(PENDING)
+  dataReviewNotes  String?
+
+  @@unique([templateKey, sequence])
   @@index([adminId])
   @@index([status])
+  @@index([dataReviewStatus])
 }
 
 enum ContractStatus {
@@ -130,9 +142,9 @@ model LibranzaData {
   tipoContrato          ContractEmploymentType?
 
   // Financiero
-  sumaTotal    String?
-  numeroCuotas String?
-  valorCuota   String?
+  sumaTotal    Int
+  numeroCuotas Int
+  valorCuota   Int
   mesCobro     String?
 
   // Cuenta bancaria
@@ -227,7 +239,6 @@ model Signature {
   signerId String?
   signer   ContractSigner? @relation(fields: [signerId], references: [id], onDelete: SetNull)
 
-
   type       SignatureType
   imageUrl   String?
   typedValue String?
@@ -248,7 +259,6 @@ model Signature {
   @@index([signerId])
 }
 
-
 enum SignatureType {
   DRAWN
   TYPED
@@ -268,6 +278,7 @@ model RefreshToken {
   expiresAt DateTime @db.Timestamptz(3)
   createdAt DateTime @default(now()) @db.Timestamptz(3)
 }
+
 // ─────────────────────────────────────────────────────────
 // DOCUMENTOS ADJUNTOS — subidos por el cliente al firmar
 // ─────────────────────────────────────────────────────────
@@ -427,24 +438,35 @@ enum ReferenceType {
   LABORAL
 }
 
+enum PublicContractIdentifierType {
+  EMAIL
+  PHONE
+}
 
 model PublicContractSession {
-  id             String    @id @default(uuid())
-  email           String
+  id String @id @default(uuid())
 
-  otpCode         String?
-  otpExpiresAt    DateTime?
-  otpAttempts     Int       @default(0)
+  identifier     String
+  identifierType PublicContractIdentifierType
 
-  sessionToken    String?   @unique
-  expiresAt       DateTime?
-  verifiedAt      DateTime?
+  email String?
+  phone String?
 
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  otpCode      String?
+  otpExpiresAt DateTime?
+  otpAttempts  Int       @default(0)
 
+  sessionToken String?   @unique
+  expiresAt    DateTime?
+  verifiedAt   DateTime?
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([identifier])
+  @@index([identifier])
+  @@index([identifierType])
   @@index([email])
+  @@index([phone])
   @@index([sessionToken])
-  @@unique([email])
 }

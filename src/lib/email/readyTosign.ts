@@ -90,7 +90,5 @@ export async function sendReadyToSignEmail({
 </body>
 </html>`,
     });
-    console.log(response)
-    console.log("enviado")
     return response;
 }

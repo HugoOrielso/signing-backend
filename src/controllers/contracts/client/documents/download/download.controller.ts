@@ -49,7 +49,7 @@ export async function downloadPublicSignedContract(req: Request, res: Response) 
 
     const template = getTemplateConfig(contract.templateKey);
 
-    const contractedSigner = contract.signers.find((s) => s.partyRole === "CONTRACTED");
+    const contractedSigner = contract.signers.find((s) => s.partyRole === "DEUDOR");
     const contractedSig = contractedSigner
       ? contract.signatures.find((sig) => sig.signerId === contractedSigner.id)
       : undefined;
@@ -99,7 +99,7 @@ export async function downloadPublicSignedContract(req: Request, res: Response) 
     }
 
 
-    const html = generateLibranzaHtml(contract.libranzaData as any, {
+    const html = await  generateLibranzaHtml(contract.libranzaData as any, {
       templateKey: contract.templateKey,
       signature: signatureData,
       logoBase64,
@@ -132,7 +132,7 @@ export async function downloadPublicSignedContract(req: Request, res: Response) 
 
     const clienteName =
       contract.libranzaData.clienteNombre ??
-      contract.parties.find((p) => p.role === "CONTRACTED")?.name ??
+      contract.parties.find((p) => p.role === "DEUDOR")?.name ??
       "libranza";
 
     const safeName = clienteName

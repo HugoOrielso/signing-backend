@@ -36,9 +36,9 @@ interface LibranzaData {
   municipioTrabajo?: string | null;
   empresaTrabajo?: string | null;
   departamento?: string | null;
-  sumaTotal?: string | null;
-  numeroCuotas?: string | null;
-  valorCuota?: string | null;
+  sumaTotal: number;
+  numeroCuotas: number;
+  valorCuota: number;
   mesCobro?: string | null;
   tipoCuenta?: string | null;
   numeroCuenta?: string | null;
@@ -56,7 +56,6 @@ interface SignatureData {
   signedAt?: string | null;
   signerName?: string;
 }
-
 const F = (v?: string | null) => v?.trim() ? escHtml(v.trim()) : "&nbsp;";
 const FM = (v?: string | null) => {
   if (!v?.trim()) return "$&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -90,16 +89,39 @@ interface GenerateLibranzaHtmlOptions {
   logoMime?: string;
 }
 
-export function generateLibranzaHtml(
+export async function generateLibranzaHtml(
   d: LibranzaData,
   options: GenerateLibranzaHtmlOptions = {}
-): string {
+): Promise<string> {
   const {
     templateKey,
     signature,
     logoBase64,
     logoMime = "image/webp",
   } = options;
+
+
+  async function imageUrlToBase64(url: string): Promise<string> {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Error al obtener imagen: ${response.statusText}`);
+    const arrayBuffer = await response.arrayBuffer();
+    const base64 = Buffer.from(arrayBuffer).toString("base64");
+    const contentType = response.headers.get("content-type") ?? "image/png";
+    return `data:${contentType};base64,${base64}`;
+  }
+
+  // ✅ Resuelve la firma antes de construir el HTML
+  let sigZone = "";
+  if (signature) {
+    if (signature.type === "DRAWN" && signature.imageUrl) {
+      const base64Img = await imageUrlToBase64(signature.imageUrl);
+      sigZone = `<img src="${base64Img}" style="max-height:44px;max-width:100%;object-fit:contain" alt="firma">`;
+    } else if (signature.type === "TYPED" && signature.typedValue) {
+      sigZone = `<span style="font-family:'Dancing Script',cursive;font-size:22px;color:#1a1a2e">${escHtml(signature.typedValue)}</span>`;
+    }
+  } else {
+    sigZone = `<span style="font-size:6.5px;color:#d4c9b0;letter-spacing:1px">PENDIENTE DE FIRMA</span>`;
+  }
 
   const resolvedTemplateKey = resolveTemplateKey(templateKey);
   const template = getTemplateConfig(resolvedTemplateKey);
@@ -113,16 +135,7 @@ export function generateLibranzaHtml(
   const fechaParts = d.fecha?.split("/") ?? ["", "", ""];
 
   // Firma en la zona
-  let sigZone = "";
-  if (signature) {
-    if (signature.type === "DRAWN" && signature.imageUrl) {
-      sigZone = `<img src="${signature.imageUrl}" style="max-height:44px;max-width:100%;object-fit:contain" alt="firma">`;
-    } else if (signature.type === "TYPED" && signature.typedValue) {
-      sigZone = `<span style="font-family:'Dancing Script',cursive;font-size:22px;color:#1a1a2e">${escHtml(signature.typedValue)}</span>`;
-    }
-  } else {
-    sigZone = `<span style="font-size:6.5px;color:#d4c9b0;letter-spacing:1px">PENDIENTE DE FIRMA</span>`;
-  }
+
 
   const sigBorder = signature ? "2px solid #2d6a4f" : "2px solid #c9a84c";
 
@@ -213,9 +226,9 @@ export function generateLibranzaHtml(
   ${U(F(d.empresaTrabajo))},
   departamento ${U(F(d.departamento))},
   para que descuente de mi sueldo o de cualquier otro concepto la
-  suma de ${Box(FM(d.sumaTotal))}
-  en ${Box(F(d.numeroCuotas))}
-  cuotas mensuales consecutivas por valor de ${Box(FM(d.valorCuota))}, cada una, a partir
+  suma de ${Box((d.sumaTotal.toString()))}
+  en ${Box(F(d.numeroCuotas.toString()))}
+  cuotas mensuales consecutivas por valor de ${Box(FM(d.valorCuota.toString()))}, cada una, a partir
   del mes de ${Box(F(d.mesCobro))}
   y pagarlos a la orden de <strong>${escHtml(template.nombre.toUpperCase())}</strong>
   <br/>

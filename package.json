@@ -40,6 +40,7 @@
     "@pdfsmaller/pdf-encrypt-lite": "^1.0.2",
     "@prisma/adapter-pg": "^7.4.2",
     "@prisma/client": "^7.4.2",
+    "axios": "^1.14.0",
     "bcrypt": "^6.0.0",
     "cloudinary": "^2.9.0",
     "cookie-parser": "^1.4.7",
@@ -51,6 +52,7 @@
     "pg": "^8.20.0",
     "puppeteer": "^24.39.1",
     "resend": "^6.9.3",
+    "twilio": "^5.13.1",
     "zod": "^4.3.6"
   }
 }

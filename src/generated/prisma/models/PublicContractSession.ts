@@ -36,7 +36,10 @@ export type PublicContractSessionSumAggregateOutputType = {
 
 export type PublicContractSessionMinAggregateOutputType = {
   id: string | null
+  identifier: string | null
+  identifierType: $Enums.PublicContractIdentifierType | null
   email: string | null
+  phone: string | null
   otpCode: string | null
   otpExpiresAt: Date | null
   otpAttempts: number | null
@@ -49,7 +52,10 @@ export type PublicContractSessionMinAggregateOutputType = {
 
 export type PublicContractSessionMaxAggregateOutputType = {
   id: string | null
+  identifier: string | null
+  identifierType: $Enums.PublicContractIdentifierType | null
   email: string | null
+  phone: string | null
   otpCode: string | null
   otpExpiresAt: Date | null
   otpAttempts: number | null
@@ -62,7 +68,10 @@ export type PublicContractSessionMaxAggregateOutputType = {
 
 export type PublicContractSessionCountAggregateOutputType = {
   id: number
+  identifier: number
+  identifierType: number
   email: number
+  phone: number
   otpCode: number
   otpExpiresAt: number
   otpAttempts: number
@@ -85,7 +94,10 @@ export type PublicContractSessionSumAggregateInputType = {
 
 export type PublicContractSessionMinAggregateInputType = {
   id?: true
+  identifier?: true
+  identifierType?: true
   email?: true
+  phone?: true
   otpCode?: true
   otpExpiresAt?: true
   otpAttempts?: true
@@ -98,7 +110,10 @@ export type PublicContractSessionMinAggregateInputType = {
 
 export type PublicContractSessionMaxAggregateInputType = {
   id?: true
+  identifier?: true
+  identifierType?: true
   email?: true
+  phone?: true
   otpCode?: true
   otpExpiresAt?: true
   otpAttempts?: true
@@ -111,7 +126,10 @@ export type PublicContractSessionMaxAggregateInputType = {
 
 export type PublicContractSessionCountAggregateInputType = {
   id?: true
+  identifier?: true
+  identifierType?: true
   email?: true
+  phone?: true
   otpCode?: true
   otpExpiresAt?: true
   otpAttempts?: true
@@ -211,7 +229,10 @@ export type PublicContractSessionGroupByArgs<ExtArgs extends runtime.Types.Exten
 
 export type PublicContractSessionGroupByOutputType = {
   id: string
-  email: string
+  identifier: string
+  identifierType: $Enums.PublicContractIdentifierType
+  email: string | null
+  phone: string | null
   otpCode: string | null
   otpExpiresAt: Date | null
   otpAttempts: number
@@ -247,7 +268,10 @@ export type PublicContractSessionWhereInput = {
   OR?: Prisma.PublicContractSessionWhereInput[]
   NOT?: Prisma.PublicContractSessionWhereInput | Prisma.PublicContractSessionWhereInput[]
   id?: Prisma.StringFilter<"PublicContractSession"> | string
-  email?: Prisma.StringFilter<"PublicContractSession"> | string
+  identifier?: Prisma.StringFilter<"PublicContractSession"> | string
+  identifierType?: Prisma.EnumPublicContractIdentifierTypeFilter<"PublicContractSession"> | $Enums.PublicContractIdentifierType
+  email?: Prisma.StringNullableFilter<"PublicContractSession"> | string | null
+  phone?: Prisma.StringNullableFilter<"PublicContractSession"> | string | null
   otpCode?: Prisma.StringNullableFilter<"PublicContractSession"> | string | null
   otpExpiresAt?: Prisma.DateTimeNullableFilter<"PublicContractSession"> | Date | string | null
   otpAttempts?: Prisma.IntFilter<"PublicContractSession"> | number
@@ -260,7 +284,10 @@ export type PublicContractSessionWhereInput = {
 
 export type PublicContractSessionOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  email?: Prisma.SortOrder
+  identifier?: Prisma.SortOrder
+  identifierType?: Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
   otpCode?: Prisma.SortOrderInput | Prisma.SortOrder
   otpExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   otpAttempts?: Prisma.SortOrder
@@ -273,11 +300,14 @@ export type PublicContractSessionOrderByWithRelationInput = {
 
 export type PublicContractSessionWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  email?: string
+  identifier?: string
   sessionToken?: string
   AND?: Prisma.PublicContractSessionWhereInput | Prisma.PublicContractSessionWhereInput[]
   OR?: Prisma.PublicContractSessionWhereInput[]
   NOT?: Prisma.PublicContractSessionWhereInput | Prisma.PublicContractSessionWhereInput[]
+  identifierType?: Prisma.EnumPublicContractIdentifierTypeFilter<"PublicContractSession"> | $Enums.PublicContractIdentifierType
+  email?: Prisma.StringNullableFilter<"PublicContractSession"> | string | null
+  phone?: Prisma.StringNullableFilter<"PublicContractSession"> | string | null
   otpCode?: Prisma.StringNullableFilter<"PublicContractSession"> | string | null
   otpExpiresAt?: Prisma.DateTimeNullableFilter<"PublicContractSession"> | Date | string | null
   otpAttempts?: Prisma.IntFilter<"PublicContractSession"> | number
@@ -285,11 +315,14 @@ export type PublicContractSessionWhereUniqueInput = Prisma.AtLeast<{
   verifiedAt?: Prisma.DateTimeNullableFilter<"PublicContractSession"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"PublicContractSession"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"PublicContractSession"> | Date | string
-}, "id" | "sessionToken" | "email">
+}, "id" | "sessionToken" | "identifier">
 
 export type PublicContractSessionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  email?: Prisma.SortOrder
+  identifier?: Prisma.SortOrder
+  identifierType?: Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
   otpCode?: Prisma.SortOrderInput | Prisma.SortOrder
   otpExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   otpAttempts?: Prisma.SortOrder
@@ -310,7 +343,10 @@ export type PublicContractSessionScalarWhereWithAggregatesInput = {
   OR?: Prisma.PublicContractSessionScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PublicContractSessionScalarWhereWithAggregatesInput | Prisma.PublicContractSessionScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"PublicContractSession"> | string
-  email?: Prisma.StringWithAggregatesFilter<"PublicContractSession"> | string
+  identifier?: Prisma.StringWithAggregatesFilter<"PublicContractSession"> | string
+  identifierType?: Prisma.EnumPublicContractIdentifierTypeWithAggregatesFilter<"PublicContractSession"> | $Enums.PublicContractIdentifierType
+  email?: Prisma.StringNullableWithAggregatesFilter<"PublicContractSession"> | string | null
+  phone?: Prisma.StringNullableWithAggregatesFilter<"PublicContractSession"> | string | null
   otpCode?: Prisma.StringNullableWithAggregatesFilter<"PublicContractSession"> | string | null
   otpExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"PublicContractSession"> | Date | string | null
   otpAttempts?: Prisma.IntWithAggregatesFilter<"PublicContractSession"> | number
@@ -323,7 +359,10 @@ export type PublicContractSessionScalarWhereWithAggregatesInput = {
 
 export type PublicContractSessionCreateInput = {
   id?: string
-  email: string
+  identifier: string
+  identifierType: $Enums.PublicContractIdentifierType
+  email?: string | null
+  phone?: string | null
   otpCode?: string | null
   otpExpiresAt?: Date | string | null
   otpAttempts?: number
@@ -336,7 +375,10 @@ export type PublicContractSessionCreateInput = {
 
 export type PublicContractSessionUncheckedCreateInput = {
   id?: string
-  email: string
+  identifier: string
+  identifierType: $Enums.PublicContractIdentifierType
+  email?: string | null
+  phone?: string | null
   otpCode?: string | null
   otpExpiresAt?: Date | string | null
   otpAttempts?: number
@@ -349,7 +391,10 @@ export type PublicContractSessionUncheckedCreateInput = {
 
 export type PublicContractSessionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  identifier?: Prisma.StringFieldUpdateOperationsInput | string
+  identifierType?: Prisma.EnumPublicContractIdentifierTypeFieldUpdateOperationsInput | $Enums.PublicContractIdentifierType
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otpCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   otpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
@@ -362,7 +407,10 @@ export type PublicContractSessionUpdateInput = {
 
 export type PublicContractSessionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  identifier?: Prisma.StringFieldUpdateOperationsInput | string
+  identifierType?: Prisma.EnumPublicContractIdentifierTypeFieldUpdateOperationsInput | $Enums.PublicContractIdentifierType
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otpCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   otpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
@@ -375,7 +423,10 @@ export type PublicContractSessionUncheckedUpdateInput = {
 
 export type PublicContractSessionCreateManyInput = {
   id?: string
-  email: string
+  identifier: string
+  identifierType: $Enums.PublicContractIdentifierType
+  email?: string | null
+  phone?: string | null
   otpCode?: string | null
   otpExpiresAt?: Date | string | null
   otpAttempts?: number
@@ -388,7 +439,10 @@ export type PublicContractSessionCreateManyInput = {
 
 export type PublicContractSessionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  identifier?: Prisma.StringFieldUpdateOperationsInput | string
+  identifierType?: Prisma.EnumPublicContractIdentifierTypeFieldUpdateOperationsInput | $Enums.PublicContractIdentifierType
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otpCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   otpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
@@ -401,7 +455,10 @@ export type PublicContractSessionUpdateManyMutationInput = {
 
 export type PublicContractSessionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
+  identifier?: Prisma.StringFieldUpdateOperationsInput | string
+  identifierType?: Prisma.EnumPublicContractIdentifierTypeFieldUpdateOperationsInput | $Enums.PublicContractIdentifierType
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otpCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   otpExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   otpAttempts?: Prisma.IntFieldUpdateOperationsInput | number
@@ -414,7 +471,10 @@ export type PublicContractSessionUncheckedUpdateManyInput = {
 
 export type PublicContractSessionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  identifier?: Prisma.SortOrder
+  identifierType?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   otpCode?: Prisma.SortOrder
   otpExpiresAt?: Prisma.SortOrder
   otpAttempts?: Prisma.SortOrder
@@ -431,7 +491,10 @@ export type PublicContractSessionAvgOrderByAggregateInput = {
 
 export type PublicContractSessionMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  identifier?: Prisma.SortOrder
+  identifierType?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   otpCode?: Prisma.SortOrder
   otpExpiresAt?: Prisma.SortOrder
   otpAttempts?: Prisma.SortOrder
@@ -444,7 +507,10 @@ export type PublicContractSessionMaxOrderByAggregateInput = {
 
 export type PublicContractSessionMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  identifier?: Prisma.SortOrder
+  identifierType?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   otpCode?: Prisma.SortOrder
   otpExpiresAt?: Prisma.SortOrder
   otpAttempts?: Prisma.SortOrder
@@ -459,11 +525,18 @@ export type PublicContractSessionSumOrderByAggregateInput = {
   otpAttempts?: Prisma.SortOrder
 }
 
+export type EnumPublicContractIdentifierTypeFieldUpdateOperationsInput = {
+  set?: $Enums.PublicContractIdentifierType
+}
+
 
 
 export type PublicContractSessionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  identifier?: boolean
+  identifierType?: boolean
   email?: boolean
+  phone?: boolean
   otpCode?: boolean
   otpExpiresAt?: boolean
   otpAttempts?: boolean
@@ -476,7 +549,10 @@ export type PublicContractSessionSelect<ExtArgs extends runtime.Types.Extensions
 
 export type PublicContractSessionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  identifier?: boolean
+  identifierType?: boolean
   email?: boolean
+  phone?: boolean
   otpCode?: boolean
   otpExpiresAt?: boolean
   otpAttempts?: boolean
@@ -489,7 +565,10 @@ export type PublicContractSessionSelectCreateManyAndReturn<ExtArgs extends runti
 
 export type PublicContractSessionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  identifier?: boolean
+  identifierType?: boolean
   email?: boolean
+  phone?: boolean
   otpCode?: boolean
   otpExpiresAt?: boolean
   otpAttempts?: boolean
@@ -502,7 +581,10 @@ export type PublicContractSessionSelectUpdateManyAndReturn<ExtArgs extends runti
 
 export type PublicContractSessionSelectScalar = {
   id?: boolean
+  identifier?: boolean
+  identifierType?: boolean
   email?: boolean
+  phone?: boolean
   otpCode?: boolean
   otpExpiresAt?: boolean
   otpAttempts?: boolean
@@ -513,14 +595,17 @@ export type PublicContractSessionSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PublicContractSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "otpCode" | "otpExpiresAt" | "otpAttempts" | "sessionToken" | "expiresAt" | "verifiedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["publicContractSession"]>
+export type PublicContractSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "identifier" | "identifierType" | "email" | "phone" | "otpCode" | "otpExpiresAt" | "otpAttempts" | "sessionToken" | "expiresAt" | "verifiedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["publicContractSession"]>
 
 export type $PublicContractSessionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PublicContractSession"
   objects: {}
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    email: string
+    identifier: string
+    identifierType: $Enums.PublicContractIdentifierType
+    email: string | null
+    phone: string | null
     otpCode: string | null
     otpExpiresAt: Date | null
     otpAttempts: number
@@ -953,7 +1038,10 @@ export interface Prisma__PublicContractSessionClient<T, Null = never, ExtArgs ex
  */
 export interface PublicContractSessionFieldRefs {
   readonly id: Prisma.FieldRef<"PublicContractSession", 'String'>
+  readonly identifier: Prisma.FieldRef<"PublicContractSession", 'String'>
+  readonly identifierType: Prisma.FieldRef<"PublicContractSession", 'PublicContractIdentifierType'>
   readonly email: Prisma.FieldRef<"PublicContractSession", 'String'>
+  readonly phone: Prisma.FieldRef<"PublicContractSession", 'String'>
   readonly otpCode: Prisma.FieldRef<"PublicContractSession", 'String'>
   readonly otpExpiresAt: Prisma.FieldRef<"PublicContractSession", 'DateTime'>
   readonly otpAttempts: Prisma.FieldRef<"PublicContractSession", 'Int'>

@@ -38,24 +38,49 @@ export async function logoutPublicSession(
 }
 
 
-export async function getPublicContractsByUser(req: AuthenticatedPublicRequest, res: Response) {
+export async function getPublicContractsByUser(
+    req: AuthenticatedPublicRequest,
+    res: Response
+) {
     try {
         const email = req.publicSession?.email?.trim().toLowerCase();
 
         if (!email) {
-            return res.status(401).json({ ok: false, message: "Sesión pública inválida o expirada" });
+            return res.status(401).json({
+                ok: false,
+                message: "Sesión pública inválida o expirada",
+            });
         }
 
         const contracts = await prisma.contract.findMany({
             where: {
                 OR: [
-                    { libranzaData: { is: { clienteEmail: { equals: email, mode: "insensitive" } } } },
-                    { signers: { some: { email: { equals: email, mode: "insensitive" } } } },
+                    {
+                        libranzaData: {
+                            is: {
+                                clienteEmail: {
+                                    equals: email,
+                                    mode: "insensitive",
+                                },
+                            },
+                        },
+                    },
+                    {
+                        signers: {
+                            some: {
+                                email: {
+                                    equals: email,
+                                    mode: "insensitive",
+                                },
+                            },
+                        },
+                    },
                 ],
             },
             orderBy: { createdAt: "desc" },
             select: {
                 id: true,
+                consecutivo: true,
                 title: true,
                 contractNumber: true,
                 contractType: true,
@@ -65,19 +90,26 @@ export async function getPublicContractsByUser(req: AuthenticatedPublicRequest, 
                 createdAt: true,
                 updatedAt: true,
                 token: true,
+
+                dataReviewStatus: true,
+                dataReviewNotes: true,
+
                 documents: {
                     select: { id: true },
-                    take: 1, // solo necesitamos saber si existe al menos uno
+                    take: 1,
                 },
             },
         });
 
-        const formattedContracts = contracts.map(({ documents, amount, ...contract }) => ({
-            ...contract,
-            amount: amount ? amount.toString() : null,
-            hasAttachments: documents.length > 0,
-            canSign: contract.status === "READY_TO_SIGN",
-        }));
+        const formattedContracts = contracts.map(
+            ({ documents, amount, dataReviewNotes, ...contract }) => ({
+                ...contract,
+                amount: amount ? amount.toString() : null,
+                hasAttachments: documents.length > 0,
+                canSign: contract.status === "READY_TO_SIGN",
+                dataReviewNotes: dataReviewNotes ?? null,
+            })
+        );
 
         return res.status(200).json({
             ok: true,
@@ -86,54 +118,57 @@ export async function getPublicContractsByUser(req: AuthenticatedPublicRequest, 
         });
     } catch (error) {
         console.error("Error getting public contracts by user:", error);
-        return res.status(500).json({ ok: false, message: "Error al obtener los contratos del usuario" });
+        return res.status(500).json({
+            ok: false,
+            message: "Error al obtener los contratos del usuario",
+        });
     }
 }
 
-
 export const getPublicContractByToken = async (
-  req: AuthenticatedPublicRequest,
-  res: Response
+    req: AuthenticatedPublicRequest,
+    res: Response
 ) => {
-  try {
-    const email = req.publicSession?.email?.trim().toLowerCase();
+    try {
+        const email = req.publicSession?.email?.trim().toLowerCase();
 
-    if (!email) {
-      return res.status(401).json({ ok: false, message: "Sesión pública inválida o expirada" });
+        if (!email) {
+            return res.status(401).json({ ok: false, message: "Sesión pública inválida o expirada" });
+        }
+
+        const token = String(req.params.token); // ← era req.params.id
+        const contract = await prisma.contract.findFirst({
+            where: {
+                token,
+            },
+            include: {
+                libranzaData: {
+                    include: {
+                        references: { orderBy: { createdAt: "asc" } },
+                    },
+                },
+                signers: { orderBy: { signerOrder: "asc" } },
+                signatures: {
+                    select: {
+                        id: true,
+                        signerId: true,
+                        type: true,
+                        typedValue: true,
+                        signedAt: true,
+                        imageUrl: true
+                    },
+                },
+                documents: { orderBy: { createdAt: "asc" } },
+            },
+        });
+
+        if (!contract) {
+            return res.status(404).json({ ok: false, message: "Contrato no encontrado" });
+        }
+
+        return res.json({ ok: true, data: contract });
+    } catch (error) {
+        console.error("GET PUBLIC CONTRACT BY TOKEN ERROR", error);
+        return res.status(500).json({ ok: false, message: "Error al obtener el contrato" });
     }
-
-    const token = String(req.params.token); // ← era req.params.id
-    const contract = await prisma.contract.findFirst({
-      where: {
-        token,
-      },
-      include: {
-        libranzaData: {
-          include: {
-            references: { orderBy: { createdAt: "asc" } },
-          },
-        },
-        signers: { orderBy: { signerOrder: "asc" } },
-        signatures: {
-          select: {
-            id: true,
-            signerId: true,
-            type: true,
-            typedValue: true,
-            signedAt: true,
-          },
-        },
-        documents: { orderBy: { createdAt: "asc" } },
-      },
-    });
-
-    if (!contract) {
-      return res.status(404).json({ ok: false, message: "Contrato no encontrado" });
-    }
-
-    return res.json({ ok: true, data: contract });
-  } catch (error) {
-    console.error("GET PUBLIC CONTRACT BY TOKEN ERROR", error);
-    return res.status(500).json({ ok: false, message: "Error al obtener el contrato" });
-  }
 };

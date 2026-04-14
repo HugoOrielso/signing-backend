@@ -54,7 +54,7 @@ export async function generateContractPdf(
       console.warn("Sin logo:", e);
     }
 
-    const html = generateLibranzaHtml(contract.libranzaData, {
+    const html = await generateLibranzaHtml(contract.libranzaData, {
       templateKey: contract.templateKey,
       signature: signatureData,
       logoBase64,

@@ -1362,6 +1362,8 @@ export const ContractScalarFieldEnum = {
   contractType: 'contractType',
   status: 'status',
   templateKey: 'templateKey',
+  consecutivo: 'consecutivo',
+  sequence: 'sequence',
   startDate: 'startDate',
   endDate: 'endDate',
   subject: 'subject',
@@ -1375,7 +1377,9 @@ export const ContractScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   adminId: 'adminId',
-  isSigned: 'isSigned'
+  isSigned: 'isSigned',
+  dataReviewStatus: 'dataReviewStatus',
+  dataReviewNotes: 'dataReviewNotes'
 } as const
 
 export type ContractScalarFieldEnum = (typeof ContractScalarFieldEnum)[keyof typeof ContractScalarFieldEnum]
@@ -1562,7 +1566,10 @@ export type ReferenceScalarFieldEnum = (typeof ReferenceScalarFieldEnum)[keyof t
 
 export const PublicContractSessionScalarFieldEnum = {
   id: 'id',
+  identifier: 'identifier',
+  identifierType: 'identifierType',
   email: 'email',
+  phone: 'phone',
   otpCode: 'otpCode',
   otpExpiresAt: 'otpExpiresAt',
   otpAttempts: 'otpAttempts',
@@ -1680,16 +1687,16 @@ export type ListEnumContractStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
- * Reference to a field of type 'Decimal'
+ * Reference to a field of type 'Int'
  */
-export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
     
 
 
 /**
- * Reference to a field of type 'Decimal[]'
+ * Reference to a field of type 'Int[]'
  */
-export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -1697,6 +1704,20 @@ export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMo
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'DataReviewStatus'
+ */
+export type EnumDataReviewStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DataReviewStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'DataReviewStatus[]'
+ */
+export type ListEnumDataReviewStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DataReviewStatus[]'>
     
 
 
@@ -1739,20 +1760,6 @@ export type EnumPartyRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
  * Reference to a field of type 'PartyRole[]'
  */
 export type ListEnumPartyRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PartyRole[]'>
-    
-
-
-/**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -1851,6 +1858,20 @@ export type EnumReferenceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'ReferenceType[]'
  */
 export type ListEnumReferenceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReferenceType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PublicContractIdentifierType'
+ */
+export type EnumPublicContractIdentifierTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PublicContractIdentifierType'>
+    
+
+
+/**
+ * Reference to a field of type 'PublicContractIdentifierType[]'
+ */
+export type ListEnumPublicContractIdentifierTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PublicContractIdentifierType[]'>
     
 
 

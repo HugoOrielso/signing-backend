@@ -425,14 +425,6 @@ export type ContractClauseUncheckedUpdateManyWithoutContractNestedInput = {
   deleteMany?: Prisma.ContractClauseScalarWhereInput | Prisma.ContractClauseScalarWhereInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type ContractClauseCreateWithoutContractInput = {
   id?: string
   position: number

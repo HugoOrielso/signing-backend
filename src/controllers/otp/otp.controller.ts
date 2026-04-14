@@ -3,36 +3,121 @@ import { Request, Response } from "express";
 import crypto from "crypto";
 import { Resend } from "resend";
 import { prisma } from "../../database/db";
+import { sendSms } from "../../services/messages/send.service";
+
 const resend = new Resend(process.env.RESEND_API_KEY);
+
 const MAX_ATTEMPTS = 5;
 const OTP_TTL_MS = 10 * 60 * 1000;
+const PUBLIC_SESSION_TTL_MS = 1000 * 60 * 60 * 3; // 3 horas
+
+type IdentifierType = "EMAIL" | "PHONE";
+
+function isEmail(value: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
+function normalizePhone(value: string) {
+  let digits = value.replace(/\D/g, "");
+
+  // si llega 3001234567 => 573001234567
+  if (digits.length === 10) {
+    digits = `57${digits}`;
+  }
+
+  return digits;
+}
+
+function isPhone(value: string) {
+  const digits = value.replace(/\D/g, "");
+  return digits.length >= 10 && digits.length <= 15;
+}
+
+function resolveIdentifier(rawValue: string): {
+  identifier: string;
+  identifierType: IdentifierType;
+  email: string | null;
+  phone: string | null;
+} | null {
+  const value = rawValue.trim();
+
+  if (isEmail(value)) {
+    const email = value.toLowerCase();
+
+    return {
+      identifier: email,
+      identifierType: "EMAIL",
+      email,
+      phone: null,
+    };
+  }
+
+  if (isPhone(value)) {
+    const phone = normalizePhone(value);
+
+    return {
+      identifier: phone,
+      identifierType: "PHONE",
+      email: null,
+      phone,
+    };
+  }
+
+  return null;
+}
+
+function maskEmail(email: string) {
+  const [name, domain] = email.split("@");
+  if (!name || !domain) return email;
+
+  const visibleName =
+    name.length <= 2
+      ? `${name[0]}*`
+      : `${name.slice(0, 2)}${"*".repeat(Math.max(name.length - 2, 1))}`;
+
+  return `${visibleName}@${domain}`;
+}
+
+function maskPhone(phone: string) {
+  const visible = phone.slice(-4);
+  return `***${visible}`;
+}
 
 export async function requestOtp(req: Request, res: Response) {
   try {
+    const { identifier } = req.body as { identifier?: string };
 
-    const { email } = req.body as { email?: string };
-
-    if (!email?.trim()) {
+    if (!identifier?.trim()) {
       return res.status(400).json({
         ok: false,
-        message: "El correo es requerido",
+        message: "El correo o teléfono es requerido",
       });
     }
 
-    const emailNorm = email.trim().toLowerCase();
+    const resolved = resolveIdentifier(identifier);
+
+    if (!resolved) {
+      return res.status(400).json({
+        ok: false,
+        message: "Debes ingresar un correo o teléfono válido",
+      });
+    }
 
     const code = String(crypto.randomInt(100000, 999999));
     const otpExpiresAt = new Date(Date.now() + OTP_TTL_MS);
 
     await prisma.publicContractSession.deleteMany({
       where: {
-        email: emailNorm,
+        identifier: resolved.identifier,
       },
     });
 
     await prisma.publicContractSession.create({
       data: {
-        email: emailNorm,
+        identifier: resolved.identifier,
+        identifierType: resolved.identifierType,
+        email: resolved.email,
+        phone: resolved.phone,
         otpCode: code,
         otpExpiresAt,
         otpAttempts: 0,
@@ -42,34 +127,47 @@ export async function requestOtp(req: Request, res: Response) {
       },
     });
 
-    await resend.emails.send({
-      from: process.env.EMAIL_FROM || "onboarding@resend.dev",
-      to: emailNorm,
-      subject: "Tu código de acceso — Dimcultura S.A.S",
-      html: `
-        <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;background:#ffffff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;">
-          <div style="background:linear-gradient(135deg,#1e3a8a,#2563eb);padding:28px 32px;text-align:center;">
-            <p style="margin:0;color:#ffffff;font-size:22px;font-weight:700;">
-              Acceso seguro a tu contrato
-            </p>
-          </div>
-          <div style="padding:32px;">
-            <p style="font-size:14px;line-height:1.6;color:#4b5563;">
-              Usa este código para verificar tu identidad. Expira en <strong>10 minutos</strong>.
-            </p>
-            <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:24px;text-align:center;margin:24px 0;">
-              <p style="margin:0;font-size:38px;font-weight:800;letter-spacing:10px;color:#1e3a8a;font-family:monospace;">
-                ${code}
+    if (resolved.identifierType === "EMAIL" && resolved.email) {
+      await resend.emails.send({
+        from: process.env.EMAIL_FROM || "onboarding@resend.dev",
+        to: resolved.email,
+        subject: "Tu código de acceso — Dimcultura S.A.S",
+        html: `
+          <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;background:#ffffff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;">
+            <div style="background:linear-gradient(135deg,#1e3a8a,#2563eb);padding:28px 32px;text-align:center;">
+              <p style="margin:0;color:#ffffff;font-size:22px;font-weight:700;">
+                Acceso seguro a tu contrato
               </p>
             </div>
+            <div style="padding:32px;">
+              <p style="font-size:14px;line-height:1.6;color:#4b5563;">
+                Usa este código para verificar tu identidad. Expira en <strong>10 minutos</strong>.
+              </p>
+              <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:24px;text-align:center;margin:24px 0;">
+                <p style="margin:0;font-size:38px;font-weight:800;letter-spacing:10px;color:#1e3a8a;font-family:monospace;">
+                  ${code}
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-      `,
-    });
+        `,
+      });
+    }
+
+    if (resolved.identifierType === "PHONE" && resolved.phone) {
+      await sendSms(resolved.phone, `Tu código de acceso es: ${code}. Expira en 10 minutos.`)
+    }
 
     return res.json({
       ok: true,
-      message: "Si ese correo está registrado, recibirás un código.",
+      channel: resolved.identifierType,
+      maskedDestination:
+        resolved.identifierType === "EMAIL" && resolved.email
+          ? maskEmail(resolved.email)
+          : resolved.phone
+          ? maskPhone(resolved.phone)
+          : null,
+      message: "Si el dato está registrado, recibirás un código.",
     });
   } catch (error) {
     console.error("REQUEST OTP ERROR:", error);
@@ -80,23 +178,32 @@ export async function requestOtp(req: Request, res: Response) {
   }
 }
 
-const PUBLIC_SESSION_TTL_MS = 1000 * 60 * 60 * 3; // 3 horas
-
 export async function verifyOtp(req: Request, res: Response) {
   try {
-    const { code, email } = req.body as { code: string; email: string };
+    const { code, identifier } = req.body as {
+      code?: string;
+      identifier?: string;
+    };
 
-    if (!code?.trim() || !email?.trim()) {
+    if (!code?.trim() || !identifier?.trim()) {
       return res.status(400).json({
         ok: false,
-        message: "El código es requerido",
+        message: "El código y el correo o teléfono son requeridos",
       });
     }
 
+    const resolved = resolveIdentifier(identifier);
+
+    if (!resolved) {
+      return res.status(400).json({
+        ok: false,
+        message: "Debes ingresar un correo o teléfono válido",
+      });
+    }
 
     const sessionRow = await prisma.publicContractSession.findFirst({
       where: {
-        email: email,
+        identifier: resolved.identifier,
       },
       orderBy: {
         createdAt: "desc",
@@ -177,7 +284,10 @@ export async function verifyOtp(req: Request, res: Response) {
       ok: true,
       session: {
         id: updated.id,
+        identifier: updated.identifier,
+        identifierType: updated.identifierType,
         email: updated.email,
+        phone: updated.phone,
         sessionToken: updated.sessionToken,
         expiresAt: updated.expiresAt,
       },

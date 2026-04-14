@@ -99,16 +99,32 @@ const positiveMoneySchema = z.preprocess(
   })
 );
 
-const positiveIntegerStringSchema = z
-  .string()
-  .trim()
-  .min(1, "Este campo es obligatorio")
-  .refine((value) => Number.isInteger(Number(value)), {
-    message: "Debe ser un número entero",
-  })
-  .refine((value) => Number(value) > 0, {
-    message: "Debe ser mayor a 0",
-  });
+const integerSchema = z.preprocess(
+  (value) => {
+    if (value === null || value === undefined) return undefined;
+
+    if (typeof value === "string") {
+      const trimmed = value.trim();
+      if (trimmed === "") return undefined;
+
+      if (!/^\d+$/.test(trimmed)) return NaN;
+
+      return Number(trimmed);
+    }
+
+    if (typeof value === "number") {
+      return value;
+    }
+
+    return NaN;
+  },
+  z
+    .number({
+      error: "Este campo es obligatorio",
+    })
+    .int("Debe ser un número entero")
+    .positive("Debe ser mayor a 0")
+);
 
 export const contractEmploymentTypeSchema = z.enum([
   "PROVISIONAL",
@@ -175,19 +191,7 @@ export const generalDataSchema = z.object({
   contractedName: nullableString,
 });
 
-
-const integerSchema = z.preprocess(
-  (value) => {
-    if (typeof value === "string") {
-      const parsed = Number(value);
-      return Number.isFinite(parsed) ? parsed : undefined;
-    }
-    return value;
-  },
-  z.number().int().positive("Debe ser un número entero mayor a 0")
-);
-
-export const createContractSchema = z
+export const rejectedSchema = z
   .object({
     title: nullableString,
     subject: nullableString,
@@ -249,7 +253,7 @@ export const createContractSchema = z
 
     if (!isLibranza) return;
 
-    const requiredStringFields: Array<[keyof typeof data, string]> = [
+    const requiredFields: Array<[keyof typeof data, string]> = [
       ["ciudad", "La ciudad es obligatoria"],
       ["asesor", "El asesor es obligatorio"],
       ["fecha", "La fecha es obligatoria"],
@@ -280,13 +284,19 @@ export const createContractSchema = z
       ["formaPago", "La forma de pago es obligatoria"],
     ];
 
-    requiredStringFields.forEach(([field, message]) => {
+    requiredFields.forEach(([field, message]) => {
       const value = data[field];
-      if (
-        value === null ||
-        value === undefined ||
-        (typeof value === "string" && value.trim() === "")
-      ) {
+
+      if (value === null || value === undefined) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: [field],
+          message,
+        });
+        return;
+      }
+
+      if (typeof value === "string" && value.trim() === "") {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: [field],
@@ -403,32 +413,20 @@ export const createContractSchema = z
       }
     }
 
-    if (data.numeroCuotas) {
-      const cuotas = Number(data.numeroCuotas);
-      if (!Number.isInteger(cuotas)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["numeroCuotas"],
-          message: "Debe ser un número entero",
-        });
-      } else if (cuotas < 10 || cuotas > 22) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["numeroCuotas"],
-          message: "El número de cuotas debe estar entre 10 y 22",
-        });
-      }
+    if (data.numeroCuotas < 10 || data.numeroCuotas > 22) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["numeroCuotas"],
+        message: "El número de cuotas debe estar entre 10 y 22",
+      });
     }
 
     const totalProductos = productos.reduce(
       (sum, producto) => sum + toNumber(producto.valor),
       0
     );
-    const sumaTotal = toNumber(data.sumaTotal);
-    const numeroCuotas = toNumber(data.numeroCuotas);
-    const valorCuota = toNumber(data.valorCuota);
 
-    if (productos.length > 0 && data.sumaTotal && Math.abs(totalProductos - sumaTotal) > 0.01) {
+    if (productos.length > 0 && Math.abs(totalProductos - data.sumaTotal) > 0.01) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["sumaTotal"],
@@ -436,14 +434,9 @@ export const createContractSchema = z
       });
     }
 
-    if (
-      data.sumaTotal &&
-      data.numeroCuotas &&
-      data.valorCuota &&
-      numeroCuotas > 0
-    ) {
-      const cuotaCalculada = sumaTotal / numeroCuotas;
-      if (Math.abs(cuotaCalculada - valorCuota) > 1) {
+    if (data.numeroCuotas > 0) {
+      const cuotaCalculada = data.sumaTotal / data.numeroCuotas;
+      if (Math.abs(cuotaCalculada - data.valorCuota) > 1) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ["valorCuota"],
@@ -454,7 +447,7 @@ export const createContractSchema = z
     }
   });
 
-export type CreateContractBody = z.infer<typeof createContractSchema>;
+export type CreateContractBody = z.infer<typeof rejectedSchema>;
 export type ContractEmploymentType = z.infer<typeof contractEmploymentTypeSchema>;
 export type ReferenceInput = z.infer<typeof referenceSchema>;
 export type ProductInput = z.infer<typeof productSchema>;

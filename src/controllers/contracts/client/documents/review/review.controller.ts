@@ -101,7 +101,7 @@ export async function reviewContractDocument(
       if (allApproved) {
         await tx.contract.update({
           where: { id: existing.contractId },
-          data: { status: "READY_TO_SIGN" },
+          data: { status: "PENDING_VERIFICATION" },
         });
 
         // Obtener email del contratado

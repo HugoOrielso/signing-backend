@@ -70,7 +70,7 @@ export async function signPublicContract(req: Request, res: Response) {
 
     const alreadySigned = contract.signatures.some(
       (sig) => sig.signerId === signer.id
-    );
+    ) || contract.status === "SIGNED" || contract.isSigned === true
 
     if (alreadySigned) {
       return res.status(400).json({
@@ -158,7 +158,7 @@ export async function signPublicContract(req: Request, res: Response) {
 
     const updatedContract = await prisma.contract.update({
       where: { id: contract.id },
-      data: { status: allSigned ? "SIGNED" : "PARTIALLY_SIGNED" },
+      data: { status: allSigned ? "SIGNED" : "PARTIALLY_SIGNED", isSigned: allSigned ? true : false, },
     });
 
     // 🔥 AUDITORÍA ESTADO
@@ -193,6 +193,7 @@ export async function signPublicContract(req: Request, res: Response) {
       ok: true,
       status: updatedContract.status,
       documentHash,
+      imageUrl: uploadedSignatureUrl
     });
   } catch (error) {
     console.error("SIGN ERROR", error);

@@ -9,6 +9,7 @@ import { AdminRole } from "../../../../../generated/prisma/enums";
 import { getAuditRequestContext } from "../../../../../utils/audit-request";
 import { AuthenticatedRequest } from "../../../../../types/types";
 import { CreateContractBody } from "../../../../../schemas/libranza/createContract.schema";
+import { resolveConsecutivo } from "./consecutivosResolver";
 
 export async function createContractService(
   body: CreateContractBody,
@@ -36,25 +37,32 @@ export async function createContractService(
     ? buildLibranzaData(body, contractedParty)
     : null;
 
-  const templateKey = body.templateKey ?? "dimcultura";
+  // Reemplaza el bloque donde creas el contrato con esto:
 
-  const contract = await prisma.contract.create({
-    data: {
-      ...contractData,
-      adminId,
-      templateKey,
-      parties: {
-        create: partiesInput.map((p) => ({
-          role: p.role,
-          name: p.name,
-          identification: p.identification ?? null,
-          email: p.email ?? null,
-          phone: p.phone ?? null,
-          address: p.address ?? null,
-        })),
-      },
-      ...(clausesInput.length > 0
-        ? {
+  const templateKey = (body.templateKey ?? "dimcultura") as "dimcultura" | "gruculcol";
+
+  const contract = await prisma.$transaction(async (tx) => {
+    const { sequence, code } = await resolveConsecutivo(tx, templateKey);
+
+    return tx.contract.create({
+      data: {
+        ...contractData,
+        adminId,
+        templateKey,
+        sequence,  
+        consecutivo: code,     
+        parties: {
+          create: partiesInput.map((p) => ({
+            role: p.role,
+            name: p.name,
+            identification: p.identification ?? null,
+            email: p.email ?? null,
+            phone: p.phone ?? null,
+            address: p.address ?? null,
+          })),
+        },
+        ...(clausesInput.length > 0
+          ? {
             clauses: {
               create: clausesInput
                 .filter((c) => c.content?.trim())
@@ -64,21 +72,22 @@ export async function createContractService(
                 })),
             },
           }
-        : {}),
-      signers: {
-        create: [
-          {
-            name: contractedParty?.name ?? "",
-            email: contractedParty?.email ?? null,
-            phone: contractedParty?.phone ?? null,
-            partyRole: "DEUDOR",
-            signerOrder: 1,
-          },
-        ],
+          : {}),
+        signers: {
+          create: [
+            {
+              name: contractedParty?.name ?? "",
+              email: contractedParty?.email ?? null,
+              phone: contractedParty?.phone ?? null,
+              partyRole: "DEUDOR",
+              signerOrder: 1,
+            },
+          ],
+        },
+        ...(libranzaInput ? { libranzaData: { create: libranzaInput } } : {}),
       },
-      ...(libranzaInput ? { libranzaData: { create: libranzaInput } } : {}),
-    },
-    include: { signers: true },
+      include: { signers: true },
+    });
   });
 
   const crypto = await import("crypto");
