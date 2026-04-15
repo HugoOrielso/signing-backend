@@ -11,7 +11,7 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://theaceous-indorsable-lilliana.ngrok-free.dev",
+  "https://hugoorielso.com",
 ];
 
 const corsOptions: CorsOptions = {
