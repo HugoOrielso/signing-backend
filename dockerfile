@@ -56,8 +56,8 @@ COPY --from=builder --chown=expressjs:nodejs /app/package.json ./
 COPY --from=builder --chown=expressjs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=expressjs:nodejs /app/prisma.config.ts ./
 
-RUN mkdir -p /data/uploads/products \
- && chown -R expressjs:nodejs /data/uploads
+RUN mkdir -p /data/uploads/products /app/uploads/temp \
+ && chown -R expressjs:nodejs /data/uploads /app/uploads
 
 USER expressjs
 
