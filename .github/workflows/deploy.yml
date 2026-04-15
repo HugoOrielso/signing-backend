@@ -28,7 +28,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.TOKEN_GHCR }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Docker image
         run: |
@@ -39,18 +39,10 @@ jobs:
       - name: Push Docker image
         run: docker push $IMAGE_NAME_LC
 
-      - name: Update captain-definition with built image
-        run: |
-          cat > captain-definition <<EOF
-          {
-            "schemaVersion": 2,
-            "imageName": "${IMAGE_NAME_LC}"
-          }
-          EOF
-
       - name: Deploy to CapRover
         uses: caprover/deploy-from-github@v1.1.2
         with:
           server: ${{ secrets.CAPROVER_SERVER }}
           app: ${{ secrets.APP_NAME }}
           token: ${{ secrets.APP_TOKEN }}
+          image: ${{ env.IMAGE_NAME_LC }}
