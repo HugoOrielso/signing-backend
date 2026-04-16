@@ -21,12 +21,12 @@ export async function generateContractPdf(
 
     const signatureData = contractedSig
       ? {
-          type: contractedSig.type as "DRAWN" | "TYPED" | "CLICK_TO_SIGN",
-          imageUrl: contractedSig.imageUrl ?? undefined,
-          typedValue: contractedSig.typedValue ?? undefined,
-          signedAt: contractedSig.signedAt?.toISOString(),
-          signerName: contractedSigner?.name,
-        }
+        type: contractedSig.type as "DRAWN" | "TYPED" | "CLICK_TO_SIGN",
+        imageUrl: contractedSig.imageUrl ?? undefined,
+        typedValue: contractedSig.typedValue ?? undefined,
+        signedAt: contractedSig.signedAt?.toISOString(),
+        signerName: contractedSigner?.name,
+      }
       : undefined;
 
     let logoBase64: string | undefined;
@@ -63,9 +63,14 @@ export async function generateContractPdf(
 
     browser = await puppeteer.launch({
       headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage", "--disable-gpu"],
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH ?? '/usr/bin/chromium-browser',
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-gpu",
+      ],
     });
-
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: "networkidle0", timeout: 30000 });
     await page.evaluateHandle("document.fonts.ready");
@@ -92,7 +97,7 @@ export async function generateContractPdf(
     return Buffer.from(pdfBuffer);
   } finally {
     if (browser) {
-      try { await browser.close(); } catch {}
+      try { await browser.close(); } catch { }
     }
   }
 }

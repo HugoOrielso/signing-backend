@@ -9,26 +9,20 @@ WORKDIR /app
 
 RUN corepack enable
 
-# Para algunas dependencias nativas y compatibilidad general en Alpine
 RUN apk add --no-cache libc6-compat openssl
 
-# Dummy DATABASE_URL para que Prisma no falle durante build si intenta resolver env
 ARG DATABASE_URL="postgresql://postgres:postgres@dummy-db:5432/app?schema=public"
 ENV DATABASE_URL=$DATABASE_URL
 
-# Copiamos archivos de dependencias primero para aprovechar cache
 COPY package.json pnpm-lock.yaml ./
 COPY prisma ./prisma
 COPY prisma.config.ts ./
 
-# Instala dependencias
 RUN pnpm install --frozen-lockfile
 
-# Copiamos el resto del proyecto
 COPY tsconfig.json ./
 COPY src ./src
 
-# Genera Prisma Client y build
 RUN pnpm prisma generate
 RUN pnpm build
 
@@ -39,17 +33,28 @@ ENV NODE_ENV=production
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 
+# 👇 Le decimos a puppeteer-core dónde está Chrome (en lugar de buscarlo en cache)
+ENV PUPPETEER_SKIP_DOWNLOAD=true
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
 WORKDIR /app
 
 RUN corepack enable
-RUN apk add --no-cache libc6-compat openssl
 
-# Crear usuario/grupo no root con los nombres que quieres usar
+# 👇 Instalamos Chromium y todas sus dependencias nativas
+RUN apk add --no-cache \
+    libc6-compat \
+    openssl \
+    chromium \
+    nss \
+    freetype \
+    harfbuzz \
+    ca-certificates \
+    ttf-freefont \
+    font-noto-emoji
+
 RUN addgroup -S nodejs && adduser -S expressjs -G nodejs
 
-# Importante:
-# como tu CMD usa prisma migrate deploy, el binario de prisma debe existir en runtime.
-# Por eso copiamos node_modules completo desde builder.
 COPY --from=builder --chown=expressjs:nodejs /app/dist ./dist
 COPY --from=builder --chown=expressjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=expressjs:nodejs /app/package.json ./

@@ -49,7 +49,7 @@ export async function sendReadyToSignEmail({
               Hola <strong>${clienteNombre}</strong>,
             </p>
             <p style="color:#4a4a6a;font-size:14px;line-height:1.7;margin:0 0 24px;text-align:center;">
-              Hemos revisado y aprobado todos tus documentos. Tu contrato está 
+              Hemos revisado y aprobado todos tus documentos. Tu libranza está 
               <strong>listo para ser firmado</strong>. Ingresa al portal para completar el proceso.
             </p>
             <table cellpadding="0" cellspacing="0" style="margin:0 auto 28px;">
