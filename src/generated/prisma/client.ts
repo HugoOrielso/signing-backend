@@ -101,3 +101,13 @@ export type Reference = Prisma.ReferenceModel
  * 
  */
 export type PublicContractSession = Prisma.PublicContractSessionModel
+/**
+ * Model Pagare
+ * 
+ */
+export type Pagare = Prisma.PagareModel
+/**
+ * Model PagareSignature
+ * 
+ */
+export type PagareSignature = Prisma.PagareSignatureModel

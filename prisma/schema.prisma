@@ -78,6 +78,7 @@ model Contract {
   isSigned         Boolean          @default(false)
   dataReviewStatus DataReviewStatus @default(PENDING)
   dataReviewNotes  String?
+  pagares Pagare?
 
   @@unique([templateKey, sequence])
   @@index([adminId])
@@ -159,6 +160,7 @@ model LibranzaData {
   createdAt  DateTime    @default(now()) @db.Timestamptz(3)
   updatedAt  DateTime    @updatedAt @db.Timestamptz(3)
   references Reference[]
+  pagares Pagare?
 
   @@index([contractId])
   @@index([pagaduriaNombre])
@@ -469,4 +471,73 @@ model PublicContractSession {
   @@index([email])
   @@index([phone])
   @@index([sessionToken])
+}
+
+enum PagareStatus {
+  DRAFT
+  SIGNED
+  CANCELLED
+}
+
+enum PagareSignatureType {
+  TYPED
+  DRAWN
+}
+
+model Pagare {
+  id     String @id @default(uuid())
+  number Int    @unique @default(autoincrement())
+
+  contractId     String @unique
+  libranzaDataId String @unique
+  libranzaToken  String @unique
+
+  status PagareStatus @default(DRAFT)
+
+  ciudadFirma       String?
+  fechaSuscripcion  DateTime?
+  fechaPrimeraCuota String?
+  ciudadPago        String?
+
+  acreedorNombre    String @default("GRUCULCOL")
+  acreedorNit       String
+  deudorNombre      String
+  deudorDocumento   String
+  deudorDocumentoDe String
+  deudorDireccion   String
+  deudorTelefono    String
+  deudorEmail       String
+
+  valorTotal       Int
+  numeroCuotas     Int
+  valorCuota       Int
+  isSigned         Boolean @default(false)
+  interesCorriente String?
+  interesMora      String?
+
+  signedAt  DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  contract     Contract     @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  libranzaData LibranzaData @relation(fields: [libranzaDataId], references: [id], onDelete: Cascade)
+  signature    PagareSignature?
+
+  @@index([number])
+  @@map("pagares")
+}
+
+model PagareSignature {
+  id                String              @id @default(cuid())
+  pagareId          String              @unique
+  type              PagareSignatureType
+  typedValue        String?
+  imageUrl          String?
+  signaturePublicId String?
+  signedAt          DateTime            @default(now())
+  ipAddress         String?
+  userAgent         String?
+  documentHash      String?
+
+  pagare Pagare @relation(fields: [pagareId], references: [id], onDelete: Cascade)
 }

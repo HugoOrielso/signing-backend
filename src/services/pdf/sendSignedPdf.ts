@@ -1,15 +1,22 @@
 import { prisma } from "../../database/db";
 import { sendSignedContractEmail } from "../../lib/email/sendContract";
+import { buildCertDataFromContract, generateSignatureCertificatePdf } from "./generateSignatureCertificate";
 import { generateContractPdf } from "./getEncryptedPDF";
+
 
 export async function sendSignedContractPdf(contractId: string) {
   const contract = await prisma.contract.findUnique({
     where: { id: contractId },
     include: {
       parties: true,
-      signers: { orderBy: { signerOrder: "asc" } },
+      signers: {
+        orderBy: { signerOrder: "asc" },
+        include: { signatures: true }, 
+      },
       signatures: true,
-      libranzaData: { include: { references: { orderBy: { createdAt: "asc" } } } },
+      libranzaData: {
+        include: { references: { orderBy: { createdAt: "asc" } } },
+      },
     },
   });
 
@@ -26,20 +33,24 @@ export async function sendSignedContractPdf(contractId: string) {
     throw new Error("El contratado no tiene email registrado");
   }
 
-  const pdfBuffer = await generateContractPdf(contract, identification);
+  // ── Generar PDFs en paralelo ─────────────────────────────────────────────
+  const [pdfBuffer, certBuffer] = await Promise.all([
+    generateContractPdf(contract, identification),
+    generateSignatureCertificatePdf(buildCertDataFromContract(contract)),
+  ]);
 
   const safeName = (contract.libranzaData.clienteNombre ?? nombre)
     .replace(/[^\w\s-]/gi, "")
     .replace(/\s+/g, "-")
     .toLowerCase();
 
-  const fileName = `libranza-${safeName}.pdf`;
-
   await sendSignedContractEmail({
     to: email,
     clienteNombre: nombre,
     pdfBuffer,
-    fileName,
-    role: "cliente"
+    fileName: `libranza-${safeName}.pdf`,
+    certBuffer,                              // ← adjunto extra
+    certFileName: `certificado-firma-${safeName}.pdf`,
+    role: "cliente",
   });
 }

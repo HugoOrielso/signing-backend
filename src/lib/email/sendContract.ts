@@ -241,34 +241,159 @@ interface SendSignedEmailParams {
   role: "cliente" | "admin";
 }
 
-export async function sendSignedContractEmail({
+interface SendSignedEmailParams {
+  to: string;
+  clienteNombre: string;
+  pdfBuffer: Buffer;
+  fileName: string;
+  role: "cliente" | "admin";
+  certBuffer?: Buffer;
+  certFileName?: string;
+}
+
+  export async function sendSignedContractEmail({
+    to,
+    clienteNombre,
+    pdfBuffer,
+    fileName,
+    role,
+    certBuffer,
+    certFileName,
+  }: SendSignedEmailParams) {
+    const from = process.env.EMAIL_FROM || "onboarding@resend.dev";
+
+    const isAdmin = role === "admin";
+    const subject = isAdmin
+      ? `✅ Libranza firmada — ${clienteNombre}`
+      : `✅ Tu libranza ha sido firmada — Dimcultura S.A.S`;
+
+    const bodyTitle = isAdmin
+      ? `La libranza de <strong>${clienteNombre}</strong> fue firmada correctamente.`
+      : `Hola <strong>${clienteNombre}</strong>, tu libranza ha sido firmada y registrada correctamente.`;
+
+    const passwordNote = !isAdmin
+      ? `<table width="100%" cellpadding="0" cellspacing="0"
+          style="background:#f5f0e8;border-radius:10px;border-left:4px solid #c9a84c;margin-bottom:20px;">
+          <tr>
+            <td style="padding:14px 16px;">
+              <p style="font-size:11px;color:#7a6e5f;margin:0 0 4px;font-weight:700;
+                text-transform:uppercase;letter-spacing:1px;">🔒 Documento protegido</p>
+              <p style="font-size:12px;color:#7a6e5f;margin:0;">
+                El PDF adjunto está protegido con contraseña. 
+                Para abrirlo usa tu número de cédula.
+              </p>
+            </td>
+          </tr>
+        </table>`
+      : "";
+
+    const certNote = certBuffer
+      ? `<table width="100%" cellpadding="0" cellspacing="0"
+          style="background:#eef4ff;border-radius:10px;border-left:4px solid #3b82f6;margin-bottom:20px;">
+          <tr>
+            <td style="padding:14px 16px;">
+              <p style="font-size:11px;color:#1e40af;margin:0 0 4px;font-weight:700;
+                text-transform:uppercase;letter-spacing:1px;">📄 Certificado de firma</p>
+              <p style="font-size:12px;color:#3b5a9a;margin:0;">
+                Se adjunta también el certificado de firma electrónica con el registro
+                de hash, IP y fecha de firma para tu constancia.
+              </p>
+            </td>
+          </tr>
+        </table>`
+      : "";
+
+    return resend.emails.send({
+      from,
+      to,
+      subject,
+      attachments: [
+        {
+          filename: fileName,
+          content: pdfBuffer,
+        },
+        ...(certBuffer && certFileName
+          ? [{ filename: certFileName, content: certBuffer }]
+          : []),
+      ],
+      html: `
+  <!DOCTYPE html>
+  <html lang="es">
+  <head><meta charset="UTF-8"></head>
+  <body style="margin:0;padding:0;background:#f5f0e8;font-family:Arial,sans-serif;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f0e8;padding:40px 0;">
+      <tr><td align="center">
+        <table width="580" cellpadding="0" cellspacing="0"
+          style="background:white;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+          <tr>
+            <td style="background:#1a1a2e;padding:28px 32px;text-align:center;">
+              <div style="height:3px;background:linear-gradient(90deg,#c9a84c,#a07830);margin-bottom:20px;border-radius:2px;"></div>
+              <p style="color:#c9a84c;font-size:18px;font-weight:700;margin:0;">Dimcultura S.A.S</p>
+              <p style="color:#5a5a7a;font-size:11px;margin:4px 0 0;font-style:italic;">"Un mundo en el que debes estar"</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:32px;">
+              <div style="text-align:center;margin-bottom:20px;">
+                <div style="display:inline-block;width:56px;height:56px;border-radius:50%;
+                  background:#e8f5ee;line-height:56px;font-size:26px;">✅</div>
+              </div>
+              <p style="color:#1a1a2e;font-size:16px;font-weight:700;text-align:center;margin:0 0 8px;">
+                Libranza Firmada
+              </p>
+              <p style="color:#4a4a6a;font-size:14px;line-height:1.7;margin:0 0 24px;text-align:center;">
+                ${bodyTitle}
+              </p>
+              <p style="color:#4a4a6a;font-size:14px;line-height:1.7;margin:0 0 24px;text-align:center;">
+                Encuentra el contrato firmado adjunto en este correo.
+              </p>
+              ${passwordNote}
+              ${certNote}
+              <p style="font-size:11px;color:#b0a898;text-align:center;margin:0;">
+                Nit. 900.585.322-4 · servicioalcliente@dimcultura.com · www.dimcultura.com
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td></tr>
+    </table>
+  </body>
+  </html>`,
+    });
+  }
+
+
+export async function sendSignedPagareEmail({
   to,
   clienteNombre,
   pdfBuffer,
   fileName,
   role,
+  certBuffer,
+  certFileName,
 }: SendSignedEmailParams) {
   const from = process.env.EMAIL_FROM || "onboarding@resend.dev";
 
   const isAdmin = role === "admin";
+
   const subject = isAdmin
-    ? `✅ Libranza firmada — ${clienteNombre}`
-    : `✅ Tu libranza ha sido firmada — Dimcultura S.A.S`;
+    ? `✅ Pagaré firmado — ${clienteNombre}`
+    : `✅ Tu pagaré ha sido firmado — Dimcultura S.A.S`;
 
   const bodyTitle = isAdmin
-    ? `La libranza de <strong>${clienteNombre}</strong> fue firmada correctamente.`
-    : `Hola <strong>${clienteNombre}</strong>, tu libranza ha sido firmada y registrada correctamente.`;
+    ? `El pagaré de <strong>${clienteNombre}</strong> fue firmado correctamente.`
+    : `Hola <strong>${clienteNombre}</strong>, tu pagaré ha sido firmado y registrado correctamente.`;
 
-  const passwordNote = !isAdmin
+  const certNote = certBuffer
     ? `<table width="100%" cellpadding="0" cellspacing="0"
-        style="background:#f5f0e8;border-radius:10px;border-left:4px solid #c9a84c;margin-bottom:20px;">
+        style="background:#eef4ff;border-radius:10px;border-left:4px solid #3b82f6;margin-bottom:20px;">
         <tr>
           <td style="padding:14px 16px;">
-            <p style="font-size:11px;color:#7a6e5f;margin:0 0 4px;font-weight:700;
-              text-transform:uppercase;letter-spacing:1px;">🔒 Documento protegido</p>
-            <p style="font-size:12px;color:#7a6e5f;margin:0;">
-              El PDF adjunto está protegido con contraseña. 
-              Para abrirlo usa tu número de cédula.
+            <p style="font-size:11px;color:#1e40af;margin:0 0 4px;font-weight:700;
+              text-transform:uppercase;letter-spacing:1px;">📄 Certificado de firma</p>
+            <p style="font-size:12px;color:#3b5a9a;margin:0;">
+              Se adjunta también el certificado de firma electrónica con el registro
+              de hash, IP y fecha de firma para tu constancia.
             </p>
           </td>
         </tr>
@@ -284,6 +409,9 @@ export async function sendSignedContractEmail({
         filename: fileName,
         content: pdfBuffer,
       },
+      ...(certBuffer && certFileName
+        ? [{ filename: certFileName, content: certBuffer }]
+        : []),
     ],
     html: `
 <!DOCTYPE html>
@@ -307,16 +435,21 @@ export async function sendSignedContractEmail({
               <div style="display:inline-block;width:56px;height:56px;border-radius:50%;
                 background:#e8f5ee;line-height:56px;font-size:26px;">✅</div>
             </div>
+
             <p style="color:#1a1a2e;font-size:16px;font-weight:700;text-align:center;margin:0 0 8px;">
-              Libranza Firmada
+              Pagaré Firmado
             </p>
+
             <p style="color:#4a4a6a;font-size:14px;line-height:1.7;margin:0 0 24px;text-align:center;">
               ${bodyTitle}
             </p>
+
             <p style="color:#4a4a6a;font-size:14px;line-height:1.7;margin:0 0 24px;text-align:center;">
-              Encuentra el contrato firmado adjunto en este correo.
+              Encuentra el pagaré firmado adjunto en este correo.
             </p>
-            ${passwordNote}
+
+            ${certNote}
+
             <p style="font-size:11px;color:#b0a898;text-align:center;margin:0;">
               Nit. 900.585.322-4 · servicioalcliente@dimcultura.com · www.dimcultura.com
             </p>

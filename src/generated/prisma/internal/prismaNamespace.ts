@@ -395,7 +395,9 @@ export const ModelName = {
   ContractDocument: 'ContractDocument',
   ContractAuditEvent: 'ContractAuditEvent',
   Reference: 'Reference',
-  PublicContractSession: 'PublicContractSession'
+  PublicContractSession: 'PublicContractSession',
+  Pagare: 'Pagare',
+  PagareSignature: 'PagareSignature'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -411,7 +413,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "contract" | "libranzaData" | "contractParty" | "contractClause" | "contractSigner" | "signature" | "refreshToken" | "contractDocument" | "contractAuditEvent" | "reference" | "publicContractSession"
+    modelProps: "admin" | "contract" | "libranzaData" | "contractParty" | "contractClause" | "contractSigner" | "signature" | "refreshToken" | "contractDocument" | "contractAuditEvent" | "reference" | "publicContractSession" | "pagare" | "pagareSignature"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1303,6 +1305,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Pagare: {
+      payload: Prisma.$PagarePayload<ExtArgs>
+      fields: Prisma.PagareFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PagareFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagarePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PagareFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagarePayload>
+        }
+        findFirst: {
+          args: Prisma.PagareFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagarePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PagareFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagarePayload>
+        }
+        findMany: {
+          args: Prisma.PagareFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagarePayload>[]
+        }
+        create: {
+          args: Prisma.PagareCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagarePayload>
+        }
+        createMany: {
+          args: Prisma.PagareCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PagareCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagarePayload>[]
+        }
+        delete: {
+          args: Prisma.PagareDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagarePayload>
+        }
+        update: {
+          args: Prisma.PagareUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagarePayload>
+        }
+        deleteMany: {
+          args: Prisma.PagareDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PagareUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PagareUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagarePayload>[]
+        }
+        upsert: {
+          args: Prisma.PagareUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagarePayload>
+        }
+        aggregate: {
+          args: Prisma.PagareAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePagare>
+        }
+        groupBy: {
+          args: Prisma.PagareGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PagareGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PagareCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PagareCountAggregateOutputType> | number
+        }
+      }
+    }
+    PagareSignature: {
+      payload: Prisma.$PagareSignaturePayload<ExtArgs>
+      fields: Prisma.PagareSignatureFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PagareSignatureFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagareSignaturePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PagareSignatureFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagareSignaturePayload>
+        }
+        findFirst: {
+          args: Prisma.PagareSignatureFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagareSignaturePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PagareSignatureFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagareSignaturePayload>
+        }
+        findMany: {
+          args: Prisma.PagareSignatureFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagareSignaturePayload>[]
+        }
+        create: {
+          args: Prisma.PagareSignatureCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagareSignaturePayload>
+        }
+        createMany: {
+          args: Prisma.PagareSignatureCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PagareSignatureCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagareSignaturePayload>[]
+        }
+        delete: {
+          args: Prisma.PagareSignatureDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagareSignaturePayload>
+        }
+        update: {
+          args: Prisma.PagareSignatureUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagareSignaturePayload>
+        }
+        deleteMany: {
+          args: Prisma.PagareSignatureDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PagareSignatureUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PagareSignatureUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagareSignaturePayload>[]
+        }
+        upsert: {
+          args: Prisma.PagareSignatureUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagareSignaturePayload>
+        }
+        aggregate: {
+          args: Prisma.PagareSignatureAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePagareSignature>
+        }
+        groupBy: {
+          args: Prisma.PagareSignatureGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PagareSignatureGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PagareSignatureCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PagareSignatureCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1581,6 +1731,55 @@ export const PublicContractSessionScalarFieldEnum = {
 } as const
 
 export type PublicContractSessionScalarFieldEnum = (typeof PublicContractSessionScalarFieldEnum)[keyof typeof PublicContractSessionScalarFieldEnum]
+
+
+export const PagareScalarFieldEnum = {
+  id: 'id',
+  number: 'number',
+  contractId: 'contractId',
+  libranzaDataId: 'libranzaDataId',
+  libranzaToken: 'libranzaToken',
+  status: 'status',
+  ciudadFirma: 'ciudadFirma',
+  fechaSuscripcion: 'fechaSuscripcion',
+  fechaPrimeraCuota: 'fechaPrimeraCuota',
+  ciudadPago: 'ciudadPago',
+  acreedorNombre: 'acreedorNombre',
+  acreedorNit: 'acreedorNit',
+  deudorNombre: 'deudorNombre',
+  deudorDocumento: 'deudorDocumento',
+  deudorDocumentoDe: 'deudorDocumentoDe',
+  deudorDireccion: 'deudorDireccion',
+  deudorTelefono: 'deudorTelefono',
+  deudorEmail: 'deudorEmail',
+  valorTotal: 'valorTotal',
+  numeroCuotas: 'numeroCuotas',
+  valorCuota: 'valorCuota',
+  isSigned: 'isSigned',
+  interesCorriente: 'interesCorriente',
+  interesMora: 'interesMora',
+  signedAt: 'signedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PagareScalarFieldEnum = (typeof PagareScalarFieldEnum)[keyof typeof PagareScalarFieldEnum]
+
+
+export const PagareSignatureScalarFieldEnum = {
+  id: 'id',
+  pagareId: 'pagareId',
+  type: 'type',
+  typedValue: 'typedValue',
+  imageUrl: 'imageUrl',
+  signaturePublicId: 'signaturePublicId',
+  signedAt: 'signedAt',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  documentHash: 'documentHash'
+} as const
+
+export type PagareSignatureScalarFieldEnum = (typeof PagareSignatureScalarFieldEnum)[keyof typeof PagareSignatureScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1876,6 +2075,34 @@ export type ListEnumPublicContractIdentifierTypeFieldRefInput<$PrismaModel> = Fi
 
 
 /**
+ * Reference to a field of type 'PagareStatus'
+ */
+export type EnumPagareStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PagareStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PagareStatus[]'
+ */
+export type ListEnumPagareStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PagareStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PagareSignatureType'
+ */
+export type EnumPagareSignatureTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PagareSignatureType'>
+    
+
+
+/**
+ * Reference to a field of type 'PagareSignatureType[]'
+ */
+export type ListEnumPagareSignatureTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PagareSignatureType[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -1995,6 +2222,8 @@ export type GlobalOmitConfig = {
   contractAuditEvent?: Prisma.ContractAuditEventOmit
   reference?: Prisma.ReferenceOmit
   publicContractSession?: Prisma.PublicContractSessionOmit
+  pagare?: Prisma.PagareOmit
+  pagareSignature?: Prisma.PagareSignatureOmit
 }
 
 /* Types for Logging */

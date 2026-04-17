@@ -4,23 +4,23 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 
 interface SendReadyToSignEmailParams {
-    to: string;
-    clienteNombre: string;
-    portalLink: string;
+  to: string;
+  clienteNombre: string;
+  portalLink: string;
 }
 
 export async function sendReadyToSignEmail({
-    to,
-    clienteNombre,
-    portalLink,
+  to,
+  clienteNombre,
+  portalLink,
 }: SendReadyToSignEmailParams) {
-    const from = process.env.EMAIL_FROM || "onboarding@resend.dev";
+  const from = process.env.EMAIL_FROM || "onboarding@resend.dev";
 
-    const response = await resend.emails.send({
-        from,
-        to,
-        subject: `✅ Tus documentos fueron aprobados — Dimcultura S.A.S`,
-        html: `
+  const response = await resend.emails.send({
+    from,
+    to,
+    subject: `✅ Tus documentos fueron aprobados — Dimcultura S.A.S`,
+    html: `
 <!DOCTYPE html>
 <html lang="es">
 <head><meta charset="UTF-8"></head>
@@ -70,17 +70,16 @@ export async function sendReadyToSignEmail({
                   <p style="font-size:11px;color:#7a6e5f;margin:0 0 4px;font-weight:700;
                     text-transform:uppercase;letter-spacing:1px;">¿El botón no funciona?</p>
                   <p style="font-size:11px;color:#7a6e5f;margin:0;word-break:break-all;">
-                    <a href="${portalLink}" style="color:#a07830;">${portalLink}</a>
+                    Copia y pega este enlace en tu navegador:
+                    <a href="${portalLink}" style="color:#a07830;display:block;margin-top:4px;">${portalLink}</a>
                   </p>
-                  <p style="color:#4a4a6a;font-size:14px;line-height:1.7;margin:0 0 24px;text-align:center;">
-                    Para acceder al portal ingresa con tu correo electrónico, te enviaremos 
-                    un código de verificación para confirmar tu identidad y podrás firmar tu contrato.
-                    </p>
                 </td>
               </tr>
             </table>
-            <p style="font-size:11px;color:#b0a898;text-align:center;margin:0;">
-              Nit. 900.585.322-4 · servicioalcliente@dimcultura.com · www.dimcultura.com
+
+            <p style="color:#4a4a6a;font-size:14px;line-height:1.7;margin:0 0 24px;text-align:center;">
+              Para acceder al portal ingresa con tu correo electrónico, te enviaremos 
+              un código de verificación para confirmar tu identidad y podrás firmar tu contrato.
             </p>
           </td>
         </tr>
@@ -89,6 +88,6 @@ export async function sendReadyToSignEmail({
   </table>
 </body>
 </html>`,
-    });
-    return response;
+  });
+  return response;
 }

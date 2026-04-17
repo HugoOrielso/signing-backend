@@ -5,6 +5,7 @@ import contractsRouter from "./routes/contract.routes";
 import { requestIdMiddleware } from "./middleware/requestMiddleware";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.routes";
+import { signPagarePrueba } from "./controllers/contracts/client/signPagare/signPagare.controller";
 
 const app = express();
 
@@ -41,6 +42,8 @@ app.use(requestIdMiddleware);
 app.get("/", (_req: Request, res: Response) => {
   return res.status(200).json("ok")
 })
+
+app.use("/api/prueba", signPagarePrueba);
 app.use("/api/auth", authRouter);
 app.use("/api/contracts", contractsRouter);
 app.use("/api/users", userRouter);

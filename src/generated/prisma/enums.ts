@@ -157,3 +157,20 @@ export const PublicContractIdentifierType = {
 } as const
 
 export type PublicContractIdentifierType = (typeof PublicContractIdentifierType)[keyof typeof PublicContractIdentifierType]
+
+
+export const PagareStatus = {
+  DRAFT: 'DRAFT',
+  SIGNED: 'SIGNED',
+  CANCELLED: 'CANCELLED'
+} as const
+
+export type PagareStatus = (typeof PagareStatus)[keyof typeof PagareStatus]
+
+
+export const PagareSignatureType = {
+  TYPED: 'TYPED',
+  DRAWN: 'DRAWN'
+} as const
+
+export type PagareSignatureType = (typeof PagareSignatureType)[keyof typeof PagareSignatureType]

@@ -48,11 +48,11 @@ export async function getPublicContract(req: AuthenticatedRequest, res: Response
     const auditContext = getAuditRequestContext(req);
 
     const contractedSigner = contract.signers.find(
-      (signer) => signer.partyRole === "CONTRACTED"
+      (signer) => signer.partyRole === "DEUDOR"
     );
 
     const contractedParty = contract.parties.find(
-      (party) => party.role === "CONTRACTED"
+      (party) => party.role === "ACREEDOR"
     );
 
     const actorName = contractedSigner?.name ?? contractedParty?.name ?? null;

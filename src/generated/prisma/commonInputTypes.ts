@@ -508,6 +508,40 @@ export type EnumPublicContractIdentifierTypeWithAggregatesFilter<$PrismaModel = 
   _max?: Prisma.NestedEnumPublicContractIdentifierTypeFilter<$PrismaModel>
 }
 
+export type EnumPagareStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.PagareStatus | Prisma.EnumPagareStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PagareStatus[] | Prisma.ListEnumPagareStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PagareStatus[] | Prisma.ListEnumPagareStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPagareStatusFilter<$PrismaModel> | $Enums.PagareStatus
+}
+
+export type EnumPagareStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PagareStatus | Prisma.EnumPagareStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PagareStatus[] | Prisma.ListEnumPagareStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PagareStatus[] | Prisma.ListEnumPagareStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPagareStatusWithAggregatesFilter<$PrismaModel> | $Enums.PagareStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPagareStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPagareStatusFilter<$PrismaModel>
+}
+
+export type EnumPagareSignatureTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.PagareSignatureType | Prisma.EnumPagareSignatureTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.PagareSignatureType[] | Prisma.ListEnumPagareSignatureTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PagareSignatureType[] | Prisma.ListEnumPagareSignatureTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPagareSignatureTypeFilter<$PrismaModel> | $Enums.PagareSignatureType
+}
+
+export type EnumPagareSignatureTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PagareSignatureType | Prisma.EnumPagareSignatureTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.PagareSignatureType[] | Prisma.ListEnumPagareSignatureTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PagareSignatureType[] | Prisma.ListEnumPagareSignatureTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPagareSignatureTypeWithAggregatesFilter<$PrismaModel> | $Enums.PagareSignatureType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPagareSignatureTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPagareSignatureTypeFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -986,6 +1020,40 @@ export type NestedEnumPublicContractIdentifierTypeWithAggregatesFilter<$PrismaMo
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumPublicContractIdentifierTypeFilter<$PrismaModel>
   _max?: Prisma.NestedEnumPublicContractIdentifierTypeFilter<$PrismaModel>
+}
+
+export type NestedEnumPagareStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.PagareStatus | Prisma.EnumPagareStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PagareStatus[] | Prisma.ListEnumPagareStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PagareStatus[] | Prisma.ListEnumPagareStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPagareStatusFilter<$PrismaModel> | $Enums.PagareStatus
+}
+
+export type NestedEnumPagareStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PagareStatus | Prisma.EnumPagareStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.PagareStatus[] | Prisma.ListEnumPagareStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PagareStatus[] | Prisma.ListEnumPagareStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPagareStatusWithAggregatesFilter<$PrismaModel> | $Enums.PagareStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPagareStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPagareStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumPagareSignatureTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.PagareSignatureType | Prisma.EnumPagareSignatureTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.PagareSignatureType[] | Prisma.ListEnumPagareSignatureTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PagareSignatureType[] | Prisma.ListEnumPagareSignatureTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPagareSignatureTypeFilter<$PrismaModel> | $Enums.PagareSignatureType
+}
+
+export type NestedEnumPagareSignatureTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.PagareSignatureType | Prisma.EnumPagareSignatureTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.PagareSignatureType[] | Prisma.ListEnumPagareSignatureTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.PagareSignatureType[] | Prisma.ListEnumPagareSignatureTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumPagareSignatureTypeWithAggregatesFilter<$PrismaModel> | $Enums.PagareSignatureType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumPagareSignatureTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumPagareSignatureTypeFilter<$PrismaModel>
 }
 
 

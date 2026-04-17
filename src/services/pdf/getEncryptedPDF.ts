@@ -14,7 +14,7 @@ export async function generateContractPdf(
   try {
     const template = getTemplateConfig(contract.templateKey);
 
-    const contractedSigner = contract.signers.find((s: any) => s.partyRole === "CONTRACTED");
+    const contractedSigner = contract.signers.find((s: any) => s.partyRole === "DEUDOR");
     const contractedSig = contractedSigner
       ? contract.signatures.find((sig: any) => sig.signerId === contractedSigner.id)
       : undefined;
@@ -61,15 +61,21 @@ export async function generateContractPdf(
       logoMime,
     });
 
+    const isProduction = process.env.NODE_ENV === "production";
+
     browser = await puppeteer.launch({
       headless: true,
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH ?? '/usr/bin/chromium-browser',
-      args: [
-        "--no-sandbox",
-        "--disable-setuid-sandbox",
-        "--disable-dev-shm-usage",
-        "--disable-gpu",
-      ],
+      executablePath: isProduction
+        ? process.env.PUPPETEER_EXECUTABLE_PATH || "/usr/bin/chromium-browser"
+        : undefined,
+      args: isProduction
+        ? [
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+          "--disable-dev-shm-usage",
+          "--disable-gpu",
+        ]
+        : [],
     });
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: "networkidle0", timeout: 30000 });

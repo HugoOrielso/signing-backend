@@ -62,7 +62,9 @@ export const ModelName = {
   ContractDocument: 'ContractDocument',
   ContractAuditEvent: 'ContractAuditEvent',
   Reference: 'Reference',
-  PublicContractSession: 'PublicContractSession'
+  PublicContractSession: 'PublicContractSession',
+  Pagare: 'Pagare',
+  PagareSignature: 'PagareSignature'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -320,6 +322,55 @@ export const PublicContractSessionScalarFieldEnum = {
 } as const
 
 export type PublicContractSessionScalarFieldEnum = (typeof PublicContractSessionScalarFieldEnum)[keyof typeof PublicContractSessionScalarFieldEnum]
+
+
+export const PagareScalarFieldEnum = {
+  id: 'id',
+  number: 'number',
+  contractId: 'contractId',
+  libranzaDataId: 'libranzaDataId',
+  libranzaToken: 'libranzaToken',
+  status: 'status',
+  ciudadFirma: 'ciudadFirma',
+  fechaSuscripcion: 'fechaSuscripcion',
+  fechaPrimeraCuota: 'fechaPrimeraCuota',
+  ciudadPago: 'ciudadPago',
+  acreedorNombre: 'acreedorNombre',
+  acreedorNit: 'acreedorNit',
+  deudorNombre: 'deudorNombre',
+  deudorDocumento: 'deudorDocumento',
+  deudorDocumentoDe: 'deudorDocumentoDe',
+  deudorDireccion: 'deudorDireccion',
+  deudorTelefono: 'deudorTelefono',
+  deudorEmail: 'deudorEmail',
+  valorTotal: 'valorTotal',
+  numeroCuotas: 'numeroCuotas',
+  valorCuota: 'valorCuota',
+  isSigned: 'isSigned',
+  interesCorriente: 'interesCorriente',
+  interesMora: 'interesMora',
+  signedAt: 'signedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PagareScalarFieldEnum = (typeof PagareScalarFieldEnum)[keyof typeof PagareScalarFieldEnum]
+
+
+export const PagareSignatureScalarFieldEnum = {
+  id: 'id',
+  pagareId: 'pagareId',
+  type: 'type',
+  typedValue: 'typedValue',
+  imageUrl: 'imageUrl',
+  signaturePublicId: 'signaturePublicId',
+  signedAt: 'signedAt',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  documentHash: 'documentHash'
+} as const
+
+export type PagareSignatureScalarFieldEnum = (typeof PagareSignatureScalarFieldEnum)[keyof typeof PagareSignatureScalarFieldEnum]
 
 
 export const SortOrder = {
