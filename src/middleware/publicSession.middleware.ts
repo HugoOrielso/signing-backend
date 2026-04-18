@@ -12,7 +12,9 @@ export async function requirePublicSession(
       | string
       | undefined;
 
+
     if (!sessionToken) {
+
       return res.status(401).json({
         ok: false,
         message: "Sesión pública no válida",
@@ -24,6 +26,9 @@ export async function requirePublicSession(
       select: {
         id: true,
         email: true,
+        phone: true,
+        identifier: true,
+        identifierType: true,
         expiresAt: true,
       },
     });
@@ -42,9 +47,13 @@ export async function requirePublicSession(
       });
     }
 
+
     req.publicSession = {
       id: session.id,
       email: session.email,
+      phone: session.phone,
+      identifier: session.identifier,
+      identifierType: session.identifierType,
       expiresAt: session.expiresAt,
     };
 

@@ -374,56 +374,6 @@ export async function generateLibranzaHtml(
   </table>
 </div>
 
-<!-- FORMA DE PAGO -->
-<div style="display:flex;align-items:center;gap:12px;font-size:8px;border:1px solid #000;padding:4px 8px;margin-bottom:5px">
-  <strong>FORMA DE PAGO:</strong>
-  ${formaPagos.map(op => `
-    <span style="display:flex;align-items:center;gap:3px">
-      ${Chk(d.formaPago === op)}${escHtml(op)}
-    </span>`).join("")}
-</div>
-
-<!-- BLOQUE ACEPTADA -->
-<div style="border:1px solid #000;padding:5px 7px;font-size:8px">
-  <div style="display:flex;gap:10px;margin-bottom:4px;flex-wrap:wrap">
-    <strong>ACEPTADA</strong>
-    <span>Fecha: ${U("&nbsp;", 80)}</span>
-    <span>N°: ${U("&nbsp;", 60)}</span>
-    <span>Por $: ${U("&nbsp;", 70)}</span>
-  </div>
-  <div style="margin-bottom:3px">
-    <strong>Señor(es): </strong>${U("&nbsp;", 150)}
-    El ${U("&nbsp;", 50)} de ${U("&nbsp;", 80)} del año ${U("&nbsp;", 50)}
-  </div>
-  <div style="margin-bottom:3px">
-    Se servirán(n) ud.(es) pagar solidariamente en ${U("&nbsp;", 140)}
-    por esta Única de Cambio sin protesto, excusado al aviso de rechazo a
-  </div>
-  <div style="margin-bottom:3px">la orden de ${U("&nbsp;", 200)}</div>
-  <div style="margin-bottom:3px">La cantidad de: ${U("&nbsp;", 140)} ($${U("&nbsp;", 80)})</div>
-  <div style="margin-bottom:3px">
-    Pesos m/l en ${U("&nbsp;", 50)} Cuota(s) de $ ${U("&nbsp;", 70)}
-    más intereses durante el plazo de ${U("&nbsp;", 60)} meses y del mora a la tasa máxima legal autorizada.
-  </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-top:8px;padding-top:4px;border-top:1px solid #ccc;font-size:7.5px">
-    <div>
-      <div style="border-bottom:1px solid #000;height:22px;margin-bottom:3px"></div>
-      <div><strong>Firma</strong></div>
-      <div>Cédula NIT.</div><div>Ciudad NIT.</div>
-    </div>
-    <div>
-      <div style="border-bottom:1px solid #000;height:22px;margin-bottom:3px"></div>
-      <div><strong>Firma</strong></div>
-      <div>Cédula NIT.</div><div>Ciudad NIT.</div>
-    </div>
-    <div style="grid-column:span 2">
-      <div style="margin-bottom:2px"><strong>DIRECCIÓN ACEPTANTES</strong></div>
-      ${U("&nbsp;", 200)}
-      <div style="margin-top:3px"><strong>TELÉFONO: </strong>${U("&nbsp;", 80)} <strong>Atentamente,</strong></div>
-    </div>
-  </div>
-</div>
-
 </body>
 </html>`;
 }

@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import crypto from "crypto";
 import { Resend } from "resend";
 import { prisma } from "../../database/db";
-import { sendSms } from "../../services/messages/send.service";
+import { sendSms, toTwilioColombianPhone } from "../../services/messages/send.service";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -22,7 +22,7 @@ function normalizePhone(value: string) {
 
   // si llega 3001234567 => 573001234567
   if (digits.length === 10) {
-    digits = `57${digits}`;
+    digits = `${digits}`;
   }
 
   return digits;
@@ -86,7 +86,6 @@ function maskPhone(phone: string) {
 export async function requestOtp(req: Request, res: Response) {
   try {
     const { identifier } = req.body as { identifier?: string };
-
     if (!identifier?.trim()) {
       return res.status(400).json({
         ok: false,
@@ -155,7 +154,15 @@ export async function requestOtp(req: Request, res: Response) {
     }
 
     if (resolved.identifierType === "PHONE" && resolved.phone) {
-      await sendSms(resolved.phone, `Tu código de acceso es: ${code}. Expira en 10 minutos.`)
+      const phoneForTwilio = toTwilioColombianPhone(resolved.identifier);
+      
+      if (!phoneForTwilio) {
+        return res.status(400).json({
+          ok: false,
+          message: "Número de teléfono inválido",
+        });
+      }
+      await sendSms(phoneForTwilio, `Tu código de acceso es: ${code}. Expira en 10 minutos.`)
     }
 
     return res.json({

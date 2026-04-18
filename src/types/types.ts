@@ -18,7 +18,10 @@ export interface AuthenticatedRequest extends Request {
 export interface AuthenticatedPublicRequest extends Request {
   publicSession?: {
     id: string;
-    email: string;
+    email: string | null;
+    phone: string | null;
+    identifier: string;
+    identifierType: string;
     expiresAt: Date;
   };
 }

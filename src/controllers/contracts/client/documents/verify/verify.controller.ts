@@ -1,6 +1,7 @@
 import { Response } from "express";
 import { AuthenticatedRequest } from "../../../../../types/types";
 import { prisma } from "../../../../../database/db";
+import { sendUserDataApprovedEmail, sendUserDataRejectedEmail } from "../../../../../services/pdf/reviewDocumentsEmail";
 
 export async function reviewContractUserData(
   req: AuthenticatedRequest,
@@ -39,6 +40,12 @@ export async function reviewContractUserData(
       select: {
         id: true,
         status: true,
+        libranzaData: {
+          select: {
+            clienteNombre: true,
+            clienteEmail: true,
+          },
+        },
       },
     });
 
@@ -66,7 +73,7 @@ export async function reviewContractUserData(
 
     const allApproved = docs.every((doc) => doc.status === "APPROVED");
 
-    if (!allApproved) {
+    if (decision === "APPROVED" && !allApproved) {
       return res.status(400).json({
         ok: false,
         message: "No todos los documentos están aprobados",
@@ -85,8 +92,39 @@ export async function reviewContractUserData(
       },
     });
 
+    const clienteEmail = contract.libranzaData?.clienteEmail;
+    const clienteNombre = contract.libranzaData?.clienteNombre || "cliente";
+
+    let emailSent = true;
+
+    if (clienteEmail) {
+      try {
+        if (decision === "APPROVED") {
+          await sendUserDataApprovedEmail({
+            to: clienteEmail,
+            clienteNombre,
+          });
+        } else {
+          await sendUserDataRejectedEmail({
+            to: clienteEmail,
+            clienteNombre,
+            notes: notes?.trim() || "",
+          });
+        }
+      } catch (emailError) {
+        emailSent = false;
+        console.error("Error enviando correo de notificación:", emailError);
+      }
+    } else {
+      emailSent = false;
+      console.warn(
+        `No se envió correo porque el contrato ${contractId} no tiene clienteEmail`
+      );
+    }
+
     return res.json({
       ok: true,
+      emailSent,
       message:
         decision === "APPROVED"
           ? "Los datos del usuario fueron aprobados correctamente"

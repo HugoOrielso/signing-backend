@@ -18,7 +18,6 @@ export async function createContract(
       ...result,
     });
   } catch (error: unknown) {
-    console.log(error)
     if (error instanceof ZodError) {
       return res.status(400).json({
         ok: false,
