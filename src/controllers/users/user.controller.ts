@@ -181,49 +181,133 @@ export async function getPublicContractsByUser(
 }
 
 export const getPublicContractByToken = async (
-    req: AuthenticatedPublicRequest,
-    res: Response
+  req: AuthenticatedPublicRequest,
+  res: Response
 ) => {
-    try {
-        const email = req.publicSession?.email?.trim().toLowerCase();
+  try {
+    const identifier = req.publicSession?.identifier?.trim();
+    const identifierType = req.publicSession?.identifierType;
 
-        if (!email) {
-            return res.status(401).json({ ok: false, message: "Sesión pública inválida o expirada" });
-        }
-
-        const token = String(req.params.token); // ← era req.params.id
-        const contract = await prisma.contract.findFirst({
-            where: {
-                token,
-            },
-            include: {
-                libranzaData: {
-                    include: {
-                        references: { orderBy: { createdAt: "asc" } },
-                    },
-                },
-                signers: { orderBy: { signerOrder: "asc" } },
-                signatures: {
-                    select: {
-                        id: true,
-                        signerId: true,
-                        type: true,
-                        typedValue: true,
-                        signedAt: true,
-                        imageUrl: true
-                    },
-                },
-                documents: { orderBy: { createdAt: "asc" } },
-            },
-        });
-
-        if (!contract) {
-            return res.status(404).json({ ok: false, message: "Contrato no encontrado" });
-        }
-
-        return res.json({ ok: true, data: contract });
-    } catch (error) {
-        console.error("GET PUBLIC CONTRACT BY TOKEN ERROR", error);
-        return res.status(500).json({ ok: false, message: "Error al obtener el contrato" });
+    if (!identifier || !identifierType) {
+      return res.status(401).json({
+        ok: false,
+        message: "Sesión pública inválida o expirada",
+      });
     }
+
+    const token = String(req.params.token);
+
+    let whereCondition: any = {
+      token,
+    };
+
+    if (identifierType === "EMAIL") {
+      const email = identifier.toLowerCase();
+
+      whereCondition = {
+        token,
+        OR: [
+          {
+            libranzaData: {
+              is: {
+                clienteEmail: {
+                  equals: email,
+                  mode: "insensitive",
+                },
+              },
+            },
+          },
+          {
+            signers: {
+              some: {
+                email: {
+                  equals: email,
+                  mode: "insensitive",
+                },
+              },
+            },
+          },
+        ],
+      };
+    } else if (identifierType === "PHONE") {
+      whereCondition = {
+        token,
+        OR: [
+          {
+            libranzaData: {
+              is: {
+                clienteTelefono: {
+                  equals: identifier,
+                },
+              },
+            },
+          },
+          {
+            signers: {
+              some: {
+                phone: {
+                  equals: identifier,
+                },
+              },
+            },
+          },
+        ],
+      };
+    } else {
+      return res.status(400).json({
+        ok: false,
+        message: "Tipo de identificador no soportado",
+      });
+    }
+
+    const contract = await prisma.contract.findFirst({
+      where: whereCondition,
+      include: {
+        libranzaData: {
+          include: {
+            references: {
+              orderBy: { createdAt: "asc" },
+            },
+          },
+        },
+        signers: {
+          orderBy: { signerOrder: "asc" },
+        },
+        signatures: {
+          select: {
+            id: true,
+            signerId: true,
+            type: true,
+            typedValue: true,
+            signedAt: true,
+            imageUrl: true,
+          },
+        },
+        documents: {
+          orderBy: { createdAt: "asc" },
+        },
+      },
+    });
+
+    if (!contract) {
+      return res.status(404).json({
+        ok: false,
+        message: "Contrato no encontrado",
+      });
+    }
+
+    return res.json({
+      ok: true,
+      data: {
+        ...contract,
+        amount: contract.amount ? contract.amount.toString() : null,
+      },
+    });
+  } catch (error) {
+    console.error("GET PUBLIC CONTRACT BY TOKEN ERROR", error);
+    return res.status(500).json({
+      ok: false,
+      message: "Error al obtener el contrato",
+    });
+  }
 };

@@ -264,3 +264,19 @@ export async function signPublicContract(req: Request, res: Response) {
     });
   }
 }
+
+
+export async function signLibranzaPrueba(req: Request, res: Response) {
+
+  try {
+    await sendSignedContractPdf("0d9a14e1-c62b-4eb6-b29e-72a665db5ebf");
+  } catch (e) {
+    console.error("EMAIL ERROR:", e);
+  }
+
+  return res.json({
+    ok: true,
+  });
+
+
+}

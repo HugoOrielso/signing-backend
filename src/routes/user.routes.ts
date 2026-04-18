@@ -22,7 +22,6 @@ userRouter.get("/contracts/:token", requirePublicSession, getPublicContractByTok
 userRouter.post("/contracts/:token/upload-document", requirePublicSession, uploadDocument.single("file"), uploadContractUserDocument);
 userRouter.get("/contracts/:token/documents",  requirePublicSession, UserGetContractDocuments);
 userRouter.post("/contracts/:token/sign", requirePublicSession, signPublicContract);
-// userRouter.post("/pagare/:token/sign", requirePublicSession, signPublicPagare);
 userRouter.get("/contracts/pagare/:token", requirePublicSession, getPagareStatusByToken);
 userRouter.post("/contracts/pagare/:token/sign", requirePublicSession, signPagare);
 
