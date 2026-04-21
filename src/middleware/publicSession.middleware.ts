@@ -1,6 +1,7 @@
 import { Response, NextFunction } from "express";
 import { prisma } from "../database/db";
 import { AuthenticatedPublicRequest } from "../types/types";
+import type { CookieOptions } from "express";
 
 export async function requirePublicSession(
   req: AuthenticatedPublicRequest,
@@ -12,9 +13,16 @@ export async function requirePublicSession(
       | string
       | undefined;
 
+    const isProduction = process.env.NODE_ENV === "production";
+
+    const cookieOptions: CookieOptions = {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+      path: "/",
+    };
 
     if (!sessionToken) {
-
       return res.status(401).json({
         ok: false,
         message: "Sesión pública no válida",
@@ -34,6 +42,8 @@ export async function requirePublicSession(
     });
 
     if (!session) {
+      res.clearCookie("public_contract_session", cookieOptions);
+
       return res.status(401).json({
         ok: false,
         message: "Sesión no encontrada",
@@ -41,12 +51,13 @@ export async function requirePublicSession(
     }
 
     if (!session.expiresAt || session.expiresAt < new Date()) {
+      res.clearCookie("public_contract_session", cookieOptions);
+
       return res.status(401).json({
         ok: false,
         message: "La sesión ha expirado",
       });
     }
-
 
     req.publicSession = {
       id: session.id,

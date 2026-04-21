@@ -1,5 +1,5 @@
 // src/controllers/contracts/otp.controller.ts
-import { Request, Response } from "express";
+import { CookieOptions, Request, Response } from "express";
 import crypto from "crypto";
 import { Resend } from "resend";
 import { prisma } from "../../database/db";
@@ -279,13 +279,17 @@ export async function verifyOtp(req: Request, res: Response) {
       },
     });
 
-    res.cookie("public_contract_session", sessionToken, {
+    const isProduction = process.env.NODE_ENV === "production";
+
+    const cookieOptions: CookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       expires: expiresAt,
       path: "/",
-    });
+    };
+
+    res.cookie("public_contract_session", sessionToken, cookieOptions);
 
     return res.json({
       ok: true,
