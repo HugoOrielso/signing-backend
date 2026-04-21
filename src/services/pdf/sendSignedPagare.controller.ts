@@ -1,6 +1,6 @@
 // src/services/pagare/sendSignedPagarePdf.ts
 import { prisma } from "../../database/db";
-import { sendSignedContractEmail, sendSignedPagareEmail } from "../../lib/email/sendContract";
+import { sendSignedPagareEmail } from "../../lib/email/sendSignedPagare";
 import { generatePagarePdf } from "./generatePagare";
 
 export async function sendSignedPagarePdf(pagareId: string) {

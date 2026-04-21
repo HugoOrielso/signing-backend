@@ -1,5 +1,5 @@
 import { prisma } from "../../../../database/db";
-import { sendContractEmail } from "../../../../lib/email/sendContract";
+import { sendContractEmail } from "../../../../lib/email/sendSignedPagare";
 import { generatePublicToken } from "../../../../lib/token/generateToken";
 import { AuthenticatedRequest } from "../../../../types/types";
 import type { Response } from "express";

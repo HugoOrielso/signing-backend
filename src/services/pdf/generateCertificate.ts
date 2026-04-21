@@ -41,20 +41,19 @@ function formatCurrency(amount: number, currency = "COP"): string {
     maximumFractionDigits: 0,
   }).format(amount);
 }
-
 function signerBlock(signer: SignerCertData, index: number): string {
   const signatureTypeLabel =
     signer.signatureType === "TYPED"
       ? "Firma tipada"
       : signer.signatureType === "DRAWN"
-      ? "Firma dibujada"
-      : "Clic para firmar";
+        ? "Firma dibujada"
+        : "Clic para firmar";
 
   return `
     <div class="signer-block">
       <div class="section-title">
         <span class="section-number">${index + 1}</span>
-        Información del Firmante
+        Información del firmante
       </div>
 
       <table class="info-table">
@@ -79,14 +78,6 @@ function signerBlock(signer: SignerCertData, index: number): string {
             <td class="label">Tipo de firma</td>
             <td class="value">${signatureTypeLabel}</td>
           </tr>
-          ${
-            signer.signatureType === "TYPED" && signer.typedValue
-              ? `<tr>
-                  <td class="label">Valor firmado</td>
-                  <td class="value typed-value">${signer.typedValue}</td>
-                </tr>`
-              : ""
-          }
           <tr>
             <td class="label">Fecha y hora de firma</td>
             <td class="value">${formatDate(signer.signedAt)}</td>
@@ -94,14 +85,6 @@ function signerBlock(signer: SignerCertData, index: number): string {
           <tr>
             <td class="label">Dirección IP</td>
             <td class="value mono">${signer.ipAddress ?? "—"}</td>
-          </tr>
-          <tr>
-            <td class="label">OTP verificado</td>
-            <td class="value">
-              <span class="badge ${signer.otpVerified ? "badge-yes" : "badge-no"}">
-                ${signer.otpVerified ? "✓ Verificado" : "✗ No verificado"}
-              </span>
-            </td>
           </tr>
           <tr>
             <td class="label">User-Agent</td>
@@ -120,46 +103,46 @@ function signerBlock(signer: SignerCertData, index: number): string {
 
 export function generateCertificateHtml(data: ContractCertData): string {
   const signersHtml = data.signers.map((s, i) => signerBlock(s, i)).join("");
+  const contractDisplayNumber = data.contractNumber ?? data.consecutivo ?? "—";
 
   return `<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Certificado de Firma — ${data.contractNumber ?? data.consecutivo}</title>
+  <title>Certificado de Firma — ${contractDisplayNumber}</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     :root {
-      --primary:   #0f2d52;
-      --accent:    #1d4ed8;
-      --success:   #15803d;
-      --success-bg:#dcfce7;
-      --danger:    #b91c1c;
-      --danger-bg: #fee2e2;
-      --muted:     #6b7280;
-      --border:    #e2e8f0;
-      --bg:        #f8fafc;
-      --text:      #0f172a;
-      --white:     #ffffff;
+      --bg-page: #f4f7fb;
+      --bg-soft: #f8fbff;
+      --bg-card: #ffffff;
+      --border: #e3ecfb;
+      --border-soft: #edf2fb;
+      --primary: #2563eb;
+      --primary-dark: #0f172a;
+      --text: #0f172a;
+      --text-soft: #475569;
+      --muted: #64748b;
+      --success: #15803d;
+      --success-bg: #dcfce7;
+      --hash-bg: #0b1220;
+      --hash-text: #4ade80;
+      --white: #ffffff;
     }
 
     html, body {
       font-family: 'Inter', sans-serif;
       font-size: 11pt;
       color: var(--text);
-      background: var(--white);
-    }
-
-    /* ── PAGE LAYOUT ── */
-    .page {
-      width: 210mm;
-      min-height: 297mm;
-      margin: 0 auto;
-      padding: 0;
-      background: var(--white);
+      background: var(--bg-page);
     }
 
     @page {
@@ -168,128 +151,148 @@ export function generateCertificateHtml(data: ContractCertData): string {
     }
 
     @media print {
-      html, body { background: var(--white); }
-      .page { box-shadow: none; }
+      html, body {
+        background: var(--white);
+      }
+
+      .page {
+        box-shadow: none;
+      }
     }
 
-    /* ── HEADER ── */
-    .header {
-      background: var(--primary);
-      padding: 28px 40px 22px;
-      position: relative;
-      overflow: hidden;
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      background: var(--bg-card);
     }
 
-    .header::after {
-      content: '';
-      position: absolute;
-      bottom: -1px;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, #1d4ed8, #3b82f6, #1d4ed8);
+
+
+    .header-top {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .header-logo {
+      max-width: 80px;
+      width: 80px;
+      height: auto;
+      display: inline-block;
+      margin: 0 auto 14px auto;
     }
 
     .header-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 20px;
-      padding: 4px 12px;
-      color: rgba(255,255,255,0.85);
-      font-size: 8pt;
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      margin-bottom: 10px;
+      display: inline-block;
+      background: #f1f6ff;
+      border: 1px solid #d9e6ff;
+      color: var(--primary);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 8.5pt;
+      font-weight: 600;
+      letter-spacing: 0.02em;
     }
 
-    .header h1 {
-      color: var(--white);
-      font-size: 18pt;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 6px;
+    .header-title {
+      text-align: start;
+      margin-bottom: 8px;
+      font-size: 20pt;
+      line-height: 1.15;
+      font-weight: 800;
+      color: var(--primary-dark);
+      letter-spacing: -0.03em;
     }
 
     .header-sub {
-      color: rgba(255,255,255,0.65);
-      font-size: 9pt;
+      text-align: start;
+      color: var(--muted);
+      font-size: 9.5pt;
+      line-height: 1.6;
+      margin-bottom: 20px;
     }
 
     .header-meta {
-      margin-top: 16px;
       display: flex;
-      gap: 24px;
-      flex-wrap: wrap;
+      align-items: start;
+      justify-content: center;
+      gap: 14px;
     }
 
     .header-meta-item {
-      color: rgba(255,255,255,0.7);
-      font-size: 9pt;
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 5px;
     }
 
     .header-meta-item strong {
-      color: var(--white);
-      font-weight: 600;
       display: block;
-      font-size: 10pt;
+      color: var(--primary-dark);
+      font-size: 9.5pt;
+      font-weight: 700;
+      margin-bottom: 2px;
     }
 
-    /* ── BODY ── */
+    .header-meta-item span {
+      color: var(--muted);
+      font-size: 8.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+
     .body {
-      padding: 32px 40px 40px;
+      padding: 28px 40px 40px;
     }
 
-    /* ── CONTRACT SUMMARY ── */
     .contract-summary {
-      background: var(--bg);
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 20px 24px;
-      margin-bottom: 28px;
+      border-radius: 22px;
+      padding: 22px 22px;
+      margin-bottom: 15px;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 14px 32px;
+      gap: 12px 24px;
     }
 
-    .summary-item {}
     .summary-item .s-label {
       font-size: 8pt;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-bottom: 3px;
+      margin-bottom: 5px;
     }
+
     .summary-item .s-value {
       font-size: 10.5pt;
       font-weight: 500;
       color: var(--text);
+      line-height: 1.5;
     }
+
     .summary-item .s-value.amount {
-      color: var(--accent);
-      font-weight: 700;
+      color: var(--primary);
+      font-weight: 800;
       font-size: 12pt;
     }
 
-    /* ── SECTION ── */
     .section-title {
       display: flex;
       align-items: center;
       gap: 10px;
       font-size: 12pt;
       font-weight: 700;
-      color: var(--primary);
+      color: var(--primary-dark);
       margin-bottom: 14px;
     }
 
     .section-number {
-      width: 24px;
-      height: 24px;
-      background: var(--primary);
+      width: 26px;
+      height: 26px;
+      background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
       color: var(--white);
       border-radius: 50%;
       display: flex;
@@ -300,34 +303,33 @@ export function generateCertificateHtml(data: ContractCertData): string {
       flex-shrink: 0;
     }
 
-    /* ── SIGNER BLOCK ── */
     .signer-block {
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 22px;
       overflow: hidden;
-      margin-bottom: 24px;
+      margin-bottom: 15px;
       break-inside: avoid;
+      background: var(--bg-card);
     }
 
     .signer-block .section-title {
-      padding: 14px 20px 14px;
+      padding: 12px 16px;
       margin: 0;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg);
+      border-bottom: 1px solid var(--border-soft);
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
     }
 
-    /* ── TABLE ── */
     .info-table {
       width: 100%;
       border-collapse: collapse;
     }
 
     .info-table tr:not(:last-child) td {
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border-soft);
     }
 
     .info-table td {
-      padding: 9px 20px;
+      padding: 10px 20px;
       vertical-align: top;
     }
 
@@ -342,28 +344,30 @@ export function generateCertificateHtml(data: ContractCertData): string {
     .info-table td.value {
       font-size: 9.5pt;
       color: var(--text);
+      line-height: 1.6;
     }
 
     .mono {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 8.5pt !important;
+      font-size: 8.4pt !important;
     }
 
-    .small { font-size: 7.5pt !important; }
+    .small {
+      font-size: 7.4pt !important;
+    }
 
     .typed-value {
       font-style: italic;
-      font-weight: 600;
+      font-weight: 700;
       color: var(--primary);
     }
 
-    /* ── BADGES ── */
     .badge {
       display: inline-block;
-      padding: 3px 10px;
-      border-radius: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
       font-size: 8pt;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .badge-yes {
@@ -371,20 +375,14 @@ export function generateCertificateHtml(data: ContractCertData): string {
       color: var(--success);
     }
 
-    .badge-no {
-      background: var(--danger-bg);
-      color: var(--danger);
-    }
-
-    /* ── HASH BLOCK ── */
     .hash-block {
-      background: #0f172a;
-      padding: 14px 20px;
+      background: var(--hash-bg);
+      padding: 14px 20px 16px;
     }
 
     .hash-label {
       font-size: 7.5pt;
-      font-weight: 600;
+      font-weight: 700;
       color: #94a3b8;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -393,124 +391,123 @@ export function generateCertificateHtml(data: ContractCertData): string {
 
     .hash-value {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 8.5pt;
-      color: #4ade80;
+      font-size: 8.3pt;
+      color: var(--hash-text);
       word-break: break-all;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.03em;
+      line-height: 1.6;
     }
 
-    /* ── LEGAL FOOTER ── */
     .legal-footer {
       margin-top: 28px;
-      padding-top: 18px;
-      border-top: 2px solid var(--border);
+      padding: 22px 24px;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
     }
 
     .legal-title {
       font-size: 9pt;
-      font-weight: 700;
-      color: var(--muted);
+      font-weight: 800;
+      color: var(--primary-dark);
       text-transform: uppercase;
       letter-spacing: 0.05em;
       margin-bottom: 8px;
     }
 
     .legal-text {
-      font-size: 8pt;
+      font-size: 8.4pt;
       color: var(--muted);
-      line-height: 1.7;
+      line-height: 1.75;
     }
 
     .legal-refs {
-      margin-top: 10px;
+      margin-top: 12px;
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
     }
 
     .legal-ref {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 4px 10px;
-      font-size: 7.5pt;
-      color: var(--muted);
-      font-weight: 500;
+      background: #f1f6ff;
+      border: 1px solid #d9e6ff;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 7.3pt;
+      color: var(--primary);
+      font-weight: 600;
     }
   </style>
 </head>
 <body>
-<div class="page">
+  <div class="page">
 
-  <!-- HEADER -->
-  <div class="header">
-    <div class="header-badge">🔒 Firma Electrónica Verificada</div>
-    <h1>Certificado de Firma</h1>
-    <div class="header-sub">
-      Documento con validez legal — generado automáticamente por el sistema
-    </div>
-    <div class="header-meta">
-      <div class="header-meta-item">
-        <strong>${data.contractNumber ?? "—"}</strong>
-        N.º de contrato
-      </div>
-      <div class="header-meta-item">
-        <strong>${data.consecutivo}</strong>
-        Consecutivo
-      </div>
-      <div class="header-meta-item">
-        <strong>${formatDate(data.generatedAt)}</strong>
-        Fecha de emisión
-      </div>
-    </div>
-  </div>
-
-  <!-- BODY -->
-  <div class="body">
-
-    <!-- CONTRACT SUMMARY -->
-    <div class="contract-summary">
-      <div class="summary-item">
-        <div class="s-label">Descripción</div>
-        <div class="s-value">${data.title}</div>
-      </div>
-      <div class="summary-item">
-        <div class="s-label">Valor total</div>
-        <div class="s-value amount">${formatCurrency(data.amount, data.currency ?? "COP")}</div>
-      </div>
-      <div class="summary-item">
-        <div class="s-label">Total de firmantes</div>
-        <div class="s-value">${data.signers.length} firmante${data.signers.length !== 1 ? "s" : ""}</div>
-      </div>
-      <div class="summary-item">
-        <div class="s-label">Estado</div>
-        <div class="s-value">
-          <span class="badge badge-yes">✓ Firmado completamente</span>
+    <div style="padding: 5px; display: flex; flex-direction: column;background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%); border-bottom: 1px solid var(--border-soft); items-center; justify-content: center;">
+      <div style ="display:flex; justify-content: space-evenly; align-items:center; gap: 15px;"> 
+        <div class="header-top">
+          <img
+            class="header-logo"
+            src="https://dimcultura.com/assets/logo_dimcultura.png"
+            alt="Dimcultura"
+          />
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center; justify-content:start;">
+          <div>
+            <p class="header-title">Certificado de Firma # ${contractDisplayNumber}</p>
+            <p class="header-sub">
+            Documento generado automáticamente con información de firma,
+            integridad del archivo y trazabilidad del proceso. <b>Emitido:</b> ${formatDate(data.generatedAt)}
+            </p>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- SIGNERS -->
-    ${signersHtml}
+    <div class="body">
 
-    <!-- LEGAL FOOTER -->
-    <div class="legal-footer">
-      <div class="legal-title">Marco Legal</div>
-      <div class="legal-text">
-        Este certificado acredita que las personas identificadas suscribieron el contrato
-        mediante firma electrónica válida. El hash SHA-256 garantiza la integridad del
-        documento en el momento exacto de la firma. La dirección IP y el timestamp registrados
-        constituyen evidencia del consentimiento electrónico prestado.
+      <div class="contract-summary">
+        <div class="summary-item">
+          <div class="s-label">Descripción</div>
+          <div class="s-value">${data.title}</div>
+        </div>
+
+        <div class="summary-item">
+          <div class="s-label">Valor total</div>
+          <div class="s-value amount">${formatCurrency(data.amount, data.currency ?? "COP")}</div>
+        </div>
+
+        <div class="summary-item">
+          <div class="s-label">Total de firmantes</div>
+          <div class="s-value">${data.signers.length} firmante${data.signers.length !== 1 ? "s" : ""}</div>
+        </div>
+
+        <div class="summary-item">
+          <div class="s-label">Estado</div>
+          <div class="s-value">
+            <span class="badge badge-yes">✓ Firmado completamente</span>
+          </div>
+        </div>
       </div>
-      <div class="legal-refs">
-        <span class="legal-ref">Ley 527 de 1999 — Comercio Electrónico</span>
-        <span class="legal-ref">Decreto 2364 de 2012 — Firma Electrónica</span>
-        <span class="legal-ref">Ley 1581 de 2012 — Protección de Datos</span>
+
+      ${signersHtml}
+
+      <div class="legal-footer">
+        <div class="legal-title">Marco legal</div>
+        <div class="legal-text">
+          Este certificado acredita que las personas identificadas suscribieron el contrato
+          mediante firma electrónica válida. El hash SHA-256 garantiza la integridad del
+          documento en el momento exacto de la firma. La dirección IP y el timestamp registrados
+          constituyen evidencia del consentimiento electrónico prestado.
+        </div>
+        <div class="legal-refs">
+          <span class="legal-ref">Ley 527 de 1999 — Comercio Electrónico</span>
+          <span class="legal-ref">Decreto 2364 de 2012 — Firma Electrónica</span>
+          <span class="legal-ref">Ley 1581 de 2012 — Protección de Datos</span>
+        </div>
       </div>
+
     </div>
-
   </div>
-</div>
 </body>
 </html>`;
 }

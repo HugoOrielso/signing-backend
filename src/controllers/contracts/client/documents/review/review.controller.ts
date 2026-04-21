@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { AuthenticatedRequest } from "../../../../../types/types";
 import { prisma } from "../../../../../database/db";
-import { sendReadyToSignEmail } from "../../../../../lib/email/readyTosign";
+import { sendReadyToSignEmail } from "../../../../../lib/email/sendAlertDocumentsApproved";
 
 export async function reviewContractDocument(
   req: AuthenticatedRequest,
@@ -114,12 +114,10 @@ export async function reviewContractDocument(
         });
 
         if (contractedParty?.email) {
-          const portalLink = `${process.env.FRONTEND_URL}/auth`;
           try {
             await sendReadyToSignEmail({
               to: contractedParty.email,
               clienteNombre: contractedParty.name,
-              portalLink,
             });
           } catch (emailError) {
             console.error("EMAIL ERROR - READY_TO_SIGN:", emailError);

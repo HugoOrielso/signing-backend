@@ -7,13 +7,15 @@ import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.routes";
 import { signPagarePrueba } from "./controllers/contracts/client/signPagare/signPagare.controller";
 import { signLibranzaPrueba } from "./controllers/contracts/client/SignPublicContract/signPublicContract.controller";
+import { sendLibranzaEmail } from "./lib/email/sendLibranza";
 
 const app = express();
 
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://hugoorielso.com",
+  "https://dimcultura.com",
+  "https://www.dimcultura.com",
 ];
 
 const corsOptions: CorsOptions = {
@@ -39,13 +41,11 @@ app.use(express.json({ limit: "20mb" }));
 app.use(express.urlencoded({ extended: true, limit: "20mb" }));
 app.use(requestIdMiddleware);
 
-// Routesa
 app.get("/", (_req: Request, res: Response) => {
   return res.status(200).json("ok")
 })
 
-app.get("/api/prueba/pagare", signPagarePrueba);
-app.get("/api/prueba/libranza", signLibranzaPrueba);
+
 app.use("/api/auth", authRouter);
 app.use("/api/contracts", contractsRouter);
 app.use("/api/users", userRouter);

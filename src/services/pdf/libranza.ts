@@ -97,7 +97,7 @@ export async function generateLibranzaHtml(
       sigZone = `<span style="font-family:'Dancing Script',cursive;font-size:22px;color:#1a1a2e">${escHtml(signature.typedValue)}</span>`;
     }
   } else {
-    sigZone = `<span style="font-size:6.5px;color:#d4c9b0;letter-spacing:1px">PENDIENTE DE FIRMA</span>`;
+    sigZone = `<span style="font-size:7.5px;color:#d4c9b0;letter-spacing:1px">PENDIENTE DE FIRMA</span>`;
   }
 
   const resolvedTemplateKey = resolveTemplateKey(templateKey);
@@ -106,7 +106,7 @@ export async function generateLibranzaHtml(
     (s, p) => s + (parseFloat(p.valor?.replace(/[^0-9.]/g, "") || "0") || 0), 0
   );
 
-  const formaPagos = ["NOMINA", "EFECTY 110520", "PSE", "BANCO"];
+  const formaPagos = ["NOMINA"];
 
   // Fecha split
   const fechaParts = d.fecha?.split("/") ?? ["", "", ""];
@@ -146,7 +146,7 @@ export async function generateLibranzaHtml(
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: Arial, sans-serif; font-size: 9px; color: #000; background: white; padding: 12px 16px; line-height: 1.45; }
+  body { font-family: Arial, sans-serif; font-size: 11px; color: #000; background: white; padding: 12px 16px; line-height: 1.45; }
   @page { size: A4; margin: 0; }
   @media print { body { padding: 8px 12px; } }
 </style>
@@ -158,13 +158,13 @@ export async function generateLibranzaHtml(
   <div style="flex-shrink:0">${logoHtml}</div>
 
   <div style="text-align:center;flex:1;margin:0 8px">
-<div style="font-size:10px;font-weight:700">${escHtml(template.subtitulo)}</div>
-<div style="font-size:14px;font-weight:900">${escHtml(template.nombre)}</div>
-<div style="font-size:8px;font-style:italic">"${escHtml(template.slogan)}"</div>
-<div style="font-size:7px;margin-top:1px">Nit. ${escHtml(template.nit)} · Tel. 310 207 98 00 / 311 861 01 61</div>
+<div style="font-size:11px;font-weight:700">${escHtml(template.subtitulo)}</div>
+<div style="font-size:15px;font-weight:900">${escHtml(template.nombre)}</div>
+<div style="font-size:9px;font-style:italic">"${escHtml(template.slogan)}"</div>
+<div style="font-size:8px;margin-top:1px">Nit. ${escHtml(template.nit)} · Tel. 310 207 98 00 / 311 861 01 61</div>
   </div>
 
-  <div style="font-size:9px;border:1px solid #a1a1a1;padding:4px; border-radius:2.4px">
+  <div style="font-size:10px;border:1px solid #a1a1a1;padding:4px; border-radius:2.4px">
     <div style="display:flex;gap:4px;margin-bottom:3px">
       <span style="font-weight:700;white-space:nowrap">CIUDAD:</span>
       <span style="border-bottom:1px solid #a1a1a1;flex:1">${F(d.ciudad)}</span>
@@ -176,20 +176,20 @@ export async function generateLibranzaHtml(
     <div style="display:flex;align-items:center;gap:2px">
       <span style="font-weight:700;white-space:nowrap">FECHA:</span>
       <span style="text-align:center;padding:0px">${escHtml(fechaParts[0] || "")}</span>
-      <span style="font-weight:700;font-size:9px;margin-left:3px">LIBRANZA</span>
+      <span style="font-weight:700;font-size:10px;margin-left:3px">LIBRANZA</span>
     </div>
   </div>
 </div>
 
 <!-- SEDE -->
-<div style="text-align:center;font-size:7px;margin-bottom:5px;border-bottom:1px solid #ccc;padding-bottom:3px">
+<div style="text-align:center;font-size:8px;margin-bottom:5px;border-bottom:1px solid #ccc;padding-bottom:3px">
   Sede Administrativa: Calle 24 No. 5-40 Conjunto los Ángeles Barrio Gran Colombia Casa G1
-  Villa del Rosario Col. Lote 1 Barrio el Country Tel. 6512857 &nbsp;
+  Villa del Rosario Col/ Dirección Cartagena: Lote 1 Barrio El Country Tel. 6512857 &nbsp;
   <strong>servicioalcliente@dimcultura.com · www.dimcultura.com</strong>
 </div>
 
 <!-- CUERPO -->
-<div style="font-size:9px;margin-bottom:5px;text-wrap: balance;">
+<div style="font-size:12px;margin-bottom:5px;text-wrap: balance;">
   Yo ${U(F(d.clienteNombre))}
   con C.C.${U(F(d.clienteCC))}
   De ${U(F(d.clienteCCDe))},
@@ -214,11 +214,11 @@ export async function generateLibranzaHtml(
   <strong>Corriente</strong> ${Chk(d.tipoCuenta === "Corriente")}
   No. ${U(F(d.numeroCuenta))}
   DEL BANCO ${U(F(d.banco))}
-  <span style="font-size:7px"> Declaro formalmente no tener nada que reclamar a <strong>${escHtml(template.nombre.toUpperCase())}</strong> judicial o extrajudicialmente, por los cargos que a través de la presente autorización, se realice de mi cuenta.</span>
+  <span style="font-size:10px"> Declaro formalmente no tener nada que reclamar a <strong>${escHtml(template.nombre.toUpperCase())}</strong> judicial o extrajudicialmente, por los cargos que a través de la presente autorización, se realice de mi cuenta.</span>
 </div>
 
 <!-- REFERIDOS -->
-<div style="border:1px solid #ccc;border-radius:4px;padding:4px;margin-bottom:6px;font-size:9px;">
+<div style="border:1px solid #ccc;border-radius:4px;padding:4px;margin-bottom:6px;font-size:12px;">
   <div style="font-weight:700;margin-bottom:6px;">
     Referencias laborales y/o personales:
   </div>
@@ -282,7 +282,7 @@ export async function generateLibranzaHtml(
 </div>
 
 <!-- TEXTO LEGAL -->
-<div style="font-size:8.5px;border:1px solid #ccc;padding:4px;margin-bottom:5px;line-height:1.5;text-align:justify;border-radius: 4px">
+<div style="font-size:11.5px;border:1px solid #ccc;padding:4px;margin-bottom:5px;line-height:1.5;text-align:justify;border-radius: 4px">
   <strong>AUTORIZACIÓN PARA CONSULTA Y REPORTE DE INFORMACIÓN: </strong>
   Dando cumplimiento a lo dispuesto en la Ley 1581 de 2012 "por la cual se dictan disposiciones generales para la protección
   de datos personales" y de conformidad con lo señalado en el Decreto 1377 de 2013, con la firma de este documento, manifiesto
@@ -301,8 +301,8 @@ export async function generateLibranzaHtml(
 
 <!-- ACEPTO + ÍNDICE + FIRMA -->
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:5px">
-  <div style="font-size:8.5px;border:1px solid #ccc;padding:5px; border-radius: 4px">
-    <p style="margin:0 0 5px;font-size:7px;">
+  <div style="font-size:11.5px;border:1px solid #ccc;padding:5px; border-radius: 4px">
+    <p style="margin:0 0 5px;font-size:10px;">
       <strong>He recibo en perfecto estado y a mi entera conformidad, los libros que describe y
       manifestado tener conocimiento que la empresa ${escHtml(template.nombre.toUpperCase())}, por ningún motivo
       permitirá la anulación o devolución después de firmada esta LIBRANZA, sin embargo torna
@@ -314,8 +314,8 @@ export async function generateLibranzaHtml(
   </div>
 
   <div style="display:grid;grid-template-columns:1fr;gap:5px">
-    <div style="border:${sigBorder};padding:4px;border-radius:4px;font-size:7.5px">
-      <strong style="font-size:7px">Aprobada la Autorización<br>para Descuento Respectivo</strong>
+    <div style="border:${sigBorder};padding:4px;border-radius:4px;font-size:10px">
+      <strong style="font-size:10px">Aprobada la Autorización<br>para Descuento Respectivo</strong>
       <br><strong style="color:#a07830">Firma</strong>
       <div style="height:48px;margin-top:2px;display:flex;align-items:center;justify-content:center; background-color:#ccc; border-radius:3px">
         ${sigZone}
@@ -328,7 +328,7 @@ export async function generateLibranzaHtml(
 <div style="position:relative;margin-bottom:3px">
 
   <!-- TABLA PRODUCTOS -->
-  <table style="width:100%;border-collapse:collapse;font-size:8px;border-radius:4px">
+  <table style="width:100%;border-collapse:collapse;font-size:11px;border-radius:4px">
     <thead>
       <tr>
         <th style="${thStyle};width:70px">CODIGO</th>
@@ -364,7 +364,7 @@ export async function generateLibranzaHtml(
 </div>
 <!-- TOTAL -->
 <div style="display:flex;justify-content:flex-end;margin-bottom:5px">
-  <table style="border-collapse:collapse;font-size:9px">
+  <table style="border-collapse:collapse;font-size:12px">
     <tr>
       <td style="font-weight:700;padding:2px 10px;border:1px solid #000;background:#1a1a2e;color:white">TOTAL COMPRA</td>
       <td style="padding:2px 18px;border:1px solid #000;text-align:right;font-weight:700;min-width:90px">

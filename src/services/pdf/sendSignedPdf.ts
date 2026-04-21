@@ -1,5 +1,5 @@
 import { prisma } from "../../database/db";
-import { sendSignedContractEmail } from "../../lib/email/sendContract";
+import { sendSignedContractEmail } from "../../lib/email/sendSignedLibranza";
 import { buildCertDataFromContract, generateSignatureCertificatePdf } from "./generateSignatureCertificate";
 import { generateContractPdf } from "./getEncryptedPDF";
 
@@ -49,7 +49,7 @@ export async function sendSignedContractPdf(contractId: string) {
     clienteNombre: nombre,
     pdfBuffer,
     fileName: `libranza-${safeName}.pdf`,
-    certBuffer,                              // ← adjunto extra
+    certBuffer,                             
     certFileName: `certificado-firma-${safeName}.pdf`,
     role: "cliente",
   });

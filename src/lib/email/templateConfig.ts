@@ -15,7 +15,7 @@ export const TEMPLATE_CONFIG: Record<
   }
 > = {
   dimcultura: {
-    logoFile: "dimcultura.webp",
+    logoFile: "https://dimcultura.com/assets/logo_dimcultura.png",
     nombre: "Dimcultura S.A.S.",
     subtitulo: "Nueva Dimensión Cultural",
     slogan: "Un mundo en el que debes estar",
@@ -24,7 +24,7 @@ export const TEMPLATE_CONFIG: Record<
     web: "www.dimcultura.com",
   },
   gruculcol: {
-    logoFile: "gruculcol.webp",
+    logoFile: "https://dimcultura.com/assets/gruculcol.png",
     nombre: "GRUCULCOL",
     subtitulo: "Grupo Cultural Colombiano",
     slogan: "Educación sin fronteras",

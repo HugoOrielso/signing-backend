@@ -14,40 +14,85 @@ export async function generateContractPdf(
   try {
     const template = getTemplateConfig(contract.templateKey);
 
-    const contractedSigner = contract.signers.find((s: any) => s.partyRole === "DEUDOR");
+    const contractedSigner = contract.signers.find(
+      (s: any) => s.partyRole === "DEUDOR"
+    );
+
     const contractedSig = contractedSigner
       ? contract.signatures.find((sig: any) => sig.signerId === contractedSigner.id)
       : undefined;
 
     const signatureData = contractedSig
       ? {
-        type: contractedSig.type as "DRAWN" | "TYPED" | "CLICK_TO_SIGN",
-        imageUrl: contractedSig.imageUrl ?? undefined,
-        typedValue: contractedSig.typedValue ?? undefined,
-        signedAt: contractedSig.signedAt?.toISOString(),
-        signerName: contractedSigner?.name,
-      }
+          type: contractedSig.type as "DRAWN" | "TYPED" | "CLICK_TO_SIGN",
+          imageUrl: contractedSig.imageUrl ?? undefined,
+          typedValue: contractedSig.typedValue ?? undefined,
+          signedAt: contractedSig.signedAt?.toISOString(),
+          signerName: contractedSigner?.name,
+        }
       : undefined;
 
     let logoBase64: string | undefined;
     let logoMime = "image/webp";
 
     try {
-      const possibleDirs = [
-        path.join(process.cwd(), "public", "assets"),
-        path.join(process.cwd(), "src", "public", "assets"),
-      ];
+      const logoRef = template.logoFile;
 
-      const assetsDir = possibleDirs.find((d) => fs.existsSync(d)) ?? possibleDirs[0];
-      const candidates = [template.logoFile, "logo.webp", "logo.png", "logo.jpg"];
+      if (logoRef?.startsWith("http://") || logoRef?.startsWith("https://")) {
+        const response = await fetch(logoRef);
 
-      for (const file of candidates) {
-        const logoPath = path.join(assetsDir, file);
-        if (fs.existsSync(logoPath)) {
-          logoBase64 = fs.readFileSync(logoPath).toString("base64");
-          const ext = path.extname(file).slice(1).toLowerCase();
-          logoMime = ext === "jpg" ? "image/jpeg" : `image/${ext}`;
-          break;
+        if (!response.ok) {
+          throw new Error(`No se pudo descargar el logo: ${response.status}`);
+        }
+
+        const arrayBuffer = await response.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+
+        logoBase64 = buffer.toString("base64");
+
+        const contentType = response.headers.get("content-type");
+        if (contentType) {
+          logoMime = contentType;
+        } else {
+          const ext = path.extname(logoRef).slice(1).toLowerCase();
+          logoMime =
+            ext === "jpg" || ext === "jpeg"
+              ? "image/jpeg"
+              : ext === "png"
+              ? "image/png"
+              : ext === "svg"
+              ? "image/svg+xml"
+              : "image/webp";
+        }
+      } else {
+        const possibleDirs = [
+          path.join(process.cwd(), "public", "assets"),
+          path.join(process.cwd(), "src", "public", "assets"),
+        ];
+
+        const assetsDir =
+          possibleDirs.find((d) => fs.existsSync(d)) ?? possibleDirs[0];
+
+        const candidates = [logoRef, "logo.webp", "logo.png", "logo.jpg"];
+
+        for (const file of candidates) {
+          if (!file) continue;
+
+          const logoPath = path.join(assetsDir, file);
+
+          if (fs.existsSync(logoPath)) {
+            logoBase64 = fs.readFileSync(logoPath).toString("base64");
+
+            const ext = path.extname(file).slice(1).toLowerCase();
+            logoMime =
+              ext === "jpg" || ext === "jpeg"
+                ? "image/jpeg"
+                : ext === "svg"
+                ? "image/svg+xml"
+                : `image/${ext || "webp"}`;
+
+            break;
+          }
         }
       }
     } catch (e) {
@@ -70,13 +115,14 @@ export async function generateContractPdf(
         : undefined,
       args: isProduction
         ? [
-          "--no-sandbox",
-          "--disable-setuid-sandbox",
-          "--disable-dev-shm-usage",
-          "--disable-gpu",
-        ]
+            "--no-sandbox",
+            "--disable-setuid-sandbox",
+            "--disable-dev-shm-usage",
+            "--disable-gpu",
+          ]
         : [],
     });
+
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: "networkidle0", timeout: 30000 });
     await page.evaluateHandle("document.fonts.ready");
@@ -103,7 +149,9 @@ export async function generateContractPdf(
     return Buffer.from(pdfBuffer);
   } finally {
     if (browser) {
-      try { await browser.close(); } catch { }
+      try {
+        await browser.close();
+      } catch {}
     }
   }
 }
