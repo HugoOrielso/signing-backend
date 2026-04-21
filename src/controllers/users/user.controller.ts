@@ -1,42 +1,53 @@
-import { Response } from "express";
+import { CookieOptions, Response } from "express";
 import { prisma } from "../../database/db";
 import { AuthenticatedPublicRequest } from "../../types/types";
 
 export async function logoutPublicSession(
-    req: AuthenticatedPublicRequest,
-    res: Response
+  req: AuthenticatedPublicRequest,
+  res: Response
 ) {
-    try {
-        const sessionToken = req.cookies?.public_contract_session as
-            | string
-            | undefined;
+  try {
+    const sessionToken = req.cookies?.public_contract_session as
+      | string
+      | undefined;
 
-        if (sessionToken) {
-            await prisma.publicContractSession.deleteMany({
-                where: { sessionToken },
-            });
-        }
-
-        res.clearCookie("public_contract_session", {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "lax",
-            path: "/",
-        });
-
-        return res.json({
-            ok: true,
-            message: "Sesión cerrada correctamente",
-        });
-    } catch (error) {
-        console.error("logoutPublicSession error:", error);
-        return res.status(500).json({
-            ok: false,
-            message: "Error al cerrar sesión",
-        });
+    if (sessionToken) {
+      await prisma.publicContractSession.deleteMany({
+        where: { sessionToken },
+      });
     }
+
+    res.clearCookie(
+      "public_contract_session",
+      getPublicSessionCookieOptions()
+    );
+
+    return res.json({
+      ok: true,
+      message: "Sesión cerrada correctamente",
+    });
+  } catch (error) {
+    console.error("logoutPublicSession error:", error);
+    return res.status(500).json({
+      ok: false,
+      message: "Error al cerrar sesión",
+    });
+  }
 }
 
+function getPublicSessionCookieOptions(
+  expires?: Date
+): CookieOptions {
+  const isProduction = process.env.NODE_ENV === "production";
+
+  return {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+    path: "/",
+    ...(expires ? { expires } : {}),
+  };
+}
 
 export async function getPublicContractsByUser(
   req: AuthenticatedPublicRequest,
