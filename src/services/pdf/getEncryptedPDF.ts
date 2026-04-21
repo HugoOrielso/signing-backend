@@ -124,7 +124,7 @@ export async function generateContractPdf(
     });
 
     const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: "networkidle0", timeout: 30000 });
+    await page.setContent(html, { waitUntil: "networkidle0", timeout: 60000 });
     await page.evaluateHandle("document.fonts.ready");
 
     const pdfBuffer = await page.pdf({
