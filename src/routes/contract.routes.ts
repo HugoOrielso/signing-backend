@@ -3,7 +3,6 @@ import { requireAdminAuth, requireRole } from "../middleware/auth.middleware";
 import { requestOtp, verifyOtp } from "../controllers/otp/otp.controller";
 import { listContracts } from "../controllers/contracts/admin/ListContracts/listContract.controller";
 import { createContract } from "../controllers/contracts/admin/createContract/createContract.controller";
-import { sendContract } from "../controllers/contracts/admin/sendContract/sendContract.controller";
 import { downloadPublicSignedContract } from "../controllers/contracts/client/documents/download/download.controller";
 import { viewContractDocument } from "../controllers/contracts/client/documents/view/view.controller";
 import { uploadContractDocument } from "../controllers/contracts/client/documents/upload/upload.controller";
@@ -28,7 +27,6 @@ contractsRouter.get("/", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRol
 
 // ADMIN y OPERATOR pueden crear y enviar contratos
 contractsRouter.post("/", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR, ), createContract);
-contractsRouter.post("/:id/send", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR,), sendContract);
 // En la sección PRIVADAS
 contractsRouter.get("/:id", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR,  AdminRole.CREDIT_ANALYST), getContractById);
 contractsRouter.get("/:id/audit-trail", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR,), getContractAuditTrail);
@@ -37,7 +35,7 @@ contractsRouter.post("/public/:token/sign", signPublicContract);
 
 contractsRouter.post("/public/:token/upload-document", uploadDocument.single("file"), uploadContractDocument);
 contractsRouter.get("/public/:token/info", getInfo);
-contractsRouter.get("/public/:token/documents", getContractDocuments);
+contractsRouter.get("/contract/:token/documents", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR), getContractDocuments);
 contractsRouter.get("/public/:token/documents/:docId/view", viewContractDocument);
 contractsRouter.patch("/documents/:id/review", requireAdminAuth, requireRole(AdminRole.CREDIT_ANALYST), reviewContractDocument)
 contractsRouter.patch("/contract/:id/review", requireAdminAuth, requireRole(AdminRole.CREDIT_ANALYST), reviewContractUserData)
