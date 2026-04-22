@@ -36,7 +36,7 @@ contractsRouter.post("/public/:token/sign", signPublicContract);
 
 contractsRouter.post("/public/:token/upload-document", uploadDocument.single("file"), uploadContractDocument);
 contractsRouter.get("/public/:token/info", getInfo);
-contractsRouter.get("/contract/:token/documents", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR), getContractDocuments);
+contractsRouter.get("/contract/:token/documents", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR, AdminRole.CREDIT_ANALYST), getContractDocuments);
 contractsRouter.get("/public/:token/documents/:docId/view", viewContractDocument);
 contractsRouter.patch("/documents/:id/review", requireAdminAuth, requireRole(AdminRole.CREDIT_ANALYST), reviewContractDocument)
 contractsRouter.patch("/contract/:id/review", requireAdminAuth, requireRole(AdminRole.CREDIT_ANALYST), reviewContractUserData)
