@@ -36,26 +36,10 @@ export async function generateSignatureCertificatePdf(
       timeout: 30000,
     });
 
-    await page.evaluate(async () => {
-      try {
-        // @ts-ignore
-        await document.fonts.ready;
-      } catch { }
-
-      const images = Array.from(document.images || []);
-      await Promise.all(
-        images.map((img) => {
-          if (img.complete) return Promise.resolve();
-
-          return new Promise<void>((resolve) => {
-            const done = () => resolve();
-            img.addEventListener("load", done, { once: true });
-            img.addEventListener("error", done, { once: true });
-            setTimeout(done, 5000);
-          });
-        })
-      );
-    });
+    await page.waitForFunction(
+      `Array.from(document.images).every(img => img.complete)`,
+      { timeout: 5000 }
+    ).catch(() => null);
 
     const pdfBuffer = await page.pdf({
       format: "A4",
