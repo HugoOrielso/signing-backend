@@ -5,12 +5,8 @@ import contractsRouter from "./routes/contract.routes";
 import { requestIdMiddleware } from "./middleware/requestMiddleware";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.routes";
-import { signPagarePrueba } from "./controllers/contracts/client/signPagare/signPagare.controller";
-import { signLibranzaPrueba } from "./controllers/contracts/client/SignPublicContract/signPublicContract.controller";
-import { sendLibranzaEmail } from "./lib/email/sendLibranza";
 
 const app = express();
-
 
 const allowedOrigins = [
   "http://localhost:3000",

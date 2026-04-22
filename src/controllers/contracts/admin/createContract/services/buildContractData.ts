@@ -5,7 +5,7 @@ type ContractInput = {
   startDate?: Date | null;
   endDate?: Date | null;
   subject?: string | null;
-  amount?: number | null;
+  amount: number ;
   currency?: string;
   paymentMethod?: string | null;
 };
@@ -42,14 +42,14 @@ export function buildContractData(body: any, isNewFormat: boolean): ContractInpu
       startDate: body.startDate ? new Date(body.startDate) : null,
       endDate: body.endDate ? new Date(body.endDate) : null,
       subject: body.subject ?? null,
-      amount: parseAmount(body.amount),
+      amount: parseAmount(body.amount) ?? 0,
       currency: body.currency ?? "COP",
       paymentMethod: body.paymentMethod ?? null,
     };
   }
 
   const { generalData } = body;
-  const parsedAmount = parseAmount(generalData.amount);
+  const parsedAmount = parseAmount(generalData.amount) ?? 0;
 
   return {
     title: generalData.title,
@@ -58,7 +58,7 @@ export function buildContractData(body: any, isNewFormat: boolean): ContractInpu
     startDate: generalData.startDate ? new Date(generalData.startDate) : null,
     endDate: generalData.endDate ? new Date(generalData.endDate) : null,
     subject: generalData.subject ?? null,
-    amount: parsedAmount,
+    amount: parsedAmount ?? 0,
     currency: generalData.currency ?? "COP",
     paymentMethod: generalData.paymentMethod ?? null,
   };

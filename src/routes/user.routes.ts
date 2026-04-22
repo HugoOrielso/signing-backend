@@ -13,7 +13,7 @@ import { signPagare } from '../controllers/contracts/client/signPagare/signPagar
 
 const userRouter = Router()
 
-userRouter.post("/verify/:token/logout", requirePublicSession, logoutPublicSession);
+userRouter.post("/verify/logout", requirePublicSession, logoutPublicSession);
 userRouter.post("/verify/request-otp", requestOtp);
 userRouter.post("/verify/verify-otp", verifyOtp);
 userRouter.get("/contract/:token", requirePublicSession, getPublicContract);

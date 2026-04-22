@@ -349,3 +349,106 @@ export async function trackOtpVerified(input: BaseOtpAuditInput) {
     metadata: null,
   });
 }
+
+
+
+
+type TrackReviewInput = AuditContext & {
+  contractId: string;
+  target: "DOCUMENT" | "USER_DATA";
+  status: "APPROVED" | "REJECTED";
+  notes?: string | null;
+  documentType?: string; // Solo si es DOCUMENT
+};
+
+export async function trackReviewAction(input: TrackReviewInput) {
+  return logAuditEvent({
+    contractId: input.contractId,
+    adminId: input.adminId ?? null,
+    eventType: AuditEventType.CONTRACT_UPDATED, 
+    actorType: AuditActorType.CREDIT_ANALYST,
+    actorRole: input.actorRole ?? null,
+    actorEmail: input.actorEmail ?? null,
+    ipAddress: input.ipAddress ?? null,
+    userAgent: input.userAgent ?? null,
+    metadata: {
+      action: input.target === "DOCUMENT" ? "DOCUMENT_REVIEWED" : "DATA_REVIEWED",
+      status: input.status,
+      notes: input.notes,
+      documentType: input.documentType,
+    },
+  });
+}
+
+
+export async function trackPublicOtpSent(input: {
+  identifier: string;
+  identifierType: "EMAIL" | "PHONE";
+  email?: string | null;
+  phone?: string | null;
+  ipAddress?: string | null;
+  userAgent?: string | null;
+  requestId?: string | null;
+  sessionId?: string | null;
+}) {
+  return logAuditEvent({
+    contractId: 'PUBLIC_OTP',
+    signerId: null,
+    eventType: AuditEventType.OTP_SENT,
+    actorType: AuditActorType.SIGNER,
+    actorName: null,
+    actorEmail: input.email ?? null,
+    ipAddress: input.ipAddress ?? null,
+    userAgent: input.userAgent ?? null,
+    requestId: input.requestId ?? null,
+    sessionId: input.sessionId ?? null,
+    metadata: {
+      action: "PUBLIC_OTP_SENT",
+      identifier: input.identifier,
+      identifierType: input.identifierType,
+      phone: input.phone ?? null,
+    },
+  });
+}
+
+
+type TrackPagareSignedInput = {
+  contractId: string;
+  pagareId: string;
+  pagareNumber: number;
+  actorName?: string | null;
+  actorEmail?: string | null;
+  ipAddress?: string | null;
+  userAgent?: string | null;
+  requestId?: string | null;
+  sessionId?: string | null;
+  signatureType: "TYPED" | "DRAWN";
+  signedAt: string;
+  documentHash: string;
+  imageUrl?: string | null;
+};
+
+export async function trackPagareSigned(input: TrackPagareSignedInput) {
+  return logAuditEvent({
+    contractId: input.contractId,
+    signerId: null,
+    eventType: AuditEventType.CONTRACT_UPDATED,
+    actorType: AuditActorType.SIGNER,
+    actorName: input.actorName ?? null,
+    actorEmail: input.actorEmail ?? null,
+    ipAddress: input.ipAddress ?? null,
+    userAgent: input.userAgent ?? null,
+    requestId: input.requestId ?? null,
+    sessionId: input.sessionId ?? null,
+    documentHash: input.documentHash,
+    metadata: {
+      action: "PAGARE_SIGNED",
+      pagareId: input.pagareId,
+      pagareNumber: input.pagareNumber,
+      signatureType: input.signatureType,
+      signedAt: input.signedAt,
+      hasDrawnSignature: input.signatureType === "DRAWN",
+      imageUrl: input.imageUrl ?? null,
+    },
+  });
+}

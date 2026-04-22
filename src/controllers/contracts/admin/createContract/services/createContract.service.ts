@@ -10,6 +10,7 @@ import { getAuditRequestContext } from "../../../../../utils/audit-request";
 import { AuthenticatedRequest } from "../../../../../types/types";
 import { CreateContractBody } from "../../../../../schemas/libranza/createContract.schema";
 import { resolveConsecutivo } from "./consecutivosResolver";
+import { auditLog } from "../../../../audit/audit.controller";
 
 export async function createContractService(
   body: CreateContractBody,
@@ -49,8 +50,8 @@ export async function createContractService(
         ...contractData,
         adminId,
         templateKey,
-        sequence,  
-        consecutivo: code,     
+        sequence,
+        consecutivo: code,
         parties: {
           create: partiesInput.map((p) => ({
             role: p.role,
@@ -100,6 +101,7 @@ export async function createContractService(
   });
 
   try {
+
     await trackContractCreated({
       contractId: contract.id,
       adminId,

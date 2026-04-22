@@ -134,7 +134,6 @@ export async function uploadContractDocument(req: any, res: Response) {
       },
     });
   } catch (error: unknown) {
-    console.error("UPLOAD ERROR:", error);
 
     return res.status(500).json({
       ok: false,

@@ -4,6 +4,8 @@ import crypto from "crypto";
 import { Resend } from "resend";
 import { prisma } from "../../database/db";
 import { sendSms, toTwilioColombianPhone } from "../../services/messages/send.service";
+import { trackOtpSent, trackOtpVerified, trackPublicOtpSent } from "../../services/audit/contract-audit.service";
+import { getPublicAuditContext } from "../../helpers/udit";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -155,7 +157,7 @@ export async function requestOtp(req: Request, res: Response) {
 
     if (resolved.identifierType === "PHONE" && resolved.phone) {
       const phoneForTwilio = toTwilioColombianPhone(resolved.identifier);
-      
+
       if (!phoneForTwilio) {
         return res.status(400).json({
           ok: false,
@@ -164,7 +166,6 @@ export async function requestOtp(req: Request, res: Response) {
       }
       await sendSms(phoneForTwilio, `Tu código de acceso es: ${code}. Expira en 10 minutos.`)
     }
-
     return res.json({
       ok: true,
       channel: resolved.identifierType,
@@ -172,8 +173,8 @@ export async function requestOtp(req: Request, res: Response) {
         resolved.identifierType === "EMAIL" && resolved.email
           ? maskEmail(resolved.email)
           : resolved.phone
-          ? maskPhone(resolved.phone)
-          : null,
+            ? maskPhone(resolved.phone)
+            : null,
       message: "Si el dato está registrado, recibirás un código.",
     });
   } catch (error) {
@@ -290,6 +291,45 @@ export async function verifyOtp(req: Request, res: Response) {
     };
 
     res.cookie("public_contract_session", sessionToken, cookieOptions);
+
+
+    // try {
+    //   const contracts = await prisma.contract.findMany({
+    //     where: {
+    //       signers: {
+    //         some: {
+    //           OR: [
+    //             resolved.email ? { email: resolved.email } : undefined,
+    //             resolved.phone ? { phone: resolved.phone } : undefined,
+    //           ].filter(Boolean) as any,
+    //         },
+    //       },
+    //     },
+    //     include: {
+    //       signers: true,
+    //     },
+    //   });
+
+    //   for (const contract of contracts) {
+    //     const signer = contract.signers.find((s) =>
+    //       resolved.email
+    //         ? s.email === resolved.email
+    //         : resolved.phone
+    //           ? s.phone === resolved.phone
+    //           : false
+    //     );
+
+    //     await trackOtpVerified({
+    //       contractId: contract.id,
+    //       signerId: signer?.id ?? null,
+    //       actorName: signer?.name ?? null,
+    //       actorEmail: signer?.email ?? resolved.email ?? null,
+    //       ...getPublicAuditContext(req),
+    //     });
+    //   }
+    // } catch (auditError) {
+    //   console.error("VERIFY OTP AUDIT ERROR:", auditError);
+    // }
 
     return res.json({
       ok: true,

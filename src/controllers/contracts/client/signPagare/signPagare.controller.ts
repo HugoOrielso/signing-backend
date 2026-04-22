@@ -1,9 +1,10 @@
-// src/controllers/contracts/client/pagare/signPagare.ts
 import { prisma } from "../../../../database/db";
 import type { Request, Response } from "express";
 import crypto from "crypto";
 import cloudinary from "../../../../config/cloudinary";
 import { sendSignedPagarePdf } from "../../../../services/pdf/sendSignedPagare.controller";
+import { getPublicAuditContext, safeAudit } from "../../../../helpers/udit";
+import { trackPagareSigned } from "../../../../services/audit/contract-audit.service";
 
 export async function signPagare(req: Request, res: Response) {
   try {
@@ -45,13 +46,21 @@ export async function signPagare(req: Request, res: Response) {
       });
     }
 
-    // Buscar contrato por token
     const contract = await prisma.contract.findFirst({
       where: {
         token,
       },
       select: {
         id: true,
+        title: true,
+        signers: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+          take: 1,
+        },
       },
     });
 
@@ -62,7 +71,6 @@ export async function signPagare(req: Request, res: Response) {
       });
     }
 
-    // Buscar pagaré asociado al contrato
     const pagare = await prisma.pagare.findUnique({
       where: {
         contractId: contract.id,
@@ -150,6 +158,23 @@ export async function signPagare(req: Request, res: Response) {
       return { signature, updatedPagare };
     });
 
+    const signer = contract.signers[0] ?? null;
+
+    await safeAudit(() =>
+      trackPagareSigned({
+        contractId: contract.id,
+        pagareId: pagare.id,
+        pagareNumber: pagare.number,
+        actorName: signer?.name ?? pagare.deudorNombre ?? null,
+        actorEmail: signer?.email ?? null,
+        signatureType: type,
+        signedAt: signedAt.toISOString(),
+        documentHash,
+        imageUrl: uploadedSignatureUrl,
+        ...getPublicAuditContext(req),
+      })
+    );
+
     try {
       await sendSignedPagarePdf(pagare.id);
     } catch (emailError) {
@@ -165,32 +190,6 @@ export async function signPagare(req: Request, res: Response) {
       status: result.updatedPagare.status,
       documentHash,
       imageUrl: uploadedSignatureUrl,
-    });
-  } catch (error) {
-    console.error("SIGN PAGARE ERROR", error);
-    return res.status(500).json({
-      ok: false,
-      message: "No se pudo firmar el pagaré",
-    });
-  }
-}
-
-
-
-
-export async function signPagarePrueba(req: Request, res: Response) {
-  try {
-
-
-    try {
-      await sendSignedPagarePdf("9272dc69-e697-4673-8b05-97d9edc15d44");
-    } catch (emailError) {
-      console.error("SEND SIGNED PAGARE PDF ERROR", emailError);
-    }
-
-    return res.json({
-      ok: true,
-      message: "Pagaré firmado correctamente",
     });
   } catch (error) {
     console.error("SIGN PAGARE ERROR", error);

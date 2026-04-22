@@ -2,6 +2,8 @@ import { Response } from "express";
 import { AuthenticatedRequest } from "../../../../../types/types";
 import { prisma } from "../../../../../database/db";
 import { sendReadyToSignEmail } from "../../../../../lib/email/sendAlertDocumentsApproved";
+import { trackReviewAction } from "../../../../../services/audit/contract-audit.service";
+import { AdminRole } from "../../../../../generated/prisma/enums";
 
 export async function reviewContractDocument(
   req: AuthenticatedRequest,
@@ -131,6 +133,18 @@ export async function reviewContractDocument(
       }
 
       return document;
+    });
+
+    await trackReviewAction({
+      contractId: existing.contractId,
+      adminId: req.user.id,
+      actorRole: req.user.role as AdminRole ?? "CREDIT_ANALYST",
+      actorEmail: req.user.email,
+      target: "DOCUMENT",
+      status: status,
+      notes: notes,
+      ipAddress: req.ip,
+      userAgent: req.headers["user-agent"],
     });
 
     return res.json({

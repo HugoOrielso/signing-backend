@@ -24,11 +24,17 @@ export const createUser = async (req: AuthenticatedRequest, res: Response) => {
       role?: "OPERATOR" | "CREDIT_ANALYST";
     };
 
+    const allowedRoles = ["OPERATOR", "CREDIT_ANALYST"] as const;
+
+    const safeRole = allowedRoles.includes(role as (typeof allowedRoles)[number])
+      ? role
+      : "OPERATOR";
+
     const user = await createUserService({
       email,
       name,
       password,
-      role: role ?? "OPERATOR",
+      role: safeRole as "OPERATOR" | "CREDIT_ANALYST",
     });
 
     return res.status(201).json({ user });
@@ -37,6 +43,37 @@ export const createUser = async (req: AuthenticatedRequest, res: Response) => {
     const status = message === "Email already in use" ? 409 : 500;
 
     return res.status(status).json({ error: message });
+  }
+};
+
+
+export const getUsers = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ error: "Usuario no autenticado" });
+    }
+
+    if (req.user.role !== "ADMIN") {
+      return res.status(403).json({ error: "No autorizado" });
+    }
+
+    const users = await prisma.admin.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        createdAt: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return res.status(200).json({ users });
+  } catch (err) {
+    console.error("GET USERS ERROR:", err);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 
