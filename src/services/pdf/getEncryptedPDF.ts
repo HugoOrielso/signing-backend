@@ -24,12 +24,12 @@ export async function generateContractPdf(
 
     const signatureData = contractedSig
       ? {
-          type: contractedSig.type as "DRAWN" | "TYPED" | "CLICK_TO_SIGN",
-          imageUrl: contractedSig.imageUrl ?? undefined,
-          typedValue: contractedSig.typedValue ?? undefined,
-          signedAt: contractedSig.signedAt?.toISOString(),
-          signerName: contractedSigner?.name,
-        }
+        type: contractedSig.type as "DRAWN" | "TYPED" | "CLICK_TO_SIGN",
+        imageUrl: contractedSig.imageUrl ?? undefined,
+        typedValue: contractedSig.typedValue ?? undefined,
+        signedAt: contractedSig.signedAt?.toISOString(),
+        signerName: contractedSigner?.name,
+      }
       : undefined;
 
     let logoBase64: string | undefined;
@@ -59,10 +59,10 @@ export async function generateContractPdf(
             ext === "jpg" || ext === "jpeg"
               ? "image/jpeg"
               : ext === "png"
-              ? "image/png"
-              : ext === "svg"
-              ? "image/svg+xml"
-              : "image/webp";
+                ? "image/png"
+                : ext === "svg"
+                  ? "image/svg+xml"
+                  : "image/webp";
         }
       } else {
         const possibleDirs = [
@@ -88,8 +88,8 @@ export async function generateContractPdf(
               ext === "jpg" || ext === "jpeg"
                 ? "image/jpeg"
                 : ext === "svg"
-                ? "image/svg+xml"
-                : `image/${ext || "webp"}`;
+                  ? "image/svg+xml"
+                  : `image/${ext || "webp"}`;
 
             break;
           }
@@ -115,18 +115,43 @@ export async function generateContractPdf(
         : undefined,
       args: isProduction
         ? [
-            "--no-sandbox",
-            "--disable-setuid-sandbox",
-            "--disable-dev-shm-usage",
-            "--disable-gpu",
-          ]
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+          "--disable-dev-shm-usage",
+          "--disable-gpu",
+        ]
         : [],
     });
 
     const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: "networkidle0", timeout: 60000 });
-    await page.evaluateHandle("document.fonts.ready");
+    page.setDefaultTimeout(30000);
+    page.setDefaultNavigationTimeout(30000);
 
+    await page.setContent(html, {
+      waitUntil: "domcontentloaded",
+      timeout: 30000,
+    });
+
+    await page.evaluate(async () => {
+      try {
+        // @ts-ignore
+        await document.fonts.ready;
+      } catch { }
+
+      const images = Array.from(document.images || []);
+      await Promise.all(
+        images.map((img) => {
+          if (img.complete) return Promise.resolve();
+
+          return new Promise<void>((resolve) => {
+            const done = () => resolve();
+            img.addEventListener("load", done, { once: true });
+            img.addEventListener("error", done, { once: true });
+            setTimeout(done, 5000);
+          });
+        })
+      );
+    });
     const pdfBuffer = await page.pdf({
       format: "A4",
       printBackground: true,
@@ -151,7 +176,7 @@ export async function generateContractPdf(
     if (browser) {
       try {
         await browser.close();
-      } catch {}
+      } catch { }
     }
   }
 }

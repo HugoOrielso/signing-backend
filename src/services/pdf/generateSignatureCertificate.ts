@@ -19,17 +19,43 @@ export async function generateSignatureCertificatePdf(
         : undefined,
       args: isProduction
         ? [
-            "--no-sandbox",
-            "--disable-setuid-sandbox",
-            "--disable-dev-shm-usage",
-            "--disable-gpu",
-          ]
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+          "--disable-dev-shm-usage",
+          "--disable-gpu",
+        ]
         : [],
     });
 
     const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: "networkidle0", timeout: 30000 });
-    await page.evaluateHandle("document.fonts.ready");
+    page.setDefaultTimeout(30000);
+    page.setDefaultNavigationTimeout(30000);
+
+    await page.setContent(html, {
+      waitUntil: "domcontentloaded",
+      timeout: 30000,
+    });
+
+    await page.evaluate(async () => {
+      try {
+        // @ts-ignore
+        await document.fonts.ready;
+      } catch { }
+
+      const images = Array.from(document.images || []);
+      await Promise.all(
+        images.map((img) => {
+          if (img.complete) return Promise.resolve();
+
+          return new Promise<void>((resolve) => {
+            const done = () => resolve();
+            img.addEventListener("load", done, { once: true });
+            img.addEventListener("error", done, { once: true });
+            setTimeout(done, 5000);
+          });
+        })
+      );
+    });
 
     const pdfBuffer = await page.pdf({
       format: "A4",
@@ -46,7 +72,7 @@ export async function generateSignatureCertificatePdf(
     if (browser) {
       try {
         await browser.close();
-      } catch {}
+      } catch { }
     }
   }
 }
@@ -83,27 +109,27 @@ export function buildCertDataFromContract(contract: {
     .map((s) => {
       const sig = s.signatures[0];
       return {
-        name:          s.name,
-        email:         s.email,
-        phone:         s.phone,
-        role:          s.partyRole,
-        signedAt:      sig.signedAt,
-        ipAddress:     sig.ipAddress,
-        userAgent:     sig.userAgent,
-        documentHash:  sig.documentHash ?? "",
+        name: s.name,
+        email: s.email,
+        phone: s.phone,
+        role: s.partyRole,
+        signedAt: sig.signedAt,
+        ipAddress: sig.ipAddress,
+        userAgent: sig.userAgent,
+        documentHash: sig.documentHash ?? "",
         signatureType: sig.type as SignerCertData["signatureType"],
-        typedValue:    sig.typedValue,
-        otpVerified:   sig.otpVerified ?? false,
+        typedValue: sig.typedValue,
+        otpVerified: sig.otpVerified ?? false,
       };
     });
 
   return {
     contractNumber: contract.contractNumber,
-    title:          contract.title,
-    consecutivo:    contract.consecutivo,
-    amount:         contract.amount,
-    currency:       contract.currency,
-    generatedAt:    new Date(),
+    title: contract.title,
+    consecutivo: contract.consecutivo,
+    amount: contract.amount,
+    currency: contract.currency,
+    generatedAt: new Date(),
     signers,
   };
 }

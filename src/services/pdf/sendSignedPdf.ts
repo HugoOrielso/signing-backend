@@ -11,7 +11,7 @@ export async function sendSignedContractPdf(contractId: string) {
       parties: true,
       signers: {
         orderBy: { signerOrder: "asc" },
-        include: { signatures: true }, 
+        include: { signatures: true },
       },
       signatures: true,
       libranzaData: {
@@ -34,10 +34,10 @@ export async function sendSignedContractPdf(contractId: string) {
   }
 
   // ── Generar PDFs en paralelo ─────────────────────────────────────────────
-  const [pdfBuffer, certBuffer] = await Promise.all([
-    generateContractPdf(contract, identification),
-    generateSignatureCertificatePdf(buildCertDataFromContract(contract)),
-  ]);
+  const pdfBuffer = await generateContractPdf(contract, identification);
+  const certBuffer = await generateSignatureCertificatePdf(
+    buildCertDataFromContract(contract)
+  );
 
   const safeName = (contract.libranzaData.clienteNombre ?? nombre)
     .replace(/[^\w\s-]/gi, "")
@@ -49,8 +49,47 @@ export async function sendSignedContractPdf(contractId: string) {
     clienteNombre: nombre,
     pdfBuffer,
     fileName: `libranza-${safeName}.pdf`,
-    certBuffer,                             
+    certBuffer,
     certFileName: `certificado-firma-${safeName}.pdf`,
     role: "cliente",
   });
 }
+
+
+
+// async function renderHtmlToPdf(page: puppeteer.Page, html: string) {
+//   await page.setContent(html, {
+//     waitUntil: "domcontentloaded",
+//     timeout: 30000,
+//   });
+
+//   await page.evaluate(async () => {
+//     if ("fonts" in document) {
+//       try {
+//         await (document as any).fonts.ready;
+//       } catch {}
+//     }
+
+//     const images = Array.from(document.images ?? []);
+
+//     await Promise.all(
+//       images.map((img) => {
+//         if (img.complete) return Promise.resolve();
+
+//         return new Promise<void>((resolve) => {
+//           const done = () => resolve();
+//           img.addEventListener("load", done, { once: true });
+//           img.addEventListener("error", done, { once: true });
+//           setTimeout(done, 5000);
+//         });
+//       })
+//     );
+//   });
+
+//   return page.pdf({
+//     format: "A4",
+//     printBackground: true,
+//     margin: { top: "0", right: "0", bottom: "0", left: "0" },
+//     preferCSSPageSize: true,
+//   });
+// }
