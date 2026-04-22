@@ -18,6 +18,7 @@ import { AdminRole } from "../generated/prisma/enums";
 import { reviewContractUserData } from "../controllers/contracts/client/documents/verify/verify.controller";
 import { getRejectedLibranza } from "../controllers/contracts/admin/review/getRejectedLibranza.controller";
 import { resendRejectedLibranza } from "../controllers/contracts/admin/review/resendRejectedLibranza.controller";
+import { downloadSignedContractById } from "../controllers/contracts/admin/dowloadSignedContractById/dowloadSignedContractById.controller";
 
 const contractsRouter = Router();
 
@@ -43,6 +44,7 @@ contractsRouter.get("/contract/:id/getRejectedLibranza", requireAdminAuth, requi
 contractsRouter.patch("/contract/:id/resend-libranza", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR), resendRejectedLibranza)
 
 contractsRouter.get("/public/:token/download", downloadPublicSignedContract);
+contractsRouter.get("/contract/:id/download", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR),  downloadSignedContractById);
 
 export default contractsRouter;
 
