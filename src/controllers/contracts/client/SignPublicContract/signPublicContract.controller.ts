@@ -8,6 +8,7 @@ import {
 } from "../../../../services/audit/contract-audit.service";
 import { getAuditRequestContext } from "../../../../utils/audit-request";
 import { sendSignedContractPdf } from "../../../../services/pdf/sendSignedPdf";
+import { getRequestContext } from "../../../../utils/requestContext";
 
 export async function signPublicContract(req: Request, res: Response) {
   try {
@@ -126,6 +127,18 @@ export async function signPublicContract(req: Request, res: Response) {
       uploadedSignaturePublicId = uploadResult.public_id;
     }
 
+    const context = getRequestContext(req);
+
+    console.log("REQUEST CONTEXT DEBUG", {
+      ip: context.ipAddress,
+      raw: {
+        ip: req.ip,
+        ips: req.ips,
+        remoteAddress: req.socket.remoteAddress,
+        xForwardedFor: req.headers["x-forwarded-for"],
+        xRealIp: req.headers["x-real-ip"],
+      },
+    });
     const createdSignature = await prisma.signature.create({
       data: {
         contractId: contract.id,
@@ -135,8 +148,8 @@ export async function signPublicContract(req: Request, res: Response) {
         imageUrl: uploadedSignatureUrl,
         signaturePublicId: uploadedSignaturePublicId,
         signedAt,
-        ipAddress: req.ip ?? null,
-        userAgent: req.get("user-agent") ?? null,
+        ipAddress: context.ipAddress,
+        userAgent: context.userAgent,
         documentHash,
       },
     });
