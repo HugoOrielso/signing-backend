@@ -14,7 +14,6 @@ const allowedOrigins = [
   "https://dimcultura.com",
   "https://www.dimcultura.com",
   "https://theaceous-indorsable-lilliana.ngrok-free.dev",
-  "*"
 ];
 
 const corsOptions: CorsOptions = {

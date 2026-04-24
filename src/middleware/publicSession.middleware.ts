@@ -47,6 +47,7 @@ export async function requirePublicSession(
 
       return res.status(401).json({
         ok: false,
+        code: "PUBLIC_SESSION_NOT_FOUND",
         message: "Sesión no encontrada",
       });
     }
