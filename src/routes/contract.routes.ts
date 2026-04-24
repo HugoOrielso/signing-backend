@@ -32,7 +32,6 @@ contractsRouter.post("/", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRo
 contractsRouter.get("/:id", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR,  AdminRole.CREDIT_ANALYST), getContractById);
 contractsRouter.get("/:id/audit-trail", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR,), getContractAuditTrail);
 
-// contractsRouter.post("/public/:token/sign", signPublicContract);
 
 contractsRouter.post("/public/:token/upload-document", uploadDocument.single("file"), uploadContractDocument);
 contractsRouter.get("/public/:token/info", getInfo);

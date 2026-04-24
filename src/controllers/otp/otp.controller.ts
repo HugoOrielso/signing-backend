@@ -317,6 +317,7 @@ export async function verifyOtp(req: Request, res: Response) {
 
     const isProduction = process.env.NODE_ENV === "production";
 
+    // Configuración de cookies para producción (con HTTPS y dominios cruzados)
     const cookieOptions: CookieOptions = {
       httpOnly: true,
       secure: isProduction,
@@ -325,6 +326,7 @@ export async function verifyOtp(req: Request, res: Response) {
       path: "/",
     };
 
+    // para probar en local sin https, se puede usar esta configuración de cookies menos segura, pero en producción es necesario asegurar las cookies
 
     // const cookieOptions: CookieOptions = {
     //   httpOnly: true,
@@ -333,46 +335,8 @@ export async function verifyOtp(req: Request, res: Response) {
     //   expires: expiresAt,
     //   path: "/",
     // };
+    
     res.cookie("public_contract_session", sessionToken, cookieOptions);
-
-
-    // try {
-    //   const contracts = await prisma.contract.findMany({
-    //     where: {
-    //       signers: {
-    //         some: {
-    //           OR: [
-    //             resolved.email ? { email: resolved.email } : undefined,
-    //             resolved.phone ? { phone: resolved.phone } : undefined,
-    //           ].filter(Boolean) as any,
-    //         },
-    //       },
-    //     },
-    //     include: {
-    //       signers: true,
-    //     },
-    //   });
-
-    //   for (const contract of contracts) {
-    //     const signer = contract.signers.find((s) =>
-    //       resolved.email
-    //         ? s.email === resolved.email
-    //         : resolved.phone
-    //           ? s.phone === resolved.phone
-    //           : false
-    //     );
-
-    //     await trackOtpVerified({
-    //       contractId: contract.id,
-    //       signerId: signer?.id ?? null,
-    //       actorName: signer?.name ?? null,
-    //       actorEmail: signer?.email ?? resolved.email ?? null,
-    //       ...getPublicAuditContext(req),
-    //     });
-    //   }
-    // } catch (auditError) {
-    //   console.error("VERIFY OTP AUDIT ERROR:", auditError);
-    // }
 
     return res.json({
       ok: true,
