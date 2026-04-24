@@ -153,10 +153,35 @@ export const startIdentityVerification = async (
      * Si existe verificación pero quedó en estado terminal fallido,
      * permitimos crear una sesión nueva.
      */
-    if (
+    const hasReusableSession =
       existingVerification &&
-      !RESETTABLE_VERIFF_STATUSES.includes(existingVerification.status)
-    ) {
+      REUSABLE_VERIFF_STATUSES.includes(existingVerification.status) &&
+      existingVerification.sessionUrl &&
+      existingVerification.providerRequestId;
+
+    if (hasReusableSession) {
+      return res.json({
+        ok: true,
+        data: {
+          identityVerification: existingVerification,
+          sessionUrl: existingVerification.sessionUrl,
+          sessionId:
+            existingVerification.providerRequestId ??
+            existingVerification.providerReference,
+          reused: true,
+        },
+      });
+    }
+
+    const canCreateNewSession =
+      !existingVerification ||
+      RESETTABLE_VERIFF_STATUSES.includes(existingVerification.status) ||
+      (
+        REUSABLE_VERIFF_STATUSES.includes(existingVerification.status) &&
+        !existingVerification.sessionUrl
+      );
+
+    if (!canCreateNewSession) {
       return res.status(409).json({
         ok: false,
         code: "IDENTITY_VERIFICATION_CANNOT_BE_RESTARTED",
