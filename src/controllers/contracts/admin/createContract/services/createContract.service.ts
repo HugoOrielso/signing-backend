@@ -2,9 +2,7 @@ import { buildContractData } from "./buildContractData";
 import { buildParties } from "./buildParties";
 import { buildLibranzaData } from "./buildLibranzaData";
 import { prisma } from "../../../../../database/db";
-import {
-  trackContractCreated,
-} from "../../../../../services/audit/contract-audit.service";
+import { trackContractCreated } from "../../../../../services/audit/contract-audit.service";
 import { AdminRole } from "../../../../../generated/prisma/enums";
 import { getAuditRequestContext } from "../../../../../utils/audit-request";
 import { AuthenticatedRequest } from "../../../../../types/types";
@@ -38,9 +36,9 @@ export async function createContractService(
     ? buildLibranzaData(body, contractedParty)
     : null;
 
-  // Reemplaza el bloque donde creas el contrato con esto:
-
-  const templateKey = (body.templateKey ?? "dimcultura") as "dimcultura" | "gruculcol";
+  const templateKey = (body.templateKey ?? "dimcultura") as
+    | "dimcultura"
+    | "gruculcol";
 
   const contract = await prisma.$transaction(async (tx) => {
     const { sequence, code } = await resolveConsecutivo(tx, templateKey);
@@ -52,6 +50,7 @@ export async function createContractService(
         templateKey,
         sequence,
         consecutivo: code,
+
         parties: {
           create: partiesInput.map((p) => ({
             role: p.role,
@@ -62,6 +61,7 @@ export async function createContractService(
             address: p.address ?? null,
           })),
         },
+
         ...(clausesInput.length > 0
           ? {
             clauses: {
@@ -74,6 +74,7 @@ export async function createContractService(
             },
           }
           : {}),
+
         signers: {
           create: [
             {
@@ -85,9 +86,20 @@ export async function createContractService(
             },
           ],
         },
+
         ...(libranzaInput ? { libranzaData: { create: libranzaInput } } : {}),
+
+        identityVerification: {
+          create: {
+            status: "PENDING_PROVIDER",
+            provider: "VERIFF",
+          },
+        },
       },
-      include: { signers: true },
+      include: {
+        signers: true,
+        identityVerification: true,
+      },
     });
   });
 
@@ -101,7 +113,6 @@ export async function createContractService(
   });
 
   try {
-
     await trackContractCreated({
       contractId: contract.id,
       adminId,
@@ -123,5 +134,6 @@ export async function createContractService(
   return {
     contractId: contract.id,
     token,
+    identityVerificationId: contract.identityVerification?.id ?? null,
   };
 }

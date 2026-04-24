@@ -80,6 +80,7 @@ model Contract {
   dataReviewNotes  String?
   pagares Pagare?
 
+  identityVerification IdentityVerification?
   @@unique([templateKey, sequence])
   @@index([adminId])
   @@index([status])
@@ -525,6 +526,7 @@ model Pagare {
 
   @@index([number])
   @@map("pagares")
+  identityVerifications IdentityVerification[]
 }
 
 model PagareSignature {
@@ -540,4 +542,63 @@ model PagareSignature {
   documentHash      String?
 
   pagare Pagare @relation(fields: [pagareId], references: [id], onDelete: Cascade)
+}
+
+
+// ─────────────────────────────────────────────────────────
+
+enum IdentityVerificationStatus {
+  PENDING_PROVIDER
+  STARTED
+  SUBMITTED
+  PROCESSING
+  APPROVED
+  REJECTED
+  MANUAL_REVIEW
+  EXPIRED
+  ABANDONED
+  ERROR
+}
+
+enum IdentityVerificationProvider {
+  VERIFF
+}
+
+model IdentityVerification {
+  id String @id @default(uuid())
+
+  contractId String @unique
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+
+  pagareId String? @unique
+  pagare   Pagare? @relation(fields: [pagareId], references: [id], onDelete: SetNull)
+
+  status   IdentityVerificationStatus @default(PENDING_PROVIDER)
+  provider IdentityVerificationProvider @default(VERIFF)
+
+  providerRequestId String?
+  providerStatus    String?
+  providerReference String?
+  sessionUrl        String?
+
+  endUserId   String?
+  vendorData  String?
+
+  documentNumber String?
+  fullName       String?
+
+  notes           String?
+  rejectionReason String?
+
+  submittedAt DateTime? @db.Timestamptz(3)
+  processedAt DateTime? @db.Timestamptz(3)
+  approvedAt  DateTime? @db.Timestamptz(3)
+  rejectedAt  DateTime? @db.Timestamptz(3)
+
+  rawResponse Json?
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  @@index([status])
 }

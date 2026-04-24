@@ -274,6 +274,7 @@ export const getPublicContractByToken = async (
     const contract = await prisma.contract.findFirst({
       where: whereCondition,
       include: {
+        identityVerification: true,
         libranzaData: {
           include: {
             references: {
@@ -304,6 +305,23 @@ export const getPublicContractByToken = async (
       return res.status(404).json({
         ok: false,
         message: "Contrato no encontrado",
+      });
+    }
+
+    if (!contract.identityVerification) {
+      return res.status(403).json({
+        ok: false,
+        code: "IDENTITY_VERIFICATION_REQUIRED",
+        message: "Debes completar la verificación de identidad antes de continuar",
+      });
+    }
+
+    if (contract.identityVerification.status !== "APPROVED") {
+      return res.status(403).json({
+        ok: false,
+        code: "IDENTITY_VERIFICATION_NOT_APPROVED",
+        status: contract.identityVerification.status,
+        message: "Tu identidad aún no ha sido verificada",
       });
     }
 

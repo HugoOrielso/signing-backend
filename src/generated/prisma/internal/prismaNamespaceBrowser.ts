@@ -64,7 +64,8 @@ export const ModelName = {
   Reference: 'Reference',
   PublicContractSession: 'PublicContractSession',
   Pagare: 'Pagare',
-  PagareSignature: 'PagareSignature'
+  PagareSignature: 'PagareSignature',
+  IdentityVerification: 'IdentityVerification'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -371,6 +372,34 @@ export const PagareSignatureScalarFieldEnum = {
 } as const
 
 export type PagareSignatureScalarFieldEnum = (typeof PagareSignatureScalarFieldEnum)[keyof typeof PagareSignatureScalarFieldEnum]
+
+
+export const IdentityVerificationScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  pagareId: 'pagareId',
+  status: 'status',
+  provider: 'provider',
+  providerRequestId: 'providerRequestId',
+  providerStatus: 'providerStatus',
+  providerReference: 'providerReference',
+  sessionUrl: 'sessionUrl',
+  endUserId: 'endUserId',
+  vendorData: 'vendorData',
+  documentNumber: 'documentNumber',
+  fullName: 'fullName',
+  notes: 'notes',
+  rejectionReason: 'rejectionReason',
+  submittedAt: 'submittedAt',
+  processedAt: 'processedAt',
+  approvedAt: 'approvedAt',
+  rejectedAt: 'rejectedAt',
+  rawResponse: 'rawResponse',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type IdentityVerificationScalarFieldEnum = (typeof IdentityVerificationScalarFieldEnum)[keyof typeof IdentityVerificationScalarFieldEnum]
 
 
 export const SortOrder = {

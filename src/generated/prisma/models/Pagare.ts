@@ -407,6 +407,7 @@ export type PagareWhereInput = {
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
   libranzaData?: Prisma.XOR<Prisma.LibranzaDataScalarRelationFilter, Prisma.LibranzaDataWhereInput>
   signature?: Prisma.XOR<Prisma.PagareSignatureNullableScalarRelationFilter, Prisma.PagareSignatureWhereInput> | null
+  identityVerifications?: Prisma.IdentityVerificationListRelationFilter
 }
 
 export type PagareOrderByWithRelationInput = {
@@ -440,6 +441,7 @@ export type PagareOrderByWithRelationInput = {
   contract?: Prisma.ContractOrderByWithRelationInput
   libranzaData?: Prisma.LibranzaDataOrderByWithRelationInput
   signature?: Prisma.PagareSignatureOrderByWithRelationInput
+  identityVerifications?: Prisma.IdentityVerificationOrderByRelationAggregateInput
 }
 
 export type PagareWhereUniqueInput = Prisma.AtLeast<{
@@ -476,6 +478,7 @@ export type PagareWhereUniqueInput = Prisma.AtLeast<{
   contract?: Prisma.XOR<Prisma.ContractScalarRelationFilter, Prisma.ContractWhereInput>
   libranzaData?: Prisma.XOR<Prisma.LibranzaDataScalarRelationFilter, Prisma.LibranzaDataWhereInput>
   signature?: Prisma.XOR<Prisma.PagareSignatureNullableScalarRelationFilter, Prisma.PagareSignatureWhereInput> | null
+  identityVerifications?: Prisma.IdentityVerificationListRelationFilter
 }, "id" | "number" | "contractId" | "libranzaDataId" | "libranzaToken">
 
 export type PagareOrderByWithAggregationInput = {
@@ -575,6 +578,7 @@ export type PagareCreateInput = {
   contract: Prisma.ContractCreateNestedOneWithoutPagaresInput
   libranzaData: Prisma.LibranzaDataCreateNestedOneWithoutPagaresInput
   signature?: Prisma.PagareSignatureCreateNestedOneWithoutPagareInput
+  identityVerifications?: Prisma.IdentityVerificationCreateNestedManyWithoutPagareInput
 }
 
 export type PagareUncheckedCreateInput = {
@@ -606,6 +610,7 @@ export type PagareUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   signature?: Prisma.PagareSignatureUncheckedCreateNestedOneWithoutPagareInput
+  identityVerifications?: Prisma.IdentityVerificationUncheckedCreateNestedManyWithoutPagareInput
 }
 
 export type PagareUpdateInput = {
@@ -636,6 +641,7 @@ export type PagareUpdateInput = {
   contract?: Prisma.ContractUpdateOneRequiredWithoutPagaresNestedInput
   libranzaData?: Prisma.LibranzaDataUpdateOneRequiredWithoutPagaresNestedInput
   signature?: Prisma.PagareSignatureUpdateOneWithoutPagareNestedInput
+  identityVerifications?: Prisma.IdentityVerificationUpdateManyWithoutPagareNestedInput
 }
 
 export type PagareUncheckedUpdateInput = {
@@ -667,6 +673,7 @@ export type PagareUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   signature?: Prisma.PagareSignatureUncheckedUpdateOneWithoutPagareNestedInput
+  identityVerifications?: Prisma.IdentityVerificationUncheckedUpdateManyWithoutPagareNestedInput
 }
 
 export type PagareCreateManyInput = {
@@ -952,6 +959,22 @@ export type PagareUpdateOneRequiredWithoutSignatureNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PagareUpdateToOneWithWhereWithoutSignatureInput, Prisma.PagareUpdateWithoutSignatureInput>, Prisma.PagareUncheckedUpdateWithoutSignatureInput>
 }
 
+export type PagareCreateNestedOneWithoutIdentityVerificationsInput = {
+  create?: Prisma.XOR<Prisma.PagareCreateWithoutIdentityVerificationsInput, Prisma.PagareUncheckedCreateWithoutIdentityVerificationsInput>
+  connectOrCreate?: Prisma.PagareCreateOrConnectWithoutIdentityVerificationsInput
+  connect?: Prisma.PagareWhereUniqueInput
+}
+
+export type PagareUpdateOneWithoutIdentityVerificationsNestedInput = {
+  create?: Prisma.XOR<Prisma.PagareCreateWithoutIdentityVerificationsInput, Prisma.PagareUncheckedCreateWithoutIdentityVerificationsInput>
+  connectOrCreate?: Prisma.PagareCreateOrConnectWithoutIdentityVerificationsInput
+  upsert?: Prisma.PagareUpsertWithoutIdentityVerificationsInput
+  disconnect?: Prisma.PagareWhereInput | boolean
+  delete?: Prisma.PagareWhereInput | boolean
+  connect?: Prisma.PagareWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PagareUpdateToOneWithWhereWithoutIdentityVerificationsInput, Prisma.PagareUpdateWithoutIdentityVerificationsInput>, Prisma.PagareUncheckedUpdateWithoutIdentityVerificationsInput>
+}
+
 export type PagareCreateWithoutContractInput = {
   id?: string
   number?: number
@@ -980,6 +1003,7 @@ export type PagareCreateWithoutContractInput = {
   updatedAt?: Date | string
   libranzaData: Prisma.LibranzaDataCreateNestedOneWithoutPagaresInput
   signature?: Prisma.PagareSignatureCreateNestedOneWithoutPagareInput
+  identityVerifications?: Prisma.IdentityVerificationCreateNestedManyWithoutPagareInput
 }
 
 export type PagareUncheckedCreateWithoutContractInput = {
@@ -1010,6 +1034,7 @@ export type PagareUncheckedCreateWithoutContractInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   signature?: Prisma.PagareSignatureUncheckedCreateNestedOneWithoutPagareInput
+  identityVerifications?: Prisma.IdentityVerificationUncheckedCreateNestedManyWithoutPagareInput
 }
 
 export type PagareCreateOrConnectWithoutContractInput = {
@@ -1055,6 +1080,7 @@ export type PagareUpdateWithoutContractInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   libranzaData?: Prisma.LibranzaDataUpdateOneRequiredWithoutPagaresNestedInput
   signature?: Prisma.PagareSignatureUpdateOneWithoutPagareNestedInput
+  identityVerifications?: Prisma.IdentityVerificationUpdateManyWithoutPagareNestedInput
 }
 
 export type PagareUncheckedUpdateWithoutContractInput = {
@@ -1085,6 +1111,7 @@ export type PagareUncheckedUpdateWithoutContractInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   signature?: Prisma.PagareSignatureUncheckedUpdateOneWithoutPagareNestedInput
+  identityVerifications?: Prisma.IdentityVerificationUncheckedUpdateManyWithoutPagareNestedInput
 }
 
 export type PagareCreateWithoutLibranzaDataInput = {
@@ -1115,6 +1142,7 @@ export type PagareCreateWithoutLibranzaDataInput = {
   updatedAt?: Date | string
   contract: Prisma.ContractCreateNestedOneWithoutPagaresInput
   signature?: Prisma.PagareSignatureCreateNestedOneWithoutPagareInput
+  identityVerifications?: Prisma.IdentityVerificationCreateNestedManyWithoutPagareInput
 }
 
 export type PagareUncheckedCreateWithoutLibranzaDataInput = {
@@ -1145,6 +1173,7 @@ export type PagareUncheckedCreateWithoutLibranzaDataInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   signature?: Prisma.PagareSignatureUncheckedCreateNestedOneWithoutPagareInput
+  identityVerifications?: Prisma.IdentityVerificationUncheckedCreateNestedManyWithoutPagareInput
 }
 
 export type PagareCreateOrConnectWithoutLibranzaDataInput = {
@@ -1190,6 +1219,7 @@ export type PagareUpdateWithoutLibranzaDataInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contract?: Prisma.ContractUpdateOneRequiredWithoutPagaresNestedInput
   signature?: Prisma.PagareSignatureUpdateOneWithoutPagareNestedInput
+  identityVerifications?: Prisma.IdentityVerificationUpdateManyWithoutPagareNestedInput
 }
 
 export type PagareUncheckedUpdateWithoutLibranzaDataInput = {
@@ -1220,6 +1250,7 @@ export type PagareUncheckedUpdateWithoutLibranzaDataInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   signature?: Prisma.PagareSignatureUncheckedUpdateOneWithoutPagareNestedInput
+  identityVerifications?: Prisma.IdentityVerificationUncheckedUpdateManyWithoutPagareNestedInput
 }
 
 export type PagareCreateWithoutSignatureInput = {
@@ -1250,6 +1281,7 @@ export type PagareCreateWithoutSignatureInput = {
   updatedAt?: Date | string
   contract: Prisma.ContractCreateNestedOneWithoutPagaresInput
   libranzaData: Prisma.LibranzaDataCreateNestedOneWithoutPagaresInput
+  identityVerifications?: Prisma.IdentityVerificationCreateNestedManyWithoutPagareInput
 }
 
 export type PagareUncheckedCreateWithoutSignatureInput = {
@@ -1280,6 +1312,7 @@ export type PagareUncheckedCreateWithoutSignatureInput = {
   signedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  identityVerifications?: Prisma.IdentityVerificationUncheckedCreateNestedManyWithoutPagareInput
 }
 
 export type PagareCreateOrConnectWithoutSignatureInput = {
@@ -1325,6 +1358,7 @@ export type PagareUpdateWithoutSignatureInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contract?: Prisma.ContractUpdateOneRequiredWithoutPagaresNestedInput
   libranzaData?: Prisma.LibranzaDataUpdateOneRequiredWithoutPagaresNestedInput
+  identityVerifications?: Prisma.IdentityVerificationUpdateManyWithoutPagareNestedInput
 }
 
 export type PagareUncheckedUpdateWithoutSignatureInput = {
@@ -1355,8 +1389,177 @@ export type PagareUncheckedUpdateWithoutSignatureInput = {
   signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  identityVerifications?: Prisma.IdentityVerificationUncheckedUpdateManyWithoutPagareNestedInput
 }
 
+export type PagareCreateWithoutIdentityVerificationsInput = {
+  id?: string
+  number?: number
+  libranzaToken: string
+  status?: $Enums.PagareStatus
+  ciudadFirma?: string | null
+  fechaSuscripcion?: Date | string | null
+  fechaPrimeraCuota?: string | null
+  ciudadPago?: string | null
+  acreedorNombre?: string
+  acreedorNit: string
+  deudorNombre: string
+  deudorDocumento: string
+  deudorDocumentoDe: string
+  deudorDireccion: string
+  deudorTelefono: string
+  deudorEmail: string
+  valorTotal: number
+  numeroCuotas: number
+  valorCuota: number
+  isSigned?: boolean
+  interesCorriente?: string | null
+  interesMora?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contract: Prisma.ContractCreateNestedOneWithoutPagaresInput
+  libranzaData: Prisma.LibranzaDataCreateNestedOneWithoutPagaresInput
+  signature?: Prisma.PagareSignatureCreateNestedOneWithoutPagareInput
+}
+
+export type PagareUncheckedCreateWithoutIdentityVerificationsInput = {
+  id?: string
+  number?: number
+  contractId: string
+  libranzaDataId: string
+  libranzaToken: string
+  status?: $Enums.PagareStatus
+  ciudadFirma?: string | null
+  fechaSuscripcion?: Date | string | null
+  fechaPrimeraCuota?: string | null
+  ciudadPago?: string | null
+  acreedorNombre?: string
+  acreedorNit: string
+  deudorNombre: string
+  deudorDocumento: string
+  deudorDocumentoDe: string
+  deudorDireccion: string
+  deudorTelefono: string
+  deudorEmail: string
+  valorTotal: number
+  numeroCuotas: number
+  valorCuota: number
+  isSigned?: boolean
+  interesCorriente?: string | null
+  interesMora?: string | null
+  signedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  signature?: Prisma.PagareSignatureUncheckedCreateNestedOneWithoutPagareInput
+}
+
+export type PagareCreateOrConnectWithoutIdentityVerificationsInput = {
+  where: Prisma.PagareWhereUniqueInput
+  create: Prisma.XOR<Prisma.PagareCreateWithoutIdentityVerificationsInput, Prisma.PagareUncheckedCreateWithoutIdentityVerificationsInput>
+}
+
+export type PagareUpsertWithoutIdentityVerificationsInput = {
+  update: Prisma.XOR<Prisma.PagareUpdateWithoutIdentityVerificationsInput, Prisma.PagareUncheckedUpdateWithoutIdentityVerificationsInput>
+  create: Prisma.XOR<Prisma.PagareCreateWithoutIdentityVerificationsInput, Prisma.PagareUncheckedCreateWithoutIdentityVerificationsInput>
+  where?: Prisma.PagareWhereInput
+}
+
+export type PagareUpdateToOneWithWhereWithoutIdentityVerificationsInput = {
+  where?: Prisma.PagareWhereInput
+  data: Prisma.XOR<Prisma.PagareUpdateWithoutIdentityVerificationsInput, Prisma.PagareUncheckedUpdateWithoutIdentityVerificationsInput>
+}
+
+export type PagareUpdateWithoutIdentityVerificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  libranzaToken?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPagareStatusFieldUpdateOperationsInput | $Enums.PagareStatus
+  ciudadFirma?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fechaSuscripcion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fechaPrimeraCuota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ciudadPago?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acreedorNombre?: Prisma.StringFieldUpdateOperationsInput | string
+  acreedorNit?: Prisma.StringFieldUpdateOperationsInput | string
+  deudorNombre?: Prisma.StringFieldUpdateOperationsInput | string
+  deudorDocumento?: Prisma.StringFieldUpdateOperationsInput | string
+  deudorDocumentoDe?: Prisma.StringFieldUpdateOperationsInput | string
+  deudorDireccion?: Prisma.StringFieldUpdateOperationsInput | string
+  deudorTelefono?: Prisma.StringFieldUpdateOperationsInput | string
+  deudorEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  valorTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  numeroCuotas?: Prisma.IntFieldUpdateOperationsInput | number
+  valorCuota?: Prisma.IntFieldUpdateOperationsInput | number
+  isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  interesCorriente?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  interesMora?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contract?: Prisma.ContractUpdateOneRequiredWithoutPagaresNestedInput
+  libranzaData?: Prisma.LibranzaDataUpdateOneRequiredWithoutPagaresNestedInput
+  signature?: Prisma.PagareSignatureUpdateOneWithoutPagareNestedInput
+}
+
+export type PagareUncheckedUpdateWithoutIdentityVerificationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  number?: Prisma.IntFieldUpdateOperationsInput | number
+  contractId?: Prisma.StringFieldUpdateOperationsInput | string
+  libranzaDataId?: Prisma.StringFieldUpdateOperationsInput | string
+  libranzaToken?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumPagareStatusFieldUpdateOperationsInput | $Enums.PagareStatus
+  ciudadFirma?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fechaSuscripcion?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fechaPrimeraCuota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ciudadPago?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  acreedorNombre?: Prisma.StringFieldUpdateOperationsInput | string
+  acreedorNit?: Prisma.StringFieldUpdateOperationsInput | string
+  deudorNombre?: Prisma.StringFieldUpdateOperationsInput | string
+  deudorDocumento?: Prisma.StringFieldUpdateOperationsInput | string
+  deudorDocumentoDe?: Prisma.StringFieldUpdateOperationsInput | string
+  deudorDireccion?: Prisma.StringFieldUpdateOperationsInput | string
+  deudorTelefono?: Prisma.StringFieldUpdateOperationsInput | string
+  deudorEmail?: Prisma.StringFieldUpdateOperationsInput | string
+  valorTotal?: Prisma.IntFieldUpdateOperationsInput | number
+  numeroCuotas?: Prisma.IntFieldUpdateOperationsInput | number
+  valorCuota?: Prisma.IntFieldUpdateOperationsInput | number
+  isSigned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  interesCorriente?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  interesMora?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  signedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  signature?: Prisma.PagareSignatureUncheckedUpdateOneWithoutPagareNestedInput
+}
+
+
+/**
+ * Count Type PagareCountOutputType
+ */
+
+export type PagareCountOutputType = {
+  identityVerifications: number
+}
+
+export type PagareCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  identityVerifications?: boolean | PagareCountOutputTypeCountIdentityVerificationsArgs
+}
+
+/**
+ * PagareCountOutputType without action
+ */
+export type PagareCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PagareCountOutputType
+   */
+  select?: Prisma.PagareCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * PagareCountOutputType without action
+ */
+export type PagareCountOutputTypeCountIdentityVerificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.IdentityVerificationWhereInput
+}
 
 
 export type PagareSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1390,6 +1593,8 @@ export type PagareSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
   libranzaData?: boolean | Prisma.LibranzaDataDefaultArgs<ExtArgs>
   signature?: boolean | Prisma.Pagare$signatureArgs<ExtArgs>
+  identityVerifications?: boolean | Prisma.Pagare$identityVerificationsArgs<ExtArgs>
+  _count?: boolean | Prisma.PagareCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pagare"]>
 
 export type PagareSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1491,6 +1696,8 @@ export type PagareInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
   libranzaData?: boolean | Prisma.LibranzaDataDefaultArgs<ExtArgs>
   signature?: boolean | Prisma.Pagare$signatureArgs<ExtArgs>
+  identityVerifications?: boolean | Prisma.Pagare$identityVerificationsArgs<ExtArgs>
+  _count?: boolean | Prisma.PagareCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PagareIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contract?: boolean | Prisma.ContractDefaultArgs<ExtArgs>
@@ -1507,6 +1714,7 @@ export type $PagarePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     contract: Prisma.$ContractPayload<ExtArgs>
     libranzaData: Prisma.$LibranzaDataPayload<ExtArgs>
     signature: Prisma.$PagareSignaturePayload<ExtArgs> | null
+    identityVerifications: Prisma.$IdentityVerificationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1933,6 +2141,7 @@ export interface Prisma__PagareClient<T, Null = never, ExtArgs extends runtime.T
   contract<T extends Prisma.ContractDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContractDefaultArgs<ExtArgs>>): Prisma.Prisma__ContractClient<runtime.Types.Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   libranzaData<T extends Prisma.LibranzaDataDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LibranzaDataDefaultArgs<ExtArgs>>): Prisma.Prisma__LibranzaDataClient<runtime.Types.Result.GetResult<Prisma.$LibranzaDataPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   signature<T extends Prisma.Pagare$signatureArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Pagare$signatureArgs<ExtArgs>>): Prisma.Prisma__PagareSignatureClient<runtime.Types.Result.GetResult<Prisma.$PagareSignaturePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  identityVerifications<T extends Prisma.Pagare$identityVerificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Pagare$identityVerificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IdentityVerificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2401,6 +2610,30 @@ export type Pagare$signatureArgs<ExtArgs extends runtime.Types.Extensions.Intern
    */
   include?: Prisma.PagareSignatureInclude<ExtArgs> | null
   where?: Prisma.PagareSignatureWhereInput
+}
+
+/**
+ * Pagare.identityVerifications
+ */
+export type Pagare$identityVerificationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the IdentityVerification
+   */
+  select?: Prisma.IdentityVerificationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the IdentityVerification
+   */
+  omit?: Prisma.IdentityVerificationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.IdentityVerificationInclude<ExtArgs> | null
+  where?: Prisma.IdentityVerificationWhereInput
+  orderBy?: Prisma.IdentityVerificationOrderByWithRelationInput | Prisma.IdentityVerificationOrderByWithRelationInput[]
+  cursor?: Prisma.IdentityVerificationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.IdentityVerificationScalarFieldEnum | Prisma.IdentityVerificationScalarFieldEnum[]
 }
 
 /**

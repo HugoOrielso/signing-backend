@@ -174,3 +174,26 @@ export const PagareSignatureType = {
 } as const
 
 export type PagareSignatureType = (typeof PagareSignatureType)[keyof typeof PagareSignatureType]
+
+
+export const IdentityVerificationStatus = {
+  PENDING_PROVIDER: 'PENDING_PROVIDER',
+  STARTED: 'STARTED',
+  SUBMITTED: 'SUBMITTED',
+  PROCESSING: 'PROCESSING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  MANUAL_REVIEW: 'MANUAL_REVIEW',
+  EXPIRED: 'EXPIRED',
+  ABANDONED: 'ABANDONED',
+  ERROR: 'ERROR'
+} as const
+
+export type IdentityVerificationStatus = (typeof IdentityVerificationStatus)[keyof typeof IdentityVerificationStatus]
+
+
+export const IdentityVerificationProvider = {
+  VERIFF: 'VERIFF'
+} as const
+
+export type IdentityVerificationProvider = (typeof IdentityVerificationProvider)[keyof typeof IdentityVerificationProvider]

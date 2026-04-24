@@ -87,3 +87,8 @@ export type Pagare = Prisma.PagareModel
  * 
  */
 export type PagareSignature = Prisma.PagareSignatureModel
+/**
+ * Model IdentityVerification
+ * 
+ */
+export type IdentityVerification = Prisma.IdentityVerificationModel

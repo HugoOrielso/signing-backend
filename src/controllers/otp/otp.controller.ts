@@ -134,24 +134,59 @@ export async function requestOtp(req: Request, res: Response) {
         to: resolved.email,
         subject: "Tu código de acceso — Dimcultura S.A.S",
         html: `
-          <div style="font-family:Arial,sans-serif;max-width:520px;margin:0 auto;background:#ffffff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;">
-            <div style="background:linear-gradient(135deg,#1e3a8a,#2563eb);padding:28px 32px;text-align:center;">
+        <div style="margin:0;padding:24px;background:#f3f6fb;">
+          <div style="font-family:Arial,sans-serif;max-width:560px;margin:0 auto;background:#ffffff;border:1px solid #dbe4f0;border-radius:18px;overflow:hidden;">
+            
+            <div style="background:linear-gradient(135deg,#0f172a,#1d4ed8);padding:28px 32px;text-align:center;">
+              <img
+                src="https://dimcultura.com/assets/logo_dimcultura.png"
+                alt="Dimcultura"
+                style="max-width:120px;height:auto;margin-bottom:14px;"
+              />
               <p style="margin:0;color:#ffffff;font-size:22px;font-weight:700;">
                 Acceso seguro a tu contrato
               </p>
-            </div>
-            <div style="padding:32px;">
-              <p style="font-size:14px;line-height:1.6;color:#4b5563;">
-                Usa este código para verificar tu identidad. Expira en <strong>10 minutos</strong>.
+              <p style="margin:10px 0 0 0;color:#dbeafe;font-size:14px;line-height:1.5;">
+                Verifica tu identidad para continuar con tu proceso de forma segura.
               </p>
-              <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:24px;text-align:center;margin:24px 0;">
+            </div>
+
+            <div style="padding:32px;">
+              <p style="margin:0 0 16px 0;font-size:14px;line-height:1.7;color:#374151;">
+                Hola,
+              </p>
+
+              <p style="margin:0 0 18px 0;font-size:14px;line-height:1.7;color:#4b5563;">
+                Usa el siguiente código para validar tu acceso. Este código tiene una vigencia de
+                <strong>10 minutos</strong>.
+              </p>
+
+              <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:16px;padding:24px;text-align:center;margin:24px 0;">
+                <p style="margin:0 0 8px 0;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#2563eb;font-weight:700;">
+                  Código de verificación
+                </p>
                 <p style="margin:0;font-size:38px;font-weight:800;letter-spacing:10px;color:#1e3a8a;font-family:monospace;">
                   ${code}
                 </p>
               </div>
+
+              <p style="margin:0 0 14px 0;font-size:13px;line-height:1.7;color:#6b7280;">
+                Por seguridad, no compartas este código con nadie.
+              </p>
+
+              <p style="margin:0;font-size:13px;line-height:1.7;color:#6b7280;">
+                Si no solicitaste este acceso, puedes ignorar este mensaje.
+              </p>
+            </div>
+
+            <div style="padding:18px 32px;background:#f8fafc;border-top:1px solid #e5e7eb;text-align:center;">
+              <p style="margin:0;font-size:12px;line-height:1.6;color:#6b7280;">
+                Dimcultura S.A.S · Gestión segura de procesos y documentos
+              </p>
             </div>
           </div>
-        `,
+        </div>
+      `
       });
     }
 
@@ -290,6 +325,14 @@ export async function verifyOtp(req: Request, res: Response) {
       path: "/",
     };
 
+
+    // const cookieOptions: CookieOptions = {
+    //   httpOnly: true,
+    //   secure: true,       // config para túneles
+    //   sameSite: "none",   // config para cross-domains and túneles
+    //   expires: expiresAt,
+    //   path: "/",
+    // };
     res.cookie("public_contract_session", sessionToken, cookieOptions);
 
 

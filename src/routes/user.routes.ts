@@ -10,6 +10,7 @@ import { signPublicContract } from '../controllers/contracts/client/SignPublicCo
 // import { signPublicPagare } from '../controllers/contracts/client/signPagare/signPagare.controller';
 import { getPagareStatusByToken } from '../controllers/contracts/client/getPagare/getPagareByToken.controller';
 import { signPagare } from '../controllers/contracts/client/signPagare/signPagare.controller';
+import { startIdentityVerification } from '../controllers/veriff/veriff.controller';
 
 const userRouter = Router()
 
@@ -21,6 +22,7 @@ userRouter.get("/contracts", requirePublicSession, getPublicContractsByUser);
 userRouter.get("/contracts/:token", requirePublicSession, getPublicContractByToken);
 userRouter.post("/contracts/:token/upload-document", requirePublicSession, uploadDocument.single("file"), uploadContractUserDocument);
 userRouter.get("/contracts/:token/documents",  requirePublicSession, UserGetContractDocuments);
+userRouter.get("/contracts/:token/generateVeriffSession",  requirePublicSession, startIdentityVerification);
 userRouter.post("/contracts/:token/sign", requirePublicSession, signPublicContract);
 userRouter.get("/contracts/pagare/:token", requirePublicSession, getPagareStatusByToken);
 userRouter.post("/contracts/pagare/:token/sign", requirePublicSession, signPagare);

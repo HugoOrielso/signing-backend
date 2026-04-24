@@ -25,7 +25,8 @@ export async function requirePublicSession(
     if (!sessionToken) {
       return res.status(401).json({
         ok: false,
-        message: "Sesión pública no válida",
+        code: "PUBLIC_SESSION_INVALID",
+        message: "Sesión pública no válida"
       });
     }
 
@@ -55,7 +56,8 @@ export async function requirePublicSession(
 
       return res.status(401).json({
         ok: false,
-        message: "La sesión ha expirado",
+        code: "PUBLIC_SESSION_INVALID",
+        message: "Sesión pública no válida"
       });
     }
 

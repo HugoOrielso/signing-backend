@@ -5,6 +5,7 @@ import contractsRouter from "./routes/contract.routes";
 import { requestIdMiddleware } from "./middleware/requestMiddleware";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.routes";
+import veriffRouter from "./routes/veriff.route";
 
 const app = express();
 
@@ -12,6 +13,8 @@ const allowedOrigins = [
   "http://localhost:3000",
   "https://dimcultura.com",
   "https://www.dimcultura.com",
+  "https://theaceous-indorsable-lilliana.ngrok-free.dev",
+  "*"
 ];
 
 const corsOptions: CorsOptions = {
@@ -32,6 +35,7 @@ const corsOptions: CorsOptions = {
 app.use(cors(corsOptions));
 app.options(/.*/, cors(corsOptions));
 app.use(cookieParser());
+app.use("/api/veriff", veriffRouter);
 
 app.use(express.json({ limit: "20mb" }));
 app.use(express.urlencoded({ extended: true, limit: "20mb" }));
@@ -40,7 +44,6 @@ app.use(requestIdMiddleware);
 app.get("/", (_req: Request, res: Response) => {
   return res.status(200).json("ok")
 })
-
 
 app.use("/api/auth", authRouter);
 app.use("/api/contracts", contractsRouter);
