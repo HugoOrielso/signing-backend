@@ -57,6 +57,10 @@ export async function getPublicContractsByUser(
     const identifier = req.publicSession?.identifier?.trim();
     const identifierType = req.publicSession?.identifierType;
 
+    console.log("getPublicContractsByUser - identifier:", identifier);
+    console.log("getPublicContractsByUser - identifierType:", identifierType);
+    console.log("getPublicContractsByUser - publicSession:", req.publicSession);
+
     if (!identifier || !identifierType) {
       return res.status(401).json({
         ok: false,
