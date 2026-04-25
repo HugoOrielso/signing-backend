@@ -89,15 +89,45 @@ export async function generateLibranzaHtml(
 
   // ✅ Resuelve la firma antes de construir el HTML
   let sigZone = "";
+
   if (signature) {
     if (signature.type === "DRAWN" && signature.imageUrl) {
       const base64Img = await imageUrlToBase64(signature.imageUrl);
-      sigZone = `<img src="${base64Img}" style="max-height:44px;max-width:100%;object-fit:contain" alt="firma">`;
+
+      sigZone = `
+      <img 
+        src="${base64Img}" 
+        style="max-height:44px;max-width:100%;object-fit:contain" 
+        alt="firma"
+      >
+    `;
     } else if (signature.type === "TYPED" && signature.typedValue) {
-      sigZone = `<span style="font-family:'Dancing Script',cursive;font-size:22px;color:#1a1a2e">${escHtml(signature.typedValue)}</span>`;
+      sigZone = `
+      <span 
+        class="signature-font"
+        style="
+          font-size:22px;
+          color:#1a1a2e;
+          line-height:1;
+          display:inline-block;
+        "
+      >
+        ${escHtml(signature.typedValue)}
+      </span>
+    `;
     }
   } else {
-    sigZone = `<span style="font-size:7.5px;color:#d4c9b0;letter-spacing:1px">PENDIENTE DE FIRMA</span>`;
+    sigZone = `
+    <span 
+      style="
+        font-size:7.5px;
+        color:#9ca3af;
+        letter-spacing:1px;
+      "
+    >
+      PENDIENTE DE FIRMA
+    </span>
+  `;
   }
 
   const resolvedTemplateKey = resolveTemplateKey(templateKey);
@@ -149,6 +179,11 @@ export async function generateLibranzaHtml(
   body { font-family: Arial, sans-serif; font-size: 11px; color: #000; background: white; padding: 12px 16px; line-height: 1.45; }
   @page { size: A4; margin: 0; }
   @media print { body { padding: 8px 12px; } }
+  @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
+.signature-font {
+  font-family: 'Great Vibes', cursive;
+}
 </style>
 </head>
 <body>
@@ -301,16 +336,41 @@ export async function generateLibranzaHtml(
 
 <!-- ACEPTO + ÍNDICE + FIRMA -->
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:5px">
-  <div style="font-size:11.5px;border:1px solid #ccc;padding:5px; border-radius: 4px">
-    <p style="margin:0 0 5px;font-size:10px;">
-      <strong>He recibo en perfecto estado y a mi entera conformidad, los libros que describe y
-      manifestado tener conocimiento que la empresa ${escHtml(template.nombre.toUpperCase())}, por ningún motivo
-      permitirá la anulación o devolución después de firmada esta LIBRANZA, sin embargo torna
-      la responsabilidad de que toda devolución que gote una devolución una indemnización
-      del 37% del valor de la misma.</strong>
+  <div style="font-size:11.5px;border:1px solid #ccc;padding:5px;border-radius:4px;display:flex;flex-direction:column;min-height:105px">
+    <p style="margin:0 0 5px;font-size:10px;line-height:1.35;text-align:justify;">
+      <strong>
+        He recibido en perfecto estado y a mi entera conformidad, los libros que describe y
+        manifiesto tener conocimiento que la empresa ${escHtml(template.nombre.toUpperCase())}, por ningún motivo
+        permitirá la anulación o devolución después de firmada esta LIBRANZA. Toda devolución genera
+        una indemnización del 37% del valor de la misma.
+      </strong>
     </p>
-    <strong>Acepto el Descuento y Recibo en Conformidad</strong>
-    <div style="border-bottom:1px solid #000;margin-top:22px;margin-bottom:3px"></div>
+
+    <div style="margin-top:auto;">
+      <div style="
+        height:42px;
+        border:1px dashed #777;
+        border-radius:3px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        background:#fff;
+        margin-bottom:4px;
+        overflow:hidden;
+      ">
+        ${sigZone}
+      </div>
+
+      <div style="
+        font-size:8px;
+        font-weight:700;
+        text-align:center;
+        text-transform:uppercase;
+        letter-spacing:.4px;
+      ">
+        Acepto el Descuento y Recibo en Conformidad
+      </div>
+    </div>
   </div>
 
   <div style="display:grid;grid-template-columns:1fr;gap:5px">
