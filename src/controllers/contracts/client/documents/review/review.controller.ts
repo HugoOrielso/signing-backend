@@ -54,6 +54,8 @@ export async function reviewContractDocument(
       });
     }
 
+    
+
     // ✅ Regla principal:
     // solo se puede aprobar o rechazar si el documento está en PENDING
     if (existing.status !== "PENDING") {

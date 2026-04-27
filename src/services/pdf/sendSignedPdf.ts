@@ -25,19 +25,20 @@ export async function sendSignedContractPdf(contractId: string) {
   }
 
   const contractedParty = contract.parties.find((p) => p.role === "DEUDOR");
-  const identification = contractedParty?.identification ?? "dimcultura";
+  
+  const identification = contract.libranzaData.clienteCC ?? "1007939670"
   const email = contractedParty?.email;
   const nombre = contractedParty?.name ?? "Cliente";
-
+  console.log(identification)
   if (!email) {
     throw new Error("El contratado no tiene email registrado");
   }
 
   // ── Generar PDFs en paralelo ─────────────────────────────────────────────
   const pdfBuffer = await generateContractPdf(contract, identification);
-  const certBuffer = await generateSignatureCertificatePdf(
-    buildCertDataFromContract(contract)
-  );
+  // const certBuffer = await generateSignatureCertificatePdf(
+  //   buildCertDataFromContract(contract)
+  // );
 
   const safeName = (contract.libranzaData.clienteNombre ?? nombre)
     .replace(/[^\w\s-]/gi, "")
@@ -45,11 +46,11 @@ export async function sendSignedContractPdf(contractId: string) {
     .toLowerCase();
 
   await sendSignedContractEmail({
-    to: email,
+    to: 'orielso.lozano15@gmail.com',
     clienteNombre: nombre,
     pdfBuffer,
     fileName: `libranza-${safeName}.pdf`,
-    certBuffer,
+    // certBuffer,
     certFileName: `certificado-firma-${safeName}.pdf`,
     role: "cliente",
   });

@@ -61,7 +61,6 @@ export const getContractById = async (
 
     return res.json({ ok: true, data: contract });
   } catch (error: any) {
-    console.error("GET CONTRACT BY ID ERROR", error);
     return res
       .status(500)
       .json({ ok: false, message: "Error al obtener el contrato" });

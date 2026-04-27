@@ -282,7 +282,7 @@ export async function signPublicContract(req: Request, res: Response) {
 export async function signLibranzaPrueba(req: Request, res: Response) {
 
   try {
-    await sendSignedContractPdf("0d9a14e1-c62b-4eb6-b29e-72a665db5ebf");
+    await sendSignedContractPdf("5b3304b8-b36a-497b-9df6-e90aae2066d5");
   } catch (e) {
     console.error("EMAIL ERROR:", e);
   }

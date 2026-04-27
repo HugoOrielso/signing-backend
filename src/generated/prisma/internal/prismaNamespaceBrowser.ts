@@ -121,7 +121,9 @@ export const ContractScalarFieldEnum = {
   adminId: 'adminId',
   isSigned: 'isSigned',
   dataReviewStatus: 'dataReviewStatus',
-  dataReviewNotes: 'dataReviewNotes'
+  dataReviewNotes: 'dataReviewNotes',
+  assignedToId: 'assignedToId',
+  assignedAt: 'assignedAt'
 } as const
 
 export type ContractScalarFieldEnum = (typeof ContractScalarFieldEnum)[keyof typeof ContractScalarFieldEnum]

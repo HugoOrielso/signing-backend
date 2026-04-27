@@ -23,6 +23,7 @@ model Admin {
   contractDocuments ContractDocument[] @relation("ReviewedContractDocuments")
 
   uploadedContractDocuments ContractDocument[] @relation("UploadedContractDocuments")
+  assignedContracts         Contract[]         @relation("AssignedContracts")
 }
 
 enum AdminRole {
@@ -38,12 +39,12 @@ enum DataReviewStatus {
 }
 
 model Contract {
-  id             String           @id @default(uuid())
+  id             String         @id @default(uuid())
   title          String
-  contractNumber String?          @unique
+  contractNumber String?        @unique
   contractType   String?
-  status         ContractStatus   @default(DRAFT)
-  templateKey    String           @default("dimcultura")
+  status         ContractStatus @default(DRAFT)
+  templateKey    String         @default("dimcultura")
   consecutivo    String
   sequence       Int
 
@@ -52,7 +53,7 @@ model Contract {
   subject   String?   @db.Text
 
   amount        Int
-  currency      String?  @default("COP")
+  currency      String? @default("COP")
   paymentMethod String?
 
   originalUrl String?
@@ -78,9 +79,14 @@ model Contract {
   isSigned         Boolean          @default(false)
   dataReviewStatus DataReviewStatus @default(PENDING)
   dataReviewNotes  String?
-  pagares Pagare?
+  pagares          Pagare?
 
   identityVerification IdentityVerification?
+
+  assignedToId String?
+  assignedTo   Admin?    @relation("AssignedContracts", fields: [assignedToId], references: [id], onDelete: SetNull)
+  assignedAt   DateTime? @db.Timestamptz(3)
+
   @@unique([templateKey, sequence])
   @@index([adminId])
   @@index([status])
@@ -161,7 +167,7 @@ model LibranzaData {
   createdAt  DateTime    @default(now()) @db.Timestamptz(3)
   updatedAt  DateTime    @updatedAt @db.Timestamptz(3)
   references Reference[]
-  pagares Pagare?
+  pagares    Pagare?
 
   @@index([contractId])
   @@index([pagaduriaNombre])
@@ -517,16 +523,16 @@ model Pagare {
   interesMora      String?
 
   signedAt  DateTime?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
-  contract     Contract     @relation(fields: [contractId], references: [id], onDelete: Cascade)
-  libranzaData LibranzaData @relation(fields: [libranzaDataId], references: [id], onDelete: Cascade)
-  signature    PagareSignature?
+  contract              Contract               @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  libranzaData          LibranzaData           @relation(fields: [libranzaDataId], references: [id], onDelete: Cascade)
+  signature             PagareSignature?
+  identityVerifications IdentityVerification[]
 
   @@index([number])
   @@map("pagares")
-  identityVerifications IdentityVerification[]
 }
 
 model PagareSignature {
@@ -543,7 +549,6 @@ model PagareSignature {
 
   pagare Pagare @relation(fields: [pagareId], references: [id], onDelete: Cascade)
 }
-
 
 // ─────────────────────────────────────────────────────────
 
@@ -567,13 +572,13 @@ enum IdentityVerificationProvider {
 model IdentityVerification {
   id String @id @default(uuid())
 
-  contractId String @unique
+  contractId String   @unique
   contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
 
   pagareId String? @unique
   pagare   Pagare? @relation(fields: [pagareId], references: [id], onDelete: SetNull)
 
-  status   IdentityVerificationStatus @default(PENDING_PROVIDER)
+  status   IdentityVerificationStatus   @default(PENDING_PROVIDER)
   provider IdentityVerificationProvider @default(VERIFF)
 
   providerRequestId String?
@@ -581,8 +586,8 @@ model IdentityVerification {
   providerReference String?
   sessionUrl        String?
 
-  endUserId   String?
-  vendorData  String?
+  endUserId  String?
+  vendorData String?
 
   documentNumber String?
   fullName       String?

@@ -203,6 +203,7 @@ export type AdminWhereInput = {
   contractAuditEvents?: Prisma.ContractAuditEventListRelationFilter
   contractDocuments?: Prisma.ContractDocumentListRelationFilter
   uploadedContractDocuments?: Prisma.ContractDocumentListRelationFilter
+  assignedContracts?: Prisma.ContractListRelationFilter
 }
 
 export type AdminOrderByWithRelationInput = {
@@ -218,6 +219,7 @@ export type AdminOrderByWithRelationInput = {
   contractAuditEvents?: Prisma.ContractAuditEventOrderByRelationAggregateInput
   contractDocuments?: Prisma.ContractDocumentOrderByRelationAggregateInput
   uploadedContractDocuments?: Prisma.ContractDocumentOrderByRelationAggregateInput
+  assignedContracts?: Prisma.ContractOrderByRelationAggregateInput
 }
 
 export type AdminWhereUniqueInput = Prisma.AtLeast<{
@@ -236,6 +238,7 @@ export type AdminWhereUniqueInput = Prisma.AtLeast<{
   contractAuditEvents?: Prisma.ContractAuditEventListRelationFilter
   contractDocuments?: Prisma.ContractDocumentListRelationFilter
   uploadedContractDocuments?: Prisma.ContractDocumentListRelationFilter
+  assignedContracts?: Prisma.ContractListRelationFilter
 }, "id" | "email">
 
 export type AdminOrderByWithAggregationInput = {
@@ -277,6 +280,7 @@ export type AdminCreateInput = {
   contractAuditEvents?: Prisma.ContractAuditEventCreateNestedManyWithoutAdminInput
   contractDocuments?: Prisma.ContractDocumentCreateNestedManyWithoutReviewedByInput
   uploadedContractDocuments?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  assignedContracts?: Prisma.ContractCreateNestedManyWithoutAssignedToInput
 }
 
 export type AdminUncheckedCreateInput = {
@@ -292,6 +296,7 @@ export type AdminUncheckedCreateInput = {
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedCreateNestedManyWithoutAdminInput
   contractDocuments?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutReviewedByInput
   uploadedContractDocuments?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  assignedContracts?: Prisma.ContractUncheckedCreateNestedManyWithoutAssignedToInput
 }
 
 export type AdminUpdateInput = {
@@ -307,6 +312,7 @@ export type AdminUpdateInput = {
   contractAuditEvents?: Prisma.ContractAuditEventUpdateManyWithoutAdminNestedInput
   contractDocuments?: Prisma.ContractDocumentUpdateManyWithoutReviewedByNestedInput
   uploadedContractDocuments?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  assignedContracts?: Prisma.ContractUpdateManyWithoutAssignedToNestedInput
 }
 
 export type AdminUncheckedUpdateInput = {
@@ -322,6 +328,7 @@ export type AdminUncheckedUpdateInput = {
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedUpdateManyWithoutAdminNestedInput
   contractDocuments?: Prisma.ContractDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   uploadedContractDocuments?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  assignedContracts?: Prisma.ContractUncheckedUpdateManyWithoutAssignedToNestedInput
 }
 
 export type AdminCreateManyInput = {
@@ -412,12 +419,28 @@ export type AdminCreateNestedOneWithoutContractsInput = {
   connect?: Prisma.AdminWhereUniqueInput
 }
 
+export type AdminCreateNestedOneWithoutAssignedContractsInput = {
+  create?: Prisma.XOR<Prisma.AdminCreateWithoutAssignedContractsInput, Prisma.AdminUncheckedCreateWithoutAssignedContractsInput>
+  connectOrCreate?: Prisma.AdminCreateOrConnectWithoutAssignedContractsInput
+  connect?: Prisma.AdminWhereUniqueInput
+}
+
 export type AdminUpdateOneRequiredWithoutContractsNestedInput = {
   create?: Prisma.XOR<Prisma.AdminCreateWithoutContractsInput, Prisma.AdminUncheckedCreateWithoutContractsInput>
   connectOrCreate?: Prisma.AdminCreateOrConnectWithoutContractsInput
   upsert?: Prisma.AdminUpsertWithoutContractsInput
   connect?: Prisma.AdminWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUpdateToOneWithWhereWithoutContractsInput, Prisma.AdminUpdateWithoutContractsInput>, Prisma.AdminUncheckedUpdateWithoutContractsInput>
+}
+
+export type AdminUpdateOneWithoutAssignedContractsNestedInput = {
+  create?: Prisma.XOR<Prisma.AdminCreateWithoutAssignedContractsInput, Prisma.AdminUncheckedCreateWithoutAssignedContractsInput>
+  connectOrCreate?: Prisma.AdminCreateOrConnectWithoutAssignedContractsInput
+  upsert?: Prisma.AdminUpsertWithoutAssignedContractsInput
+  disconnect?: Prisma.AdminWhereInput | boolean
+  delete?: Prisma.AdminWhereInput | boolean
+  connect?: Prisma.AdminWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUpdateToOneWithWhereWithoutAssignedContractsInput, Prisma.AdminUpdateWithoutAssignedContractsInput>, Prisma.AdminUncheckedUpdateWithoutAssignedContractsInput>
 }
 
 export type AdminCreateNestedOneWithoutRefreshTokensInput = {
@@ -494,6 +517,7 @@ export type AdminCreateWithoutContractsInput = {
   contractAuditEvents?: Prisma.ContractAuditEventCreateNestedManyWithoutAdminInput
   contractDocuments?: Prisma.ContractDocumentCreateNestedManyWithoutReviewedByInput
   uploadedContractDocuments?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  assignedContracts?: Prisma.ContractCreateNestedManyWithoutAssignedToInput
 }
 
 export type AdminUncheckedCreateWithoutContractsInput = {
@@ -508,11 +532,47 @@ export type AdminUncheckedCreateWithoutContractsInput = {
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedCreateNestedManyWithoutAdminInput
   contractDocuments?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutReviewedByInput
   uploadedContractDocuments?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  assignedContracts?: Prisma.ContractUncheckedCreateNestedManyWithoutAssignedToInput
 }
 
 export type AdminCreateOrConnectWithoutContractsInput = {
   where: Prisma.AdminWhereUniqueInput
   create: Prisma.XOR<Prisma.AdminCreateWithoutContractsInput, Prisma.AdminUncheckedCreateWithoutContractsInput>
+}
+
+export type AdminCreateWithoutAssignedContractsInput = {
+  id?: string
+  email: string
+  name: string
+  password: string
+  role?: $Enums.AdminRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contracts?: Prisma.ContractCreateNestedManyWithoutAdminInput
+  refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutAdminInput
+  contractAuditEvents?: Prisma.ContractAuditEventCreateNestedManyWithoutAdminInput
+  contractDocuments?: Prisma.ContractDocumentCreateNestedManyWithoutReviewedByInput
+  uploadedContractDocuments?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+}
+
+export type AdminUncheckedCreateWithoutAssignedContractsInput = {
+  id?: string
+  email: string
+  name: string
+  password: string
+  role?: $Enums.AdminRole
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutAdminInput
+  refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutAdminInput
+  contractAuditEvents?: Prisma.ContractAuditEventUncheckedCreateNestedManyWithoutAdminInput
+  contractDocuments?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+  uploadedContractDocuments?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+}
+
+export type AdminCreateOrConnectWithoutAssignedContractsInput = {
+  where: Prisma.AdminWhereUniqueInput
+  create: Prisma.XOR<Prisma.AdminCreateWithoutAssignedContractsInput, Prisma.AdminUncheckedCreateWithoutAssignedContractsInput>
 }
 
 export type AdminUpsertWithoutContractsInput = {
@@ -538,6 +598,7 @@ export type AdminUpdateWithoutContractsInput = {
   contractAuditEvents?: Prisma.ContractAuditEventUpdateManyWithoutAdminNestedInput
   contractDocuments?: Prisma.ContractDocumentUpdateManyWithoutReviewedByNestedInput
   uploadedContractDocuments?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  assignedContracts?: Prisma.ContractUpdateManyWithoutAssignedToNestedInput
 }
 
 export type AdminUncheckedUpdateWithoutContractsInput = {
@@ -548,6 +609,48 @@ export type AdminUncheckedUpdateWithoutContractsInput = {
   role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutAdminNestedInput
+  contractAuditEvents?: Prisma.ContractAuditEventUncheckedUpdateManyWithoutAdminNestedInput
+  contractDocuments?: Prisma.ContractDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+  uploadedContractDocuments?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  assignedContracts?: Prisma.ContractUncheckedUpdateManyWithoutAssignedToNestedInput
+}
+
+export type AdminUpsertWithoutAssignedContractsInput = {
+  update: Prisma.XOR<Prisma.AdminUpdateWithoutAssignedContractsInput, Prisma.AdminUncheckedUpdateWithoutAssignedContractsInput>
+  create: Prisma.XOR<Prisma.AdminCreateWithoutAssignedContractsInput, Prisma.AdminUncheckedCreateWithoutAssignedContractsInput>
+  where?: Prisma.AdminWhereInput
+}
+
+export type AdminUpdateToOneWithWhereWithoutAssignedContractsInput = {
+  where?: Prisma.AdminWhereInput
+  data: Prisma.XOR<Prisma.AdminUpdateWithoutAssignedContractsInput, Prisma.AdminUncheckedUpdateWithoutAssignedContractsInput>
+}
+
+export type AdminUpdateWithoutAssignedContractsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contracts?: Prisma.ContractUpdateManyWithoutAdminNestedInput
+  refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutAdminNestedInput
+  contractAuditEvents?: Prisma.ContractAuditEventUpdateManyWithoutAdminNestedInput
+  contractDocuments?: Prisma.ContractDocumentUpdateManyWithoutReviewedByNestedInput
+  uploadedContractDocuments?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+}
+
+export type AdminUncheckedUpdateWithoutAssignedContractsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contracts?: Prisma.ContractUncheckedUpdateManyWithoutAdminNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutAdminNestedInput
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedUpdateManyWithoutAdminNestedInput
   contractDocuments?: Prisma.ContractDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -566,6 +669,7 @@ export type AdminCreateWithoutRefreshTokensInput = {
   contractAuditEvents?: Prisma.ContractAuditEventCreateNestedManyWithoutAdminInput
   contractDocuments?: Prisma.ContractDocumentCreateNestedManyWithoutReviewedByInput
   uploadedContractDocuments?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  assignedContracts?: Prisma.ContractCreateNestedManyWithoutAssignedToInput
 }
 
 export type AdminUncheckedCreateWithoutRefreshTokensInput = {
@@ -580,6 +684,7 @@ export type AdminUncheckedCreateWithoutRefreshTokensInput = {
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedCreateNestedManyWithoutAdminInput
   contractDocuments?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutReviewedByInput
   uploadedContractDocuments?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  assignedContracts?: Prisma.ContractUncheckedCreateNestedManyWithoutAssignedToInput
 }
 
 export type AdminCreateOrConnectWithoutRefreshTokensInput = {
@@ -610,6 +715,7 @@ export type AdminUpdateWithoutRefreshTokensInput = {
   contractAuditEvents?: Prisma.ContractAuditEventUpdateManyWithoutAdminNestedInput
   contractDocuments?: Prisma.ContractDocumentUpdateManyWithoutReviewedByNestedInput
   uploadedContractDocuments?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  assignedContracts?: Prisma.ContractUpdateManyWithoutAssignedToNestedInput
 }
 
 export type AdminUncheckedUpdateWithoutRefreshTokensInput = {
@@ -624,6 +730,7 @@ export type AdminUncheckedUpdateWithoutRefreshTokensInput = {
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedUpdateManyWithoutAdminNestedInput
   contractDocuments?: Prisma.ContractDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   uploadedContractDocuments?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  assignedContracts?: Prisma.ContractUncheckedUpdateManyWithoutAssignedToNestedInput
 }
 
 export type AdminCreateWithoutContractDocumentsInput = {
@@ -638,6 +745,7 @@ export type AdminCreateWithoutContractDocumentsInput = {
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutAdminInput
   contractAuditEvents?: Prisma.ContractAuditEventCreateNestedManyWithoutAdminInput
   uploadedContractDocuments?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  assignedContracts?: Prisma.ContractCreateNestedManyWithoutAssignedToInput
 }
 
 export type AdminUncheckedCreateWithoutContractDocumentsInput = {
@@ -652,6 +760,7 @@ export type AdminUncheckedCreateWithoutContractDocumentsInput = {
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutAdminInput
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedCreateNestedManyWithoutAdminInput
   uploadedContractDocuments?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  assignedContracts?: Prisma.ContractUncheckedCreateNestedManyWithoutAssignedToInput
 }
 
 export type AdminCreateOrConnectWithoutContractDocumentsInput = {
@@ -671,6 +780,7 @@ export type AdminCreateWithoutUploadedContractDocumentsInput = {
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutAdminInput
   contractAuditEvents?: Prisma.ContractAuditEventCreateNestedManyWithoutAdminInput
   contractDocuments?: Prisma.ContractDocumentCreateNestedManyWithoutReviewedByInput
+  assignedContracts?: Prisma.ContractCreateNestedManyWithoutAssignedToInput
 }
 
 export type AdminUncheckedCreateWithoutUploadedContractDocumentsInput = {
@@ -685,6 +795,7 @@ export type AdminUncheckedCreateWithoutUploadedContractDocumentsInput = {
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutAdminInput
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedCreateNestedManyWithoutAdminInput
   contractDocuments?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutReviewedByInput
+  assignedContracts?: Prisma.ContractUncheckedCreateNestedManyWithoutAssignedToInput
 }
 
 export type AdminCreateOrConnectWithoutUploadedContractDocumentsInput = {
@@ -715,6 +826,7 @@ export type AdminUpdateWithoutContractDocumentsInput = {
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutAdminNestedInput
   contractAuditEvents?: Prisma.ContractAuditEventUpdateManyWithoutAdminNestedInput
   uploadedContractDocuments?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  assignedContracts?: Prisma.ContractUpdateManyWithoutAssignedToNestedInput
 }
 
 export type AdminUncheckedUpdateWithoutContractDocumentsInput = {
@@ -729,6 +841,7 @@ export type AdminUncheckedUpdateWithoutContractDocumentsInput = {
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutAdminNestedInput
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedUpdateManyWithoutAdminNestedInput
   uploadedContractDocuments?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  assignedContracts?: Prisma.ContractUncheckedUpdateManyWithoutAssignedToNestedInput
 }
 
 export type AdminUpsertWithoutUploadedContractDocumentsInput = {
@@ -754,6 +867,7 @@ export type AdminUpdateWithoutUploadedContractDocumentsInput = {
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutAdminNestedInput
   contractAuditEvents?: Prisma.ContractAuditEventUpdateManyWithoutAdminNestedInput
   contractDocuments?: Prisma.ContractDocumentUpdateManyWithoutReviewedByNestedInput
+  assignedContracts?: Prisma.ContractUpdateManyWithoutAssignedToNestedInput
 }
 
 export type AdminUncheckedUpdateWithoutUploadedContractDocumentsInput = {
@@ -768,6 +882,7 @@ export type AdminUncheckedUpdateWithoutUploadedContractDocumentsInput = {
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutAdminNestedInput
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedUpdateManyWithoutAdminNestedInput
   contractDocuments?: Prisma.ContractDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
+  assignedContracts?: Prisma.ContractUncheckedUpdateManyWithoutAssignedToNestedInput
 }
 
 export type AdminCreateWithoutContractAuditEventsInput = {
@@ -782,6 +897,7 @@ export type AdminCreateWithoutContractAuditEventsInput = {
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutAdminInput
   contractDocuments?: Prisma.ContractDocumentCreateNestedManyWithoutReviewedByInput
   uploadedContractDocuments?: Prisma.ContractDocumentCreateNestedManyWithoutUploadedByInput
+  assignedContracts?: Prisma.ContractCreateNestedManyWithoutAssignedToInput
 }
 
 export type AdminUncheckedCreateWithoutContractAuditEventsInput = {
@@ -796,6 +912,7 @@ export type AdminUncheckedCreateWithoutContractAuditEventsInput = {
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutAdminInput
   contractDocuments?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutReviewedByInput
   uploadedContractDocuments?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutUploadedByInput
+  assignedContracts?: Prisma.ContractUncheckedCreateNestedManyWithoutAssignedToInput
 }
 
 export type AdminCreateOrConnectWithoutContractAuditEventsInput = {
@@ -826,6 +943,7 @@ export type AdminUpdateWithoutContractAuditEventsInput = {
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutAdminNestedInput
   contractDocuments?: Prisma.ContractDocumentUpdateManyWithoutReviewedByNestedInput
   uploadedContractDocuments?: Prisma.ContractDocumentUpdateManyWithoutUploadedByNestedInput
+  assignedContracts?: Prisma.ContractUpdateManyWithoutAssignedToNestedInput
 }
 
 export type AdminUncheckedUpdateWithoutContractAuditEventsInput = {
@@ -840,6 +958,7 @@ export type AdminUncheckedUpdateWithoutContractAuditEventsInput = {
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutAdminNestedInput
   contractDocuments?: Prisma.ContractDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
   uploadedContractDocuments?: Prisma.ContractDocumentUncheckedUpdateManyWithoutUploadedByNestedInput
+  assignedContracts?: Prisma.ContractUncheckedUpdateManyWithoutAssignedToNestedInput
 }
 
 
@@ -853,6 +972,7 @@ export type AdminCountOutputType = {
   contractAuditEvents: number
   contractDocuments: number
   uploadedContractDocuments: number
+  assignedContracts: number
 }
 
 export type AdminCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -861,6 +981,7 @@ export type AdminCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   contractAuditEvents?: boolean | AdminCountOutputTypeCountContractAuditEventsArgs
   contractDocuments?: boolean | AdminCountOutputTypeCountContractDocumentsArgs
   uploadedContractDocuments?: boolean | AdminCountOutputTypeCountUploadedContractDocumentsArgs
+  assignedContracts?: boolean | AdminCountOutputTypeCountAssignedContractsArgs
 }
 
 /**
@@ -908,6 +1029,13 @@ export type AdminCountOutputTypeCountUploadedContractDocumentsArgs<ExtArgs exten
   where?: Prisma.ContractDocumentWhereInput
 }
 
+/**
+ * AdminCountOutputType without action
+ */
+export type AdminCountOutputTypeCountAssignedContractsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ContractWhereInput
+}
+
 
 export type AdminSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -922,6 +1050,7 @@ export type AdminSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   contractAuditEvents?: boolean | Prisma.Admin$contractAuditEventsArgs<ExtArgs>
   contractDocuments?: boolean | Prisma.Admin$contractDocumentsArgs<ExtArgs>
   uploadedContractDocuments?: boolean | Prisma.Admin$uploadedContractDocumentsArgs<ExtArgs>
+  assignedContracts?: boolean | Prisma.Admin$assignedContractsArgs<ExtArgs>
   _count?: boolean | Prisma.AdminCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["admin"]>
 
@@ -962,6 +1091,7 @@ export type AdminInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   contractAuditEvents?: boolean | Prisma.Admin$contractAuditEventsArgs<ExtArgs>
   contractDocuments?: boolean | Prisma.Admin$contractDocumentsArgs<ExtArgs>
   uploadedContractDocuments?: boolean | Prisma.Admin$uploadedContractDocumentsArgs<ExtArgs>
+  assignedContracts?: boolean | Prisma.Admin$assignedContractsArgs<ExtArgs>
   _count?: boolean | Prisma.AdminCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AdminIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -975,6 +1105,7 @@ export type $AdminPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     contractAuditEvents: Prisma.$ContractAuditEventPayload<ExtArgs>[]
     contractDocuments: Prisma.$ContractDocumentPayload<ExtArgs>[]
     uploadedContractDocuments: Prisma.$ContractDocumentPayload<ExtArgs>[]
+    assignedContracts: Prisma.$ContractPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1383,6 +1514,7 @@ export interface Prisma__AdminClient<T, Null = never, ExtArgs extends runtime.Ty
   contractAuditEvents<T extends Prisma.Admin$contractAuditEventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Admin$contractAuditEventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractAuditEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   contractDocuments<T extends Prisma.Admin$contractDocumentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Admin$contractDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   uploadedContractDocuments<T extends Prisma.Admin$uploadedContractDocumentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Admin$uploadedContractDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  assignedContracts<T extends Prisma.Admin$assignedContractsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Admin$assignedContractsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1924,6 +2056,30 @@ export type Admin$uploadedContractDocumentsArgs<ExtArgs extends runtime.Types.Ex
   take?: number
   skip?: number
   distinct?: Prisma.ContractDocumentScalarFieldEnum | Prisma.ContractDocumentScalarFieldEnum[]
+}
+
+/**
+ * Admin.assignedContracts
+ */
+export type Admin$assignedContractsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Contract
+   */
+  select?: Prisma.ContractSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Contract
+   */
+  omit?: Prisma.ContractOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContractInclude<ExtArgs> | null
+  where?: Prisma.ContractWhereInput
+  orderBy?: Prisma.ContractOrderByWithRelationInput | Prisma.ContractOrderByWithRelationInput[]
+  cursor?: Prisma.ContractWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ContractScalarFieldEnum | Prisma.ContractScalarFieldEnum[]
 }
 
 /**

@@ -2,7 +2,7 @@ import { prisma } from "../../../../database/db";
 import { AuthenticatedRequest } from "../../../../types/types";
 import type { Response } from "express";
 
-export async function getRejectedLibranza(req: AuthenticatedRequest, res: Response) {
+export async function getLibranza(req: AuthenticatedRequest, res: Response) {
   try {
     const id = req.params.id as string;
 
