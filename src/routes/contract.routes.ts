@@ -21,6 +21,7 @@ import { cancelLibranza } from "../controllers/contracts/admin/cancelLibranza/ca
 import { takeLibranza } from "../controllers/contracts/admin/takeReviewLibranza/takeReviewLibranza.controller";
 import { editLibranza } from "../controllers/contracts/admin/editLibranza/editLibranza.controller";
 import { listContractsWithParams } from "../controllers/contracts/admin/listLibranzasWithParams/listLibranzasWithParams.controller";
+import { editDocument } from "../controllers/contracts/client/documents/upload/editFile.controller";
 
 const contractsRouter = Router();
 
@@ -30,11 +31,14 @@ contractsRouter.get("/", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRol
 contractsRouter.get("/with-params", requireAdminAuth, requireRole(AdminRole.CREDIT_ANALYST), listContractsWithParams);
 
 // ADMIN y OPERATOR pueden crear y enviar contratos
-contractsRouter.post("/", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR, ), createContract);
+contractsRouter.post("/", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR,), createContract);
 // En la sección PRIVADAS
-contractsRouter.get("/:id", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR,  AdminRole.CREDIT_ANALYST), getContractById);
-contractsRouter.get("/:id/audit-trail", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR,), getContractAuditTrail);
-contractsRouter.post("/public/:token/upload-document", uploadDocument.single("file"), uploadContractDocument);
+contractsRouter.get("/:id", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR, AdminRole.CREDIT_ANALYST), getContractById);
+contractsRouter.get("/:id/audit-trail", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR), getContractAuditTrail);
+contractsRouter.post("/public/:token/upload-document", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR, AdminRole.CREDIT_ANALYST), uploadDocument.single("file"), uploadContractDocument);
+
+contractsRouter.patch("/public/:token/edit-document", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR, AdminRole.CREDIT_ANALYST), uploadDocument.single("file"), editDocument);
+
 contractsRouter.get("/public/:token/info", getInfo);
 contractsRouter.get("/contract/:token/documents", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR, AdminRole.CREDIT_ANALYST), getContractDocuments);
 contractsRouter.get("/public/:token/documents/:docId/view", viewContractDocument);
@@ -44,10 +48,10 @@ contractsRouter.get("/contract/:id/getRejectedLibranza", requireAdminAuth, requi
 contractsRouter.patch("/contract/:id/resend-libranza", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR), resendRejectedLibranza)
 
 contractsRouter.get("/public/:token/download", downloadPublicSignedContract);
-contractsRouter.get("/contract/:id/download", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR),  downloadSignedContractById);
-contractsRouter.delete("/contract/:id/cancel", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.CREDIT_ANALYST),  cancelLibranza);
-contractsRouter.patch("/contract/:id/take", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.CREDIT_ANALYST),  takeLibranza);
-contractsRouter.patch("/contract/:id/edit", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.CREDIT_ANALYST),  editLibranza);
+contractsRouter.get("/contract/:id/download", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR), downloadSignedContractById);
+contractsRouter.delete("/contract/:id/cancel", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.CREDIT_ANALYST), cancelLibranza);
+contractsRouter.patch("/contract/:id/take", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.CREDIT_ANALYST), takeLibranza);
+contractsRouter.patch("/contract/:id/edit", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.CREDIT_ANALYST), editLibranza);
 contractsRouter.get("/contract/:id/getData", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.CREDIT_ANALYST), getLibranza)
 export default contractsRouter;
 

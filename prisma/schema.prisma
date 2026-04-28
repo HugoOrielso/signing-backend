@@ -30,6 +30,7 @@ enum AdminRole {
   ADMIN
   OPERATOR
   CREDIT_ANALYST
+  SUPERVISOR
 }
 
 enum DataReviewStatus {
@@ -104,6 +105,7 @@ enum ContractStatus {
   OTP_PENDING // esperando verificación OTP
   OTP_VERIFIED // OTP validado
   PARTIALLY_SIGNED // firma parcial
+
   SIGNED // contrato firmado
   REJECTED // rechazado (docs inválidos o cliente)
   EXPIRED // expirado

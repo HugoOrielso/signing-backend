@@ -19,10 +19,16 @@ export async function createContractService(
     throw new Error("Usuario no autenticado");
   }
 
+
+
+
   const auditContext = getAuditRequestContext(req);
 
   const isNewFormat = !body.generalData;
   const isLibranza = isNewFormat && body.contractType === "LIBRANZA";
+
+
+
 
   const contractData = buildContractData(body, isNewFormat);
   const partiesInput = buildParties(body, isNewFormat);
@@ -35,6 +41,25 @@ export async function createContractService(
   const libranzaInput = isLibranza
     ? buildLibranzaData(body, contractedParty)
     : null;
+
+
+  const libranzasByUserCC = await prisma.contract.findMany({
+    where: {
+      libranzaData: {
+        clienteCC: libranzaInput?.clienteCC ?? ''
+      }
+    }
+  })
+
+  if (libranzasByUserCC.length > 0) {
+    const hasActiveLibranza = libranzasByUserCC.some(
+      (l) => l.status !== "SIGNED"
+    );
+
+    if (hasActiveLibranza) {
+      throw new Error("EXISTEN_LIBRANZAS_NO_FIRMADAS");
+    }
+  }
 
   const templateKey = (body.templateKey ?? "dimcultura") as
     | "dimcultura"

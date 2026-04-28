@@ -318,23 +318,23 @@ export async function verifyOtp(req: Request, res: Response) {
     const isProduction = process.env.NODE_ENV === "production";
 
     // Configuración de cookies para producción (con HTTPS y dominios cruzados)
-    const cookieOptions: CookieOptions = {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? "none" : "lax",
-      expires: expiresAt,
-      path: "/",
-    };
-
-    // para probar en local sin https, se puede usar esta configuración de cookies menos segura, pero en producción es necesario asegurar las cookies
-
     // const cookieOptions: CookieOptions = {
     //   httpOnly: true,
-    //   secure: true,       // config para túneles
-    //   sameSite: "none",   // config para cross-domains and túneles
+    //   secure: isProduction,
+    //   sameSite: isProduction ? "none" : "lax",
     //   expires: expiresAt,
     //   path: "/",
     // };
+
+    // para probar en local sin https, se puede usar esta configuración de cookies menos segura, pero en producción es necesario asegurar las cookies
+
+    const cookieOptions: CookieOptions = {
+      httpOnly: true,
+      secure: true,       // config para túneles
+      sameSite: "none",   // config para cross-domains and túneles
+      expires: expiresAt,
+      path: "/",
+    };
     
     res.cookie("public_contract_session", sessionToken, cookieOptions);
 

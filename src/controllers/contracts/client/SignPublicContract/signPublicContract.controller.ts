@@ -186,8 +186,8 @@ export async function signPublicContract(req: Request, res: Response) {
       const updated = await tx.contract.update({
         where: { id: contract.id },
         data: {
-          status: allSigned ? "SIGNED" : "PARTIALLY_SIGNED",
-          isSigned: allSigned ? true : false,
+          status: "READY_TO_SIGN",
+          isSigned: true,
         },
       });
 

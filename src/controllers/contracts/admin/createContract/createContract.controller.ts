@@ -29,12 +29,16 @@ export async function createContract(
     const message =
       error instanceof Error && error.message === "Usuario no autenticado"
         ? "Usuario no autenticado"
-        : "No se pudo crear el contrato";
+        : error instanceof Error && error.message === "EXISTEN_LIBRANZAS_NO_FIRMADAS"
+          ? "El cliente ya tiene una libranza activa sin firmar"
+          : "No se pudo crear el contrato";
 
     const status =
       error instanceof Error && error.message === "Usuario no autenticado"
         ? 401
-        : 500;
+        : error instanceof Error && error.message === "EXISTEN_LIBRANZAS_NO_FIRMADAS"
+          ? 400
+          : 500;
 
     return res.status(status).json({
       ok: false,

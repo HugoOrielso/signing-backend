@@ -71,6 +71,9 @@ export async function signPagare(req: Request, res: Response) {
       });
     }
 
+
+
+
     const pagare = await prisma.pagare.findUnique({
       where: {
         contractId: contract.id,
@@ -155,7 +158,16 @@ export async function signPagare(req: Request, res: Response) {
         },
       });
 
-      return { signature, updatedPagare };
+      const updatedContract = await tx.contract.update({
+        where: { id: contract.id },
+        data: {
+          status: "SIGNED",
+          isSigned: true
+        },
+      });
+
+      return { signature, updatedPagare, updatedContract };
+
     });
 
     const signer = contract.signers[0] ?? null;
