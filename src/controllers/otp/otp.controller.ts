@@ -3,9 +3,10 @@ import { CookieOptions, Request, Response } from "express";
 import crypto from "crypto";
 import { Resend } from "resend";
 import { prisma } from "../../database/db";
-import { sendSms, toTwilioColombianPhone } from "../../services/messages/send.service";
+import { sendSms, toMasivColombianPhone, toTwilioColombianPhone } from "../../services/messages/send.service";
 import { trackOtpSent, trackOtpVerified, trackPublicOtpSent } from "../../services/audit/contract-audit.service";
 import { getPublicAuditContext } from "../../helpers/udit";
+import { sendMasiveSMS } from "../../lib/sms/sendSMS";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -191,15 +192,19 @@ export async function requestOtp(req: Request, res: Response) {
     }
 
     if (resolved.identifierType === "PHONE" && resolved.phone) {
-      const phoneForTwilio = toTwilioColombianPhone(resolved.identifier);
+      const phoneForMasiv = toMasivColombianPhone(resolved.identifier);
 
-      if (!phoneForTwilio) {
+      if (!phoneForMasiv) {
         return res.status(400).json({
           ok: false,
           message: "Número de teléfono inválido",
         });
       }
-      await sendSms(phoneForTwilio, `Tu código de acceso es: ${code}. Expira en 10 minutos.`)
+
+      await sendMasiveSMS(
+        phoneForMasiv,
+        `Tu código de acceso es: ${code}. Expira en 10 minutos.`
+      );
     }
     return res.json({
       ok: true,
@@ -335,7 +340,7 @@ export async function verifyOtp(req: Request, res: Response) {
     //   expires: expiresAt,
     //   path: "/",
     // };
-    
+
     res.cookie("public_contract_session", sessionToken, cookieOptions);
 
     return res.json({

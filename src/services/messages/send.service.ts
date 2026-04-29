@@ -31,6 +31,12 @@ export function normalizeColombianPhone(input: string): string | null {
   return null;
 }
 
+export function toMasivColombianPhone(input: string): string | null {
+  const local = normalizeColombianPhone(input);
+  if (!local) return null;
+  return `57${local}`;
+}
+
 export function toTwilioColombianPhone(input: string): string | null {
   const local = normalizeColombianPhone(input);
   if (!local) return null;
