@@ -45,7 +45,42 @@ app.use(requestIdMiddleware);
 app.get("/", (_req: Request, res: Response) => {
   return res.status(200).json("ok")
 })
+// donde tengas tus rutas principales
 
+app.get("/api/test-masiv", async (req, res) => {
+  try {
+    const USER = process.env.MASIV_USER;
+    const PASSWORD = process.env.MASIV_PASSWORD;
+
+    const auth = Buffer.from(`${USER}:${PASSWORD}`).toString("base64");
+
+    const response = await fetch("https://api-sms.masivapp.com/send-message", {
+      method: "POST",
+      headers: {
+        Authorization: `Basic ${auth}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        to: "573001112233",
+        text: "Prueba desde VPS Dimcultura",
+      }),
+    });
+
+    const text = await response.text();
+
+    return res.status(response.status).send({
+      ok: response.ok,
+      status: response.status,
+      response: text,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      ok: false,
+      message: "Error probando Masiv",
+      error: error instanceof Error ? error.message : error,
+    });
+  }
+});
 app.use("/api/auth", authRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/contracts", contractsRouter);
