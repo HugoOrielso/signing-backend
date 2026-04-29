@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { getTemplateConfig, TemplateKey } from "./templateConfig";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -10,6 +11,7 @@ interface SendSignedEmailParams {
   role: "cliente" | "admin";
   certBuffer?: Buffer;
   certFileName?: string;
+  templateKey: TemplateKey;
 }
 
 export async function sendSignedPagareEmail({
@@ -20,14 +22,18 @@ export async function sendSignedPagareEmail({
   role,
   certBuffer,
   certFileName,
+  templateKey,
 }: SendSignedEmailParams) {
-  const from = process.env.EMAIL_FROM || "Dimcultura <contact@dimcultura.com>";
+  const template = getTemplateConfig(templateKey);
+
+  const from =
+    process.env.EMAIL_FROM || `${template.nombre} <contact@dimcultura.com>`;
 
   const isAdmin = role === "admin";
 
   const subject = isAdmin
     ? `✅ Pagaré firmado — ${clienteNombre}`
-    : `✅ Tu pagaré ha sido firmado — Dimcultura S.A.S`;
+    : `✅ Tu pagaré ha sido firmado — ${template.nombre}`;
 
   const bodyTitle = isAdmin
     ? `El pagaré de <strong>${clienteNombre}</strong> fue firmado correctamente.`
@@ -79,10 +85,22 @@ export async function sendSignedPagareEmail({
           <tr>
             <td style="padding:28px 32px 20px;background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border-bottom:1px solid #edf2fb;text-align:center;">
               <img
-                src="https://dimcultura.com/assets/logo_dimcultura.png"
-                alt="Dimcultura"
-                style="max-width:220px;width:220px;height:auto;display:block;margin:0 auto 18px auto;"
+                src="${template.logoFile}"
+                alt="${template.nombre}"
+                style="max-width:220px;width:220px;height:auto;display:block;margin:0 auto 14px auto;"
               />
+
+              <p style="margin:0;font-size:18px;font-weight:700;color:#0f172a;">
+                ${template.nombre}
+              </p>
+
+              <p style="margin:4px 0 4px;font-size:12px;color:#64748b;">
+                ${template.subtitulo}
+              </p>
+
+              <p style="margin:0 0 14px;font-size:11px;color:#94a3b8;">
+                NIT ${template.nit}
+              </p>
 
               <div style="display:inline-block;background:#f1f6ff;border:1px solid #d9e6ff;color:#2563eb;
                 font-size:13px;font-weight:500;padding:10px 16px;border-radius:999px;">
@@ -121,7 +139,7 @@ export async function sendSignedPagareEmail({
                       Estado del proceso
                     </p>
                     <p style="margin:0;font-size:14px;line-height:1.7;color:#475569;">
-                      El pagaré ya fue firmado y quedó registrado correctamente en el sistema de Dimcultura.
+                      El pagaré ya fue firmado y quedó registrado correctamente en el sistema de ${template.nombre}.
                     </p>
                   </td>
                 </tr>
@@ -134,10 +152,13 @@ export async function sendSignedPagareEmail({
                 <tr>
                   <td style="padding-top:20px;text-align:center;">
                     <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#1e293b;">
-                      Dimcultura S.A.S
+                      ${template.nombre}
                     </p>
                     <p style="margin:0;font-size:12px;line-height:1.7;color:#64748b;">
-                      servicioalcliente@dimcultura.com · www.dimcultura.com
+                      NIT ${template.nit} · ${template.email} · ${template.web}
+                    </p>
+                    <p style="margin:4px 0 0;font-size:11px;line-height:1.6;color:#94a3b8;">
+                      "${template.slogan}"
                     </p>
                   </td>
                 </tr>

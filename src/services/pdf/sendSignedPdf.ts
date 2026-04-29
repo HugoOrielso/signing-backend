@@ -1,5 +1,6 @@
 import { prisma } from "../../database/db";
 import { sendSignedContractEmail } from "../../lib/email/sendSignedLibranza";
+import { TemplateKey } from "../../lib/email/templateConfig";
 import { buildCertDataFromContract, generateSignatureCertificatePdf } from "./generateSignatureCertificate";
 import { generateContractPdf } from "./getEncryptedPDF";
 
@@ -53,6 +54,7 @@ export async function sendSignedContractPdf(contractId: string) {
     certBuffer,
     certFileName: `certificado-firma-${safeName}.pdf`,
     role: "cliente",
+    templateKey: contract.templateKey as TemplateKey
   });
 }
 

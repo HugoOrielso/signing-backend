@@ -1,20 +1,27 @@
 import { Resend } from "resend";
+import { getTemplateConfig, TemplateKey } from "../../lib/email/templateConfig";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-type SendUserDataRejectedEmailParams = {
+interface SendUserDataRejectedEmailParams {
   to: string;
   clienteNombre: string;
   notes: string;
+  templateKey: TemplateKey
 };
+
 
 export async function sendUserDataRejectedEmail({
   to,
   clienteNombre,
   notes,
+  templateKey,
 }: SendUserDataRejectedEmailParams) {
-  const from = process.env.EMAIL_FROM || "Dimcultura <contact@dimcultura.com>";
+  const template = getTemplateConfig(templateKey);
 
-  const subject = "⚠️ Tus datos fueron rechazados — acción requerida";
+  const from =
+    process.env.EMAIL_FROM || `${template.nombre} <contact@dimcultura.com>`;
+
+  const subject = `⚠️ Tus datos fueron rechazados — acción requerida (${template.nombre})`;
 
   const portalUrl = `${process.env.FRONTEND_URL}/auth`;
 
@@ -39,10 +46,22 @@ export async function sendUserDataRejectedEmail({
               <td style="padding:28px 32px 20px;background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border-bottom:1px solid #edf2fb;text-align:center;">
                 
                 <img
-                  src="https://dimcultura.com/assets/logo_dimcultura.png"
-                  alt="Dimcultura"
-                  style="max-width:220px;width:220px;height:auto;display:block;margin:0 auto 18px auto;"
+                  src="${template.logoFile}"
+                  alt="${template.nombre}"
+                  style="max-width:220px;width:220px;height:auto;display:block;margin:0 auto 14px auto;"
                 />
+
+                <p style="margin:0;font-size:18px;font-weight:700;color:#0f172a;">
+                  ${template.nombre}
+                </p>
+
+                <p style="margin:4px 0 4px;font-size:12px;color:#64748b;">
+                  ${template.subtitulo}
+                </p>
+
+                <p style="margin:0 0 14px;font-size:11px;color:#94a3b8;">
+                  NIT ${template.nit}
+                </p>
 
                 <div style="display:inline-block;background:#fef3f2;border:1px solid #fecaca;color:#b91c1c;
                   font-size:13px;font-weight:500;padding:10px 16px;border-radius:999px;">
@@ -138,10 +157,13 @@ export async function sendUserDataRejectedEmail({
                   <tr>
                     <td style="padding-top:18px;text-align:center;">
                       <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#1e293b;">
-                        Dimcultura S.A.S
+                        ${template.nombre}
                       </p>
                       <p style="margin:0;font-size:12px;color:#64748b;">
-                        servicioalcliente@dimcultura.com · www.dimcultura.com
+                        ${template.email} · ${template.web}
+                      </p>
+                      <p style="margin:4px 0 0;font-size:11px;color:#94a3b8;">
+                        NIT ${template.nit} · "${template.slogan}"
                       </p>
                     </td>
                   </tr>
@@ -169,10 +191,11 @@ export async function sendUserDataRejectedEmail({
 }
 
 
-type SendUserDataApprovedEmailParams = {
+interface SendUserDataApprovedEmailParams {
   to: string;
   clienteNombre: string;
-};
+  templateKey: TemplateKey; // 👈 obligatorio
+}
 
 function escHtml(s: string): string {
   return s
@@ -183,13 +206,19 @@ function escHtml(s: string): string {
     .replace(/'/g, "&#039;");
 }
 
+
+
 export async function sendUserDataApprovedEmail({
   to,
   clienteNombre,
+  templateKey,
 }: SendUserDataApprovedEmailParams) {
-  const from = process.env.EMAIL_FROM || "Dimcultura <contact@dimcultura.com>";
+  const template = getTemplateConfig(templateKey);
 
-  const subject = "✅ Tus datos fueron aprobados — ya puedes firmar";
+  const from =
+    process.env.EMAIL_FROM || `${template.nombre} <contact@dimcultura.com>`;
+
+  const subject = `✅ Tus datos fueron aprobados — ya puedes firmar (${template.nombre})`;
 
   const portalUrl = `${process.env.FRONTEND_URL}/auth`;
 
@@ -200,6 +229,7 @@ export async function sendUserDataApprovedEmail({
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
+
   <body style="margin:0;padding:0;background:#f4f7fb;font-family:Arial,sans-serif;">
     
     <table width="100%" cellpadding="0" cellspacing="0" style="padding:40px 16px;">
@@ -214,10 +244,22 @@ export async function sendUserDataApprovedEmail({
               <td style="padding:28px 32px 20px;background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border-bottom:1px solid #edf2fb;text-align:center;">
                 
                 <img
-                  src="https://dimcultura.com/assets/logo_dimcultura.png"
-                  alt="Dimcultura"
-                  style="max-width:220px;width:220px;height:auto;display:block;margin:0 auto 18px auto;"
+                  src="${template.logoFile}"
+                  alt="${template.nombre}"
+                  style="max-width:220px;width:220px;height:auto;display:block;margin:0 auto 14px auto;"
                 />
+
+                <p style="margin:0;font-size:18px;font-weight:700;color:#0f172a;">
+                  ${template.nombre}
+                </p>
+
+                <p style="margin:4px 0 4px;font-size:12px;color:#64748b;">
+                  ${template.subtitulo}
+                </p>
+
+                <p style="margin:0 0 14px;font-size:11px;color:#94a3b8;">
+                  NIT ${template.nit}
+                </p>
 
                 <div style="display:inline-block;background:#f1f6ff;border:1px solid #d9e6ff;color:#2563eb;
                   font-size:13px;font-weight:500;padding:10px 16px;border-radius:999px;">
@@ -299,10 +341,15 @@ export async function sendUserDataApprovedEmail({
                   <tr>
                     <td style="padding-top:18px;text-align:center;">
                       <p style="margin:0 0 6px;font-size:13px;font-weight:700;color:#1e293b;">
-                        Dimcultura S.A.S
+                        ${template.nombre}
                       </p>
+
                       <p style="margin:0;font-size:12px;color:#64748b;">
-                        servicioalcliente@dimcultura.com · www.dimcultura.com
+                        ${template.email} · ${template.web}
+                      </p>
+
+                      <p style="margin:4px 0 0;font-size:11px;color:#94a3b8;">
+                        NIT ${template.nit} · "${template.slogan}"
                       </p>
                     </td>
                   </tr>

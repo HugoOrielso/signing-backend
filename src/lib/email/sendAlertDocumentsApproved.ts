@@ -1,25 +1,29 @@
 import { Resend } from "resend";
+import { getTemplateConfig, TemplateKey } from "./templateConfig";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-
 
 interface SendReadyToSignEmailParams {
   to: string;
   clienteNombre: string;
+  templateKey?: TemplateKey | string | null;
 }
 
 export async function sendReadyToSignEmail({
   to,
   clienteNombre,
+  templateKey,
 }: SendReadyToSignEmailParams) {
+  const template = getTemplateConfig(templateKey);
+
   const from =
-    process.env.EMAIL_FROM || "Dimcultura <contact@send.dimcultura.com>";
+    process.env.EMAIL_FROM || `${template.nombre} <contact@send.dimcultura.com>`;
 
   try {
     const response = await resend.emails.send({
       from,
       to,
-      subject: `✅ Documentos aprobados — Dimcultura S.A.S`,
+      subject: `✅ Documentos aprobados — ${template.nombre}`,
       html: `
 <!DOCTYPE html>
 <html lang="es">
@@ -42,13 +46,20 @@ box-shadow:0 10px 40px rgba(37,99,235,0.12);">
 <tr>
 <td style="padding:28px 32px 16px;text-align:center;border-bottom:1px solid #eef2f7;">
 
-<img src="https://dimcultura.com/assets/logo_dimcultura.png"
-width="100"
-style="display:block;margin:0 auto 8px;" />
+<img src="${template.logoFile}"
+width="110"
+style="display:block;margin:0 auto 10px;" />
 
-<p style="margin:0;font-size:11px;color:#64748b;letter-spacing:1.5px;
-text-transform:uppercase;font-weight:600;">
-Servicios Digitales
+<p style="margin:0;font-size:18px;color:#0f172a;font-weight:700;">
+${template.nombre}
+</p>
+
+<p style="margin:4px 0 0;font-size:12px;color:#64748b;">
+${template.subtitulo}
+</p>
+
+<p style="margin:6px 0 0;font-size:11px;color:#94a3b8;">
+NIT ${template.nit}
 </p>
 
 </td>
@@ -100,8 +111,6 @@ Este proceso se realiza en <strong>dos etapas</strong>:
 <strong style="color:#2563eb;">2.</strong> Confirmación de datos personales (siguiente paso)
 </p>
 
-
-
 </td>
 </tr>
 
@@ -119,8 +128,8 @@ Te recomendamos estar atento a tu bandeja de entrada.
 <tr>
 <td style="background:#f8fafc;padding:20px 32px;text-align:center;border-top:1px solid #e8edf2;">
 <p style="color:#94a3b8;font-size:11px;margin:0;">
-© 2025 Dimcultura S.A.S · 
-<span style="font-style:italic;">"Un mundo en el que debes estar"</span>
+© 2025 ${template.nombre} · NIT ${template.nit}<br />
+<span style="font-style:italic;">"${template.slogan}"</span>
 </p>
 </td>
 </tr>

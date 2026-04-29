@@ -2,6 +2,7 @@ import { Response } from "express";
 import { AuthenticatedRequest } from "../../../../../types/types";
 import { prisma } from "../../../../../database/db";
 import { sendUserDataApprovedEmail, sendUserDataRejectedEmail } from "../../../../../services/pdf/reviewDocumentsEmail";
+import { TemplateKey } from "../../../../../lib/email/templateConfig";
 
 export async function reviewContractUserData(
   req: AuthenticatedRequest,
@@ -40,6 +41,7 @@ export async function reviewContractUserData(
       select: {
         id: true,
         status: true,
+        templateKey: true,
         libranzaData: {
           select: {
             clienteNombre: true,
@@ -103,12 +105,14 @@ export async function reviewContractUserData(
           await sendUserDataApprovedEmail({
             to: clienteEmail,
             clienteNombre,
+            templateKey: contract.templateKey as TemplateKey
           });
         } else {
           await sendUserDataRejectedEmail({
             to: clienteEmail,
             clienteNombre,
             notes: notes?.trim() || "",
+            templateKey: contract.templateKey as TemplateKey
           });
         }
       } catch (emailError) {

@@ -44,6 +44,7 @@ export async function reviewContractDocument(
         id: true,
         contractId: true,
         status: true,
+        contract:true
       },
     });
 
@@ -53,8 +54,6 @@ export async function reviewContractDocument(
         message: "Documento no encontrado",
       });
     }
-
-    
 
     // ✅ Regla principal:
     // solo se puede aprobar o rechazar si el documento está en PENDING
@@ -122,6 +121,7 @@ export async function reviewContractDocument(
             await sendReadyToSignEmail({
               to: contractedParty.email,
               clienteNombre: contractedParty.name,
+              templateKey: existing.contract.templateKey
             });
           } catch (emailError) {
             console.error("EMAIL ERROR - READY_TO_SIGN:", emailError);
