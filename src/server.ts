@@ -61,7 +61,7 @@ app.get("/api/test-masiv", async (req, res) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        to: "573001112233",
+        to: "573007056833",
         text: "Prueba desde VPS Dimcultura",
       }),
     });
