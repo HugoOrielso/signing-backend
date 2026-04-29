@@ -46,7 +46,6 @@ app.get("/", (_req: Request, res: Response) => {
   return res.status(200).json("ok")
 })
 
-app.get("/prueba", signLibranzaPrueba)
 app.use("/api/auth", authRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/contracts", contractsRouter);
