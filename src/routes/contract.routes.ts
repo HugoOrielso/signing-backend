@@ -19,9 +19,9 @@ import { resendRejectedLibranza } from "../controllers/contracts/admin/review/re
 import { downloadSignedContractById } from "../controllers/contracts/admin/dowloadSignedContractById/dowloadSignedContractById.controller";
 import { cancelLibranza } from "../controllers/contracts/admin/cancelLibranza/cancelLibranza.controller";
 import { takeLibranza } from "../controllers/contracts/admin/takeReviewLibranza/takeReviewLibranza.controller";
-import { editLibranza } from "../controllers/contracts/admin/editLibranza/editLibranza.controller";
 import { listContractsWithParams } from "../controllers/contracts/admin/listLibranzasWithParams/listLibranzasWithParams.controller";
 import { editDocument } from "../controllers/contracts/client/documents/upload/editFile.controller";
+import { editLibranza } from "../controllers/contracts/admin/edit/edit.controller";
 
 const contractsRouter = Router();
 
@@ -34,7 +34,7 @@ contractsRouter.get("/with-params", requireAdminAuth, requireRole(AdminRole.CRED
 contractsRouter.post("/", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR,), createContract);
 // En la sección PRIVADAS
 contractsRouter.get("/:id", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR, AdminRole.CREDIT_ANALYST), getContractById);
-contractsRouter.get("/:id/audit-trail", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR), getContractAuditTrail);
+contractsRouter.get("/:id/audit-trail", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR, AdminRole.CREDIT_ANALYST), getContractAuditTrail);
 contractsRouter.post("/public/:token/upload-document", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR, AdminRole.CREDIT_ANALYST), uploadDocument.single("file"), uploadContractDocument);
 
 contractsRouter.patch("/public/:token/edit-document", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR, AdminRole.CREDIT_ANALYST), uploadDocument.single("file"), editDocument);
@@ -53,6 +53,8 @@ contractsRouter.delete("/contract/:id/cancel", requireAdminAuth, requireRole(Adm
 contractsRouter.patch("/contract/:id/take", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.CREDIT_ANALYST), takeLibranza);
 contractsRouter.patch("/contract/:id/edit", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.CREDIT_ANALYST), editLibranza);
 contractsRouter.get("/contract/:id/getData", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.CREDIT_ANALYST), getLibranza)
+contractsRouter.get("/contract/:id/getData", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.CREDIT_ANALYST), getLibranza)
+
 export default contractsRouter;
 
 

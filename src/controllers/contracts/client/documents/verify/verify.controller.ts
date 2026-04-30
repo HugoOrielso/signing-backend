@@ -3,6 +3,8 @@ import { AuthenticatedRequest } from "../../../../../types/types";
 import { prisma } from "../../../../../database/db";
 import { sendUserDataApprovedEmail, sendUserDataRejectedEmail } from "../../../../../services/pdf/reviewDocumentsEmail";
 import { TemplateKey } from "../../../../../lib/email/templateConfig";
+import { validateAssignedContract } from "../../../../../utils/validateAnalystOwnership";
+import { AdminRole } from "../../../../../generated/prisma/enums";
 
 export async function reviewContractUserData(
   req: AuthenticatedRequest,
@@ -42,6 +44,7 @@ export async function reviewContractUserData(
         id: true,
         status: true,
         templateKey: true,
+        assignedToId: true,
         libranzaData: {
           select: {
             clienteNombre: true,
@@ -51,10 +54,27 @@ export async function reviewContractUserData(
       },
     });
 
+
+
     if (!contract) {
       return res.status(404).json({
         ok: false,
         message: "Contrato no encontrado",
+      });
+    }
+
+
+    const permission = validateAssignedContract({
+      userId: req.user.id,
+      userRole: req.user.role as AdminRole,
+      assignedToId: contract.assignedToId,
+    });
+
+
+    if (!permission.ok) {
+      return res.status(403).json({
+        ok: false,
+        message: permission.message,
       });
     }
 

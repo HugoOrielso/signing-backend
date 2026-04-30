@@ -4,6 +4,15 @@ import { prisma } from "../../../../../database/db";
 import { sendReadyToSignEmail } from "../../../../../lib/email/sendAlertDocumentsApproved";
 import { trackReviewAction } from "../../../../../services/audit/contract-audit.service";
 import { AdminRole } from "../../../../../generated/prisma/enums";
+import { validateAssignedContract } from "../../../../../utils/validateAnalystOwnership";
+
+const REQUIRED_DOCUMENT_TYPES = [
+  "ID_FRONT",
+  "ID_BACK",
+  "SELFIE_WITH_ID",
+  "BANK_CERTIFICATE",
+  "PAYROLL_STUB",
+] as const;
 
 export async function reviewContractDocument(
   req: AuthenticatedRequest,
@@ -44,7 +53,12 @@ export async function reviewContractDocument(
         id: true,
         contractId: true,
         status: true,
-        contract:true
+        contract: {
+          select: {
+            templateKey: true,
+            assignedToId: true,
+          },
+        },
       },
     });
 
@@ -55,8 +69,19 @@ export async function reviewContractDocument(
       });
     }
 
-    // ✅ Regla principal:
-    // solo se puede aprobar o rechazar si el documento está en PENDING
+    const permission = validateAssignedContract({
+      userId: req.user.id,
+      userRole: req.user.role as AdminRole,
+      assignedToId: existing.contract.assignedToId,
+    });
+
+    if (!permission.ok) {
+      return res.status(403).json({
+        ok: false,
+        message: permission.message,
+      });
+    }
+
     if (existing.status !== "PENDING") {
       return res.status(400).json({
         ok: false,
@@ -89,31 +114,46 @@ export async function reviewContractDocument(
         return document;
       }
 
-      // Si fue aprobado, revisar el estado de todos los documentos del contrato
-      const allDocs = await tx.contractDocument.findMany({
-        where: { contractId: existing.contractId },
+      const requiredDocs = await tx.contractDocument.findMany({
+        where: {
+          contractId: existing.contractId,
+          type: {
+            in: [...REQUIRED_DOCUMENT_TYPES],
+          },
+        },
         select: {
-          id: true,
+          type: true,
           status: true,
         },
       });
 
-      const allApproved =
-        allDocs.length > 0 && allDocs.every((doc) => doc.status === "APPROVED");
+      const approvedRequiredTypes = new Set(
+        requiredDocs
+          .filter((doc) => doc.status === "APPROVED")
+          .map((doc) => doc.type)
+      );
 
-      if (allApproved) {
+      const allRequiredApproved = REQUIRED_DOCUMENT_TYPES.every((type) =>
+        approvedRequiredTypes.has(type)
+      );
+
+      if (allRequiredApproved) {
         await tx.contract.update({
           where: { id: existing.contractId },
-          data: { status: "PENDING_VERIFICATION" },
+          data: {
+            status: "PENDING_VERIFICATION",
+          },
         });
 
-        // Obtener email del contratado
         const contractedParty = await tx.contractParty.findFirst({
           where: {
             contractId: existing.contractId,
             role: "DEUDOR",
           },
-          select: { email: true, name: true },
+          select: {
+            email: true,
+            name: true,
+          },
         });
 
         if (contractedParty?.email) {
@@ -121,7 +161,7 @@ export async function reviewContractDocument(
             await sendReadyToSignEmail({
               to: contractedParty.email,
               clienteNombre: contractedParty.name,
-              templateKey: existing.contract.templateKey
+              templateKey: existing.contract.templateKey,
             });
           } catch (emailError) {
             console.error("EMAIL ERROR - READY_TO_SIGN:", emailError);
@@ -130,7 +170,9 @@ export async function reviewContractDocument(
       } else {
         await tx.contract.update({
           where: { id: existing.contractId },
-          data: { status: "PENDING_VERIFICATION" },
+          data: {
+            status: "PENDING_DOCUMENTS",
+          },
         });
       }
 
@@ -140,11 +182,11 @@ export async function reviewContractDocument(
     await trackReviewAction({
       contractId: existing.contractId,
       adminId: req.user.id,
-      actorRole: req.user.role as AdminRole ?? "CREDIT_ANALYST",
+      actorRole: (req.user.role as AdminRole) ?? "CREDIT_ANALYST",
       actorEmail: req.user.email,
       target: "DOCUMENT",
-      status: status,
-      notes: notes,
+      status,
+      notes,
       ipAddress: req.ip,
       userAgent: req.headers["user-agent"],
     });
@@ -159,6 +201,7 @@ export async function reviewContractDocument(
     });
   } catch (error) {
     console.error("reviewContractDocument error:", error);
+
     return res.status(500).json({
       ok: false,
       message: "Error interno del servidor",

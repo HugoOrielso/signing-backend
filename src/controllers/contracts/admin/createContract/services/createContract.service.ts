@@ -18,18 +18,9 @@ export async function createContractService(
   if (!adminId) {
     throw new Error("Usuario no autenticado");
   }
-
-
-
-
   const auditContext = getAuditRequestContext(req);
-
   const isNewFormat = !body.generalData;
   const isLibranza = isNewFormat && body.contractType === "LIBRANZA";
-
-
-
-
   const contractData = buildContractData(body, isNewFormat);
   const partiesInput = buildParties(body, isNewFormat);
 

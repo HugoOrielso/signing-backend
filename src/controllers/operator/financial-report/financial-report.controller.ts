@@ -1,6 +1,6 @@
-import { prisma } from "../../../../database/db";
-import { AuthenticatedRequest } from "../../../../types/types";
 import type { Response } from "express";
+import { AuthenticatedRequest } from "../../../types/types";
+import { prisma } from "../../../database/db";
 
 function getDefaultDateRange() {
   const endDate = new Date();
@@ -11,6 +11,10 @@ function getDefaultDateRange() {
   endDate.setHours(23, 59, 59, 999);
 
   return { startDate, endDate };
+}
+
+function getDaysDifference(startDate: Date, endDate: Date) {
+  return (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
 }
 
 function resolveDateRange(queryStartDate?: unknown, queryEndDate?: unknown) {
@@ -32,6 +36,10 @@ function resolveDateRange(queryStartDate?: unknown, queryEndDate?: unknown) {
     throw new Error("La fecha inicial no puede ser mayor a la fecha final");
   }
 
+  if (getDaysDifference(startDate, endDate) > 30) {
+    throw new Error("El rango de fechas no puede superar los 30 días");
+  }
+
   return { startDate, endDate };
 }
 
@@ -40,7 +48,7 @@ function capitalize(value?: string | null) {
   return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
 }
 
-export async function getAdminFilteredOperationalReport(
+export async function getMyFinancialSummary(
   req: AuthenticatedRequest,
   res: Response
 ) {
@@ -55,15 +63,13 @@ export async function getAdminFilteredOperationalReport(
       });
     }
 
-    if (role !== "ADMIN") {
+    if (role !== "OPERATOR" && role !== "CREDIT_ANALYST") {
       return res.status(403).json({
         ok: false,
-        message: "No tienes permisos para ver este reporte",
+        message: "No tienes permisos para ver este resumen",
       });
     }
 
-    const { operatorName, assignedToId, status } = req.query;
-    console.log(operatorName, assignedToId, status)
     let range;
 
     try {
@@ -80,30 +86,22 @@ export async function getAdminFilteredOperationalReport(
         gte: range.startDate,
         lte: range.endDate,
       },
+      status: {
+        not: "CANCELLED",
+      },
     };
 
-    if (operatorName && operatorName !== "ALL") {
-      where.admin = {
-        is: {
-          name: {
-            contains: String(operatorName),
-            mode: "insensitive",
-          },
-        },
-      };
+    if (role === "OPERATOR") {
+      where.adminId = adminId;
     }
-    if (assignedToId && assignedToId !== "ALL") {
-      where.assignedToId = String(assignedToId);
-    }
-    if (status && status !== "ALL") {
-      where.status = String(status);
+
+    if (role === "CREDIT_ANALYST") {
+      where.assignedToId = adminId;
     }
 
     const contracts = await prisma.contract.findMany({
       where,
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy: { createdAt: "desc" },
       select: {
         id: true,
         contractNumber: true,
@@ -166,59 +164,30 @@ export async function getAdminFilteredOperationalReport(
       0
     );
 
-    const averagePerContract =
-      totalContracts > 0 ? Math.round(totalSumaTotal / totalContracts) : 0;
-
-    const statusSummary = contracts.reduce<Record<string, number>>(
-      (acc, contract) => {
-        acc[contract.status] = (acc[contract.status] ?? 0) + 1;
-        return acc;
-      },
-      {}
-    );
-
-    const signedContracts = statusSummary.SIGNED ?? 0;
-    const cancelledContracts = statusSummary.CANCELLED ?? 0;
-    const rejectedContracts = statusSummary.REJECTED ?? 0;
+    const signedContracts = contracts.filter(
+      (c) => c.status === "SIGNED"
+    ).length;
 
     const activeContracts = contracts.filter(
-      (contract) =>
-        contract.status !== "SIGNED" && contract.status !== "CANCELLED"
+      (c) => c.status !== "SIGNED" && c.status !== "CANCELLED"
     ).length;
 
     return res.json({
       ok: true,
       data: {
         range,
-        filters: {
-          operatorName:
-            operatorName && operatorName !== "ALL"
-              ? String(operatorName)
-              : null,
-
-          assignedToId:
-            assignedToId && assignedToId !== "ALL"
-              ? String(assignedToId)
-              : null,
-
-          status: status && status !== "ALL" ? String(status) : null,
-        },
         summary: {
           totalContracts,
           signedContracts,
           activeContracts,
-          rejectedContracts,
-          cancelledContracts,
           totalSumaTotal,
           totalCuotas,
           totalValorCuotas,
-          averagePerContract,
-          statusSummary,
+          averagePerContract:
+            totalContracts > 0
+              ? Math.round(totalSumaTotal / totalContracts)
+              : 0,
         },
-        statuses: Object.entries(statusSummary).map(([status, count]) => ({
-          status,
-          count,
-        })),
         contracts: contracts.map((contract) => ({
           id: contract.consecutivo,
           contractId: contract.id,
@@ -238,23 +207,23 @@ export async function getAdminFilteredOperationalReport(
 
           operador: contract.admin
             ? {
-              id: contract.admin.id,
-              name: contract.admin.name,
-              email: contract.admin.email,
-              role: contract.admin.role,
-            }
+                id: contract.admin.id,
+                name: contract.admin.name,
+                email: contract.admin.email,
+                role: contract.admin.role,
+              }
             : null,
 
           asesor: contract.libranzaData?.asesor ?? null,
 
           analista: contract.assignedTo
             ? {
-              id: contract.assignedTo.id,
-              name: contract.assignedTo.name,
-              email: contract.assignedTo.email,
-              role: contract.assignedTo.role,
-              assignedAt: contract.assignedAt,
-            }
+                id: contract.assignedTo.id,
+                name: contract.assignedTo.name,
+                email: contract.assignedTo.email,
+                role: contract.assignedTo.role,
+                assignedAt: contract.assignedAt,
+              }
             : null,
 
           cuotas: {
@@ -266,11 +235,11 @@ export async function getAdminFilteredOperationalReport(
       },
     });
   } catch (error) {
-    console.error("ADMIN FILTERED OPERATIONAL REPORT ERROR:", error);
+    console.error("MY FINANCIAL SUMMARY ERROR", error);
 
     return res.status(500).json({
       ok: false,
-      message: "No se pudo obtener el reporte operativo",
+      message: "No se pudo obtener el resumen financiero",
     });
   }
 }

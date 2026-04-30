@@ -19,51 +19,52 @@ export async function listContractsWithParams(
 
         const { asesor, startDate, endDate, status, search } = req.query;
 
-        if (!asesor || !startDate || !endDate) {
-            return res.status(400).json({
-                ok: false,
-                message: "asesor, startDate y endDate son obligatorios",
-            });
-        }
-
-        if (asesor === "ALL") {
-            return res.status(400).json({
-                ok: false,
-                message: "Debes seleccionar un asesor específico",
-            });
-        }
-
-        const start = new Date(String(startDate));
-        const end = new Date(String(endDate));
-
-        if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
-            return res.status(400).json({
-                ok: false,
-                message: "Rango de fechas inválido",
-            });
-        }
-
-        end.setHours(23, 59, 59, 999);
-
         const where: any = {
+            // 🔥 SIEMPRE excluir estos estados
             status: {
-                not: "SIGNED",
-            },
-            createdAt: {
-                gte: start,
-                lte: end,
-            },
-            libranzaData: {
-                is: {
-                    asesor: String(asesor),
-                },
+                notIn: ["SIGNED", "CANCELLED"],
             },
         };
 
-        if (status && status !== "ALL") {
-            where.status = status;
+        // ✅ FILTROS OPCIONALES
+
+        // 📅 Fecha
+        if (startDate && endDate) {
+            const start = new Date(String(startDate));
+            const end = new Date(String(endDate));
+
+            if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+                return res.status(400).json({
+                    ok: false,
+                    message: "Rango de fechas inválido",
+                });
+            }
+
+            end.setHours(23, 59, 59, 999);
+
+            where.createdAt = {
+                gte: start,
+                lte: end,
+            };
         }
 
+        // 👤 Asesor
+        if (asesor && asesor !== "ALL") {
+            where.libranzaData = {
+                is: {
+                    asesor: String(asesor),
+                },
+            };
+        }
+
+        // 📊 Status adicional (sin romper exclusión)
+        if (status && status !== "ALL") {
+            where.status = {
+                equals: status, // 👈 filtra solo ese
+            };
+        }
+
+        // 🔐 Roles
         if (role !== "ADMIN" && role !== "CREDIT_ANALYST") {
             where.adminId = adminId;
         }
@@ -75,12 +76,12 @@ export async function listContractsWithParams(
             ];
         }
 
+        // 🔍 Search
         if (search) {
             const q = String(search).trim();
 
             where.AND = [
                 ...(where.AND ?? []),
-
                 {
                     OR: [
                         { contractNumber: { contains: q, mode: "insensitive" } },
@@ -118,7 +119,6 @@ export async function listContractsWithParams(
         const contracts = await prisma.contract.findMany({
             where,
             orderBy: { createdAt: "desc" },
-
             include: {
                 parties: true,
                 libranzaData: true,
@@ -149,6 +149,7 @@ export async function listContractsWithParams(
             ok: true,
             data: contracts,
         });
+
     } catch (error) {
         console.error("LIST CONTRACTS WITH PARAMS ERROR", error);
 
