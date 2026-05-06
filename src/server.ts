@@ -9,6 +9,7 @@ import veriffRouter from "./routes/veriff.route";
 import adminRouter from "./routes/admin.route";
 import { signLibranzaPrueba } from "./controllers/contracts/client/SignPublicContract/signPublicContract.controller";
 import staffRouter from "./routes/operator.route";
+import { testRecibo } from "./controllers/contracts/client/conformityReceipt/conformity.controller";
 
 const app = express();
 

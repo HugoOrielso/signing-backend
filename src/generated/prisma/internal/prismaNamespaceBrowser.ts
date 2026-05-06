@@ -65,7 +65,8 @@ export const ModelName = {
   PublicContractSession: 'PublicContractSession',
   Pagare: 'Pagare',
   PagareSignature: 'PagareSignature',
-  IdentityVerification: 'IdentityVerification'
+  IdentityVerification: 'IdentityVerification',
+  ReciboConformidadData: 'ReciboConformidadData'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -122,8 +123,10 @@ export const ContractScalarFieldEnum = {
   isSigned: 'isSigned',
   dataReviewStatus: 'dataReviewStatus',
   dataReviewNotes: 'dataReviewNotes',
+  pagareSigned: 'pagareSigned',
   assignedToId: 'assignedToId',
-  assignedAt: 'assignedAt'
+  assignedAt: 'assignedAt',
+  isConformityReceiptSigned: 'isConformityReceiptSigned'
 } as const
 
 export type ContractScalarFieldEnum = (typeof ContractScalarFieldEnum)[keyof typeof ContractScalarFieldEnum]
@@ -402,6 +405,26 @@ export const IdentityVerificationScalarFieldEnum = {
 } as const
 
 export type IdentityVerificationScalarFieldEnum = (typeof IdentityVerificationScalarFieldEnum)[keyof typeof IdentityVerificationScalarFieldEnum]
+
+
+export const ReciboConformidadDataScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  numeroRecibo: 'numeroRecibo',
+  ciudad: 'ciudad',
+  clienteNombre: 'clienteNombre',
+  clienteCC: 'clienteCC',
+  clienteEmail: 'clienteEmail',
+  textoRecibido: 'textoRecibido',
+  fechaFirma: 'fechaFirma',
+  tipoFirma: 'tipoFirma',
+  firmaImagenUrl: 'firmaImagenUrl',
+  firmaTexto: 'firmaTexto',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ReciboConformidadDataScalarFieldEnum = (typeof ReciboConformidadDataScalarFieldEnum)[keyof typeof ReciboConformidadDataScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -45,25 +45,8 @@ export async function getAdminFilteredOperationalReport(
   res: Response
 ) {
   try {
-    const adminId = req.user?.id;
-    const role = req.user?.role;
-
-    if (!adminId) {
-      return res.status(401).json({
-        ok: false,
-        message: "No autenticado",
-      });
-    }
-
-    if (role !== "ADMIN") {
-      return res.status(403).json({
-        ok: false,
-        message: "No tienes permisos para ver este reporte",
-      });
-    }
 
     const { operatorName, assignedToId, status } = req.query;
-    console.log(operatorName, assignedToId, status)
     let range;
 
     try {

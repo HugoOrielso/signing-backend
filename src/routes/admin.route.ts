@@ -9,8 +9,8 @@ import { getAnalysts } from "../controllers/contracts/admin/getAnalysts/analysts
 const adminRouter = Router();
 
 adminRouter.get("/operators", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.CREDIT_ANALYST), getOperators);
-adminRouter.get("/analysts", requireAdminAuth, requireRole(AdminRole.ADMIN), getAnalysts);
+adminRouter.get("/analysts", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.CREDIT_ANALYST), getAnalysts);
 adminRouter.get("/contracts/financial-summary", requireAdminAuth, requireRole(AdminRole.ADMIN), getAdminFinancialSummary);
-adminRouter.get("/operational-summary", requireAdminAuth, requireRole(AdminRole.ADMIN), getAdminFilteredOperationalReport);
+adminRouter.get("/operational-summary", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.CREDIT_ANALYST), getAdminFilteredOperationalReport);
 
 export default adminRouter;

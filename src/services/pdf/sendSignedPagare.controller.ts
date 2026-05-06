@@ -1,6 +1,6 @@
 // src/services/pagare/sendSignedPagarePdf.ts
 import { prisma } from "../../database/db";
-import { sendSignedPagareEmail } from "../../lib/email/sendSignedPagare";
+import { sendCompanySignedPagareEmail, sendSignedPagareEmail } from "../../lib/email/sendSignedPagare";
 import { TemplateKey } from "../../lib/email/templateConfig";
 import { generatePagarePdf } from "./generatePagare";
 
@@ -32,12 +32,21 @@ export async function sendSignedPagarePdf(pagareId: string) {
     .replace(/\s+/g, "-")
     .toLowerCase();
 
+
+  await sendCompanySignedPagareEmail({
+    to: 'libranzasfirmadas@gmail.com',
+    clienteNombre: pagare.deudorNombre ?? "Cliente",
+    pdfBuffer,
+    fileName: `pagare-${safeName}.pdf`,
+    templateKey: pagare.contract.templateKey as TemplateKey,
+  });
+
   await sendSignedPagareEmail({
     to: pagare.deudorEmail,
     clienteNombre: pagare.deudorNombre ?? "Cliente",
     pdfBuffer,
     fileName: `pagare-${safeName}.pdf`,
     role: "cliente",
-    templateKey: pagare.contract.templateKey as TemplateKey, 
+    templateKey: pagare.contract.templateKey as TemplateKey,
   });
 }

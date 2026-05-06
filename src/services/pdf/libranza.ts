@@ -64,6 +64,8 @@ interface GenerateLibranzaHtmlOptions {
   signature?: SignatureData;
   logoBase64?: string;
   logoMime?: string;
+  audience?: "client" | "admin";
+  consecutivo?: string; // ← agregar
 }
 
 export async function generateLibranzaHtml(
@@ -76,7 +78,7 @@ export async function generateLibranzaHtml(
     logoBase64,
     logoMime = "image/webp",
   } = options;
-
+  const isAdmin = options.audience === "admin";
 
   async function imageUrlToBase64(url: string): Promise<string> {
     const response = await fetch(url);
@@ -211,7 +213,8 @@ export async function generateLibranzaHtml(
     <div style="display:flex;align-items:center;gap:2px">
       <span style="font-weight:700;white-space:nowrap">FECHA:</span>
       <span style="text-align:center;padding:0px">${escHtml(fechaParts[0] || "")}</span>
-      <span style="font-weight:700;font-size:10px;margin-left:3px">LIBRANZA</span>
+      <span style="font-weight:700;font-size:10px;margin-left:3px">  LIBRANZA - ${escHtml(options.consecutivo ?? "")}
+ </span>
     </div>
   </div>
 </div>
@@ -378,50 +381,51 @@ export async function generateLibranzaHtml(
       <strong style="font-size:10px">Aprobada la Autorización<br>para Descuento Respectivo</strong>
       <br><strong style="color:#a07830">Firma</strong>
       <div style="height:48px;margin-top:2px;display:flex;align-items:center;justify-content:center; background-color:#ccc; border-radius:3px">
-        ${sigZone}
       </div>
     </div>
   </div>
 </div>
 
-<!-- CONTENEDOR TABLA -->
-<div style="position:relative;margin-bottom:3px">
+${isAdmin ? `
+  <!-- CONTENEDOR TABLA -->
+  <div style="position:relative;margin-bottom:3px">
 
-  <!-- TABLA PRODUCTOS -->
-  <table style="width:100%;border-collapse:collapse;font-size:11px;border-radius:4px">
-    <thead>
-      <tr>
-        <th style="${thStyle};width:70px">CODIGO</th>
-        <th style="${thStyle};width:20px">C</th>
-        <th style="${thStyle}">DESCRIPCIÓN</th>
-        <th style="${thStyle};width:90px;text-align:right">VALOR</th>
-      </tr>
-    </thead>
-    <tbody>
-      ${productoRows}
-      ${emptyRowsHtml}
-    </tbody>
-  </table>
+    <!-- TABLA PRODUCTOS -->
+    <table style="width:100%;border-collapse:collapse;font-size:11px;border-radius:4px">
+      <thead>
+        <tr>
+          <th style="${thStyle};width:70px">CODIGO</th>
+          <th style="${thStyle};width:20px">C</th>
+          <th style="${thStyle}">DESCRIPCIÓN</th>
+          <th style="${thStyle};width:90px;text-align:right">VALOR</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${productoRows}
+        ${emptyRowsHtml}
+      </tbody>
+    </table>
 
-  <!-- MARCA DE AGUA -->
-  <div style="
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    font-size:18px;
-    font-weight:900;
-    color:#cc0000;
-    letter-spacing:4px;
-    opacity:0.12;
-    text-transform:uppercase;
-    pointer-events:none;
-    white-space:nowrap;
-  ">
-    NO SE ACEPTAN DEVOLUCIONES
+    <!-- MARCA DE AGUA -->
+    <div style="
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+      font-size:18px;
+      font-weight:900;
+      color:#cc0000;
+      letter-spacing:4px;
+      opacity:0.12;
+      text-transform:uppercase;
+      pointer-events:none;
+      white-space:nowrap;
+    ">
+      NO SE ACEPTAN DEVOLUCIONES
+    </div>
+
   </div>
-
-</div>
+` : ""}
 <!-- TOTAL -->
 <div style="display:flex;justify-content:flex-end;margin-bottom:5px">
   <table style="border-collapse:collapse;font-size:12px">

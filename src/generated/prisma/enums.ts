@@ -12,7 +12,8 @@
 export const AdminRole = {
   ADMIN: 'ADMIN',
   OPERATOR: 'OPERATOR',
-  CREDIT_ANALYST: 'CREDIT_ANALYST'
+  CREDIT_ANALYST: 'CREDIT_ANALYST',
+  SUPERVISOR: 'SUPERVISOR'
 } as const
 
 export type AdminRole = (typeof AdminRole)[keyof typeof AdminRole]
@@ -52,7 +53,8 @@ export const ContractEmploymentType = {
   TEMPORAL: 'TEMPORAL',
   PROVISIONAL_VACANTE_DEFINITIVA: 'PROVISIONAL_VACANTE_DEFINITIVA',
   CARRERA_ADMINISTRATIVA: 'CARRERA_ADMINISTRATIVA',
-  PENSIONADO: 'PENSIONADO'
+  PENSIONADO: 'PENSIONADO',
+  PROPIEDAD: 'PROPIEDAD'
 } as const
 
 export type ContractEmploymentType = (typeof ContractEmploymentType)[keyof typeof ContractEmploymentType]

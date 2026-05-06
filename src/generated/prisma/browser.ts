@@ -92,3 +92,8 @@ export type PagareSignature = Prisma.PagareSignatureModel
  * 
  */
 export type IdentityVerification = Prisma.IdentityVerificationModel
+/**
+ * Model ReciboConformidadData
+ * 
+ */
+export type ReciboConformidadData = Prisma.ReciboConformidadDataModel

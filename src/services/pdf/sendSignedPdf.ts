@@ -1,5 +1,5 @@
 import { prisma } from "../../database/db";
-import { sendSignedContractEmail } from "../../lib/email/sendSignedLibranza";
+import { sendCompanySignedContractEmail, sendSignedContractEmail } from "../../lib/email/sendSignedLibranza";
 import { TemplateKey } from "../../lib/email/templateConfig";
 import { buildCertDataFromContract, generateSignatureCertificatePdf } from "./generateSignatureCertificate";
 import { generateContractPdf } from "./getEncryptedPDF";
@@ -20,13 +20,12 @@ export async function sendSignedContractPdf(contractId: string) {
       },
     },
   });
-
+  
   if (!contract?.libranzaData) {
     throw new Error("Contrato no encontrado o sin datos de libranza");
   }
-
   const contractedParty = contract.parties.find((p) => p.role === "DEUDOR");
-  
+
   const identification = contract.libranzaData.clienteCC ?? "1007939670"
   const email = contractedParty?.email;
   const nombre = contractedParty?.name ?? "Cliente";
@@ -36,7 +35,19 @@ export async function sendSignedContractPdf(contractId: string) {
   }
 
   // ── Generar PDFs en paralelo ─────────────────────────────────────────────
-  const pdfBuffer = await generateContractPdf(contract, identification);
+
+  const clientPdfBuffer = await generateContractPdf(
+    contract,
+    identification,
+    "client"
+  );
+
+  const adminPdfBuffer = await generateContractPdf(
+    contract,
+    undefined,
+    "admin"
+  );
+
   const certBuffer = await generateSignatureCertificatePdf(
     buildCertDataFromContract(contract)
   );
@@ -46,10 +57,20 @@ export async function sendSignedContractPdf(contractId: string) {
     .replace(/\s+/g, "-")
     .toLowerCase();
 
+  await sendCompanySignedContractEmail({
+    to: 'libranzasfirmadas@gmail.com',
+    clienteNombre: nombre,
+    pdfBuffer: adminPdfBuffer,
+    fileName: `libranza-${safeName}.pdf`,
+    certBuffer,
+    certFileName: `certificado-firma-${safeName}.pdf`,
+    templateKey: contract.templateKey as TemplateKey
+  });
+
   await sendSignedContractEmail({
     to: email,
     clienteNombre: nombre,
-    pdfBuffer,
+    pdfBuffer: clientPdfBuffer,
     fileName: `libranza-${safeName}.pdf`,
     certBuffer,
     certFileName: `certificado-firma-${safeName}.pdf`,

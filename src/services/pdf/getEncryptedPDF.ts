@@ -4,13 +4,15 @@ import puppeteer from "puppeteer";
 import { encryptPDF } from "@pdfsmaller/pdf-encrypt-lite";
 import { getTemplateConfig } from "../../lib/email/templateConfig";
 import { generateLibranzaHtml } from "./libranza";
+type PdfAudience = "client" | "admin";
 
 export async function generateContractPdf(
   contract: any,
-  password?: string
+  password?: string,
+  audience: PdfAudience = "client"
+
 ): Promise<Buffer> {
   let browser;
-
   try {
     const template = getTemplateConfig(contract.templateKey);
 
@@ -98,12 +100,13 @@ export async function generateContractPdf(
     } catch (e) {
       console.warn("Sin logo:", e);
     }
-
     const html = await generateLibranzaHtml(contract.libranzaData, {
       templateKey: contract.templateKey,
       signature: signatureData,
       logoBase64,
       logoMime,
+      audience,
+      consecutivo: contract.consecutivo
     });
 
     const isProduction = process.env.NODE_ENV === "production";

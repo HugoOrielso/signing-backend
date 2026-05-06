@@ -11,6 +11,7 @@ import { signPublicContract } from '../controllers/contracts/client/SignPublicCo
 import { getPagareStatusByToken } from '../controllers/contracts/client/getPagare/getPagareByToken.controller';
 import { signPagare } from '../controllers/contracts/client/signPagare/signPagare.controller';
 import { startIdentityVerification } from '../controllers/veriff/veriff.controller';
+import { getConformityReceipt, signConformityReceipt } from '../controllers/contracts/client/conformityReceipt/conformity.controller';
 
 const userRouter = Router()
 
@@ -21,11 +22,12 @@ userRouter.get("/contract/:token", requirePublicSession, getPublicContract);
 userRouter.get("/contracts", requirePublicSession, getPublicContractsByUser);
 userRouter.get("/contracts/:token", requirePublicSession, getPublicContractByToken);
 userRouter.post("/contracts/:token/upload-document", requirePublicSession, uploadDocument.single("file"), uploadContractUserDocument);
-userRouter.get("/contracts/:token/documents",  requirePublicSession, UserGetContractDocuments);
-userRouter.get("/contracts/:token/generateVeriffSession",  requirePublicSession, startIdentityVerification);
+userRouter.get("/contracts/:token/documents", requirePublicSession, UserGetContractDocuments);
+userRouter.get("/contracts/:token/generateVeriffSession", requirePublicSession, startIdentityVerification);
 userRouter.post("/contracts/:token/sign", requirePublicSession, signPublicContract);
 userRouter.get("/contracts/pagare/:token", requirePublicSession, getPagareStatusByToken);
 userRouter.post("/contracts/pagare/:token/sign", requirePublicSession, signPagare);
-
+userRouter.post("/contracts/:token/sign-conformity-receipt", requirePublicSession, signConformityReceipt);
+userRouter.get("/contracts/:token/conformity-receipt", requirePublicSession, getConformityReceipt);
 
 export default userRouter

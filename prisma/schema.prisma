@@ -80,13 +80,16 @@ model Contract {
   isSigned         Boolean          @default(false)
   dataReviewStatus DataReviewStatus @default(PENDING)
   dataReviewNotes  String?
+  pagareSigned         Boolean          @default(false)
   pagares          Pagare?
 
   identityVerification IdentityVerification?
 
-  assignedToId String?
-  assignedTo   Admin?    @relation("AssignedContracts", fields: [assignedToId], references: [id], onDelete: SetNull)
-  assignedAt   DateTime? @db.Timestamptz(3)
+  assignedToId              String?
+  assignedTo                Admin?                 @relation("AssignedContracts", fields: [assignedToId], references: [id], onDelete: SetNull)
+  assignedAt                DateTime?              @db.Timestamptz(3)
+  reciboConformidadData     ReciboConformidadData?
+  isConformityReceiptSigned Boolean                @default(false)
 
   @@unique([templateKey, sequence])
   @@index([adminId])
@@ -182,6 +185,7 @@ enum ContractEmploymentType {
   PROVISIONAL_VACANTE_DEFINITIVA
   CARRERA_ADMINISTRATIVA
   PENSIONADO
+  PROPIEDAD
 }
 
 // ─────────────────────────────────────────────────────────
@@ -608,4 +612,31 @@ model IdentityVerification {
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
 
   @@index([status])
+}
+
+model ReciboConformidadData {
+  id String @id @default(uuid())
+
+  contractId String   @unique
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+
+  numeroRecibo Int @unique @default(autoincrement())
+
+  ciudad String?
+
+  clienteNombre String
+  clienteCC     String?
+  clienteEmail  String?
+  textoRecibido String?
+
+  fechaFirma DateTime?
+
+  tipoFirma      String?
+  firmaImagenUrl String?
+  firmaTexto     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([contractId])
 }

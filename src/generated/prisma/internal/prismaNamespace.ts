@@ -398,7 +398,8 @@ export const ModelName = {
   PublicContractSession: 'PublicContractSession',
   Pagare: 'Pagare',
   PagareSignature: 'PagareSignature',
-  IdentityVerification: 'IdentityVerification'
+  IdentityVerification: 'IdentityVerification',
+  ReciboConformidadData: 'ReciboConformidadData'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -414,7 +415,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "contract" | "libranzaData" | "contractParty" | "contractClause" | "contractSigner" | "signature" | "refreshToken" | "contractDocument" | "contractAuditEvent" | "reference" | "publicContractSession" | "pagare" | "pagareSignature" | "identityVerification"
+    modelProps: "admin" | "contract" | "libranzaData" | "contractParty" | "contractClause" | "contractSigner" | "signature" | "refreshToken" | "contractDocument" | "contractAuditEvent" | "reference" | "publicContractSession" | "pagare" | "pagareSignature" | "identityVerification" | "reciboConformidadData"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1528,6 +1529,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ReciboConformidadData: {
+      payload: Prisma.$ReciboConformidadDataPayload<ExtArgs>
+      fields: Prisma.ReciboConformidadDataFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ReciboConformidadDataFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReciboConformidadDataPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ReciboConformidadDataFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReciboConformidadDataPayload>
+        }
+        findFirst: {
+          args: Prisma.ReciboConformidadDataFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReciboConformidadDataPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ReciboConformidadDataFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReciboConformidadDataPayload>
+        }
+        findMany: {
+          args: Prisma.ReciboConformidadDataFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReciboConformidadDataPayload>[]
+        }
+        create: {
+          args: Prisma.ReciboConformidadDataCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReciboConformidadDataPayload>
+        }
+        createMany: {
+          args: Prisma.ReciboConformidadDataCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ReciboConformidadDataCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReciboConformidadDataPayload>[]
+        }
+        delete: {
+          args: Prisma.ReciboConformidadDataDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReciboConformidadDataPayload>
+        }
+        update: {
+          args: Prisma.ReciboConformidadDataUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReciboConformidadDataPayload>
+        }
+        deleteMany: {
+          args: Prisma.ReciboConformidadDataDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ReciboConformidadDataUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ReciboConformidadDataUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReciboConformidadDataPayload>[]
+        }
+        upsert: {
+          args: Prisma.ReciboConformidadDataUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReciboConformidadDataPayload>
+        }
+        aggregate: {
+          args: Prisma.ReciboConformidadDataAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateReciboConformidadData>
+        }
+        groupBy: {
+          args: Prisma.ReciboConformidadDataGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ReciboConformidadDataGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ReciboConformidadDataCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ReciboConformidadDataCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1605,8 +1680,10 @@ export const ContractScalarFieldEnum = {
   isSigned: 'isSigned',
   dataReviewStatus: 'dataReviewStatus',
   dataReviewNotes: 'dataReviewNotes',
+  pagareSigned: 'pagareSigned',
   assignedToId: 'assignedToId',
-  assignedAt: 'assignedAt'
+  assignedAt: 'assignedAt',
+  isConformityReceiptSigned: 'isConformityReceiptSigned'
 } as const
 
 export type ContractScalarFieldEnum = (typeof ContractScalarFieldEnum)[keyof typeof ContractScalarFieldEnum]
@@ -1885,6 +1962,26 @@ export const IdentityVerificationScalarFieldEnum = {
 } as const
 
 export type IdentityVerificationScalarFieldEnum = (typeof IdentityVerificationScalarFieldEnum)[keyof typeof IdentityVerificationScalarFieldEnum]
+
+
+export const ReciboConformidadDataScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  numeroRecibo: 'numeroRecibo',
+  ciudad: 'ciudad',
+  clienteNombre: 'clienteNombre',
+  clienteCC: 'clienteCC',
+  clienteEmail: 'clienteEmail',
+  textoRecibido: 'textoRecibido',
+  fechaFirma: 'fechaFirma',
+  tipoFirma: 'tipoFirma',
+  firmaImagenUrl: 'firmaImagenUrl',
+  firmaTexto: 'firmaTexto',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ReciboConformidadDataScalarFieldEnum = (typeof ReciboConformidadDataScalarFieldEnum)[keyof typeof ReciboConformidadDataScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2358,6 +2455,7 @@ export type GlobalOmitConfig = {
   pagare?: Prisma.PagareOmit
   pagareSignature?: Prisma.PagareSignatureOmit
   identityVerification?: Prisma.IdentityVerificationOmit
+  reciboConformidadData?: Prisma.ReciboConformidadDataOmit
 }
 
 /* Types for Logging */

@@ -158,18 +158,44 @@ export async function signPagare(req: Request, res: Response) {
         },
       });
 
-      const updatedContract = await tx.contract.update({
-        where: { id: contract.id },
-        data: {
-          status: "SIGNED",
-          isSigned: true
+      const reciboConformidad = await tx.reciboConformidadData.upsert({
+        where: {
+          contractId: contract.id,
+        },
+        create: {
+          contractId: contract.id,
+          ciudad: pagare.ciudadFirma ?? pagare.ciudadPago ?? null,
+          clienteNombre: pagare.deudorNombre ?? "Cliente",
+          clienteCC: pagare.deudorDocumento ?? null,
+          clienteEmail: pagare.deudorEmail,
+          textoRecibido:
+            "los productos y/o servicios relacionados en el pagaré y contrato asociado.",
+        },
+        update: {
+          ciudad: pagare.ciudadFirma ?? pagare.ciudadPago ?? null,
+          clienteNombre: pagare.deudorNombre ?? "Cliente",
+          clienteCC: pagare.deudorDocumento ?? null,
+          textoRecibido:
+            "los productos y/o servicios relacionados en el pagaré y contrato asociado.",
         },
       });
 
-      return { signature, updatedPagare, updatedContract };
+      const updatedContract = await tx.contract.update({
+        where: { id: contract.id },
+        data: {
+          isSigned: true,
+          pagareSigned: true,
+          isConformityReceiptSigned: false,
+        },
+      });
 
+      return {
+        signature,
+        updatedPagare,
+        updatedContract,
+        reciboConformidad,
+      };
     });
-
     const signer = contract.signers[0] ?? null;
 
     await safeAudit(() =>

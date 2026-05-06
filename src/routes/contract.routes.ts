@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { requireAdminAuth, requireRole } from "../middleware/auth.middleware";
-import { requestOtp, verifyOtp } from "../controllers/otp/otp.controller";
 import { listContracts } from "../controllers/contracts/admin/ListContracts/listContract.controller";
 import { createContract } from "../controllers/contracts/admin/createContract/createContract.controller";
 import { downloadPublicSignedContract } from "../controllers/contracts/client/documents/download/download.controller";
