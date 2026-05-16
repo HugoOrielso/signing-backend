@@ -15,6 +15,7 @@ ARG DATABASE_URL="postgresql://postgres:postgres@dummy-db:5432/app?schema=public
 ENV DATABASE_URL=$DATABASE_URL
 
 COPY package.json pnpm-lock.yaml ./
+COPY pnpm-workspace.yaml* ./
 COPY prisma ./prisma
 COPY prisma.config.ts ./
 
@@ -33,7 +34,6 @@ ENV NODE_ENV=production
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 
-# 👇 Le decimos a puppeteer-core dónde está Chrome (en lugar de buscarlo en cache)
 ENV PUPPETEER_SKIP_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
@@ -41,7 +41,6 @@ WORKDIR /app
 
 RUN corepack enable
 
-# 👇 Instalamos Chromium y todas sus dependencias nativas
 RUN apk add --no-cache \
     libc6-compat \
     openssl \
