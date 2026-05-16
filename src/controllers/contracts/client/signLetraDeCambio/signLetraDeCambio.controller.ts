@@ -190,3 +190,14 @@ export async function signLetraCambio(req: Request, res: Response) {
     });
   }
 }
+
+
+export async function exampleLetraCambio(req: Request, res: Response) {
+  try {
+    await sendSignedLetraCambioPdf("cmp7eb3050001zgvq2oa4yd0w");
+    return res.status(200)
+  } catch (pdfError) {
+    console.error("SEND SIGNED LETRA CAMBIO PDF ERROR", pdfError);
+  }
+
+}

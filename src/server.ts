@@ -10,6 +10,7 @@ import adminRouter from "./routes/admin.route";
 import { signLibranzaPrueba } from "./controllers/contracts/client/SignPublicContract/signPublicContract.controller";
 import staffRouter from "./routes/operator.route";
 import { testRecibo } from "./controllers/contracts/client/conformityReceipt/conformity.controller";
+import { exampleLetraCambio } from "./controllers/contracts/client/signLetraDeCambio/signLetraDeCambio.controller";
 
 const app = express();
 
@@ -53,6 +54,7 @@ app.use("/api/admin", adminRouter);
 app.use("/api/staff", staffRouter);
 app.use("/api/contracts", contractsRouter);
 app.use("/api/users", userRouter);
+app.get("/example", exampleLetraCambio);
 
 app.use((_req: Request, res: Response) => {
   res.status(404).json({ error: "Not found" });

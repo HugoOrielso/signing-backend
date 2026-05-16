@@ -213,8 +213,6 @@ export function generateLetraCambioHtml(letraCambio: LetraCambioForPdf) {
 
     .line {
       display: inline-block;
-      height: 1px;
-      background: #2d2d2d;
       vertical-align: middle;
     }
 
