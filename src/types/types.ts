@@ -27,7 +27,7 @@ export interface AuthenticatedPublicRequest extends Request {
 }
 
 
-export type AdminRole = "ADMIN" | "OPERATOR" | "CREDIT_ANALYST";
+export type AdminRole = "ADMIN" | "OPERATOR" | "CREDIT_ANALYST" | "SUPERVISOR";
 
 export interface CreateUserInput {
   email: string;

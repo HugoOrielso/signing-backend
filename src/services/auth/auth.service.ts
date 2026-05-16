@@ -34,9 +34,6 @@ export const registerAdmin = async (
   }
 };
 
-
-
-
 export const loginAdmin = async (email: string, password: string) => {
   const admin = await prisma.admin.findUnique({ where: { email } });
   if (!admin) throw new Error("Invalid credentials");
