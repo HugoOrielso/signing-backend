@@ -42,7 +42,6 @@ export async function createVeriffSession(input: CreateVeriffSessionInput) {
         },
     };
 
-    console.log("createVeriffSession payload:", payload); // Log del payload para depuración
     const rawBody = JSON.stringify(payload);
     const signature = createVeriffSignature(rawBody, VERIFF_SHARED_SECRET);
 

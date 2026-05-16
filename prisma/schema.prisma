@@ -80,7 +80,7 @@ model Contract {
   isSigned         Boolean          @default(false)
   dataReviewStatus DataReviewStatus @default(PENDING)
   dataReviewNotes  String?
-  pagareSigned         Boolean          @default(false)
+  pagareSigned     Boolean          @default(false)
   pagares          Pagare?
 
   identityVerification IdentityVerification?
@@ -90,6 +90,8 @@ model Contract {
   assignedAt                DateTime?              @db.Timestamptz(3)
   reciboConformidadData     ReciboConformidadData?
   isConformityReceiptSigned Boolean                @default(false)
+  letraCambioData           LetraCambioData?
+  isLetraCambioSigned       Boolean                @default(false)
 
   @@unique([templateKey, sequence])
   @@index([adminId])
@@ -634,6 +636,26 @@ model ReciboConformidadData {
   tipoFirma      String?
   firmaImagenUrl String?
   firmaTexto     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([contractId])
+}
+
+model LetraCambioData {
+  id String @id @default(cuid())
+
+  contractId String   @unique
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+
+  tipoFirma      String?
+  firmaImagenUrl String?
+  firmaTexto     String?
+
+  signedIp        String?
+  signedUserAgent String?
+  fechaFirma      DateTime? @db.Timestamptz(3)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

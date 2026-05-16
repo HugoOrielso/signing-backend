@@ -30,7 +30,7 @@ contractsRouter.get("/", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRol
 contractsRouter.get("/with-params", requireAdminAuth, requireRole(AdminRole.CREDIT_ANALYST), listContractsWithParams);
 
 // ADMIN y OPERATOR pueden crear y enviar contratos
-contractsRouter.post("/", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR,), createContract);
+contractsRouter.post("/", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR ), createContract);
 // En la sección PRIVADAS
 contractsRouter.get("/:id", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR, AdminRole.CREDIT_ANALYST), getContractById);
 contractsRouter.get("/:id/audit-trail", requireAdminAuth, requireRole(AdminRole.ADMIN, AdminRole.OPERATOR, AdminRole.CREDIT_ANALYST), getContractAuditTrail);

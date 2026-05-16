@@ -273,7 +273,7 @@ export type IdentityVerificationGroupByOutputType = {
   _max: IdentityVerificationMaxAggregateOutputType | null
 }
 
-type GetIdentityVerificationGroupByPayload<T extends IdentityVerificationGroupByArgs> = Prisma.PrismaPromise<
+export type GetIdentityVerificationGroupByPayload<T extends IdentityVerificationGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<IdentityVerificationGroupByOutputType, T['by']> &
       {
@@ -1878,6 +1878,11 @@ export type IdentityVerificationFindManyArgs<ExtArgs extends runtime.Types.Exten
    * Skip the first `n` IdentityVerifications.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of IdentityVerifications.
+   */
   distinct?: Prisma.IdentityVerificationScalarFieldEnum | Prisma.IdentityVerificationScalarFieldEnum[]
 }
 

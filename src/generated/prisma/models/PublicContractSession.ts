@@ -248,7 +248,7 @@ export type PublicContractSessionGroupByOutputType = {
   _max: PublicContractSessionMaxAggregateOutputType | null
 }
 
-type GetPublicContractSessionGroupByPayload<T extends PublicContractSessionGroupByArgs> = Prisma.PrismaPromise<
+export type GetPublicContractSessionGroupByPayload<T extends PublicContractSessionGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<PublicContractSessionGroupByOutputType, T['by']> &
       {
@@ -1226,6 +1226,11 @@ export type PublicContractSessionFindManyArgs<ExtArgs extends runtime.Types.Exte
    * Skip the first `n` PublicContractSessions.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of PublicContractSessions.
+   */
   distinct?: Prisma.PublicContractSessionScalarFieldEnum | Prisma.PublicContractSessionScalarFieldEnum[]
 }
 

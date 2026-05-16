@@ -12,6 +12,8 @@ import { getPagareStatusByToken } from '../controllers/contracts/client/getPagar
 import { signPagare } from '../controllers/contracts/client/signPagare/signPagare.controller';
 import { startIdentityVerification } from '../controllers/veriff/veriff.controller';
 import { getConformityReceipt, signConformityReceipt } from '../controllers/contracts/client/conformityReceipt/conformity.controller';
+import { getLetraCambio } from '../controllers/contracts/client/getLetraDeCambio/getLetraDeCambio.controller';
+import { signLetraCambio } from '../controllers/contracts/client/signLetraDeCambio/signLetraDeCambio.controller';
 
 const userRouter = Router()
 
@@ -29,5 +31,8 @@ userRouter.get("/contracts/pagare/:token", requirePublicSession, getPagareStatus
 userRouter.post("/contracts/pagare/:token/sign", requirePublicSession, signPagare);
 userRouter.post("/contracts/:token/sign-conformity-receipt", requirePublicSession, signConformityReceipt);
 userRouter.get("/contracts/:token/conformity-receipt", requirePublicSession, getConformityReceipt);
+userRouter.get("/contracts/:token/letra-cambio", requirePublicSession, getLetraCambio);
+userRouter.post("/contracts/:token/sign-letra-cambio", requirePublicSession, signLetraCambio);
+
 
 export default userRouter

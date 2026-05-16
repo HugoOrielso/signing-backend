@@ -14,10 +14,8 @@ import { AuthenticatedRequest } from "../../../../../types/types";
 
 export async function editDocument(req: AuthenticatedRequest, res: Response) {
   let tempFilePath: string | null = null;
-    console.log("etnre")
   try {
     const token = req.params.token as string;
-    console.log(token)
     const docTypeRaw = String(req.body.docType || req.body.type || "").trim();
 
     if (!isValidDocType(docTypeRaw)) {

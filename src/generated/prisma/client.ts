@@ -121,3 +121,8 @@ export type IdentityVerification = Prisma.IdentityVerificationModel
  * 
  */
 export type ReciboConformidadData = Prisma.ReciboConformidadDataModel
+/**
+ * Model LetraCambioData
+ * 
+ */
+export type LetraCambioData = Prisma.LetraCambioDataModel

@@ -358,7 +358,7 @@ export type PagareGroupByOutputType = {
   _max: PagareMaxAggregateOutputType | null
 }
 
-type GetPagareGroupByPayload<T extends PagareGroupByArgs> = Prisma.PrismaPromise<
+export type GetPagareGroupByPayload<T extends PagareGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<PagareGroupByOutputType, T['by']> &
       {
@@ -2394,6 +2394,11 @@ export type PagareFindManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Skip the first `n` Pagares.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of Pagares.
+   */
   distinct?: Prisma.PagareScalarFieldEnum | Prisma.PagareScalarFieldEnum[]
 }
 

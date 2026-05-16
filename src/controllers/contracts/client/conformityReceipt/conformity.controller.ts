@@ -143,17 +143,31 @@ export async function signConformityReceipt(req: Request, res: Response) {
         },
       });
 
+      const letraCambio = await tx.letraCambioData.upsert({
+        where: {
+          contractId: contract.id,
+        },
+        create: {
+          contract: {
+            connect: {
+              id: contract.id,
+            },
+          },
+        },
+        update: {},
+      });
+
       const updatedContract = await tx.contract.update({
         where: { id: contract.id },
         data: {
-          isSigned: true,
           isConformityReceiptSigned: true,
-          status: "SIGNED",
+          isLetraCambioSigned: false,
         },
       });
 
       return {
         reciboConformidad,
+        letraCambio,
         updatedContract,
       };
     });
@@ -184,19 +198,19 @@ export async function signConformityReceipt(req: Request, res: Response) {
   }
 }
 
-  export async function testRecibo(req: Request, res: Response) {
-    
-    try {
-      // Cambia esta función por la tuya real si tiene otro nombre
-      await sendSignedReciboPdf(
-        "cmot3d7tt000180vqzay95dp2"
-      )
-    } catch (pdfError) {
-      console.error("SEND SIGNED CONFORMITY RECEIPT PDF ERROR", pdfError);
-    }
+export async function testRecibo(req: Request, res: Response) {
 
-    return res.status(200)
+  try {
+    // Cambia esta función por la tuya real si tiene otro nombre
+    await sendSignedReciboPdf(
+      "cmot3d7tt000180vqzay95dp2"
+    )
+  } catch (pdfError) {
+    console.error("SEND SIGNED CONFORMITY RECEIPT PDF ERROR", pdfError);
   }
+
+  return res.status(200)
+}
 
 
 
@@ -212,7 +226,6 @@ export async function getConformityReceipt(req: Request, res: Response) {
         reciboConformidadData: true,
       },
     });
-    console.log(contract)
     if (!contract || !contract.reciboConformidadData) {
       return res.status(404).json({
         ok: false,

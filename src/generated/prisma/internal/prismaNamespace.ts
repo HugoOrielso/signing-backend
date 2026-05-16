@@ -80,12 +80,12 @@ export type PrismaVersion = {
 }
 
 /**
- * Prisma Client JS version: 7.4.2
- * Query Engine version: 94a226be1cf2967af2541cca5529f0f7ba866919
+ * Prisma Client JS version: 7.8.0
+ * Query Engine version: 3c6e192761c0362d496ed980de936e2f3cebcd3a
  */
 export const prismaVersion: PrismaVersion = {
-  client: "7.4.2",
-  engine: "94a226be1cf2967af2541cca5529f0f7ba866919"
+  client: "7.8.0",
+  engine: "3c6e192761c0362d496ed980de936e2f3cebcd3a"
 }
 
 /**
@@ -399,7 +399,8 @@ export const ModelName = {
   Pagare: 'Pagare',
   PagareSignature: 'PagareSignature',
   IdentityVerification: 'IdentityVerification',
-  ReciboConformidadData: 'ReciboConformidadData'
+  ReciboConformidadData: 'ReciboConformidadData',
+  LetraCambioData: 'LetraCambioData'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -415,7 +416,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "contract" | "libranzaData" | "contractParty" | "contractClause" | "contractSigner" | "signature" | "refreshToken" | "contractDocument" | "contractAuditEvent" | "reference" | "publicContractSession" | "pagare" | "pagareSignature" | "identityVerification" | "reciboConformidadData"
+    modelProps: "admin" | "contract" | "libranzaData" | "contractParty" | "contractClause" | "contractSigner" | "signature" | "refreshToken" | "contractDocument" | "contractAuditEvent" | "reference" | "publicContractSession" | "pagare" | "pagareSignature" | "identityVerification" | "reciboConformidadData" | "letraCambioData"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1603,6 +1604,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    LetraCambioData: {
+      payload: Prisma.$LetraCambioDataPayload<ExtArgs>
+      fields: Prisma.LetraCambioDataFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LetraCambioDataFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetraCambioDataPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LetraCambioDataFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetraCambioDataPayload>
+        }
+        findFirst: {
+          args: Prisma.LetraCambioDataFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetraCambioDataPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LetraCambioDataFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetraCambioDataPayload>
+        }
+        findMany: {
+          args: Prisma.LetraCambioDataFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetraCambioDataPayload>[]
+        }
+        create: {
+          args: Prisma.LetraCambioDataCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetraCambioDataPayload>
+        }
+        createMany: {
+          args: Prisma.LetraCambioDataCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LetraCambioDataCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetraCambioDataPayload>[]
+        }
+        delete: {
+          args: Prisma.LetraCambioDataDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetraCambioDataPayload>
+        }
+        update: {
+          args: Prisma.LetraCambioDataUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetraCambioDataPayload>
+        }
+        deleteMany: {
+          args: Prisma.LetraCambioDataDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LetraCambioDataUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LetraCambioDataUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetraCambioDataPayload>[]
+        }
+        upsert: {
+          args: Prisma.LetraCambioDataUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LetraCambioDataPayload>
+        }
+        aggregate: {
+          args: Prisma.LetraCambioDataAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLetraCambioData>
+        }
+        groupBy: {
+          args: Prisma.LetraCambioDataGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LetraCambioDataGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LetraCambioDataCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LetraCambioDataCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1683,7 +1758,8 @@ export const ContractScalarFieldEnum = {
   pagareSigned: 'pagareSigned',
   assignedToId: 'assignedToId',
   assignedAt: 'assignedAt',
-  isConformityReceiptSigned: 'isConformityReceiptSigned'
+  isConformityReceiptSigned: 'isConformityReceiptSigned',
+  isLetraCambioSigned: 'isLetraCambioSigned'
 } as const
 
 export type ContractScalarFieldEnum = (typeof ContractScalarFieldEnum)[keyof typeof ContractScalarFieldEnum]
@@ -1982,6 +2058,22 @@ export const ReciboConformidadDataScalarFieldEnum = {
 } as const
 
 export type ReciboConformidadDataScalarFieldEnum = (typeof ReciboConformidadDataScalarFieldEnum)[keyof typeof ReciboConformidadDataScalarFieldEnum]
+
+
+export const LetraCambioDataScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  tipoFirma: 'tipoFirma',
+  firmaImagenUrl: 'firmaImagenUrl',
+  firmaTexto: 'firmaTexto',
+  signedIp: 'signedIp',
+  signedUserAgent: 'signedUserAgent',
+  fechaFirma: 'fechaFirma',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LetraCambioDataScalarFieldEnum = (typeof LetraCambioDataScalarFieldEnum)[keyof typeof LetraCambioDataScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2438,6 +2530,21 @@ export type PrismaClientOptions = ({
    * ```
    */
   comments?: runtime.SqlCommenterPlugin[]
+  /**
+   * Optional maximum size for the query plan cache. If not provided, a default size will be used.
+   * A value of `0` can be used to disable the cache entirely. A higher cache size can improve
+   * performance for applications that execute a large number of unique queries, while a smaller
+   * cache size can reduce memory usage.
+   * 
+   * @example
+   * ```
+   * const prisma = new PrismaClient({
+   *   adapter,
+   *   queryPlanCacheMaxSize: 100,
+   * })
+   * ```
+   */
+  queryPlanCacheMaxSize?: number
 }
 export type GlobalOmitConfig = {
   admin?: Prisma.AdminOmit
@@ -2456,6 +2563,7 @@ export type GlobalOmitConfig = {
   pagareSignature?: Prisma.PagareSignatureOmit
   identityVerification?: Prisma.IdentityVerificationOmit
   reciboConformidadData?: Prisma.ReciboConformidadDataOmit
+  letraCambioData?: Prisma.LetraCambioDataOmit
 }
 
 /* Types for Logging */

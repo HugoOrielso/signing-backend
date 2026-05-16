@@ -245,7 +245,7 @@ export type ContractAuditEventGroupByOutputType = {
   _max: ContractAuditEventMaxAggregateOutputType | null
 }
 
-type GetContractAuditEventGroupByPayload<T extends ContractAuditEventGroupByArgs> = Prisma.PrismaPromise<
+export type GetContractAuditEventGroupByPayload<T extends ContractAuditEventGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ContractAuditEventGroupByOutputType, T['by']> &
       {
@@ -1979,6 +1979,11 @@ export type ContractAuditEventFindManyArgs<ExtArgs extends runtime.Types.Extensi
    * Skip the first `n` ContractAuditEvents.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of ContractAuditEvents.
+   */
   distinct?: Prisma.ContractAuditEventScalarFieldEnum | Prisma.ContractAuditEventScalarFieldEnum[]
 }
 

@@ -30,8 +30,6 @@ export async function requirePublicSession(
       });
     }
 
-    console.log("requirePublicSession - sessionToken:", sessionToken);
-
     const session = await prisma.publicContractSession.findUnique({
       where: { sessionToken },
       select: {
@@ -43,8 +41,6 @@ export async function requirePublicSession(
         expiresAt: true,
       },
     });
-
-    console.log("requirePublicSession - session from DB:", session);
 
     if (!session) {
       res.clearCookie("public_contract_session", cookieOptions);

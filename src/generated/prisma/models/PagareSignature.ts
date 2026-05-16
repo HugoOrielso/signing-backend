@@ -193,7 +193,7 @@ export type PagareSignatureGroupByOutputType = {
   _max: PagareSignatureMaxAggregateOutputType | null
 }
 
-type GetPagareSignatureGroupByPayload<T extends PagareSignatureGroupByArgs> = Prisma.PrismaPromise<
+export type GetPagareSignatureGroupByPayload<T extends PagareSignatureGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<PagareSignatureGroupByOutputType, T['by']> &
       {
@@ -1236,6 +1236,11 @@ export type PagareSignatureFindManyArgs<ExtArgs extends runtime.Types.Extensions
    * Skip the first `n` PagareSignatures.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of PagareSignatures.
+   */
   distinct?: Prisma.PagareSignatureScalarFieldEnum | Prisma.PagareSignatureScalarFieldEnum[]
 }
 

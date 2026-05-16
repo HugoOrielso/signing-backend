@@ -116,6 +116,7 @@
     "PROVISIONAL_VACANTE_DEFINITIVA",
     "CARRERA_ADMINISTRATIVA",
     "PENSIONADO",
+    "PROPIEDAD",
   ]);
 
   export const referenceSchema = z

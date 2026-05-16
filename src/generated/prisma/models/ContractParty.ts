@@ -193,7 +193,7 @@ export type ContractPartyGroupByOutputType = {
   _max: ContractPartyMaxAggregateOutputType | null
 }
 
-type GetContractPartyGroupByPayload<T extends ContractPartyGroupByArgs> = Prisma.PrismaPromise<
+export type GetContractPartyGroupByPayload<T extends ContractPartyGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ContractPartyGroupByOutputType, T['by']> &
       {
@@ -1301,6 +1301,11 @@ export type ContractPartyFindManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Skip the first `n` ContractParties.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of ContractParties.
+   */
   distinct?: Prisma.ContractPartyScalarFieldEnum | Prisma.ContractPartyScalarFieldEnum[]
 }
 

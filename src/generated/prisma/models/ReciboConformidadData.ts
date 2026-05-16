@@ -255,7 +255,7 @@ export type ReciboConformidadDataGroupByOutputType = {
   _max: ReciboConformidadDataMaxAggregateOutputType | null
 }
 
-type GetReciboConformidadDataGroupByPayload<T extends ReciboConformidadDataGroupByArgs> = Prisma.PrismaPromise<
+export type GetReciboConformidadDataGroupByPayload<T extends ReciboConformidadDataGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ReciboConformidadDataGroupByOutputType, T['by']> &
       {
@@ -1401,6 +1401,11 @@ export type ReciboConformidadDataFindManyArgs<ExtArgs extends runtime.Types.Exte
    * Skip the first `n` ReciboConformidadData.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of ReciboConformidadData.
+   */
   distinct?: Prisma.ReciboConformidadDataScalarFieldEnum | Prisma.ReciboConformidadDataScalarFieldEnum[]
 }
 

@@ -128,17 +128,7 @@ export async function signPublicContract(req: Request, res: Response) {
     }
 
     const context = getRequestContext(req);
-
-    console.log("REQUEST CONTEXT DEBUG", {
-      ip: context.ipAddress,
-      raw: {
-        ip: req.ip,
-        ips: req.ips,
-        remoteAddress: req.socket.remoteAddress,
-        xForwardedFor: req.headers["x-forwarded-for"],
-        xRealIp: req.headers["x-real-ip"],
-      },
-    });
+    
     const createdSignature = await prisma.signature.create({
       data: {
         contractId: contract.id,

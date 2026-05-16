@@ -193,7 +193,7 @@ export type ReferenceGroupByOutputType = {
   _max: ReferenceMaxAggregateOutputType | null
 }
 
-type GetReferenceGroupByPayload<T extends ReferenceGroupByArgs> = Prisma.PrismaPromise<
+export type GetReferenceGroupByPayload<T extends ReferenceGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ReferenceGroupByOutputType, T['by']> &
       {
@@ -1301,6 +1301,11 @@ export type ReferenceFindManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Skip the first `n` References.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of References.
+   */
   distinct?: Prisma.ReferenceScalarFieldEnum | Prisma.ReferenceScalarFieldEnum[]
 }
 

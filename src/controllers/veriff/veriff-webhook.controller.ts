@@ -188,8 +188,6 @@ export async function veriffEventWebhook(req: Request, res: Response) {
   try {
     const rawBody = getRawBody(req);
 
-    console.log("Received Veriff event webhook with body:", rawBody.toString());
-
     if (!verifyVeriffSignature(req, rawBody)) {
       return res.status(401).json({
         ok: false,
@@ -211,11 +209,6 @@ export async function veriffEventWebhook(req: Request, res: Response) {
     });
 
     if (!identityVerification) {
-      console.log("Identity verification not found for event webhook", {
-        sessionId,
-        vendorData,
-        endUserId,
-      });
 
       return res.status(404).json({
         ok: false,
@@ -226,12 +219,6 @@ export async function veriffEventWebhook(req: Request, res: Response) {
     const nextStatus = mapEventStatusToIdentityStatus(providerStatus ?? "");
 
     if (!shouldUpdateStatus(identityVerification.status, nextStatus)) {
-      console.log("Skipping Veriff event status downgrade", {
-        currentStatus: identityVerification.status,
-        nextStatus,
-        providerStatus,
-      });
-
       return res.status(200).json({
         ok: true,
         skipped: true,
@@ -259,8 +246,6 @@ export async function veriffEventWebhook(req: Request, res: Response) {
       },
     });
 
-    console.log("Veriff event updated status:", updated.status);
-
     return res.status(200).json({
       ok: true,
       status: updated.status,
@@ -279,10 +264,6 @@ export async function veriffDecisionWebhook(req: Request, res: Response) {
   try {
     const rawBody = getRawBody(req);
 
-    console.log(
-      "Received Veriff decision webhook with body:",
-      rawBody.toString()
-    );
 
     if (!verifyVeriffSignature(req, rawBody)) {
       return res.status(401).json({
@@ -312,11 +293,6 @@ export async function veriffDecisionWebhook(req: Request, res: Response) {
     });
 
     if (!identityVerification) {
-      console.log("Identity verification not found for decision webhook", {
-        sessionId,
-        vendorData,
-        endUserId,
-      });
 
       return res.status(404).json({
         ok: false,
@@ -356,7 +332,6 @@ export async function veriffDecisionWebhook(req: Request, res: Response) {
       },
     });
 
-    console.log("Veriff decision updated status:", updated.status);
 
     return res.status(200).json({
       ok: true,

@@ -66,7 +66,8 @@ export const ModelName = {
   Pagare: 'Pagare',
   PagareSignature: 'PagareSignature',
   IdentityVerification: 'IdentityVerification',
-  ReciboConformidadData: 'ReciboConformidadData'
+  ReciboConformidadData: 'ReciboConformidadData',
+  LetraCambioData: 'LetraCambioData'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -126,7 +127,8 @@ export const ContractScalarFieldEnum = {
   pagareSigned: 'pagareSigned',
   assignedToId: 'assignedToId',
   assignedAt: 'assignedAt',
-  isConformityReceiptSigned: 'isConformityReceiptSigned'
+  isConformityReceiptSigned: 'isConformityReceiptSigned',
+  isLetraCambioSigned: 'isLetraCambioSigned'
 } as const
 
 export type ContractScalarFieldEnum = (typeof ContractScalarFieldEnum)[keyof typeof ContractScalarFieldEnum]
@@ -425,6 +427,22 @@ export const ReciboConformidadDataScalarFieldEnum = {
 } as const
 
 export type ReciboConformidadDataScalarFieldEnum = (typeof ReciboConformidadDataScalarFieldEnum)[keyof typeof ReciboConformidadDataScalarFieldEnum]
+
+
+export const LetraCambioDataScalarFieldEnum = {
+  id: 'id',
+  contractId: 'contractId',
+  tipoFirma: 'tipoFirma',
+  firmaImagenUrl: 'firmaImagenUrl',
+  firmaTexto: 'firmaTexto',
+  signedIp: 'signedIp',
+  signedUserAgent: 'signedUserAgent',
+  fechaFirma: 'fechaFirma',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LetraCambioDataScalarFieldEnum = (typeof LetraCambioDataScalarFieldEnum)[keyof typeof LetraCambioDataScalarFieldEnum]
 
 
 export const SortOrder = {

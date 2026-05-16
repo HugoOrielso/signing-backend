@@ -392,7 +392,7 @@ export type LibranzaDataGroupByOutputType = {
   _max: LibranzaDataMaxAggregateOutputType | null
 }
 
-type GetLibranzaDataGroupByPayload<T extends LibranzaDataGroupByArgs> = Prisma.PrismaPromise<
+export type GetLibranzaDataGroupByPayload<T extends LibranzaDataGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<LibranzaDataGroupByOutputType, T['by']> &
       {
@@ -2444,6 +2444,11 @@ export type LibranzaDataFindManyArgs<ExtArgs extends runtime.Types.Extensions.In
    * Skip the first `n` LibranzaData.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of LibranzaData.
+   */
   distinct?: Prisma.LibranzaDataScalarFieldEnum | Prisma.LibranzaDataScalarFieldEnum[]
 }
 

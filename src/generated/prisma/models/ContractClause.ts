@@ -199,7 +199,7 @@ export type ContractClauseGroupByOutputType = {
   _max: ContractClauseMaxAggregateOutputType | null
 }
 
-type GetContractClauseGroupByPayload<T extends ContractClauseGroupByArgs> = Prisma.PrismaPromise<
+export type GetContractClauseGroupByPayload<T extends ContractClauseGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ContractClauseGroupByOutputType, T['by']> &
       {
@@ -1201,6 +1201,11 @@ export type ContractClauseFindManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Skip the first `n` ContractClauses.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of ContractClauses.
+   */
   distinct?: Prisma.ContractClauseScalarFieldEnum | Prisma.ContractClauseScalarFieldEnum[]
 }
 

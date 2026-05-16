@@ -227,7 +227,7 @@ export type ContractSignerGroupByOutputType = {
   _max: ContractSignerMaxAggregateOutputType | null
 }
 
-type GetContractSignerGroupByPayload<T extends ContractSignerGroupByArgs> = Prisma.PrismaPromise<
+export type GetContractSignerGroupByPayload<T extends ContractSignerGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<ContractSignerGroupByOutputType, T['by']> &
       {
@@ -1596,6 +1596,11 @@ export type ContractSignerFindManyArgs<ExtArgs extends runtime.Types.Extensions.
    * Skip the first `n` ContractSigners.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of ContractSigners.
+   */
   distinct?: Prisma.ContractSignerScalarFieldEnum | Prisma.ContractSignerScalarFieldEnum[]
 }
 
