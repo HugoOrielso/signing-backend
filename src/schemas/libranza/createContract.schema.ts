@@ -583,12 +583,12 @@
             path: ["clienteFechaNacimiento"],
             message: "La fecha de nacimiento no es válida",
           });
-        } else if (age < 18 || age > 65) {
+        } else if (age < 18 || age >= 65) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             path: ["clienteFechaNacimiento"],
             message:
-              "No se puede realizar la libranza: la edad permitida es entre 18 y 65 años",
+              "No se puede realizar la libranza: la edad permitida es entre 18 y 64 años",
           });
         }
       }

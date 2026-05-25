@@ -20,10 +20,6 @@ export async function listContractsWithParams(
         const { asesor, startDate, endDate, status, search } = req.query;
 
         const where: any = {
-            // 🔥 SIEMPRE excluir estos estados
-            status: {
-                notIn: ["SIGNED", "CANCELLED"],
-            },
         };
 
         // ✅ FILTROS OPCIONALES

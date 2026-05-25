@@ -24,6 +24,30 @@ export async function seedAdmins() {
       password,
       role: "CREDIT_ANALYST" as AdminRole,
     },
+    {
+      email: "jairo.analista@dimcultura.com",
+      name: "Jairo",
+      password,
+      role: "CREDIT_ANALYST" as AdminRole,
+    },
+    {
+      email: "jairo.operador@dimcultura.com",
+      name: "Jairo",
+      password,
+      role: "OPERATOR" as AdminRole,
+    },
+    {
+      email: "armando.analista@dimcultura.com",
+      name: "Armando",
+      password,
+      role: "CREDIT_ANALYST" as AdminRole,
+    },
+    {
+      email: "armando.operador@dimcultura.com",
+      name: "Armando",
+      password,
+      role: "OPERATOR" as AdminRole,
+    },
   ];
 
   for (const admin of admins) {
