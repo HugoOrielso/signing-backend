@@ -5,13 +5,28 @@ import type { Response } from "express";
 export async function listContracts(req: AuthenticatedRequest, res: Response) {
   try {
     const adminId = req.user?.id;
+    const role = req.user?.role;
 
     if (!adminId) {
       return res.status(401).json({ ok: false, message: "No autenticado" });
     }
 
+    let where: any = {};
+
+    // ADMIN y CREDIT_ANALYST ven todo
+    if (role !== "ADMIN" && role !== "CREDIT_ANALYST") {
+      where.adminId = adminId;
+    }
+
+    // OPERATOR no puede ver contratos firmados
+    if (role === "OPERATOR") {
+      where.status = {
+        not: "SIGNED",
+      };
+    }
+
     const contracts = await prisma.contract.findMany({
-      where: req.user?.role === "ADMIN" || req.user?.role === "CREDIT_ANALYST" ? undefined : { adminId },
+      where,
       orderBy: { createdAt: "desc" },
       include: {
         parties: true,
@@ -34,8 +49,10 @@ export async function listContracts(req: AuthenticatedRequest, res: Response) {
     return res.json({ ok: true, data: contracts });
   } catch (error: any) {
     console.error("LIST CONTRACTS ERROR", error);
-    return res
-      .status(500)
-      .json({ ok: false, message: "No se pudieron obtener los contratos" });
+
+    return res.status(500).json({
+      ok: false,
+      message: "No se pudieron obtener los contratos",
+    });
   }
 }
