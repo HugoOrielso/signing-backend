@@ -21,7 +21,7 @@ export async function listContracts(req: AuthenticatedRequest, res: Response) {
     // OPERATOR no puede ver contratos firmados
     if (role === "OPERATOR") {
       where.status = {
-        not: "SIGNED",
+        notIn: ["SIGNED", "CANCELLED"],
       };
     }
 

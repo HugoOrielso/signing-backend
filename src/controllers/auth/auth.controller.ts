@@ -90,7 +90,6 @@ export const login = async (req: AuthenticatedRequest, res: Response) => {
       admin: result.admin,
     });
   } catch (err) {
-    console.log(err)
     const message = err instanceof Error ? err.message : "Internal server error";
     const status = message === "Invalid credentials" ? 401 : 500;
 

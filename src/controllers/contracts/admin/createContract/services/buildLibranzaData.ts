@@ -6,6 +6,7 @@ const validContractTypes = [
   "PROVISIONAL_VACANTE_DEFINITIVA",
   "CARRERA_ADMINISTRATIVA",
   "PENSIONADO",
+  "PROPIEDAD",
 ] as const;
 
 
