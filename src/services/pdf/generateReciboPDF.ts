@@ -4,7 +4,10 @@ import path from "node:path";
 import fs from "node:fs";
 import puppeteer from "puppeteer";
 import { getTemplateConfig } from "../../lib/email/templateConfig";
-import { generateReciboConformidadHtml, ReciboConformidadForPdf } from "./reciboHtml";
+import {
+  generateReciboConformidadHtml,
+  ReciboConformidadForPdf,
+} from "./reciboHtml";
 
 async function resolveLogoBase64(templateKey: string | null | undefined) {
   const template = getTemplateConfig(templateKey);
@@ -28,10 +31,12 @@ async function resolveLogoBase64(templateKey: string | null | undefined) {
       logoBase64 = buffer.toString("base64");
 
       const contentType = response.headers.get("content-type");
+
       if (contentType) {
         logoMime = contentType;
       } else {
         const ext = path.extname(logoRef).slice(1).toLowerCase();
+
         logoMime =
           ext === "jpg" || ext === "jpeg"
             ? "image/jpeg"
@@ -61,6 +66,7 @@ async function resolveLogoBase64(templateKey: string | null | undefined) {
           logoBase64 = fs.readFileSync(logoPath).toString("base64");
 
           const ext = path.extname(file).slice(1).toLowerCase();
+
           logoMime =
             ext === "jpg" || ext === "jpeg"
               ? "image/jpeg"
@@ -83,21 +89,11 @@ async function resolveLogoBase64(templateKey: string | null | undefined) {
   };
 }
 
-export async function generateReciboConformidadPdf(
-  recibo: ReciboConformidadForPdf,
-): Promise<Buffer> {
+async function renderReciboPdf(html: string): Promise<Buffer> {
   let browser;
+  let page;
 
   try {
-    const { logoBase64, logoMime } = await resolveLogoBase64(
-      recibo.contract.templateKey,
-    );
-
-    const html = generateReciboConformidadHtml(recibo, {
-      logoBase64,
-      logoMime,
-    });
-
     const isProduction = process.env.NODE_ENV === "production";
 
     browser = await puppeteer.launch({
@@ -111,26 +107,32 @@ export async function generateReciboConformidadPdf(
             "--disable-setuid-sandbox",
             "--disable-dev-shm-usage",
             "--disable-gpu",
+            "--disable-extensions",
+            "--disable-background-networking",
           ]
         : [],
     });
 
-    const page = await browser.newPage();
+    page = await browser.newPage();
 
-    page.setDefaultTimeout(30000);
-    page.setDefaultNavigationTimeout(30000);
+    page.setDefaultTimeout(60000);
+    page.setDefaultNavigationTimeout(60000);
 
     await page.setContent(html, {
       waitUntil: "domcontentloaded",
-      timeout: 30000,
+      timeout: 60000,
     });
 
     await page
       .waitForFunction(
-        `Array.from(document.images).every(img => img.complete)`,
-        { timeout: 5000 },
+        `Array.from(document.images).every(img => img.complete || img.naturalWidth > 0)`,
+        { timeout: 5000 }
       )
       .catch(() => null);
+
+    await page.emulateMediaType("print");
+
+    await page.evaluateHandle("document.fonts?.ready").catch(() => null);
 
     const pdfBuffer = await page.pdf({
       format: "A4",
@@ -144,15 +146,39 @@ export async function generateReciboConformidadPdf(
       preferCSSPageSize: true,
     });
 
-    await browser.close();
-    browser = undefined;
-
     return Buffer.from(pdfBuffer);
   } finally {
+    if (page) {
+      try {
+        await page.close();
+      } catch {}
+    }
+
     if (browser) {
       try {
         await browser.close();
       } catch {}
     }
+  }
+}
+
+export async function generateReciboConformidadPdf(
+  recibo: ReciboConformidadForPdf
+): Promise<Buffer> {
+  const { logoBase64, logoMime } = await resolveLogoBase64(
+    recibo.contract.templateKey
+  );
+
+  const html = generateReciboConformidadHtml(recibo, {
+    logoBase64,
+    logoMime,
+  });
+
+  try {
+    return await renderReciboPdf(html);
+  } catch (error) {
+    console.warn("Primer intento generando recibo falló. Reintentando...", error);
+
+    return await renderReciboPdf(html);
   }
 }

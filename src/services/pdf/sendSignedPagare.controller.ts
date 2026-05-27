@@ -9,7 +9,7 @@ export async function sendSignedPagarePdf(pagareId: string) {
     where: { id: pagareId },
     include: {
       signature: true,
-      contract: true, // 👈 aquí está la clave
+      contract: true, 
     },
   });
 
