@@ -1,13 +1,20 @@
 // src/services/recibo/reciboHtml.ts
 
 import { TemplateKey } from "../../lib/email/templateConfig";
-
+export type ProductoItem = {
+  valor: string;
+  codigo: string;
+  descripcion: string;
+};
 export type ReciboConformidadForPdf = {
   numeroRecibo: number;
   ciudad: string | null;
   clienteNombre: string;
   clienteCC: string | null;
   clienteEmail: string | null;
+
+  productos?: ProductoItem[];
+
   textoRecibido: string | null;
   fechaFirma: Date | null;
 
@@ -85,6 +92,60 @@ export function generateReciboConformidadHtml(
 ) {
   const templateKey = resolveTemplateKey(recibo.contract.templateKey);
   const empresa = empresaConfig[templateKey];
+  const productos = recibo.productos ?? [];
+
+  const total = productos.reduce(
+    (acc, p) =>
+      acc +
+      (parseFloat(
+        String(p.valor ?? "").replace(/[^0-9.]/g, "")
+      ) || 0),
+    0
+  );
+
+
+  const productoRows = productos
+    .map(
+      (p) => `
+<tr>
+  <td style="${tdStyle}">
+    ${escapeHtml(p.codigo)}
+  </td>
+
+  <td style="${tdStyle}"></td>
+
+  <td style="${tdStyle}">
+    ${escapeHtml(p.descripcion)}
+  </td>
+
+  <td style="${tdStyle};text-align:right">
+    $${Number(p.valor).toLocaleString("es-CO")}
+  </td>
+</tr>
+`
+    )
+    .join("");
+
+
+  const emptyRows = Math.max(
+    0,
+    2 - productos.length
+  );
+
+  const emptyRowsHtml = Array.from({
+    length: emptyRows,
+  })
+    .map(
+      () => `
+<tr>
+  <td style="${tdStyle}">&nbsp;</td>
+  <td style="${tdStyle}"></td>
+  <td style="${tdStyle}"></td>
+  <td style="${tdStyle}"></td>
+</tr>
+`
+    )
+    .join("");
 
   const fecha = formatDate(recibo.fechaFirma ?? new Date());
   const clienteNombre = escapeHtml(recibo.clienteNombre);
@@ -371,9 +432,88 @@ export function generateReciboConformidadHtml(
   )}, en buen estado y a mi entera conformidad como comprador de:
       </div>
 
-      <div class="received-box">
-        ${textoRecibido}
-      </div>
+<div style="position:relative;margin-top:25px">
+
+  <table
+    style="
+      width:100%;
+      border-collapse:collapse;
+      font-size:11px;
+      border-radius:4px;
+    "
+  >
+    <thead>
+      <tr>
+        <th style="${thStyle};width:70px">
+          CODIGO
+        </th>
+
+        <th style="${thStyle};width:20px">
+          C
+        </th>
+
+        <th style="${thStyle}">
+          DESCRIPCIÓN
+        </th>
+
+        <th
+          style="${thStyle};
+          width:120px;
+          text-align:right"
+        >
+          VALOR
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      ${productoRows}
+      ${emptyRowsHtml}
+    </tbody>
+  </table>
+
+</div>
+
+    <div
+      style="
+        display:flex;
+        justify-content:flex-end;
+        margin-top:10px;
+      "
+    >
+      <table
+        style="
+          border-collapse:collapse;
+          font-size:12px;
+        "
+      >
+        <tr>
+          <td
+            style="
+              font-weight:700;
+              padding:2px 10px;
+              border:1px solid #000;
+              background:#1a1a2e;
+              color:white;
+            "
+          >
+            TOTAL RECIBIDO
+          </td>
+
+          <td
+            style="
+              padding:2px 18px;
+              border:1px solid #000;
+              text-align:right;
+              font-weight:700;
+              min-width:120px;
+            "
+          >
+            $${total.toLocaleString("es-CO")}
+          </td>
+        </tr>
+      </table>
+    </div>
 
       <div class="signature-section">
         ${firmaHtml}
@@ -389,3 +529,17 @@ export function generateReciboConformidadHtml(
 </html>
 `;
 }
+
+const thStyle = `
+  background:#1c1e34;
+  color:#fff;
+  font-weight:600;
+  padding:4px 6px;
+  border:1px solid #3a3c52;
+  text-align:left;
+`;
+
+const tdStyle = `
+  border:1px solid #3a3c52;
+  padding:3px 6px;
+`;

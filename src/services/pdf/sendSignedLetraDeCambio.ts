@@ -26,11 +26,26 @@ export async function sendSignedLetraCambioPdf(letraCambioId: string) {
   const clienteNombre =
     letraCambio.contract.reciboConformidadData?.clienteNombre ?? "Cliente";
 
+  const clienteCC =
+    letraCambio.contract.reciboConformidadData?.clienteCC ?? "";
+
   if (!clienteEmail) {
     throw new Error("El cliente no tiene email registrado");
   }
 
-  const pdfBuffer = await generateLetraCambioPdf(letraCambio);
+  const pdfBuffer = await generateLetraCambioPdf({
+    ...letraCambio,
+    contract: {
+      ...letraCambio.contract,
+      reciboConformidadData: {
+        clienteNombre,
+        clienteCC,
+        clienteEmail,
+        ciudad:
+          letraCambio.contract.reciboConformidadData?.ciudad ?? null,
+      },
+    },
+  });
 
   const safeName = clienteNombre
     .replace(/[^\w\s-]/gi, "")
@@ -55,4 +70,3 @@ export async function sendSignedLetraCambioPdf(letraCambioId: string) {
     templateKey: letraCambio.contract.templateKey as TemplateKey,
   });
 }
-

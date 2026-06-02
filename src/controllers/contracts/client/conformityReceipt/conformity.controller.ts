@@ -48,6 +48,11 @@ export async function signConformityReceipt(req: Request, res: Response) {
       where: { token },
       include: {
         reciboConformidadData: true,
+        libranzaData: {
+          select: {
+            productos: true,
+          },
+        },
         signers: {
           select: {
             id: true,
@@ -218,14 +223,19 @@ export async function testRecibo(req: Request, res: Response) {
 export async function getConformityReceipt(req: Request, res: Response) {
   try {
     const { token } = req.params as { token: string };
+
     const contract = await prisma.contract.findFirst({
       where: { token },
-
       include: {
-
         reciboConformidadData: true,
+        libranzaData: {
+          select: {
+            productos: true,
+          },
+        },
       },
     });
+
     if (!contract || !contract.reciboConformidadData) {
       return res.status(404).json({
         ok: false,
@@ -235,7 +245,12 @@ export async function getConformityReceipt(req: Request, res: Response) {
 
     return res.json({
       ok: true,
-      data: { ...contract.reciboConformidadData, isConformityReceiptSigned: contract.isConformityReceiptSigned, templateKey: contract.templateKey },
+      data: {
+        ...contract.reciboConformidadData,
+        productos: contract.libranzaData?.productos ?? [],
+        isConformityReceiptSigned: contract.isConformityReceiptSigned,
+        templateKey: contract.templateKey,
+      },
     });
   } catch (error) {
     return res.status(500).json({

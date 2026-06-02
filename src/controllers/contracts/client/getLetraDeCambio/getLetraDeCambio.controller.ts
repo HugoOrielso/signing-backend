@@ -16,6 +16,12 @@ export async function getLetraCambio(req: Request, res: Response) {
       where: { token },
       include: {
         letraCambioData: true,
+        libranzaData: {
+          select: {
+            clienteCC: true,
+            clienteNombre: true,
+          },
+        },
       },
     });
 
@@ -65,6 +71,8 @@ export async function getLetraCambio(req: Request, res: Response) {
       ok: true,
       data: {
         ...letraCambio,
+        clienteCC: contract.libranzaData?.clienteCC,
+        clienteNombre: contract.libranzaData?.clienteNombre,
         isLetraCambioSigned: contract.isLetraCambioSigned,
         templateKey: contract.templateKey,
       },

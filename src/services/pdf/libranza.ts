@@ -386,7 +386,6 @@ export async function generateLibranzaHtml(
   </div>
 </div>
 
-${isAdmin ? `
   <!-- CONTENEDOR TABLA -->
   <div style="position:relative;margin-bottom:3px">
 
@@ -425,7 +424,6 @@ ${isAdmin ? `
     </div>
 
   </div>
-` : ""}
 <!-- TOTAL -->
 <div style="display:flex;justify-content:flex-end;margin-bottom:5px">
   <table style="border-collapse:collapse;font-size:12px">

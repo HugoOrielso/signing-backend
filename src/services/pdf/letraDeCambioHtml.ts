@@ -44,8 +44,8 @@ export function generateLetraCambioHtml(letraCambio: LetraCambioForPdf) {
     letraCambio.tipoFirma === "DRAWN" && letraCambio.firmaImagenUrl
       ? `<img src="${letraCambio.firmaImagenUrl}" class="signature-img" />`
       : `<div class="typed-signature">${escapeHtml(
-          letraCambio.firmaTexto ?? clienteNombre
-        )}</div>`;
+        letraCambio.firmaTexto ?? clienteNombre
+      )}</div>`;
 
   return `
 <!DOCTYPE html>
@@ -58,6 +58,17 @@ export function generateLetraCambioHtml(letraCambio: LetraCambioForPdf) {
     * {
       box-sizing: border-box;
     }
+
+    .document-value {
+  position: absolute;
+  left: 50%;
+  top: 140px;
+  transform: translateX(-50%) rotate(-90deg);
+  transform-origin: center;
+  font-size: 10px;
+  font-weight: 900;
+  white-space: nowrap;
+}
 
     @page {
       size: A4;
@@ -273,10 +284,16 @@ export function generateLetraCambioHtml(letraCambio: LetraCambioForPdf) {
               <span class="vertical-label">Firma.</span>
             </div>
 
-            <div class="vertical-cell">
-              <span class="vertical-label">Cédula o NIT.</span>
-            </div>
+          <div class="vertical-cell">
+            <span class="document-value">
+              ${escapeHtml(clienteCC)}
+            </span>
 
+            <span class="vertical-label">
+              Cédula o NIT.
+            </span>
+          </div>
+          
             <div class="vertical-cell">
               <span class="vertical-label">Codeudor.</span>
             </div>

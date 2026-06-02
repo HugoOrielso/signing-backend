@@ -171,7 +171,6 @@ export async function signLetraCambio(req: Request, res: Response) {
     } catch (pdfError) {
       console.error("SEND SIGNED LETRA CAMBIO PDF ERROR", pdfError);
     }
-
     return res.json({
       ok: true,
       message: "Letra de cambio firmada correctamente",
@@ -194,10 +193,11 @@ export async function signLetraCambio(req: Request, res: Response) {
 
 export async function exampleLetraCambio(req: Request, res: Response) {
   try {
-    await sendSignedLetraCambioPdf("cmp7eb3050001zgvq2oa4yd0w");
-    return res.status(200)
+    await sendSignedLetraCambioPdf("cmpw4y4ni0000vsvq6dmvd69v");
+    return res.status(200).json({ ok: true, message: "Letra de cambio firmada correctamente" });
   } catch (pdfError) {
     console.error("SEND SIGNED LETRA CAMBIO PDF ERROR", pdfError);
+    return res.status(500).json({ ok: false, message: "No se pudo enviar el PDF de la letra de cambio firmada" });
   }
 
 }
