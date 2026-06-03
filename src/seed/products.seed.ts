@@ -59,6 +59,121 @@ export async function seedProducts() {
       name: "COLECCIÓN HISTORIA LAS SIETE MARAVILLAS DEL MUNDO",
       prices: [264000, 528000, 594000],
     },
+    {
+      code: "DOC0189",
+      name: "GRAFIKIDS MAYUSCULAS CURSIVAS",
+      prices: [65000],
+    },
+    {
+      code: "DOC0190",
+      name: "GRAFIKIDS LINEAS CURSIVAS",
+      prices: [65000],
+    },
+    {
+      code: "DOC0191",
+      name: "GRAFIKIDS ORTOGRAFIA",
+      prices: [65000],
+    },
+    {
+      code: "DOC0192",
+      name: "GRAFIKIDS SUMA Y RESTA",
+      prices: [65000],
+    },
+    {
+      code: "DOC0194",
+      name: "GRAFIKIDS NUMEROS",
+      prices: [65000],
+    },
+    {
+      code: "DOC0195",
+      name: "GRAFIKIDS MINUSCULAS CURSIVA",
+      prices: [65000],
+    },
+    {
+      code: "DOC0196",
+      name: "GRAFIKIDS MINUSCULA IMPRENTA",
+      prices: [65000],
+    },
+    {
+      code: "ENC0001",
+      name: "CURSO ORIENTACION DIDAC 7TM +CD",
+      prices: [350000],
+    },
+    {
+      code: "ENC0070",
+      name: "NUEVA ENC TEMATICA ESTUDIANTIL 4T+1CD",
+      prices: [350000],
+    },
+    {
+      code: "INA0021",
+      name: "EASY ENGLISH BEGNNER BASIC+2CD+1DVD",
+      prices: [180000],
+    },
+    {
+      code: "INS0023",
+      name: "MANUAL DE WINDOWS 7 1T+1CD",
+      prices: [150000],
+    },
+    {
+      code: "MED0060",
+      name: "MANUAL DE RADIOLOGIA MAXILOFACIAL 1T",
+      prices: [250000],
+    },
+    {
+      code: "MED0073",
+      name: "ODONTOLOGIA PARA LA HIGIENE ORAL",
+      prices: [150000],
+    },
+    {
+      code: "MED0109",
+      name: "MN BASICO DE ENDODONCIA 1TM +CD ZAMORA",
+      prices: [150000],
+    },
+    {
+      code: "MED0135",
+      name: "MECANICA DENTAL",
+      prices: [350000],
+    },
+    {
+      code: "MNH0020",
+      name: "CORTES Y PEINADOS PASA A PASO",
+      prices: [250000],
+    },
+    {
+      code: "MNH0030",
+      name: "NUEVAS TENDENCIAS PELUQUERIA ACTUAL",
+      prices: [250000],
+    },
+    {
+      code: "MNH0074",
+      name: "THE BRIDES BOOK 10 TM",
+      prices: [250000],
+    },
+    {
+      code: "OBT0088",
+      name: "MANUAL GANADERO ACTUALIZADO 1T+1CD",
+      prices: [450000],
+    },
+    {
+      code: "OBT0144",
+      name: "BIBLIA DE LOS MATERIALES DE CONSTRUCCION LEXUS",
+      prices: [350000],
+    },
+    {
+      code: "REL0053",
+      name: "HISTORIAS DE LA BIBLIA PARA PINTAR TOMO 01",
+      prices: [65000],
+    },
+    {
+      code: "REL0054",
+      name: "HISTORIAS DE LA BIBLIA PARA PINTAR TOMO 02",
+      prices: [65000],
+    },
+    {
+      code: "REL0055",
+      name: "HISTORIAS DE LA BIBLIA PARA PINTAR TOMO 03",
+      prices: [65000],
+    },
   ];
 
   for (const item of products) {

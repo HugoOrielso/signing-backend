@@ -3,49 +3,72 @@ import bcrypt from "bcrypt";
 import { AdminRole } from "../generated/prisma/enums";
 
 export async function seedAdmins() {
-  const password = await bcrypt.hash("contraseña", 10);
+  const adminPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD || "contraseña", 10);
+  const defaultPassword = await bcrypt.hash(process.env.DEFAULT_PASSWORD || "contraseña", 10);
 
   const admins = [
     {
       email: "admin@demo.com",
       name: "Admin Principal",
-      password,
+      password: adminPassword,
       role: "ADMIN" as AdminRole,
     },
     {
       email: "operador@demo.com",
       name: "Operador",
-      password,
+      password: defaultPassword,
       role: "OPERATOR" as AdminRole,
     },
     {
       email: "analista@demo.com",
       name: "Analista de Crédito",
-      password,
+      password: defaultPassword,
       role: "CREDIT_ANALYST" as AdminRole,
     },
+
+    // Jairo: operador y analista
     {
-      email: "jairo.analista@dimcultura.com",
-      name: "Jairo Villamizar",
-      password,
+      email: "jairo.villamizar@dimcultura.com",
+      name: "JAIRO ALONSO VILLAMIZAR CONTRERS",
+      password: defaultPassword,
       role: "CREDIT_ANALYST" as AdminRole,
     },
     {
       email: "jairo.operador@dimcultura.com",
-      name: "Jairo Villamizar",
-      password,
+      name: "JAIRO ALONSO VILLAMIZAR CONTRERS",
+      password: defaultPassword,
+      role: "OPERATOR" as AdminRole,
+    },
+
+    // Resto: operadores
+    {
+      email: "jose.solis@dimcultura.com",
+      name: "JOSE ANTONIO SOLIS DIAZ",
+      password: defaultPassword,
       role: "OPERATOR" as AdminRole,
     },
     {
-      email: "armando.analista@dimcultura.com",
-      name: "Armando Espinel",
-      password,
-      role: "CREDIT_ANALYST" as AdminRole,
+      email: "osvaldo.martinez@dimcultura.com",
+      name: "OSVALDO MARTINEZ AMDOR",
+      password: defaultPassword,
+      role: "OPERATOR" as AdminRole,
     },
     {
-      email: "armando.operador@dimcultura.com",
-      name: "Armando Espinel",
-      password,
+      email: "fandy.ruiz@dimcultura.com",
+      name: "FANDY EDUARDO RUIZ BLANCO",
+      password: defaultPassword,
+      role: "OPERATOR" as AdminRole,
+    },
+    {
+      email: "edwar.espinel@dimcultura.com",
+      name: "EDWAR ARMANDO ESPINEL",
+      password: defaultPassword,
+      role: "OPERATOR" as AdminRole,
+    },
+    {
+      email: "carlos.barrera@dimcultura.com",
+      name: "CARLOS ANDRES BARRERA AVILES",
+      password: defaultPassword,
       role: "OPERATOR" as AdminRole,
     },
   ];
@@ -53,7 +76,7 @@ export async function seedAdmins() {
   for (const admin of admins) {
     await prisma.admin.upsert({
       where: { email: admin.email },
-      update: {}, // 👈 no modifica si existe
+      update: {},
       create: admin,
     });
   }
