@@ -67,7 +67,9 @@ export const ModelName = {
   PagareSignature: 'PagareSignature',
   IdentityVerification: 'IdentityVerification',
   ReciboConformidadData: 'ReciboConformidadData',
-  LetraCambioData: 'LetraCambioData'
+  LetraCambioData: 'LetraCambioData',
+  ProductCatalog: 'ProductCatalog',
+  ProductPrice: 'ProductPrice'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -443,6 +445,33 @@ export const LetraCambioDataScalarFieldEnum = {
 } as const
 
 export type LetraCambioDataScalarFieldEnum = (typeof LetraCambioDataScalarFieldEnum)[keyof typeof LetraCambioDataScalarFieldEnum]
+
+
+export const ProductCatalogScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProductCatalogScalarFieldEnum = (typeof ProductCatalogScalarFieldEnum)[keyof typeof ProductCatalogScalarFieldEnum]
+
+
+export const ProductPriceScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  amount: 'amount',
+  label: 'label',
+  order: 'order',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProductPriceScalarFieldEnum = (typeof ProductPriceScalarFieldEnum)[keyof typeof ProductPriceScalarFieldEnum]
 
 
 export const SortOrder = {

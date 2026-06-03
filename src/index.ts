@@ -1,12 +1,14 @@
 import "dotenv/config";
 import app from "./server";
 import { seedAdmins } from "./seed/admin.seed";
+import { seedProducts } from "./seed/products.seed";
 
 const PORT = parseInt(process.env.PORT || "4000");
 
 async function start() {
   try {
     await seedAdmins(); // 👈 aquí ocurre el seed automático
+    await seedProducts(); // 👈 aquí ocurre el seed automático
 
     app.listen(PORT, () => {
       console.log(`🚀 Server corriendo en puerto ${PORT}`);

@@ -102,3 +102,13 @@ export type ReciboConformidadData = Prisma.ReciboConformidadDataModel
  * 
  */
 export type LetraCambioData = Prisma.LetraCambioDataModel
+/**
+ * Model ProductCatalog
+ * 
+ */
+export type ProductCatalog = Prisma.ProductCatalogModel
+/**
+ * Model ProductPrice
+ * 
+ */
+export type ProductPrice = Prisma.ProductPriceModel

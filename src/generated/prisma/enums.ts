@@ -199,3 +199,11 @@ export const IdentityVerificationProvider = {
 } as const
 
 export type IdentityVerificationProvider = (typeof IdentityVerificationProvider)[keyof typeof IdentityVerificationProvider]
+
+
+export const ProductStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+} as const
+
+export type ProductStatus = (typeof ProductStatus)[keyof typeof ProductStatus]

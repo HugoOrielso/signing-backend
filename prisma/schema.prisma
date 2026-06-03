@@ -662,3 +662,43 @@ model LetraCambioData {
 
   @@index([contractId])
 }
+
+model ProductCatalog {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  name        String
+  description String?  @db.Text
+  status      ProductStatus @default(ACTIVE)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  prices ProductPrice[]
+
+  @@index([code])
+  @@index([status])
+}
+
+model ProductPrice {
+  id        String @id @default(uuid())
+  productId String
+  product   ProductCatalog @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  amount Int
+  label  String? // Ej: contado, 12 cuotas, 18 cuotas, precio 1, precio 2
+  order  Int     @default(1)
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+
+  @@index([productId])
+  @@index([amount])
+}
+
+
+enum ProductStatus {
+  ACTIVE
+  INACTIVE
+}
