@@ -71,9 +71,6 @@ export async function signPagare(req: Request, res: Response) {
       });
     }
 
-
-
-
     const pagare = await prisma.pagare.findUnique({
       where: {
         contractId: contract.id,

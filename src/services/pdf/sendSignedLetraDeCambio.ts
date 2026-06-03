@@ -55,7 +55,7 @@ export async function sendSignedLetraCambioPdf(letraCambioId: string) {
   const fileName = `letra-de-cambio-${safeName}.pdf`;
 
   await sendCompanySignedLetraCambioEmail({
-    to: "libranzasfirmadas@gmail.com",
+    to: "analista@dimcultura.com",
     clienteNombre,
     pdfBuffer,
     fileName,

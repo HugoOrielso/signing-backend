@@ -34,7 +34,7 @@ export async function sendSignedPagarePdf(pagareId: string) {
 
 
   await sendCompanySignedPagareEmail({
-    to: 'libranzasfirmadas@gmail.com',
+    to: 'analista@dimcultura.com',
     clienteNombre: pagare.deudorNombre ?? "Cliente",
     pdfBuffer,
     fileName: `pagare-${safeName}.pdf`,

@@ -58,7 +58,7 @@ export async function sendSignedContractPdf(contractId: string) {
     .toLowerCase();
 
   await sendCompanySignedContractEmail({
-    to: 'libranzasfirmadas@gmail.com',
+    to: 'analista@dimcultura.com',
     clienteNombre: nombre,
     pdfBuffer: adminPdfBuffer,
     fileName: `libranza-${safeName}.pdf`,
@@ -79,41 +79,3 @@ export async function sendSignedContractPdf(contractId: string) {
   });
 }
 
-
-
-// async function renderHtmlToPdf(page: puppeteer.Page, html: string) {
-//   await page.setContent(html, {
-//     waitUntil: "domcontentloaded",
-//     timeout: 30000,
-//   });
-
-//   await page.evaluate(async () => {
-//     if ("fonts" in document) {
-//       try {
-//         await (document as any).fonts.ready;
-//       } catch {}
-//     }
-
-//     const images = Array.from(document.images ?? []);
-
-//     await Promise.all(
-//       images.map((img) => {
-//         if (img.complete) return Promise.resolve();
-
-//         return new Promise<void>((resolve) => {
-//           const done = () => resolve();
-//           img.addEventListener("load", done, { once: true });
-//           img.addEventListener("error", done, { once: true });
-//           setTimeout(done, 5000);
-//         });
-//       })
-//     );
-//   });
-
-//   return page.pdf({
-//     format: "A4",
-//     printBackground: true,
-//     margin: { top: "0", right: "0", bottom: "0", left: "0" },
-//     preferCSSPageSize: true,
-//   });
-// }

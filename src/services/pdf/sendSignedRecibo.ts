@@ -77,7 +77,7 @@ export async function sendSignedReciboPdf(reciboId: string) {
   const fileName = `recibo-conformidad-${safeName}.pdf`;
 
   await sendCompanySignedReciboConformidadEmail({
-    to: "libranzasfirmadas@gmail.com",
+    to: "analista@dimcultura.com",
     clienteNombre: reciboConformidad.clienteNombre ?? "Cliente",
     pdfBuffer,
     fileName,
