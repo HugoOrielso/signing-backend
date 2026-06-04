@@ -25,8 +25,6 @@ export async function seedAdmins() {
       password: defaultPassword,
       role: "CREDIT_ANALYST" as AdminRole,
     },
-
-    // Jairo: operador y analista
     {
       email: "jairo.villamizar@dimcultura.com",
       name: "JAIRO ALONSO VILLAMIZAR CONTRERS",

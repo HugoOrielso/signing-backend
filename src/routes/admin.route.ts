@@ -6,6 +6,7 @@ import { getAdminFinancialSummary } from "../controllers/contracts/admin/financi
 import { getAdminFilteredOperationalReport } from "../controllers/contracts/admin/operationalSummary/operationalSummary.controller";
 import { getAnalysts } from "../controllers/contracts/admin/getAnalysts/analysts.controller";
 import { createProductController, getProductsController, toggleProductStatusController, updateProductController } from "../controllers/products/getProducts.controller";
+import { getContractIdentityVerificationController, updateIdentityVerificationManualController } from "../controllers/contracts/admin/decision/getResumeContract.controller";
 
 const adminRouter = Router();
 
@@ -42,5 +43,14 @@ adminRouter.patch(
     toggleProductStatusController
 );
 
+adminRouter.get(
+  "/contracts/:contractId/identity-verification",
+  getContractIdentityVerificationController
+);
+
+adminRouter.patch(
+  "/contracts/:contractId/identity-verification/manual-decision",
+  updateIdentityVerificationManualController
+);
 
 export default adminRouter;
