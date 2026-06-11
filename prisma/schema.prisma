@@ -17,7 +17,7 @@ model Admin {
   updatedAt     DateTime       @updatedAt @db.Timestamptz(3)
   contracts     Contract[]
   refreshTokens RefreshToken[]
-
+  isActive Boolean @default(true)
   contractAuditEvents ContractAuditEvent[]
 
   contractDocuments ContractDocument[] @relation("ReviewedContractDocuments")

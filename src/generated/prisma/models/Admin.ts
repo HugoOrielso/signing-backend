@@ -32,6 +32,7 @@ export type AdminMinAggregateOutputType = {
   role: $Enums.AdminRole | null
   createdAt: Date | null
   updatedAt: Date | null
+  isActive: boolean | null
 }
 
 export type AdminMaxAggregateOutputType = {
@@ -42,6 +43,7 @@ export type AdminMaxAggregateOutputType = {
   role: $Enums.AdminRole | null
   createdAt: Date | null
   updatedAt: Date | null
+  isActive: boolean | null
 }
 
 export type AdminCountAggregateOutputType = {
@@ -52,6 +54,7 @@ export type AdminCountAggregateOutputType = {
   role: number
   createdAt: number
   updatedAt: number
+  isActive: number
   _all: number
 }
 
@@ -64,6 +67,7 @@ export type AdminMinAggregateInputType = {
   role?: true
   createdAt?: true
   updatedAt?: true
+  isActive?: true
 }
 
 export type AdminMaxAggregateInputType = {
@@ -74,6 +78,7 @@ export type AdminMaxAggregateInputType = {
   role?: true
   createdAt?: true
   updatedAt?: true
+  isActive?: true
 }
 
 export type AdminCountAggregateInputType = {
@@ -84,6 +89,7 @@ export type AdminCountAggregateInputType = {
   role?: true
   createdAt?: true
   updatedAt?: true
+  isActive?: true
   _all?: true
 }
 
@@ -167,6 +173,7 @@ export type AdminGroupByOutputType = {
   role: $Enums.AdminRole
   createdAt: Date
   updatedAt: Date
+  isActive: boolean
   _count: AdminCountAggregateOutputType | null
   _min: AdminMinAggregateOutputType | null
   _max: AdminMaxAggregateOutputType | null
@@ -198,6 +205,7 @@ export type AdminWhereInput = {
   role?: Prisma.EnumAdminRoleFilter<"Admin"> | $Enums.AdminRole
   createdAt?: Prisma.DateTimeFilter<"Admin"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Admin"> | Date | string
+  isActive?: Prisma.BoolFilter<"Admin"> | boolean
   contracts?: Prisma.ContractListRelationFilter
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
   contractAuditEvents?: Prisma.ContractAuditEventListRelationFilter
@@ -214,6 +222,7 @@ export type AdminOrderByWithRelationInput = {
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   contracts?: Prisma.ContractOrderByRelationAggregateInput
   refreshTokens?: Prisma.RefreshTokenOrderByRelationAggregateInput
   contractAuditEvents?: Prisma.ContractAuditEventOrderByRelationAggregateInput
@@ -233,6 +242,7 @@ export type AdminWhereUniqueInput = Prisma.AtLeast<{
   role?: Prisma.EnumAdminRoleFilter<"Admin"> | $Enums.AdminRole
   createdAt?: Prisma.DateTimeFilter<"Admin"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Admin"> | Date | string
+  isActive?: Prisma.BoolFilter<"Admin"> | boolean
   contracts?: Prisma.ContractListRelationFilter
   refreshTokens?: Prisma.RefreshTokenListRelationFilter
   contractAuditEvents?: Prisma.ContractAuditEventListRelationFilter
@@ -249,6 +259,7 @@ export type AdminOrderByWithAggregationInput = {
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
   _count?: Prisma.AdminCountOrderByAggregateInput
   _max?: Prisma.AdminMaxOrderByAggregateInput
   _min?: Prisma.AdminMinOrderByAggregateInput
@@ -265,6 +276,7 @@ export type AdminScalarWhereWithAggregatesInput = {
   role?: Prisma.EnumAdminRoleWithAggregatesFilter<"Admin"> | $Enums.AdminRole
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Admin"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Admin"> | Date | string
+  isActive?: Prisma.BoolWithAggregatesFilter<"Admin"> | boolean
 }
 
 export type AdminCreateInput = {
@@ -275,6 +287,7 @@ export type AdminCreateInput = {
   role?: $Enums.AdminRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  isActive?: boolean
   contracts?: Prisma.ContractCreateNestedManyWithoutAdminInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutAdminInput
   contractAuditEvents?: Prisma.ContractAuditEventCreateNestedManyWithoutAdminInput
@@ -291,6 +304,7 @@ export type AdminUncheckedCreateInput = {
   role?: $Enums.AdminRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  isActive?: boolean
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutAdminInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutAdminInput
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedCreateNestedManyWithoutAdminInput
@@ -307,6 +321,7 @@ export type AdminUpdateInput = {
   role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contracts?: Prisma.ContractUpdateManyWithoutAdminNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutAdminNestedInput
   contractAuditEvents?: Prisma.ContractAuditEventUpdateManyWithoutAdminNestedInput
@@ -323,6 +338,7 @@ export type AdminUncheckedUpdateInput = {
   role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutAdminNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutAdminNestedInput
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedUpdateManyWithoutAdminNestedInput
@@ -339,6 +355,7 @@ export type AdminCreateManyInput = {
   role?: $Enums.AdminRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  isActive?: boolean
 }
 
 export type AdminUpdateManyMutationInput = {
@@ -349,6 +366,7 @@ export type AdminUpdateManyMutationInput = {
   role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type AdminUncheckedUpdateManyInput = {
@@ -359,6 +377,7 @@ export type AdminUncheckedUpdateManyInput = {
   role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type AdminCountOrderByAggregateInput = {
@@ -369,6 +388,7 @@ export type AdminCountOrderByAggregateInput = {
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
 }
 
 export type AdminMaxOrderByAggregateInput = {
@@ -379,6 +399,7 @@ export type AdminMaxOrderByAggregateInput = {
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
 }
 
 export type AdminMinOrderByAggregateInput = {
@@ -389,6 +410,7 @@ export type AdminMinOrderByAggregateInput = {
   role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  isActive?: Prisma.SortOrder
 }
 
 export type AdminScalarRelationFilter = {
@@ -411,6 +433,10 @@ export type EnumAdminRoleFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 export type AdminCreateNestedOneWithoutContractsInput = {
@@ -513,6 +539,7 @@ export type AdminCreateWithoutContractsInput = {
   role?: $Enums.AdminRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  isActive?: boolean
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutAdminInput
   contractAuditEvents?: Prisma.ContractAuditEventCreateNestedManyWithoutAdminInput
   contractDocuments?: Prisma.ContractDocumentCreateNestedManyWithoutReviewedByInput
@@ -528,6 +555,7 @@ export type AdminUncheckedCreateWithoutContractsInput = {
   role?: $Enums.AdminRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  isActive?: boolean
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutAdminInput
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedCreateNestedManyWithoutAdminInput
   contractDocuments?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutReviewedByInput
@@ -548,6 +576,7 @@ export type AdminCreateWithoutAssignedContractsInput = {
   role?: $Enums.AdminRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  isActive?: boolean
   contracts?: Prisma.ContractCreateNestedManyWithoutAdminInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutAdminInput
   contractAuditEvents?: Prisma.ContractAuditEventCreateNestedManyWithoutAdminInput
@@ -563,6 +592,7 @@ export type AdminUncheckedCreateWithoutAssignedContractsInput = {
   role?: $Enums.AdminRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  isActive?: boolean
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutAdminInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutAdminInput
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedCreateNestedManyWithoutAdminInput
@@ -594,6 +624,7 @@ export type AdminUpdateWithoutContractsInput = {
   role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutAdminNestedInput
   contractAuditEvents?: Prisma.ContractAuditEventUpdateManyWithoutAdminNestedInput
   contractDocuments?: Prisma.ContractDocumentUpdateManyWithoutReviewedByNestedInput
@@ -609,6 +640,7 @@ export type AdminUncheckedUpdateWithoutContractsInput = {
   role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutAdminNestedInput
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedUpdateManyWithoutAdminNestedInput
   contractDocuments?: Prisma.ContractDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -635,6 +667,7 @@ export type AdminUpdateWithoutAssignedContractsInput = {
   role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contracts?: Prisma.ContractUpdateManyWithoutAdminNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutAdminNestedInput
   contractAuditEvents?: Prisma.ContractAuditEventUpdateManyWithoutAdminNestedInput
@@ -650,6 +683,7 @@ export type AdminUncheckedUpdateWithoutAssignedContractsInput = {
   role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutAdminNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutAdminNestedInput
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedUpdateManyWithoutAdminNestedInput
@@ -665,6 +699,7 @@ export type AdminCreateWithoutRefreshTokensInput = {
   role?: $Enums.AdminRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  isActive?: boolean
   contracts?: Prisma.ContractCreateNestedManyWithoutAdminInput
   contractAuditEvents?: Prisma.ContractAuditEventCreateNestedManyWithoutAdminInput
   contractDocuments?: Prisma.ContractDocumentCreateNestedManyWithoutReviewedByInput
@@ -680,6 +715,7 @@ export type AdminUncheckedCreateWithoutRefreshTokensInput = {
   role?: $Enums.AdminRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  isActive?: boolean
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutAdminInput
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedCreateNestedManyWithoutAdminInput
   contractDocuments?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutReviewedByInput
@@ -711,6 +747,7 @@ export type AdminUpdateWithoutRefreshTokensInput = {
   role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contracts?: Prisma.ContractUpdateManyWithoutAdminNestedInput
   contractAuditEvents?: Prisma.ContractAuditEventUpdateManyWithoutAdminNestedInput
   contractDocuments?: Prisma.ContractDocumentUpdateManyWithoutReviewedByNestedInput
@@ -726,6 +763,7 @@ export type AdminUncheckedUpdateWithoutRefreshTokensInput = {
   role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutAdminNestedInput
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedUpdateManyWithoutAdminNestedInput
   contractDocuments?: Prisma.ContractDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -741,6 +779,7 @@ export type AdminCreateWithoutContractDocumentsInput = {
   role?: $Enums.AdminRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  isActive?: boolean
   contracts?: Prisma.ContractCreateNestedManyWithoutAdminInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutAdminInput
   contractAuditEvents?: Prisma.ContractAuditEventCreateNestedManyWithoutAdminInput
@@ -756,6 +795,7 @@ export type AdminUncheckedCreateWithoutContractDocumentsInput = {
   role?: $Enums.AdminRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  isActive?: boolean
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutAdminInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutAdminInput
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedCreateNestedManyWithoutAdminInput
@@ -776,6 +816,7 @@ export type AdminCreateWithoutUploadedContractDocumentsInput = {
   role?: $Enums.AdminRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  isActive?: boolean
   contracts?: Prisma.ContractCreateNestedManyWithoutAdminInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutAdminInput
   contractAuditEvents?: Prisma.ContractAuditEventCreateNestedManyWithoutAdminInput
@@ -791,6 +832,7 @@ export type AdminUncheckedCreateWithoutUploadedContractDocumentsInput = {
   role?: $Enums.AdminRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  isActive?: boolean
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutAdminInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutAdminInput
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedCreateNestedManyWithoutAdminInput
@@ -822,6 +864,7 @@ export type AdminUpdateWithoutContractDocumentsInput = {
   role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contracts?: Prisma.ContractUpdateManyWithoutAdminNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutAdminNestedInput
   contractAuditEvents?: Prisma.ContractAuditEventUpdateManyWithoutAdminNestedInput
@@ -837,6 +880,7 @@ export type AdminUncheckedUpdateWithoutContractDocumentsInput = {
   role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutAdminNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutAdminNestedInput
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedUpdateManyWithoutAdminNestedInput
@@ -863,6 +907,7 @@ export type AdminUpdateWithoutUploadedContractDocumentsInput = {
   role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contracts?: Prisma.ContractUpdateManyWithoutAdminNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutAdminNestedInput
   contractAuditEvents?: Prisma.ContractAuditEventUpdateManyWithoutAdminNestedInput
@@ -878,6 +923,7 @@ export type AdminUncheckedUpdateWithoutUploadedContractDocumentsInput = {
   role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutAdminNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutAdminNestedInput
   contractAuditEvents?: Prisma.ContractAuditEventUncheckedUpdateManyWithoutAdminNestedInput
@@ -893,6 +939,7 @@ export type AdminCreateWithoutContractAuditEventsInput = {
   role?: $Enums.AdminRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  isActive?: boolean
   contracts?: Prisma.ContractCreateNestedManyWithoutAdminInput
   refreshTokens?: Prisma.RefreshTokenCreateNestedManyWithoutAdminInput
   contractDocuments?: Prisma.ContractDocumentCreateNestedManyWithoutReviewedByInput
@@ -908,6 +955,7 @@ export type AdminUncheckedCreateWithoutContractAuditEventsInput = {
   role?: $Enums.AdminRole
   createdAt?: Date | string
   updatedAt?: Date | string
+  isActive?: boolean
   contracts?: Prisma.ContractUncheckedCreateNestedManyWithoutAdminInput
   refreshTokens?: Prisma.RefreshTokenUncheckedCreateNestedManyWithoutAdminInput
   contractDocuments?: Prisma.ContractDocumentUncheckedCreateNestedManyWithoutReviewedByInput
@@ -939,6 +987,7 @@ export type AdminUpdateWithoutContractAuditEventsInput = {
   role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contracts?: Prisma.ContractUpdateManyWithoutAdminNestedInput
   refreshTokens?: Prisma.RefreshTokenUpdateManyWithoutAdminNestedInput
   contractDocuments?: Prisma.ContractDocumentUpdateManyWithoutReviewedByNestedInput
@@ -954,6 +1003,7 @@ export type AdminUncheckedUpdateWithoutContractAuditEventsInput = {
   role?: Prisma.EnumAdminRoleFieldUpdateOperationsInput | $Enums.AdminRole
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   contracts?: Prisma.ContractUncheckedUpdateManyWithoutAdminNestedInput
   refreshTokens?: Prisma.RefreshTokenUncheckedUpdateManyWithoutAdminNestedInput
   contractDocuments?: Prisma.ContractDocumentUncheckedUpdateManyWithoutReviewedByNestedInput
@@ -1045,6 +1095,7 @@ export type AdminSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isActive?: boolean
   contracts?: boolean | Prisma.Admin$contractsArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.Admin$refreshTokensArgs<ExtArgs>
   contractAuditEvents?: boolean | Prisma.Admin$contractAuditEventsArgs<ExtArgs>
@@ -1062,6 +1113,7 @@ export type AdminSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isActive?: boolean
 }, ExtArgs["result"]["admin"]>
 
 export type AdminSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1072,6 +1124,7 @@ export type AdminSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isActive?: boolean
 }, ExtArgs["result"]["admin"]>
 
 export type AdminSelectScalar = {
@@ -1082,9 +1135,10 @@ export type AdminSelectScalar = {
   role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  isActive?: boolean
 }
 
-export type AdminOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "password" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["admin"]>
+export type AdminOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "password" | "role" | "createdAt" | "updatedAt" | "isActive", ExtArgs["result"]["admin"]>
 export type AdminInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contracts?: boolean | Prisma.Admin$contractsArgs<ExtArgs>
   refreshTokens?: boolean | Prisma.Admin$refreshTokensArgs<ExtArgs>
@@ -1115,6 +1169,7 @@ export type $AdminPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     role: $Enums.AdminRole
     createdAt: Date
     updatedAt: Date
+    isActive: boolean
   }, ExtArgs["result"]["admin"]>
   composites: {}
 }
@@ -1551,6 +1606,7 @@ export interface AdminFieldRefs {
   readonly role: Prisma.FieldRef<"Admin", 'AdminRole'>
   readonly createdAt: Prisma.FieldRef<"Admin", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Admin", 'DateTime'>
+  readonly isActive: Prisma.FieldRef<"Admin", 'Boolean'>
 }
     
 
