@@ -10,6 +10,79 @@ import { getAuditRequestContext } from "../../../../utils/audit-request";
 import { sendSignedContractPdf } from "../../../../services/pdf/sendSignedPdf";
 import { getRequestContext } from "../../../../utils/requestContext";
 
+// ─── Helper: reintento con delay ─────────────────────────────────────────────
+
+async function withRetry<T>(
+  label: string,
+  fn: () => Promise<T>,
+  retries = 3,
+  delayMs = 2000
+): Promise<T> {
+  let lastError: unknown;
+
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastError = err;
+      console.warn(`[${label}] Intento ${attempt}/${retries} fallido:`, err);
+      if (attempt < retries) {
+        await new Promise((r) => setTimeout(r, delayMs));
+      }
+    }
+  }
+
+  throw new Error(
+    `[${label}] Falló después de ${retries} intentos. Último error: ${lastError}`
+  );
+}
+
+// ─── Helper: crear pagaré con reintentos ─────────────────────────────────────
+
+async function createPagareIfNeeded(contract: any): Promise<void> {
+  if (!contract.libranzaData) return;
+
+  await withRetry("Crear pagaré", async () => {
+    const existing = await prisma.pagare.findUnique({
+      where: { contractId: contract.id },
+      select: { id: true },
+    });
+
+    if (existing) return; // Ya existe, no hacer nada
+
+    const d = contract.libranzaData;
+
+    await prisma.pagare.create({
+      data: {
+        contractId: contract.id,
+        libranzaDataId: d.id,
+        status: "DRAFT",
+        libranzaToken: contract.token ?? "",
+        ciudadFirma: d.ciudad ?? null,
+        fechaSuscripcion: null,
+        fechaPrimeraCuota: d.mesCobro ?? null,
+        ciudadPago: d.ciudad ?? null,
+        acreedorNombre: contract.templateKey,
+        acreedorNit: "901027654-2",
+        deudorNombre: d.clienteNombre ?? "",
+        deudorDocumento: d.clienteCC ?? "",
+        deudorDocumentoDe: d.clienteCCDe ?? "",
+        deudorDireccion: d.clienteDireccion ?? "",
+        deudorTelefono: d.clienteTelefono ?? "",
+        deudorEmail: d.clienteEmail ?? "",
+        valorTotal: d.sumaTotal ?? 0,
+        numeroCuotas: d.numeroCuotas ?? 0,
+        valorCuota: d.valorCuota ?? 0,
+        interesCorriente: null,
+        interesMora: null,
+        signedAt: null,
+      },
+    });
+  });
+}
+
+// ─── Controller principal ─────────────────────────────────────────────────────
+
 export async function signPublicContract(req: Request, res: Response) {
   try {
     const token = Array.isArray(req.params.token)
@@ -23,19 +96,14 @@ export async function signPublicContract(req: Request, res: Response) {
     };
 
     if (!token) {
-      return res.status(400).json({
-        ok: false,
-        message: "Token requerido",
-      });
+      return res.status(400).json({ ok: false, message: "Token requerido" });
     }
 
     if (!["TYPED", "DRAWN"].includes(type)) {
-      return res.status(400).json({
-        ok: false,
-        message: "Tipo inválido",
-      });
+      return res.status(400).json({ ok: false, message: "Tipo inválido" });
     }
 
+    // ── 1. Cargar contrato ──────────────────────────────────────────────────
     const contract = await prisma.contract.findUnique({
       where: { token },
       include: {
@@ -50,28 +118,18 @@ export async function signPublicContract(req: Request, res: Response) {
       },
     });
 
-
     if (!contract) {
-      return res.status(404).json({
-        ok: false,
-        message: "Contrato no encontrado",
-      });
+      return res.status(404).json({ ok: false, message: "Contrato no encontrado" });
     }
 
     if (contract.tokenExpiresAt && contract.tokenExpiresAt < new Date()) {
-      return res.status(400).json({
-        ok: false,
-        message: "El enlace expiró",
-      });
+      return res.status(400).json({ ok: false, message: "El enlace expiró" });
     }
 
     const signer = contract.signers.find((s) => s.partyRole === "DEUDOR");
 
     if (!signer) {
-      return res.status(400).json({
-        ok: false,
-        message: "Firmante inválido",
-      });
+      return res.status(400).json({ ok: false, message: "Firmante inválido" });
     }
 
     const alreadySigned =
@@ -80,26 +138,18 @@ export async function signPublicContract(req: Request, res: Response) {
       contract.isSigned === true;
 
     if (alreadySigned) {
-      return res.status(400).json({
-        ok: false,
-        message: "Ya firmado",
-      });
+      return res.status(400).json({ ok: false, message: "Ya firmado" });
     }
 
     if (type === "TYPED" && !typedValue?.trim()) {
-      return res.status(400).json({
-        ok: false,
-        message: "Firma requerida",
-      });
+      return res.status(400).json({ ok: false, message: "Firma requerida" });
     }
 
     if (type === "DRAWN" && !imageUrl?.startsWith("data:image/")) {
-      return res.status(400).json({
-        ok: false,
-        message: "Imagen inválida",
-      });
+      return res.status(400).json({ ok: false, message: "Imagen inválida" });
     }
 
+    // ── 2. Subir firma a Cloudinary (si es dibujada) ────────────────────────
     const auditContext = getAuditRequestContext(req);
     const previousStatus = contract.status;
     const signedAt = new Date();
@@ -109,6 +159,7 @@ export async function signPublicContract(req: Request, res: Response) {
       .update(
         JSON.stringify({
           contractId: contract.id,
+          signerId: signer.id,         // ← agregado para unicidad real
           signedAt: signedAt.toISOString(),
         })
       )
@@ -118,6 +169,16 @@ export async function signPublicContract(req: Request, res: Response) {
     let uploadedSignaturePublicId: string | null = null;
 
     if (type === "DRAWN" && imageUrl) {
+      const estimatedBytes = (imageUrl.length * 3) / 4;
+      const maxBytes = 5 * 1024 * 1024; // 5MB
+
+      if (estimatedBytes > maxBytes) {
+        return res.status(400).json({
+          ok: false,
+          message: "La imagen de firma es demasiado grande (máx 5MB)",
+        });
+      }
+
       const uploadResult = await cloudinary.uploader.upload(imageUrl, {
         folder: `contracts/${contract.id}/signatures`,
         resource_type: "image",
@@ -127,8 +188,9 @@ export async function signPublicContract(req: Request, res: Response) {
       uploadedSignaturePublicId = uploadResult.public_id;
     }
 
+    // ── 3. Guardar firma (operación crítica, sin mezclar nada más) ──────────
     const context = getRequestContext(req);
-    
+
     const createdSignature = await prisma.signature.create({
       data: {
         contractId: contract.id,
@@ -144,6 +206,7 @@ export async function signPublicContract(req: Request, res: Response) {
       },
     });
 
+    // ── 4. Audit: firma ─────────────────────────────────────────────────────
     try {
       await trackContractSigned({
         contractId: contract.id,
@@ -163,6 +226,7 @@ export async function signPublicContract(req: Request, res: Response) {
       console.error("AUDIT SIGN ERROR:", e);
     }
 
+    // ── 5. Verificar si todos firmaron ──────────────────────────────────────
     const allSigners = await prisma.contractSigner.findMany({
       where: { contractId: contract.id },
       include: { signatures: true },
@@ -172,61 +236,16 @@ export async function signPublicContract(req: Request, res: Response) {
       .filter((s) => s.partyRole === "DEUDOR")
       .every((s) => s.signatures.length > 0);
 
-    const updatedContract = await prisma.$transaction(async (tx) => {
-      const updated = await tx.contract.update({
-        where: { id: contract.id },
-        data: {
-          status: "READY_TO_SIGN",
-          isSigned: true,
-        },
-      });
-
-      if (allSigned && contract.libranzaData) {
-        const existingPagare = await tx.pagare.findUnique({
-          where: { contractId: contract.id },
-          select: { id: true, number: true },
-        });
-
-        if (!existingPagare) {
-          const d = contract.libranzaData;
-
-          await tx.pagare.create({
-            data: {
-              contractId: contract.id,
-              libranzaDataId: d.id,
-
-              status: "DRAFT",
-              libranzaToken: contract.token ?? '',
-              ciudadFirma: d.ciudad ?? null,
-              fechaSuscripcion: null,
-              fechaPrimeraCuota: d.mesCobro ?? null,
-              ciudadPago: d.ciudad ?? null,
-
-              acreedorNombre: contract.templateKey,
-              acreedorNit: "901027654-2",
-
-              deudorNombre: d.clienteNombre ?? "",
-              deudorDocumento: d.clienteCC ?? "",
-              deudorDocumentoDe: d.clienteCCDe ?? "",
-              deudorDireccion: d.clienteDireccion ?? "",
-              deudorTelefono: d.clienteTelefono ?? "",
-              deudorEmail: d.clienteEmail ?? "",
-
-              valorTotal: d.sumaTotal ?? 0,
-              numeroCuotas: d.numeroCuotas ?? 0,
-              valorCuota: d.valorCuota ?? 0,
-
-              interesCorriente: null,
-              interesMora: null,
-              signedAt: null,
-            },
-          });
-        }
-      }
-
-      return updated;
+    // ── 6. Actualizar estado del contrato (solo esto, sin el pagaré) ────────
+    const updatedContract = await prisma.contract.update({
+      where: { id: contract.id },
+      data: {
+        status: "READY_TO_SIGN",
+        isSigned: true,
+      },
     });
 
+    // ── 7. Audit: cambio de estado ──────────────────────────────────────────
     try {
       await trackContractStatusChange({
         contractId: contract.id,
@@ -244,21 +263,26 @@ export async function signPublicContract(req: Request, res: Response) {
       console.error("AUDIT STATUS ERROR:", e);
     }
 
-    if (allSigned) {
-      try {
-        await sendSignedContractPdf(contract.id);
-      } catch (e) {
-        console.error("EMAIL ERROR:", e);
-      }
-    }
-
-    return res.json({
+    // ── 8. Responder al cliente YA (no bloquear por pagaré ni email) ────────
+    res.json({
       ok: true,
       status: updatedContract.status,
       documentHash,
       imageUrl: uploadedSignatureUrl,
       pagareCreated: allSigned,
     });
+
+    // ── 9. Pagaré y email en background (errores no afectan la respuesta) ───
+    if (allSigned) {
+      createPagareIfNeeded(contract).catch((e) =>
+        console.error(`[Pagaré] Error tras reintentos (contractId: ${contract.id}):`, e)
+      );
+
+      sendSignedContractPdf(contract.id).catch((e) =>
+        console.error(`[Email] Error tras reintentos (contractId: ${contract.id}):`, e)
+      );
+    }
+
   } catch (error) {
     console.error("SIGN ERROR", error);
     return res.status(500).json({
@@ -268,18 +292,14 @@ export async function signPublicContract(req: Request, res: Response) {
   }
 }
 
+// ─── Endpoint de prueba ───────────────────────────────────────────────────────
 
 export async function signLibranzaPrueba(req: Request, res: Response) {
-
   try {
     await sendSignedContractPdf("7c226516-91b6-4d6f-92f6-9e2062bf3cf7");
   } catch (e) {
     console.error("EMAIL ERROR:", e);
   }
 
-  return res.json({
-    ok: true,
-  });
-
-
+  return res.json({ ok: true });
 }

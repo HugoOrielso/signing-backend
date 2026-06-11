@@ -174,6 +174,16 @@ export async function seedProducts() {
       name: "HISTORIAS DE LA BIBLIA PARA PINTAR TOMO 03",
       prices: [65000],
     },
+    {
+      code: "VP003",
+      name: "LOS DEBERES DEL NIÑO EN EL HOGAR",
+      prices: [20000, 45000],
+    },
+    {
+      code: "VP004",
+      name: "LOS DERECHOS DEL NIÑO EN EL HOGAR",
+      prices: [20000, 45000],
+    },
   ];
 
   for (const item of products) {
