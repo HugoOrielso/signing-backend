@@ -105,7 +105,7 @@ export async function sendSignedContractPdf(contractId: string) {
   const [companyResult, clientResult] = await Promise.allSettled([
     withRetry("Email empresa", () =>
       sendCompanySignedContractEmail({
-        to: "orielso.lozano15@gmail.com",
+        to: "analista@dimcultura.com",
         clienteNombre: nombre,
         pdfBuffer: adminPdfBuffer,
         fileName,

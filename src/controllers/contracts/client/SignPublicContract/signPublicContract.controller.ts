@@ -272,7 +272,6 @@ export async function signPublicContract(req: Request, res: Response) {
       pagareCreated: allSigned,
     });
 
-    // ── 9. Pagaré y email en background (errores no afectan la respuesta) ───
     if (allSigned) {
       createPagareIfNeeded(contract).catch((e) =>
         console.error(`[Pagaré] Error tras reintentos (contractId: ${contract.id}):`, e)
