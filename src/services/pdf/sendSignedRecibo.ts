@@ -111,7 +111,7 @@ export async function sendSignedReciboPdf(reciboId: string) {
   const [companyResult, clientResult] = await Promise.allSettled([
     withRetry("Email empresa recibo", () =>
       sendCompanySignedReciboConformidadEmail({
-        to: "hugooxxxorielso@gmail.com",
+        to: "analista@dimcultura.com",
         clienteNombre: nombre,
         pdfBuffer,
         fileName,

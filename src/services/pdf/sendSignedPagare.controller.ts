@@ -79,7 +79,7 @@ export async function sendSignedPagarePdf(pagareId: string) {
   const [companyResult, clientResult] = await Promise.allSettled([
     withRetry("Email empresa pagaré", () =>
       sendCompanySignedPagareEmail({
-        to: "hugooxxxorielso@gmail.com",
+        to: "analista@dimcultura.com",
         clienteNombre: nombre,
         pdfBuffer,
         fileName,

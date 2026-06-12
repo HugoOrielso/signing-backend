@@ -9,8 +9,6 @@ import veriffRouter from "./routes/veriff.route";
 import adminRouter from "./routes/admin.route";
 import staffRouter from "./routes/operator.route";
 import productsRouter from "./routes/products.route";
-import fs from "node:fs";
-import path from "node:path";
 const app = express();
 
 const allowedOrigins = (
@@ -22,7 +20,6 @@ const allowedOrigins = (
 
 const corsOptions: CorsOptions = {
   origin: (origin, callback) => {
-    // Permitir Postman, apps móviles y llamadas server-to-server
     if (!origin) {
       return callback(null, true);
     }
@@ -60,43 +57,6 @@ app.use("/api/staff", staffRouter);
 app.use("/api/contracts", contractsRouter);
 app.use("/api/users", userRouter);
 app.use("/api/products", productsRouter);
-
-
-function checkAssets() {
-  const requiredFiles = [
-    "logo_dimcultura.png",
-    "gruculcol.png",
-  ];
-
-  const possibleDirs = [
-    path.join(process.cwd(), "src", "public"),
-    path.join(process.cwd(), "public"),
-  ];
-
-  console.log("🔍 Verificando assets...");
-
-  for (const file of requiredFiles) {
-    let found = false;
-
-    for (const dir of possibleDirs) {
-      const fullPath = path.join(dir, file);
-
-      if (fs.existsSync(fullPath)) {
-        console.log(`✅ ${file}: ${fullPath}`);
-        found = true;
-        break;
-      }
-    }
-
-    if (!found) {
-      console.error(`❌ No encontrado: ${file}`);
-    }
-  }
-
-  console.log("✅ Verificación de assets finalizada");
-}
-
-checkAssets()
 
 app.use((_req: Request, res: Response) => {
   res.status(404).json({ error: "Not found" });
