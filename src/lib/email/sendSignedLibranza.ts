@@ -14,76 +14,28 @@ interface SendSignedEmailParams {
   templateKey: TemplateKey;
 }
 
-export async function sendSignedContractEmail({
+type SignatureNotificationEmailParams = {
+  to: string;
+  clienteNombre: string;
+  templateKey: string; // o el tipo que uses
+};
+
+export async function sendSignatureNotificationEmail({
   to,
   clienteNombre,
-  pdfBuffer,
-  fileName,
-  role,
-  certBuffer,
-  certFileName,
   templateKey,
-}: SendSignedEmailParams) {
+}: SignatureNotificationEmailParams) {
   const template = getTemplateConfig(templateKey);
 
   const from =
     process.env.EMAIL_FROM || `${template.nombre} <contact@dimcultura.com>`;
 
-  const isAdmin = role === "admin";
-
-  const subject = isAdmin
-    ? `✅ Libranza firmada — ${clienteNombre}`
-    : `✅ Tu libranza ha sido firmada — ${template.nombre}`;
-
-  const bodyTitle = isAdmin
-    ? `La libranza de <strong>${clienteNombre}</strong> fue firmada correctamente.`
-    : `Hola <strong>${clienteNombre}</strong>, tu libranza ha sido firmada y registrada correctamente.`;
-
-  const passwordNote = !isAdmin
-    ? `<table width="100%" cellpadding="0" cellspacing="0"
-          style="background:#f8fbff;border:1px solid #dbe7ff;border-radius:18px;margin-bottom:20px;">
-          <tr>
-            <td style="padding:16px 18px;">
-              <p style="font-size:11px;color:#2563eb;margin:0 0 6px;font-weight:700;
-                text-transform:uppercase;letter-spacing:1px;">🔒 Documento protegido</p>
-              <p style="font-size:13px;color:#4b5b7c;line-height:1.6;margin:0;">
-                El PDF adjunto está protegido con contraseña.
-                Para abrirlo usa tu número de cédula.
-              </p>
-            </td>
-          </tr>
-        </table>`
-    : "";
-
-  const certNote = certBuffer
-    ? `<table width="100%" cellpadding="0" cellspacing="0"
-          style="background:#f8fbff;border:1px solid #dbe7ff;border-radius:18px;margin-bottom:20px;">
-          <tr>
-            <td style="padding:16px 18px;">
-              <p style="font-size:11px;color:#2563eb;margin:0 0 6px;font-weight:700;
-                text-transform:uppercase;letter-spacing:1px;">📄 Certificado de firma</p>
-              <p style="font-size:13px;color:#4b5b7c;line-height:1.6;margin:0;">
-                Se adjunta también el certificado de firma electrónica con el registro
-                de hash, IP y fecha de firma para tu constancia.
-              </p>
-            </td>
-          </tr>
-        </table>`
-    : "";
+  const subject = `✅ Has firmado electrónicamente — ${template.nombre}`;
 
   return resend.emails.send({
     from,
     to,
     subject,
-    attachments: [
-      {
-        filename: fileName,
-        content: pdfBuffer,
-      },
-      ...(certBuffer && certFileName
-        ? [{ filename: certFileName, content: certBuffer }]
-        : []),
-    ],
     html: `
   <!DOCTYPE html>
   <html lang="es">
@@ -97,12 +49,12 @@ export async function sendSignedContractEmail({
         <td align="center">
           <table width="620" cellpadding="0" cellspacing="0"
             style="width:620px;max-width:620px;background:#ffffff;border:1px solid #e5edf8;border-radius:28px;overflow:hidden;box-shadow:0 10px 30px rgba(37,99,235,0.08);">
-            
+
             <!-- HEADER -->
             <tr>
               <td style="padding:28px 32px 20px;background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border-bottom:1px solid #edf2fb;text-align:center;">
                 <img
-                  src="${template.logoFile}"
+                  src="${template.logoEmailUrl}"
                   alt="${template.nombre}"
                   style="max-width:220px;width:220px;height:auto;display:block;margin:0 auto 14px auto;"
                 />
@@ -136,33 +88,32 @@ export async function sendSignedContractEmail({
                 </div>
 
                 <p style="margin:0 0 12px;text-align:center;font-size:30px;line-height:1.2;font-weight:800;color:#0f172a;">
-                  Libranza firmada correctamente
+                  Firma electrónica exitosa
                 </p>
 
                 <p style="margin:0 0 14px;text-align:center;font-size:15px;line-height:1.8;color:#4b5b7c;">
-                  ${bodyTitle}
+                  Hola <strong>${clienteNombre}</strong>, has firmado electrónicamente
+                  tu documento de forma correcta.
                 </p>
 
                 <p style="margin:0 0 26px;text-align:center;font-size:15px;line-height:1.8;color:#4b5b7c;">
-                  Encuentra el contrato firmado adjunto en este correo.
+                  Tu firma quedó registrada en el sistema de ${template.nombre}.
+                  No necesitas realizar ninguna acción adicional.
                 </p>
 
                 <table width="100%" cellpadding="0" cellspacing="0"
-                  style="background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border:1px solid #e3ecfb;border-radius:22px;margin-bottom:22px;">
+                  style="background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border:1px solid #e3ecfb;border-radius:22px;margin-bottom:8px;">
                   <tr>
                     <td style="padding:20px 22px;">
                       <p style="margin:0 0 6px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#2563eb;">
                         Estado del proceso
                       </p>
                       <p style="margin:0;font-size:14px;line-height:1.7;color:#475569;">
-                        El documento ya fue firmado y quedó registrado correctamente en el sistema de ${template.nombre}.
+                        El documento fue firmado y quedó registrado correctamente en el sistema de ${template.nombre}.
                       </p>
                     </td>
                   </tr>
                 </table>
-
-                ${passwordNote}
-                ${certNote}
 
                 <!-- FOOTER -->
                 <table width="100%" cellpadding="0" cellspacing="0"
@@ -194,6 +145,7 @@ export async function sendSignedContractEmail({
 }
 
 
+
 export async function sendCompanySignedContractEmail({
   to,
   clienteNombre,
@@ -210,7 +162,17 @@ export async function sendCompanySignedContractEmail({
 
   const subject = `✅ Libranza firmada por ${clienteNombre}`;
 
-  return resend.emails.send({
+  console.log({
+    pdfMB: +(pdfBuffer.length / 1024 / 1024).toFixed(2),
+    certMB: certBuffer ? +(certBuffer.length / 1024 / 1024).toFixed(2) : 0,
+    totalMB: +(
+      (pdfBuffer.length + (certBuffer?.length ?? 0)) /
+      1024 /
+      1024
+    ).toFixed(2),
+  });
+
+  const result = await resend.emails.send({
     from,
     to,
     subject,
@@ -219,9 +181,6 @@ export async function sendCompanySignedContractEmail({
         filename: fileName,
         content: pdfBuffer,
       },
-      ...(certBuffer && certFileName
-        ? [{ filename: certFileName, content: certBuffer }]
-        : []),
     ],
     html: `
 <!DOCTYPE html>
@@ -242,7 +201,7 @@ export async function sendCompanySignedContractEmail({
           <tr>
             <td style="padding:28px 32px 20px;background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border-bottom:1px solid #edf2fb;text-align:center;">
               <img
-                src="${template.logoFile}"
+                src="${template.logoEmailUrl}"
                 alt="${template.nombre}"
                 style="max-width:220px;width:220px;height:auto;display:block;margin:0 auto 14px auto;"
               />
@@ -303,9 +262,8 @@ export async function sendCompanySignedContractEmail({
                 </tr>
               </table>
 
-              ${
-                certBuffer
-                  ? `
+              ${certBuffer
+        ? `
               <table width="100%" cellpadding="0" cellspacing="0"
                 style="background:#f8fbff;border:1px solid #dbe7ff;border-radius:18px;margin-bottom:20px;">
                 <tr>
@@ -323,8 +281,8 @@ export async function sendCompanySignedContractEmail({
                 </tr>
               </table>
               `
-                  : ""
-              }
+        : ""
+      }
 
               <!-- FOOTER -->
               <table width="100%" cellpadding="0" cellspacing="0"
@@ -356,4 +314,12 @@ export async function sendCompanySignedContractEmail({
 </html>
 `,
   });
+
+  if (result.error) {
+    throw new Error(
+      `Resend error (${result.error.statusCode}): ${result.error.message}`
+    );
+  }
+
+  return result;
 }

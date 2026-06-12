@@ -1,7 +1,7 @@
 import { prisma } from "../../database/db";
 import {
   sendCompanySignedPagareEmail,
-  sendSignedPagareEmail,
+  sendPagareNotificationEmail,
 } from "../../lib/email/sendSignedPagare";
 import { TemplateKey } from "../../lib/email/templateConfig";
 import { generatePagarePdf } from "./generatePagare";
@@ -12,7 +12,7 @@ async function withRetry<T>(
   label: string,
   fn: () => Promise<T>,
   retries = 3,
-  delayMs = 2000
+  delayMs = 3500
 ): Promise<T> {
   let lastError: unknown;
 
@@ -70,7 +70,7 @@ export async function sendSignedPagarePdf(pagareId: string) {
   const fileName = `pagare-${safeName}.pdf`;
   const templateKey = pagare.contract.templateKey as TemplateKey;
 
-  // 3. Generar PDF con reintentos
+  // 3. Generar PDF (solo se usa para la empresa) con reintentos
   const pdfBuffer = await withRetry("Generar PDF pagaré", () =>
     generatePagarePdf(pagare)
   );
@@ -79,7 +79,7 @@ export async function sendSignedPagarePdf(pagareId: string) {
   const [companyResult, clientResult] = await Promise.allSettled([
     withRetry("Email empresa pagaré", () =>
       sendCompanySignedPagareEmail({
-        to: "analista@dimcultura.com",
+        to: "hugooxxxorielso@gmail.com",
         clienteNombre: nombre,
         pdfBuffer,
         fileName,
@@ -87,12 +87,9 @@ export async function sendSignedPagarePdf(pagareId: string) {
       })
     ),
     withRetry("Email cliente pagaré", () =>
-      sendSignedPagareEmail({
+      sendPagareNotificationEmail({
         to: pagare.deudorEmail!,
         clienteNombre: nombre,
-        pdfBuffer,
-        fileName,
-        role: "cliente",
         templateKey,
       })
     ),

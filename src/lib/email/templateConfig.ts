@@ -6,6 +6,7 @@ export const TEMPLATE_CONFIG: Record<
   TemplateKey,
   {
     logoFile: string;
+    logoEmailUrl: string;
     nombre: string;
     subtitulo: string;
     slogan: string;
@@ -15,7 +16,8 @@ export const TEMPLATE_CONFIG: Record<
   }
 > = {
   dimcultura: {
-    logoFile: "https://dimcultura.com/assets/logo_dimcultura.png",
+    logoFile: "logo_dimcultura.png",
+    logoEmailUrl: "https://dimcultura.com/assets/logo_dimcultura.png",
     nombre: "Dimcultura S.A.S.",
     subtitulo: "Nueva Dimensión Cultural",
     slogan: "Un mundo en el que debes estar",
@@ -24,7 +26,8 @@ export const TEMPLATE_CONFIG: Record<
     web: "www.dimcultura.com",
   },
   gruculcol: {
-    logoFile: "https://dimcultura.com/assets/gruculcol.png",
+    logoFile: "gruculcol.png",
+    logoEmailUrl: "https://dimcultura.com/assets/gruculcol.png",
     nombre: "GRUCULCOL",
     subtitulo: "Grupo Cultural Colombiano",
     slogan: "Educación sin fronteras",

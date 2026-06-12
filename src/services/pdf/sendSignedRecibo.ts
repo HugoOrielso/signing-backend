@@ -1,13 +1,11 @@
 import { prisma } from "../../database/db";
 import {
   sendCompanySignedReciboConformidadEmail,
-  sendSignedReciboConformidadEmail,
+  sendReciboConformidadNotificationEmail,
 } from "../../lib/email/sendRecibo";
 import { TemplateKey } from "../../lib/email/templateConfig";
 import { generateReciboConformidadPdf } from "./generateReciboPDF";
 import type { ProductoItem } from "./reciboHtml";
-
-// ─── Helper: reintento con delay ─────────────────────────────────────────────
 
 async function withRetry<T>(
   label: string,
@@ -19,10 +17,14 @@ async function withRetry<T>(
 
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      return await fn();
+      const result = await fn();
+
+      return result;
     } catch (err) {
       lastError = err;
+
       console.warn(`[${label}] Intento ${attempt}/${retries} fallido:`, err);
+
       if (attempt < retries) {
         await new Promise((r) => setTimeout(r, delayMs));
       }
@@ -39,6 +41,7 @@ function normalizeProductos(value: unknown): ProductoItem[] {
 
   return value.map((item) => {
     const producto = item as Record<string, unknown>;
+
     return {
       codigo: String(producto.codigo ?? ""),
       descripcion: String(producto.descripcion ?? ""),
@@ -54,10 +57,7 @@ function buildSafeName(rawName: string | null | undefined, fallback: string) {
     .toLowerCase();
 }
 
-// ─── Main ─────────────────────────────────────────────────────────────────────
-
 export async function sendSignedReciboPdf(reciboId: string) {
-  // 1. Cargar recibo
   const reciboConformidad = await prisma.reciboConformidadData.findUnique({
     where: { id: reciboId },
     include: {
@@ -69,13 +69,15 @@ export async function sendSignedReciboPdf(reciboId: string) {
     },
   });
 
+
   if (!reciboConformidad) {
     throw new Error(`Recibo no encontrado (reciboId: ${reciboId})`);
   }
 
-  // 2. Validar email antes de generar el PDF
   if (!reciboConformidad.clienteEmail) {
-    throw new Error(`El cliente no tiene email registrado (reciboId: ${reciboId})`);
+    throw new Error(
+      `El cliente no tiene email registrado (reciboId: ${reciboId})`
+    );
   }
 
   const nombre = reciboConformidad.clienteNombre ?? "Cliente";
@@ -86,7 +88,6 @@ export async function sendSignedReciboPdf(reciboId: string) {
     reciboConformidad.contract.libranzaData?.productos
   );
 
-  // 3. Generar PDF con reintentos
   const pdfBuffer = await withRetry("Generar PDF recibo", () =>
     generateReciboConformidadPdf({
       numeroRecibo: reciboConformidad.numeroRecibo,
@@ -107,11 +108,10 @@ export async function sendSignedReciboPdf(reciboId: string) {
     })
   );
 
-  // 4. Enviar emails de forma independiente
   const [companyResult, clientResult] = await Promise.allSettled([
     withRetry("Email empresa recibo", () =>
       sendCompanySignedReciboConformidadEmail({
-        to: "analista@dimcultura.com",
+        to: "hugooxxxorielso@gmail.com",
         clienteNombre: nombre,
         pdfBuffer,
         fileName,
@@ -119,17 +119,15 @@ export async function sendSignedReciboPdf(reciboId: string) {
       })
     ),
     withRetry("Email cliente recibo", () =>
-      sendSignedReciboConformidadEmail({
+      sendReciboConformidadNotificationEmail({
         to: reciboConformidad.clienteEmail!,
         clienteNombre: nombre,
-        pdfBuffer,
-        fileName,
         templateKey,
       })
     ),
   ]);
 
-  // 5. Loggear resultados parciales
+
   if (companyResult.status === "rejected") {
     console.error(
       `[sendSignedReciboPdf] Email empresa falló (reciboId: ${reciboId}):`,
@@ -144,7 +142,6 @@ export async function sendSignedReciboPdf(reciboId: string) {
     );
   }
 
-  // Lanzar solo si ambos fallaron
   if (
     companyResult.status === "rejected" &&
     clientResult.status === "rejected"

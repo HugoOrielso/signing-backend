@@ -4,6 +4,7 @@ import { encryptPDF } from "@pdfsmaller/pdf-encrypt-lite";
 import { getTemplateConfig } from "../../lib/email/templateConfig";
 import { generateLibranzaHtml } from "./libranza";
 import { renderPdf } from "./renderPDF";
+import { fetchInternalLogoWithRetry } from "../../utils/fetchLogo";
 
 type PdfAudience = "client" | "admin";
 
@@ -35,73 +36,61 @@ export async function generateContractPdf(
     : undefined;
 
   let logoBase64: string | undefined;
-  let logoMime = "image/webp";
+  let logoMime = "image/png";
 
   try {
     const logoRef = template.logoFile;
 
-    if (logoRef?.startsWith("http://") || logoRef?.startsWith("https://")) {
-      const response = await fetch(logoRef);
+    const possibleDirs = [
+      path.join(process.cwd(), "src", "public"),
+      path.join(process.cwd(), "public"),
+      path.join(process.cwd(), "src", "public", "assets"),
+      path.join(process.cwd(), "public", "assets"),
+    ];
 
-      if (!response.ok) {
-        throw new Error(`No se pudo descargar el logo: ${response.status}`);
-      }
+    let logoFound = false;
 
-      const arrayBuffer = await response.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
+    for (const dir of possibleDirs) {
+      const logoPath = path.join(dir, logoRef);
 
-      logoBase64 = buffer.toString("base64");
+      if (fs.existsSync(logoPath)) {
+        const ext = path.extname(logoPath).slice(1).toLowerCase();
 
-      const contentType = response.headers.get("content-type");
-
-      if (contentType) {
-        logoMime = contentType;
-      } else {
-        const ext = path.extname(logoRef).slice(1).toLowerCase();
+        logoBase64 = fs.readFileSync(logoPath).toString("base64");
 
         logoMime =
           ext === "jpg" || ext === "jpeg"
             ? "image/jpeg"
-            : ext === "png"
-              ? "image/png"
-              : ext === "svg"
-                ? "image/svg+xml"
-                : "image/webp";
+            : ext === "svg"
+              ? "image/svg+xml"
+              : ext === "webp"
+                ? "image/webp"
+                : "image/png";
+
+
+        logoFound = true;
+        break;
       }
-    } else {
-      const possibleDirs = [
-        path.join(process.cwd(), "public", "assets"),
-        path.join(process.cwd(), "src", "public", "assets"),
-      ];
+    }
 
-      const assetsDir =
-        possibleDirs.find((d) => fs.existsSync(d)) ?? possibleDirs[0];
+    /**
+     * Fallback remoto
+     * Solo entra aquí si no encontró el archivo local
+     */
+    if (!logoFound) {
+      console.warn(
+        `[generateContractPdf] Logo local no encontrado (${logoRef}). Intentando fallback remoto...`
+      );
 
-      const candidates = [logoRef, "logo.webp", "logo.png", "logo.jpg"];
+      const result = await fetchInternalLogoWithRetry(logoRef);
 
-      for (const file of candidates) {
-        if (!file) continue;
-
-        const logoPath = path.join(assetsDir, file);
-
-        if (fs.existsSync(logoPath)) {
-          logoBase64 = fs.readFileSync(logoPath).toString("base64");
-
-          const ext = path.extname(file).slice(1).toLowerCase();
-
-          logoMime =
-            ext === "jpg" || ext === "jpeg"
-              ? "image/jpeg"
-              : ext === "svg"
-                ? "image/svg+xml"
-                : `image/${ext || "webp"}`;
-
-          break;
-        }
+      if (result) {
+        logoBase64 = result.base64;
+        logoMime = result.mime;
       }
     }
   } catch (e) {
-    console.warn("Sin logo:", e);
+    console.warn("[generateContractPdf] Sin logo:", e);
   }
 
   const html = await generateLibranzaHtml(contract.libranzaData, {
@@ -118,7 +107,10 @@ export async function generateContractPdf(
   try {
     pdfBuffer = await renderPdf(html);
   } catch (error) {
-    console.warn("Primer intento generando contrato falló. Reintentando...", error);
+    console.warn(
+      "Primer intento generando contrato falló. Reintentando...",
+      error
+    );
 
     pdfBuffer = await renderPdf(html);
   }

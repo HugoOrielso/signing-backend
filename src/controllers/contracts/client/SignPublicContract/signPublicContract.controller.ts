@@ -159,7 +159,7 @@ export async function signPublicContract(req: Request, res: Response) {
       .update(
         JSON.stringify({
           contractId: contract.id,
-          signerId: signer.id,         // ← agregado para unicidad real
+          signerId: signer.id,        
           signedAt: signedAt.toISOString(),
         })
       )

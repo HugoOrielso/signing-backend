@@ -184,6 +184,52 @@ export async function seedProducts() {
       name: "LOS DERECHOS DEL NIÑO EN EL HOGAR",
       prices: [20000, 45000],
     },
+    {
+      code: "VD007",
+      name: "ACTUALIZACION",
+      prices: [0], 
+    },
+    {
+      code: "VD008",
+      name: "ACTUALIZACION",
+      prices: [0], 
+    },
+    {
+      code: "VP001",
+      name: "COLECCIÓN MEDIO AMBIENTE",
+      prices: [0], 
+    },
+    {
+      code: "VP002",
+      name: "MANUAL DEL INGENIERO INDUSTRIAL",
+      prices: [0], 
+    },
+    {
+      code: "SLL0097",
+      name: "CARITAS DE EXPRESION",
+      prices: [0], 
+    },
+    {
+      code: "SLL0110",
+      name: "MULTIFIGURAS",
+      prices: [0],
+    },
+    {
+      code: "SLL0111",
+      name: "APARATO DIGESTIVO",
+      prices: [0],
+    },
+    {
+      code: "SLL0112",
+      name: "MUSCULOS",
+      prices: [0], 
+    },
+    {
+      code: "SLL0113",
+      name: "SIXTEMA OSEO Y CRANEO",
+      prices: [0],
+    },
+
   ];
 
   for (const item of products) {

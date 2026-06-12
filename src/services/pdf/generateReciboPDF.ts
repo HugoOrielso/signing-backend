@@ -1,69 +1,75 @@
 import path from "node:path";
 import fs from "node:fs";
 import { getTemplateConfig } from "../../lib/email/templateConfig";
-import { generateReciboConformidadHtml, ReciboConformidadForPdf } from "./reciboHtml";
+import {
+  generateReciboConformidadHtml,
+  ReciboConformidadForPdf,
+} from "./reciboHtml";
 import { renderPdf } from "./renderPDF";
+import { fetchInternalLogoWithRetry } from "../../utils/fetchLogo";
 
-// ─── Resolver logo (igual que en getEncryptedPDF) ────────────────────────────
+// ─── Resolver logo local + fallback HTTP ─────────────────────────────────────
 
 async function resolveLogoBase64(templateKey: string | null | undefined) {
   const template = getTemplateConfig(templateKey);
 
   let logoBase64: string | undefined;
-  let logoMime = "image/webp";
+  let logoMime = "image/png";
 
   try {
     const logoRef = template.logoFile;
 
-    if (logoRef?.startsWith("http://") || logoRef?.startsWith("https://")) {
-      const response = await fetch(logoRef);
+    const isRemoteLogo =
+      logoRef?.startsWith("http://") || logoRef?.startsWith("https://");
 
-      if (!response.ok) {
-        throw new Error(`No se pudo descargar el logo: ${response.status}`);
-      }
-
-      const arrayBuffer = await response.arrayBuffer();
-      logoBase64 = Buffer.from(arrayBuffer).toString("base64");
-
-      const contentType = response.headers.get("content-type");
-      if (contentType) {
-        logoMime = contentType;
-      } else {
-        const ext = path.extname(logoRef).slice(1).toLowerCase();
-        logoMime =
-          ext === "jpg" || ext === "jpeg" ? "image/jpeg"
-          : ext === "png" ? "image/png"
-          : ext === "svg" ? "image/svg+xml"
-          : "image/webp";
-      }
-    } else {
+    if (!isRemoteLogo) {
       const possibleDirs = [
-        path.join(process.cwd(), "public", "assets"),
+        path.join(process.cwd(), "src", "public"),
+        path.join(process.cwd(), "public"),
         path.join(process.cwd(), "src", "public", "assets"),
+        path.join(process.cwd(), "public", "assets"),
       ];
 
-      const assetsDir =
-        possibleDirs.find((d) => fs.existsSync(d)) ?? possibleDirs[0];
-
-      const candidates = [logoRef, "logo.webp", "logo.png", "logo.jpg"];
-
-      for (const file of candidates) {
-        if (!file) continue;
-        const logoPath = path.join(assetsDir, file);
+      for (const dir of possibleDirs) {
+        const logoPath = path.join(dir, logoRef);
 
         if (fs.existsSync(logoPath)) {
           logoBase64 = fs.readFileSync(logoPath).toString("base64");
-          const ext = path.extname(file).slice(1).toLowerCase();
+
+          const ext = path.extname(logoPath).slice(1).toLowerCase();
+
           logoMime =
-            ext === "jpg" || ext === "jpeg" ? "image/jpeg"
-            : ext === "svg" ? "image/svg+xml"
-            : `image/${ext || "webp"}`;
+            ext === "jpg" || ext === "jpeg"
+              ? "image/jpeg"
+              : ext === "svg"
+                ? "image/svg+xml"
+                : ext === "webp"
+                  ? "image/webp"
+                  : "image/png";
+
           break;
         }
       }
     }
+
+    if (!logoBase64) {
+      const fallbackUrl = isRemoteLogo ? logoRef : template.logoEmailUrl;
+
+      if (fallbackUrl) {
+        console.warn(
+          `[generateReciboPDF] Logo local no encontrado (${logoRef}). Intentando fallback HTTP...`
+        );
+
+        const result = await fetchInternalLogoWithRetry(fallbackUrl);
+
+        if (result) {
+          logoBase64 = result.base64;
+          logoMime = result.mime;
+        }
+      }
+    }
   } catch (e) {
-    console.warn("Sin logo recibo:", e);
+    console.warn("[generateReciboPDF] Sin logo recibo:", e);
   }
 
   return { logoBase64, logoMime };
@@ -74,11 +80,14 @@ async function resolveLogoBase64(templateKey: string | null | undefined) {
 export async function generateReciboConformidadPdf(
   recibo: ReciboConformidadForPdf
 ): Promise<Buffer> {
+
   const { logoBase64, logoMime } = await resolveLogoBase64(
     recibo.contract.templateKey
   );
 
   const html = generateReciboConformidadHtml(recibo, { logoBase64, logoMime });
 
-  return renderPdf(html);
+  const pdf = await renderPdf(html);
+
+  return pdf;
 }

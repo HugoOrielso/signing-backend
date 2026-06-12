@@ -14,60 +14,28 @@ interface SendSignedEmailParams {
   templateKey: TemplateKey;
 }
 
-export async function sendSignedPagareEmail({
+type PagareNotificationEmailParams = {
+  to: string;
+  clienteNombre: string;
+  templateKey: string; // o el tipo que uses
+};
+
+export async function sendPagareNotificationEmail({
   to,
   clienteNombre,
-  pdfBuffer,
-  fileName,
-  role,
-  certBuffer,
-  certFileName,
   templateKey,
-}: SendSignedEmailParams) {
+}: PagareNotificationEmailParams) {
   const template = getTemplateConfig(templateKey);
 
   const from =
     process.env.EMAIL_FROM || `${template.nombre} <contact@dimcultura.com>`;
 
-  const isAdmin = role === "admin";
-
-  const subject = isAdmin
-    ? `✅ Pagaré firmado — ${clienteNombre}`
-    : `✅ Tu pagaré ha sido firmado — ${template.nombre}`;
-
-  const bodyTitle = isAdmin
-    ? `El pagaré de <strong>${clienteNombre}</strong> fue firmado correctamente.`
-    : `Hola <strong>${clienteNombre}</strong>, tu pagaré ha sido firmado y registrado correctamente.`;
-
-  const certNote = certBuffer
-    ? `<table width="100%" cellpadding="0" cellspacing="0"
-        style="background:#f8fbff;border:1px solid #dbe7ff;border-radius:18px;margin-bottom:20px;">
-        <tr>
-          <td style="padding:16px 18px;">
-            <p style="font-size:11px;color:#2563eb;margin:0 0 6px;font-weight:700;
-              text-transform:uppercase;letter-spacing:1px;">📄 Certificado de firma</p>
-            <p style="font-size:13px;color:#4b5b7c;line-height:1.6;margin:0;">
-              Se adjunta también el certificado de firma electrónica con el registro
-              de hash, IP y fecha de firma para tu constancia.
-            </p>
-          </td>
-        </tr>
-      </table>`
-    : "";
+  const subject = `✅ Has firmado electrónicamente — ${template.nombre}`;
 
   return resend.emails.send({
     from,
     to,
     subject,
-    attachments: [
-      {
-        filename: fileName,
-        content: pdfBuffer,
-      },
-      ...(certBuffer && certFileName
-        ? [{ filename: certFileName, content: certBuffer }]
-        : []),
-    ],
     html: `
 <!DOCTYPE html>
 <html lang="es">
@@ -85,7 +53,7 @@ export async function sendSignedPagareEmail({
           <tr>
             <td style="padding:28px 32px 20px;background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border-bottom:1px solid #edf2fb;text-align:center;">
               <img
-                src="${template.logoFile}"
+                src="${template.logoEmailUrl}"
                 alt="${template.nombre}"
                 style="max-width:220px;width:220px;height:auto;display:block;margin:0 auto 14px auto;"
               />
@@ -104,7 +72,7 @@ export async function sendSignedPagareEmail({
 
               <div style="display:inline-block;background:#f1f6ff;border:1px solid #d9e6ff;color:#2563eb;
                 font-size:13px;font-weight:500;padding:10px 16px;border-radius:999px;">
-                ● Pagaré firmado · Documento disponible
+                ● Pagaré firmado · Registro completado
               </div>
             </td>
           </tr>
@@ -120,32 +88,32 @@ export async function sendSignedPagareEmail({
               </div>
 
               <p style="margin:0 0 12px;text-align:center;font-size:26px;font-weight:800;color:#0f172a;">
-                Pagaré firmado correctamente
+                Firma electrónica exitosa
               </p>
 
               <p style="margin:0 0 16px;text-align:center;font-size:15px;line-height:1.8;color:#4b5b7c;">
-                ${bodyTitle}
+                Hola <strong>${clienteNombre}</strong>, has firmado electrónicamente
+                tu pagaré de forma correcta.
               </p>
 
               <p style="margin:0 0 24px;text-align:center;font-size:15px;line-height:1.8;color:#4b5b7c;">
-                Encuentra el pagaré firmado adjunto en este correo.
+                Tu firma quedó registrada en el sistema de ${template.nombre}.
+                No necesitas realizar ninguna acción adicional.
               </p>
 
               <table width="100%" cellpadding="0" cellspacing="0"
-                style="background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border:1px solid #e3ecfb;border-radius:22px;margin-bottom:22px;">
+                style="background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border:1px solid #e3ecfb;border-radius:22px;margin-bottom:8px;">
                 <tr>
                   <td style="padding:20px 22px;">
                     <p style="margin:0 0 6px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#2563eb;">
                       Estado del proceso
                     </p>
                     <p style="margin:0;font-size:14px;line-height:1.7;color:#475569;">
-                      El pagaré ya fue firmado y quedó registrado correctamente en el sistema de ${template.nombre}.
+                      El pagaré fue firmado y quedó registrado correctamente en el sistema de ${template.nombre}.
                     </p>
                   </td>
                 </tr>
               </table>
-
-              ${certNote}
 
               <table width="100%" cellpadding="0" cellspacing="0"
                 style="margin-top:28px;border-top:1px solid #edf2fb;">
@@ -225,7 +193,7 @@ export async function sendCompanySignedPagareEmail({
           <tr>
             <td style="padding:28px 32px 20px;background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border-bottom:1px solid #edf2fb;text-align:center;">
               <img
-                src="${template.logoFile}"
+                src="${template.logoEmailUrl}"
                 alt="${template.nombre}"
                 style="max-width:220px;width:220px;height:auto;display:block;margin:0 auto 14px auto;"
               />

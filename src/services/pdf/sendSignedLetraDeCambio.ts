@@ -1,7 +1,7 @@
 import { prisma } from "../../database/db";
 import {
   sendCompanySignedLetraCambioEmail,
-  sendSignedLetraCambioEmail,
+  sendLetraCambioNotificationEmail,
 } from "../../lib/email/sendLetraDeCambio";
 import { TemplateKey } from "../../lib/email/templateConfig";
 import { generateLetraCambioPdf } from "./generateLetraDeCambio";
@@ -70,7 +70,7 @@ export async function sendSignedLetraCambioPdf(letraCambioId: string) {
   const fileName = `letra-de-cambio-${safeName}.pdf`;
   const templateKey = letraCambio.contract.templateKey as TemplateKey;
 
-  // 3. Generar PDF con reintentos
+  // 3. Generar PDF (solo se usa para la empresa) con reintentos
   const pdfBuffer = await withRetry("Generar PDF letra cambio", () =>
     generateLetraCambioPdf({
       ...letraCambio,
@@ -90,7 +90,7 @@ export async function sendSignedLetraCambioPdf(letraCambioId: string) {
   const [companyResult, clientResult] = await Promise.allSettled([
     withRetry("Email empresa letra cambio", () =>
       sendCompanySignedLetraCambioEmail({
-        to: "analista@dimcultura.com",
+        to: "hugooxxxorielso@gmail.com",
         clienteNombre,
         pdfBuffer,
         fileName,
@@ -98,11 +98,9 @@ export async function sendSignedLetraCambioPdf(letraCambioId: string) {
       })
     ),
     withRetry("Email cliente letra cambio", () =>
-      sendSignedLetraCambioEmail({
+      sendLetraCambioNotificationEmail({
         to: clienteEmail,
         clienteNombre,
-        pdfBuffer,
-        fileName,
         templateKey,
       })
     ),

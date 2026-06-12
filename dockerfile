@@ -55,6 +55,7 @@ RUN apk add --no-cache \
 RUN addgroup -S nodejs && adduser -S expressjs -G nodejs
 
 COPY --from=builder --chown=expressjs:nodejs /app/dist ./dist
+COPY --from=builder --chown=expressjs:nodejs /app/src/public ./src/public
 COPY --from=builder --chown=expressjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=expressjs:nodejs /app/package.json ./
 COPY --from=builder --chown=expressjs:nodejs /app/prisma ./prisma

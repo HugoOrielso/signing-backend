@@ -12,30 +12,26 @@ interface SendSignedLetraCambioEmailParams {
   templateKey: TemplateKey;
 }
 
-export async function sendSignedLetraCambioEmail({
+export async function sendLetraCambioNotificationEmail({
   to,
   clienteNombre,
-  pdfBuffer,
-  fileName,
   templateKey,
-}: SendSignedLetraCambioEmailParams) {
+}: {
+  to: string;
+  clienteNombre: string;
+  templateKey: string;
+}) {
   const template = getTemplateConfig(templateKey);
 
   const from =
     process.env.EMAIL_FROM || `${template.nombre} <contact@dimcultura.com>`;
 
-  const subject = `✅ Tu letra de cambio ha sido firmada — ${template.nombre}`;
+  const subject = `✅ Has firmado electrónicamente — ${template.nombre}`;
 
   return resend.emails.send({
     from,
     to,
     subject,
-    attachments: [
-      {
-        filename: fileName,
-        content: pdfBuffer,
-      },
-    ],
     html: `
 <!DOCTYPE html>
 <html lang="es">
@@ -54,7 +50,7 @@ export async function sendSignedLetraCambioEmail({
           <tr>
             <td style="padding:28px 32px 20px;background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border-bottom:1px solid #edf2fb;text-align:center;">
               <img
-                src="${template.logoFile}"
+                src="${template.logoEmailUrl}"
                 alt="${template.nombre}"
                 style="max-width:220px;width:220px;height:auto;display:block;margin:0 auto 14px auto;"
               />
@@ -73,7 +69,7 @@ export async function sendSignedLetraCambioEmail({
 
               <div style="display:inline-block;background:#f1f6ff;border:1px solid #d9e6ff;color:#2563eb;
                 font-size:13px;font-weight:500;padding:10px 16px;border-radius:999px;">
-                ● Letra de cambio firmada · Documento disponible
+                ● Letra de cambio firmada · Registro completado
               </div>
             </td>
           </tr>
@@ -89,26 +85,28 @@ export async function sendSignedLetraCambioEmail({
               </div>
 
               <p style="margin:0 0 12px;text-align:center;font-size:26px;font-weight:800;color:#0f172a;">
-                Letra de cambio firmada correctamente
+                Firma electrónica exitosa
               </p>
 
               <p style="margin:0 0 16px;text-align:center;font-size:15px;line-height:1.8;color:#4b5b7c;">
-                Hola <strong>${clienteNombre}</strong>, tu letra de cambio ha sido firmada y registrada correctamente.
+                Hola <strong>${clienteNombre}</strong>, has firmado electrónicamente
+                tu letra de cambio de forma correcta.
               </p>
 
               <p style="margin:0 0 24px;text-align:center;font-size:15px;line-height:1.8;color:#4b5b7c;">
-                Encuentra la letra de cambio firmada adjunta en este correo.
+                Tu firma quedó registrada en el sistema de ${template.nombre}.
+                No necesitas realizar ninguna acción adicional.
               </p>
 
               <table width="100%" cellpadding="0" cellspacing="0"
-                style="background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border:1px solid #e3ecfb;border-radius:22px;margin-bottom:22px;">
+                style="background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border:1px solid #e3ecfb;border-radius:22px;margin-bottom:8px;">
                 <tr>
                   <td style="padding:20px 22px;">
                     <p style="margin:0 0 6px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#2563eb;">
                       Estado del proceso
                     </p>
                     <p style="margin:0;font-size:14px;line-height:1.7;color:#475569;">
-                      La letra de cambio ya fue firmada y quedó registrada correctamente en el sistema de ${template.nombre}.
+                      La letra de cambio fue firmada y quedó registrada correctamente en el sistema de ${template.nombre}.
                     </p>
                   </td>
                 </tr>
@@ -184,7 +182,7 @@ export async function sendCompanySignedLetraCambioEmail({
           <tr>
             <td style="padding:28px 32px 20px;background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border-bottom:1px solid #edf2fb;text-align:center;">
               <img
-                src="${template.logoFile}"
+                src="${template.logoEmailUrl}"
                 alt="${template.nombre}"
                 style="max-width:220px;width:220px;height:auto;display:block;margin:0 auto 14px auto;"
               />

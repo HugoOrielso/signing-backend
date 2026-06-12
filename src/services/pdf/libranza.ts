@@ -213,8 +213,11 @@ export async function generateLibranzaHtml(
     <div style="display:flex;align-items:center;gap:2px">
       <span style="font-weight:700;white-space:nowrap">FECHA:</span>
       <span style="text-align:center;padding:0px">${escHtml(fechaParts[0] || "")}</span>
-      <span style="font-weight:700;font-size:10px;margin-left:3px">  LIBRANZA - ${escHtml(options.consecutivo ?? "")}
- </span>
+      <span style="font-weight:700;font-size:10px;margin-left:3px">  LIBRANZA - ${escHtml(options.consecutivo ?? "")}</span>
+    </div>
+    <div style="display:flex;gap:4px;margin-top:3px">
+      <span style="font-weight:700;white-space:nowrap">CLAVE:</span>
+      <span style="border-bottom:1px solid #a1a1a1;flex:1">&nbsp;</span>
     </div>
   </div>
 </div>
@@ -335,6 +338,8 @@ export async function generateLibranzaHtml(
   circulación, y consultada por terceras personas autorizadas expresamente por la ley 1266 de 2008, incluyendo los Usuarios de
   la Información. Con estas mismas alcances, atributos y finalidades autorizo expresamente para que tal información sea conocida
   y reportada en la Base de Datos de DATACREDITO operada por FENALCO y DATACREDITO.
+  <br/>
+  Así mismo, de conformidad con la Ley 527 de 1999 y demás normas concordantes, acepto la utilización de medios electrónicos para la suscripción del presente documento y reconozco que la firma electrónica aquí incorporada tiene plena validez jurídica y los mismos efectos probatorios de una firma manuscrita. Autorizo la conservación de las evidencias electrónicas asociadas al proceso de firma, incluyendo fecha y hora de suscripción, dirección IP, mecanismos de autenticación utilizados, registros de auditoría y huella digital (hash) del documento como soporte de mi consentimiento y aceptación.
 </div>
 
 <!-- ACEPTO + ÍNDICE + FIRMA -->

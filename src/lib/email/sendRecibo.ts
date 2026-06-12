@@ -51,7 +51,7 @@ export async function sendCompanySignedReciboConformidadEmail({
           <tr>
             <td style="padding:28px 32px 20px;background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border-bottom:1px solid #edf2fb;text-align:center;">
               <img
-                src="${template.logoFile}"
+                src="${template.logoEmailUrl}"
                 alt="${template.nombre}"
                 style="max-width:220px;width:220px;height:auto;display:block;margin:0 auto 14px auto;"
               />
@@ -147,17 +147,13 @@ export async function sendCompanySignedReciboConformidadEmail({
 }
 
 
-export async function sendSignedReciboConformidadEmail({
+export async function sendReciboConformidadNotificationEmail({
   to,
   clienteNombre,
-  pdfBuffer,
-  fileName,
   templateKey,
 }: {
   to: string;
   clienteNombre: string;
-  pdfBuffer: Buffer;
-  fileName: string;
   templateKey: string;
 }) {
   const template = getTemplateConfig(templateKey);
@@ -165,18 +161,12 @@ export async function sendSignedReciboConformidadEmail({
   const from =
     process.env.EMAIL_FROM || `${template.nombre} <contact@dimcultura.com>`;
 
-  const subject = `📄 Tu recibo de conformidad firmado`;
+  const subject = `✅ Has firmado electrónicamente — ${template.nombre}`;
 
   return resend.emails.send({
     from,
     to,
     subject,
-    attachments: [
-      {
-        filename: fileName,
-        content: pdfBuffer,
-      },
-    ],
     html: `
 <!DOCTYPE html>
 <html lang="es">
@@ -196,7 +186,7 @@ export async function sendSignedReciboConformidadEmail({
           <tr>
             <td style="padding:28px 32px 20px;background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border-bottom:1px solid #edf2fb;text-align:center;">
               <img
-                src="${template.logoFile}"
+                src="${template.logoEmailUrl}"
                 alt="${template.nombre}"
                 style="max-width:220px;width:220px;height:auto;display:block;margin:0 auto 14px auto;"
               />
@@ -228,26 +218,28 @@ export async function sendSignedReciboConformidadEmail({
                 <div style="display:inline-block;width:64px;height:64px;line-height:64px;border-radius:50%;
                   background:linear-gradient(180deg,#eff6ff 0%,#dbeafe 100%);
                   font-size:28px;border:1px solid #cfe0ff;">
-                  📄
+                  ✅
                 </div>
               </div>
 
-              <p style="margin:0 0 10px;text-align:center;font-size:28px;font-weight:800;color:#0f172a;">
-                Hola ${clienteNombre},
+              <p style="margin:0 0 12px;text-align:center;font-size:26px;font-weight:800;color:#0f172a;">
+                Firma electrónica exitosa
               </p>
 
               <p style="margin:0 0 16px;text-align:center;font-size:15px;line-height:1.8;color:#4b5b7c;">
-                Tu <strong>recibo de conformidad</strong> ha sido firmado correctamente.
+                Hola <strong>${clienteNombre}</strong>, has firmado electrónicamente
+                tu recibo de conformidad de forma correcta.
               </p>
 
               <p style="margin:0 0 26px;text-align:center;font-size:15px;line-height:1.8;color:#4b5b7c;">
-                Adjuntamos una copia del documento para tu respaldo y consulta en cualquier momento.
+                Tu firma quedó registrada en el sistema de ${template.nombre}.
+                No necesitas realizar ninguna acción adicional.
               </p>
 
               <!-- INFO BOX -->
               <table width="100%" cellpadding="0" cellspacing="0"
                 style="background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);
-                border:1px solid #e3ecfb;border-radius:22px;margin-bottom:24px;">
+                border:1px solid #e3ecfb;border-radius:22px;margin-bottom:8px;">
                 <tr>
                   <td style="padding:20px 22px;">
                     <p style="margin:0 0 6px;font-size:12px;font-weight:700;

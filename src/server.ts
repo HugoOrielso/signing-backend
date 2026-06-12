@@ -7,35 +7,39 @@ import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.routes";
 import veriffRouter from "./routes/veriff.route";
 import adminRouter from "./routes/admin.route";
-import { signLibranzaPrueba } from "./controllers/contracts/client/SignPublicContract/signPublicContract.controller";
 import staffRouter from "./routes/operator.route";
-import { testRecibo } from "./controllers/contracts/client/conformityReceipt/conformity.controller";
-import { exampleLetraCambio } from "./controllers/contracts/client/signLetraDeCambio/signLetraDeCambio.controller";
 import productsRouter from "./routes/products.route";
-
+import fs from "node:fs";
+import path from "node:path";
 const app = express();
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://dimcultura.com",
-  "https://www.dimcultura.com",
-  "https://theaceous-indorsable-lilliana.ngrok-free.dev",
-];
+const allowedOrigins = (
+  process.env.ALLOWED_ORIGINS || ""
+)
+  .split(",")
+  .map(origin => origin.trim())
+  .filter(Boolean);
 
 const corsOptions: CorsOptions = {
   origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
+    // Permitir Postman, apps móviles y llamadas server-to-server
+    if (!origin) {
+      return callback(null, true);
+    }
 
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
 
-    return callback(new Error(`Origin no permitido: ${origin}`));
+    return callback(
+      new Error(`Origin no permitido: ${origin}`)
+    );
   },
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
+
 app.set("trust proxy", true);
 app.use(cors(corsOptions));
 app.options(/.*/, cors(corsOptions));
@@ -56,6 +60,43 @@ app.use("/api/staff", staffRouter);
 app.use("/api/contracts", contractsRouter);
 app.use("/api/users", userRouter);
 app.use("/api/products", productsRouter);
+
+
+function checkAssets() {
+  const requiredFiles = [
+    "logo_dimcultura.png",
+    "gruculcol.png",
+  ];
+
+  const possibleDirs = [
+    path.join(process.cwd(), "src", "public"),
+    path.join(process.cwd(), "public"),
+  ];
+
+  console.log("🔍 Verificando assets...");
+
+  for (const file of requiredFiles) {
+    let found = false;
+
+    for (const dir of possibleDirs) {
+      const fullPath = path.join(dir, file);
+
+      if (fs.existsSync(fullPath)) {
+        console.log(`✅ ${file}: ${fullPath}`);
+        found = true;
+        break;
+      }
+    }
+
+    if (!found) {
+      console.error(`❌ No encontrado: ${file}`);
+    }
+  }
+
+  console.log("✅ Verificación de assets finalizada");
+}
+
+checkAssets()
 
 app.use((_req: Request, res: Response) => {
   res.status(404).json({ error: "Not found" });
