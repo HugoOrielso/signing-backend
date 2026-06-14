@@ -202,6 +202,7 @@
       clauses: z.array(clauseSchema).optional(),
 
       ciudad: nullableString,
+      claveHumano: nullableString,
       asesor: nullableString,
       fecha: nullableString,
 
@@ -472,6 +473,7 @@
       clauses: z.array(clauseSchema).optional(),
 
       ciudad: nullableString,
+      claveHumano: nullableString,
       asesor: nullableString,
       fecha: nullableString,
 

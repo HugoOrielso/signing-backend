@@ -1939,6 +1939,7 @@ export const LibranzaDataScalarFieldEnum = {
   pagaduriaMunicipio: 'pagaduriaMunicipio',
   pagaduriaDepartamento: 'pagaduriaDepartamento',
   tipoContrato: 'tipoContrato',
+  claveHumano: 'claveHumano',
   sumaTotal: 'sumaTotal',
   numeroCuotas: 'numeroCuotas',
   valorCuota: 'valorCuota',

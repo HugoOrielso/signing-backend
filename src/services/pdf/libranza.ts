@@ -24,6 +24,7 @@ interface UserReference {
 
 interface LibranzaData {
   ciudad?: string | null;
+  claveHumano?: string | null;
   asesor?: string | null;
   fecha?: string | null;
   clienteNombre?: string | null;
@@ -89,6 +90,16 @@ export async function generateLibranzaHtml(
     return `data:${contentType};base64,${base64}`;
   }
 
+  const moneyPdf = (value: string | number | null | undefined) => {
+    const cleanValue = String(value ?? "").replace(/\D/g, "");
+
+    if (!cleanValue) return "";
+
+    return Number(cleanValue).toLocaleString("es-CO", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
   // ✅ Resuelve la firma antes de construir el HTML
   let sigZone = "";
 
@@ -154,7 +165,7 @@ export async function generateLibranzaHtml(
       <td style="${tdStyle}">${escHtml(p.codigo || "")}</td>
       <td style="${tdStyle}"></td>
       <td style="${tdStyle}">${escHtml(p.descripcion || "")}</td>
-      <td style="${tdStyle};text-align:right">${p.valor ? `$${parseFloat(p.valor.replace(/[^0-9.]/g, "")).toLocaleString("es-CO", { minimumFractionDigits: 2 })}` : ""}</td>
+      <td style="${tdStyle};text-align:right">${p.valor ? `$${moneyPdf(p.valor)}` : ""}</td>
     </tr>`).join("");
 
   const emptyRows = Math.max(0, 2 - (d.productos?.length ?? 0));
@@ -217,7 +228,7 @@ export async function generateLibranzaHtml(
     </div>
     <div style="display:flex;gap:4px;margin-top:3px">
       <span style="font-weight:700;white-space:nowrap">CLAVE:</span>
-      <span style="border-bottom:1px solid #a1a1a1;flex:1">&nbsp;</span>
+      <span style="border-bottom:1px solid #a1a1a1;flex:1">${F(d.claveHumano)}</span>
     </div>
   </div>
 </div>
@@ -244,9 +255,9 @@ export async function generateLibranzaHtml(
   ${U(F(d.empresaTrabajo))},
   departamento ${U(F(d.departamento))},
   para que descuente de mi sueldo o de cualquier otro concepto la
-  suma de ${Box((d.sumaTotal.toString()))}
+  suma de ${Box(moneyPdf(d.sumaTotal))}
   en ${Box(F(d.numeroCuotas.toString()))}
-  cuotas mensuales consecutivas por valor de ${Box(FM(d.valorCuota.toString()))}, cada una, a partir
+  cuotas mensuales consecutivas por valor de ${Box(moneyPdf(d.valorCuota))}, cada una, a partir
   del mes de ${Box(F(d.mesCobro))}
   y pagarlos a la orden de <strong>${escHtml(template.nombre.toUpperCase())}</strong>
   <br/>
@@ -435,7 +446,7 @@ export async function generateLibranzaHtml(
     <tr>
       <td style="font-weight:700;padding:2px 10px;border:1px solid #000;background:#1a1a2e;color:white">TOTAL COMPRA</td>
       <td style="padding:2px 18px;border:1px solid #000;text-align:right;font-weight:700;min-width:90px">
-        $${total.toLocaleString("es-CO", { minimumFractionDigits: 2 })}
+        $${moneyPdf(total)}
       </td>
     </tr>
   </table>

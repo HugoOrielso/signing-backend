@@ -20,6 +20,7 @@ export function buildLibranzaData(
     : null;
   return {
     ciudad: body.ciudad ?? null,
+    claveHumano: body.claveHumano ?? null,
     asesor: body.asesor ?? null,
     fecha: body.fecha ?? null,
 

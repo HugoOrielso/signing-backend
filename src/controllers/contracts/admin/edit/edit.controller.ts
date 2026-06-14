@@ -38,6 +38,7 @@ export async function editLibranza(req: AuthenticatedRequest, res: Response) {
 
         const {
             ciudad,
+            claveHumano,
             asesor,
             fecha,
             clienteNombre,
@@ -140,7 +141,7 @@ export async function editLibranza(req: AuthenticatedRequest, res: Response) {
                     ciudad,
                     asesor,
                     fecha,
-
+                    claveHumano,
                     clienteNombre,
                     clienteCC,
                     clienteCCDe,

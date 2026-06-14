@@ -155,7 +155,7 @@ model LibranzaData {
   pagaduriaMunicipio    String?
   pagaduriaDepartamento String?
   tipoContrato          ContractEmploymentType?
-
+  claveHumano String?
   // Financiero
   sumaTotal    Int
   numeroCuotas Int
