@@ -17,13 +17,15 @@ interface SendSignedEmailParams {
 type SignatureNotificationEmailParams = {
   to: string;
   clienteNombre: string;
-  templateKey: string; // o el tipo que uses
+  templateKey: TemplateKey;
+  consecutivo?: string | number | null;
 };
 
 export async function sendSignatureNotificationEmail({
   to,
   clienteNombre,
   templateKey,
+  consecutivo,
 }: SignatureNotificationEmailParams) {
   const template = getTemplateConfig(templateKey);
 
@@ -93,23 +95,56 @@ export async function sendSignatureNotificationEmail({
 
                 <p style="margin:0 0 14px;text-align:center;font-size:15px;line-height:1.8;color:#4b5b7c;">
                   Hola <strong>${clienteNombre}</strong>, has firmado electrónicamente
-                  tu documento de forma correcta.
+                  la libranza <strong>#${consecutivo ?? "N/A"}</strong> de forma correcta.
                 </p>
 
                 <p style="margin:0 0 26px;text-align:center;font-size:15px;line-height:1.8;color:#4b5b7c;">
-                  Tu firma quedó registrada en el sistema de ${template.nombre}.
-                  No necesitas realizar ninguna acción adicional.
+                  Tu firma quedó registrada como evidencia electrónica de aceptación,
+                  asociada al documento firmado y a los datos técnicos de validación
+                  generados en el momento de la firma.
                 </p>
 
                 <table width="100%" cellpadding="0" cellspacing="0"
-                  style="background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border:1px solid #e3ecfb;border-radius:22px;margin-bottom:8px;">
+                  style="background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);border:1px solid #e3ecfb;border-radius:22px;margin-bottom:16px;">
                   <tr>
                     <td style="padding:20px 22px;">
                       <p style="margin:0 0 6px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#2563eb;">
                         Estado del proceso
                       </p>
                       <p style="margin:0;font-size:14px;line-height:1.7;color:#475569;">
-                        El documento fue firmado y quedó registrado correctamente en el sistema de ${template.nombre}.
+                        La libranza <strong>#${consecutivo ?? "N/A"}</strong> fue firmada y quedó registrada correctamente en el sistema de ${template.nombre}.
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+
+                <table width="100%" cellpadding="0" cellspacing="0"
+                  style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:22px;margin-top:16px;">
+                  <tr>
+                    <td style="padding:20px 22px;">
+                      <p style="margin:0 0 8px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#2563eb;">
+                        Marco legal
+                      </p>
+
+                      <p style="margin:0 0 10px;font-size:13px;line-height:1.7;color:#475569;">
+                        Este mensaje confirma que la libranza <strong>#${consecutivo ?? "N/A"}</strong>
+                        fue suscrita mediante firma electrónica, como mecanismo válido
+                        de aceptación y manifestación de consentimiento sobre el documento firmado.
+                      </p>
+
+                      <p style="margin:0 0 10px;font-size:13px;line-height:1.7;color:#475569;">
+                        El hash SHA-256 asociado al documento permite verificar su integridad
+                        y detectar cualquier modificación posterior al momento exacto de la firma.
+                        La dirección IP, fecha, hora y demás evidencias técnicas registradas
+                        respaldan la trazabilidad del proceso de firma electrónica.
+                      </p>
+
+                      <p style="margin:0;font-size:12px;line-height:1.7;color:#64748b;">
+                        Este proceso se soporta en la normativa colombiana aplicable a mensajes
+                        de datos, comercio electrónico y firma electrónica, incluyendo la Ley 527
+                        de 1999 y el Decreto 2364 de 2012. El tratamiento de datos personales se
+                        realiza conforme a la Ley 1581 de 2012 y la política de protección de datos
+                        aplicable.
                       </p>
                     </td>
                   </tr>
@@ -143,7 +178,6 @@ export async function sendSignatureNotificationEmail({
   </html>`,
   });
 }
-
 
 
 export async function sendCompanySignedContractEmail({
@@ -181,6 +215,9 @@ export async function sendCompanySignedContractEmail({
         filename: fileName,
         content: pdfBuffer,
       },
+      ...(certBuffer && certFileName
+        ? [{ filename: certFileName, content: certBuffer }]
+        : []),
     ],
     html: `
 <!DOCTYPE html>

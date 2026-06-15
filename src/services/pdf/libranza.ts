@@ -255,9 +255,9 @@ export async function generateLibranzaHtml(
   ${U(F(d.empresaTrabajo))},
   departamento ${U(F(d.departamento))},
   para que descuente de mi sueldo o de cualquier otro concepto la
-  suma de ${Box(moneyPdf(d.sumaTotal))}
+  suma de $${Box(moneyPdf(d.sumaTotal))}
   en ${Box(F(d.numeroCuotas.toString()))}
-  cuotas mensuales consecutivas por valor de ${Box(moneyPdf(d.valorCuota))}, cada una, a partir
+  cuotas mensuales consecutivas por valor de $${Box(moneyPdf(d.valorCuota))}, cada una, a partir
   del mes de ${Box(F(d.mesCobro))}
   y pagarlos a la orden de <strong>${escHtml(template.nombre.toUpperCase())}</strong>
   <br/>

@@ -113,7 +113,8 @@ export async function sendSignedContractPdf(contractId: string) {
       sendSignatureNotificationEmail({
         to: email,
         clienteNombre: nombre,
-        templateKey,
+        templateKey,   
+        consecutivo: contract.consecutivo,
       })
     ),
   ]);

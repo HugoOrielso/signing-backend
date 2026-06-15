@@ -200,7 +200,7 @@ export async function generatePagareHtml(pagare: {
         <div class="summary-grid">
           <div><strong>Pagaré No.:</strong> ${BLANK}</div>
           <div><strong>Lugar y fecha de suscripción:</strong> ${BLANK}, ${BLANK}</div>
-          <div><strong>Valor total:</strong> ${LONG_BLANK} (${BLANK})</div>
+          <div><strong>Valor total:</strong> ${LONG_BLANK} $(${BLANK})</div>
           <div><strong>Plazo:</strong> ${BLANK} cuotas mensuales</div>
           <div><strong>Interés corriente:</strong> ${BLANK}</div>
           <div><strong>Interés de mora:</strong> ${BLANK}</div>
@@ -226,7 +226,7 @@ export async function generatePagareHtml(pagare: {
         <p class="clause">
           <strong>PRIMERO. OBJETO:</strong> Que pagaré incondicionalmente, de manera indivisible y
           a la orden de <strong>${BLANK}</strong>, o de quien represente sus derechos,
-          la suma de <strong>${LONG_BLANK}</strong> (${BLANK}),
+          la suma de <strong>$${LONG_BLANK}</strong> (${BLANK}),
           junto con los intereses corrientes y moratorios a que haya lugar.
         </p>
 
@@ -239,7 +239,7 @@ export async function generatePagareHtml(pagare: {
         <p class="clause">
           <strong>TERCERO. PLAZO Y FORMA DE PAGO:</strong> La obligación contenida en este pagaré
           será pagada en <strong>${BLANK}</strong> cuotas mensuales, iguales y sucesivas,
-          cada una por valor de <strong>${LONG_BLANK}</strong> (${BLANK}).
+          cada una por valor de <strong>$${LONG_BLANK}</strong> (${BLANK}).
           La primera cuota deberá pagarse a partir del mes de <strong>${BLANK}</strong>.
         </p>
 
@@ -306,8 +306,8 @@ export async function generatePagareHtml(pagare: {
           <div class="signature-label">El deudor</div>
           ${firmaHtml}
           <div class="signature-line">
-            <div><strong>Nombre:</strong> ${BLANK}</div>
-            <div style="margin-top:8px;"><strong>C.C.:</strong> ${BLANK} de ${BLANK}</div>
+            <div><strong>Nombre:</strong> ${pagare.deudorNombre}</div>
+            <div style="margin-top:8px;"><strong>C.C.:</strong> ${pagare.acreedorNit} de ${pagare.deudorDocumentoDe}</div>
           </div>
         </div>
 
