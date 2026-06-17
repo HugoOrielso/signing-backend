@@ -8,7 +8,7 @@ import { getAuditRequestContext } from "../../../../../utils/audit-request";
 import { AuthenticatedRequest } from "../../../../../types/types";
 import { CreateContractBody } from "../../../../../schemas/libranza/createContract.schema";
 import { resolveConsecutivo } from "./consecutivosResolver";
-import { auditLog } from "../../../../audit/audit.controller";
+import { getTemplateConfig, resolveTemplateKey } from "../../../../../lib/email/templateConfig";
 
 export async function createContractService(
   body: CreateContractBody,
@@ -52,10 +52,13 @@ export async function createContractService(
     }
   }
 
-  const templateKey = (body.templateKey ?? "dimcultura") as
-    | "dimcultura"
-    | "gruculcol"
-    | "gruculcolplus";
+  const templateKey = resolveTemplateKey(body.templateKey);
+  const template = getTemplateConfig(templateKey);
+
+  if (isLibranza) {
+    contractData.title = `Libranza ${template.nombre} - ${contractedParty?.name ?? libranzaInput?.clienteNombre ?? "Cliente"
+      }`;
+  }
 
   const contract = await prisma.$transaction(async (tx) => {
     const { sequence, code } = await resolveConsecutivo(tx, templateKey);

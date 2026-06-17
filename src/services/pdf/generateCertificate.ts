@@ -1,3 +1,4 @@
+import { getTemplateConfig, resolveTemplateKey } from "../../lib/email/templateConfig";
 export interface SignerCertData {
   name: string;
   email?: string | null;
@@ -12,6 +13,7 @@ export interface SignerCertData {
   otpVerified?: boolean;
 }
 
+
 export interface ContractCertData {
   contractNumber?: string | null;
   title: string;
@@ -19,6 +21,7 @@ export interface ContractCertData {
   amount: number;
   currency?: string | null;
   generatedAt: Date;
+  templateKey?: string | null;
   signers: SignerCertData[];
 }
 
@@ -102,6 +105,14 @@ function signerBlock(signer: SignerCertData, index: number): string {
 }
 
 export function generateCertificateHtml(data: ContractCertData): string {
+  
+  console.log("[CERT DATA TEMPLATE KEY]", data.templateKey);
+
+  const templateKey = resolveTemplateKey(data.templateKey);
+  console.log("[CERT RESOLVED TEMPLATE KEY]", templateKey);
+
+  const template = getTemplateConfig(templateKey);
+  console.log("[CERT TEMPLATE]", template.nombre, template.logoEmailUrl);
   const signersHtml = data.signers.map((s, i) => signerBlock(s, i)).join("");
   const contractDisplayNumber = data.contractNumber ?? data.consecutivo ?? "—";
 
@@ -445,18 +456,23 @@ export function generateCertificateHtml(data: ContractCertData): string {
     <div style="padding: 5px; display: flex; flex-direction: column;background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%); border-bottom: 1px solid var(--border-soft); items-center; justify-content: center;">
       <div style ="display:flex; justify-content: space-evenly; align-items:center; gap: 15px;"> 
         <div class="header-top">
-          <img
-            class="header-logo"
-            src="https://dimcultura.com/assets/logo_dimcultura.png"
-            alt="Dimcultura"
-          />
+<img
+  class="header-logo"
+  src="${template.logoEmailUrl}"
+  alt="${template.nombre}"
+/>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center; justify-content:start;">
           <div>
             <p class="header-title">Certificado de Firma # ${contractDisplayNumber}</p>
+
+            <p style="font-size:9pt;font-weight:700;color:#475569;margin-bottom:4px;">
+              ${template.nombre} · NIT ${template.nit}
+            </p>
+
             <p class="header-sub">
-            Documento generado automáticamente con información de firma,
-            integridad del archivo y trazabilidad del proceso. <b>Emitido:</b> ${formatDate(data.generatedAt)}
+              Documento generado automáticamente con información de firma,
+              integridad del archivo y trazabilidad del proceso. <b>Emitido:</b> ${formatDate(data.generatedAt)}
             </p>
           </div>
         </div>

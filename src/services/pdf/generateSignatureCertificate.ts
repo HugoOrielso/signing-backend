@@ -71,6 +71,7 @@ export function buildCertDataFromContract(contract: {
   consecutivo: string;
   amount: number;
   currency?: string | null;
+  templateKey?: string | null;
   signers: Array<{
     id: string;
     name: string;
@@ -114,6 +115,7 @@ export function buildCertDataFromContract(contract: {
     amount: contract.amount,
     currency: contract.currency,
     generatedAt: new Date(),
+    templateKey: contract.templateKey,
     signers,
   };
 }

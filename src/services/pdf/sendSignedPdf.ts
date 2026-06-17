@@ -3,7 +3,7 @@ import {
   sendCompanySignedContractEmail,
   sendSignatureNotificationEmail,
 } from "../../lib/email/sendSignedLibranza";
-import { TemplateKey } from "../../lib/email/templateConfig";
+import { resolveTemplateKey } from "../../lib/email/templateConfig";
 import {
   buildCertDataFromContract,
   generateSignatureCertificatePdf,
@@ -91,7 +91,7 @@ export async function sendSignedContractPdf(contractId: string) {
     ),
   ]);
 
-  const templateKey = contract.templateKey as TemplateKey;
+  const templateKey = resolveTemplateKey(contract.templateKey);
   const fileName = `libranza-${safeName}.pdf`;
   const certFileName = `certificado-firma-${safeName}.pdf`;
 
@@ -113,7 +113,7 @@ export async function sendSignedContractPdf(contractId: string) {
       sendSignatureNotificationEmail({
         to: email,
         clienteNombre: nombre,
-        templateKey,   
+        templateKey,
         consecutivo: contract.consecutivo,
       })
     ),
@@ -129,7 +129,7 @@ export async function sendSignedContractPdf(contractId: string) {
   if (clientResult.status === "rejected") {
     console.error(
       `[sendSignedContractPdf] Email cliente falló (contractId: ${contractId}). ` +
-        `El cliente firmó correctamente pero no recibió la notificación por correo:`,
+      `El cliente firmó correctamente pero no recibió la notificación por correo:`,
       clientResult.reason
     );
   }
