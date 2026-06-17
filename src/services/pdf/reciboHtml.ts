@@ -1,6 +1,6 @@
 // src/services/recibo/reciboHtml.ts
 
-import { TemplateKey } from "../../lib/email/templateConfig";
+import { getTemplateConfig, resolveTemplateKey } from "../../lib/email/templateConfig";
 export type ProductoItem = {
   valor: string;
   codigo: string;
@@ -28,41 +28,7 @@ export type ReciboConformidadForPdf = {
   };
 };
 
-const empresaConfig: Record<
-  TemplateKey,
-  {
-    logoUrl: string;
-    nombre: string;
-    subtitulo: string;
-    slogan: string;
-    nit: string;
-    email: string;
-    web: string;
-  }
-> = {
-  dimcultura: {
-    logoUrl: "https://TU-DOMINIO.com/assets/logo_dimcultura.png",
-    nombre: "DIMCULTURA S.A.S.",
-    subtitulo: "Nueva Dimensión Cultural",
-    slogan: "Un mundo en el que debes estar",
-    nit: "900.683.382-3",
-    email: "servicioalcliente@dimcultura.com",
-    web: "www.dimcultura.com",
-  },
-  gruculcol: {
-    logoUrl: "https://TU-DOMINIO.com/assets/gruculcol.png",
-    nombre: "GRUCULCOL",
-    subtitulo: "Grupo Cultural Colombiano",
-    slogan: "Educación sin fronteras",
-    nit: "27.898.189-5",
-    email: "servicioalcliente@dimcultura.com",
-    web: "www.dimcultura.com",
-  },
-};
 
-function resolveTemplateKey(value?: string | null): TemplateKey {
-  return value === "gruculcol" ? "gruculcol" : "dimcultura";
-}
 
 function formatDate(date?: Date | null) {
   return date
@@ -91,7 +57,7 @@ export function generateReciboConformidadHtml(
   },
 ) {
   const templateKey = resolveTemplateKey(recibo.contract.templateKey);
-  const empresa = empresaConfig[templateKey];
+  const empresa = getTemplateConfig(templateKey);
   const productos = recibo.productos ?? [];
 
   const total = productos.reduce(
@@ -159,7 +125,7 @@ export function generateReciboConformidadHtml(
 
   const logoSrc = options?.logoBase64
     ? `data:${options.logoMime ?? "image/webp"};base64,${options.logoBase64}`
-    : empresa.logoUrl;
+    : empresa.logoEmailUrl;
 
   const firmaHtml =
     recibo.tipoFirma === "DRAWN" && recibo.firmaImagenUrl
@@ -426,13 +392,10 @@ export function generateReciboConformidadHtml(
       </div>
 
       <div class="intro">
-        Manifiesto haber recibido de la Empresa ${empresa.nombre.replace(
-    " S.A.S.",
-    "",
-  )}, en buen estado y a mi entera conformidad como comprador de:
+        Manifiesto haber recibido de la Empresa ${empresa.nombre}, en buen estado y a mi entera conformidad como comprador de:
       </div>
 
-<div style="position:relative;margin-top:25px">
+  <div style="position:relative;margin-top:25px">
 
   <table
     style="

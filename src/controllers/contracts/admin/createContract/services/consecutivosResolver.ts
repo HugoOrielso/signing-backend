@@ -4,6 +4,7 @@ import { TemplateKey } from "../../../../../lib/email/templateConfig";
 const PREFIX_MAP = {
   dimcultura: "LS",
   gruculcol: "LG",
+  gruculcolplus: "LP",
 } as const satisfies Record<TemplateKey, string>;
 
 export async function resolveConsecutivo(

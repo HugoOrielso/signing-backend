@@ -177,9 +177,13 @@ export async function generateLibranzaHtml(
       <td style="${tdStyle}"></td>
     </tr>`).join("");
 
+  const logoHeight =
+    resolvedTemplateKey === "gruculcolplus" ? 76 : 52;
+
   const logoHtml = logoBase64
-    ? `<img src="data:${logoMime};base64,${logoBase64}" style="height:52px;width:auto" alt="Dimcultura">`
+    ? `<img src="data:${logoMime};base64,${logoBase64}" style="height:${logoHeight}px;width:auto" alt="${escHtml(template.nombre)}">`
     : `<div style="width:60px;height:52px;border:1px solid #000;border-radius:3px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:22px;color:#1a1a2e">D</div>`;
+    
 
   return `<!DOCTYPE html>
 <html lang="es">

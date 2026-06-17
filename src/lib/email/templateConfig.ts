@@ -1,4 +1,4 @@
-export type TemplateKey = "dimcultura" | "gruculcol";
+export type TemplateKey = "dimcultura" | "gruculcol" | "gruculcolplus";
 
 export const DEFAULT_TEMPLATE_KEY: TemplateKey = "dimcultura";
 
@@ -35,11 +35,24 @@ export const TEMPLATE_CONFIG: Record<
     email: "servicioalcliente@dimcultura.com",
     web: "www.dimcultura.com",
   },
+  gruculcolplus: {
+    logoFile: "gruculcol.png",
+    logoEmailUrl: "https://dimcultura.com/assets/gruculcol_plus.png",
+    nombre: "GRUCULCOL PLUS",
+    subtitulo: "Grupo Cultural Colombiano Plus S.A.S.",
+    slogan: "Educando generaciones",
+    nit: "901978682-9",
+    email: "servicioalcliente@dimcultura.com",
+    web: "www.dimcultura.com",
+  },
 };
 
 export function resolveTemplateKey(value?: string | null): TemplateKey {
   const normalized = String(value ?? "").trim().toLowerCase();
-  return normalized === "gruculcol" ? "gruculcol" : DEFAULT_TEMPLATE_KEY;
+
+  return normalized in TEMPLATE_CONFIG
+    ? (normalized as TemplateKey)
+    : DEFAULT_TEMPLATE_KEY;
 }
 
 export function getTemplateConfig(value?: string | null) {

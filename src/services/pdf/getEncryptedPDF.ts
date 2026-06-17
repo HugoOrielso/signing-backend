@@ -1,7 +1,7 @@
 import path from "node:path";
 import fs from "node:fs";
 import { encryptPDF } from "@pdfsmaller/pdf-encrypt-lite";
-import { getTemplateConfig } from "../../lib/email/templateConfig";
+import { getTemplateConfig, resolveTemplateKey } from "../../lib/email/templateConfig";
 import { generateLibranzaHtml } from "./libranza";
 import { renderPdf } from "./renderPDF";
 import { fetchInternalLogoWithRetry } from "../../utils/fetchLogo";
@@ -13,7 +13,8 @@ export async function generateContractPdf(
   password?: string,
   audience: PdfAudience = "client"
 ): Promise<Buffer> {
-  const template = getTemplateConfig(contract.templateKey);
+  const templateKey = resolveTemplateKey(contract.templateKey);
+  const template = getTemplateConfig(templateKey);
 
   const contractedSigner = contract.signers.find(
     (s: any) => s.partyRole === "DEUDOR"
@@ -21,18 +22,18 @@ export async function generateContractPdf(
 
   const contractedSig = contractedSigner
     ? contract.signatures.find(
-        (sig: any) => sig.signerId === contractedSigner.id
-      )
+      (sig: any) => sig.signerId === contractedSigner.id
+    )
     : undefined;
 
   const signatureData = contractedSig
     ? {
-        type: contractedSig.type as "DRAWN" | "TYPED" | "CLICK_TO_SIGN",
-        imageUrl: contractedSig.imageUrl ?? undefined,
-        typedValue: contractedSig.typedValue ?? undefined,
-        signedAt: contractedSig.signedAt?.toISOString(),
-        signerName: contractedSigner?.name,
-      }
+      type: contractedSig.type as "DRAWN" | "TYPED" | "CLICK_TO_SIGN",
+      imageUrl: contractedSig.imageUrl ?? undefined,
+      typedValue: contractedSig.typedValue ?? undefined,
+      signedAt: contractedSig.signedAt?.toISOString(),
+      signerName: contractedSigner?.name,
+    }
     : undefined;
 
   let logoBase64: string | undefined;
@@ -94,7 +95,7 @@ export async function generateContractPdf(
   }
 
   const html = await generateLibranzaHtml(contract.libranzaData, {
-    templateKey: contract.templateKey,
+    templateKey,
     signature: signatureData,
     logoBase64,
     logoMime,

@@ -1,6 +1,6 @@
 import path from "node:path";
 import fs from "node:fs";
-import { getTemplateConfig } from "../../lib/email/templateConfig";
+import { getTemplateConfig, resolveTemplateKey } from "../../lib/email/templateConfig";
 import {
   generateReciboConformidadHtml,
   ReciboConformidadForPdf,
@@ -11,7 +11,8 @@ import { fetchInternalLogoWithRetry } from "../../utils/fetchLogo";
 // ─── Resolver logo local + fallback HTTP ─────────────────────────────────────
 
 async function resolveLogoBase64(templateKey: string | null | undefined) {
-  const template = getTemplateConfig(templateKey);
+  const resolvedTemplateKey = resolveTemplateKey(templateKey);
+  const template = getTemplateConfig(resolvedTemplateKey);
 
   let logoBase64: string | undefined;
   let logoMime = "image/png";

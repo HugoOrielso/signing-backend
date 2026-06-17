@@ -54,7 +54,8 @@ export async function createContractService(
 
   const templateKey = (body.templateKey ?? "dimcultura") as
     | "dimcultura"
-    | "gruculcol";
+    | "gruculcol"
+    | "gruculcolplus";
 
   const contract = await prisma.$transaction(async (tx) => {
     const { sequence, code } = await resolveConsecutivo(tx, templateKey);

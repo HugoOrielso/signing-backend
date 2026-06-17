@@ -3,7 +3,7 @@ import {
   sendCompanySignedReciboConformidadEmail,
   sendReciboConformidadNotificationEmail,
 } from "../../lib/email/sendRecibo";
-import { TemplateKey } from "../../lib/email/templateConfig";
+import { resolveTemplateKey, TemplateKey } from "../../lib/email/templateConfig";
 import { generateReciboConformidadPdf } from "./generateReciboPDF";
 import type { ProductoItem } from "./reciboHtml";
 
@@ -83,7 +83,7 @@ export async function sendSignedReciboPdf(reciboId: string) {
   const nombre = reciboConformidad.clienteNombre ?? "Cliente";
   const safeName = buildSafeName(reciboConformidad.clienteNombre, nombre);
   const fileName = `recibo-conformidad-${safeName}.pdf`;
-  const templateKey = reciboConformidad.contract.templateKey as TemplateKey;
+  const templateKey = resolveTemplateKey(reciboConformidad.contract.templateKey);
   const productos = normalizeProductos(
     reciboConformidad.contract.libranzaData?.productos
   );
@@ -102,7 +102,7 @@ export async function sendSignedReciboPdf(reciboId: string) {
       firmaTexto: reciboConformidad.firmaTexto,
       productos,
       contract: {
-        templateKey: reciboConformidad.contract.templateKey,
+        templateKey,
         consecutivo: reciboConformidad.contract.consecutivo,
       },
     })
