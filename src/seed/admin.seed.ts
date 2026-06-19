@@ -69,6 +69,12 @@ export async function seedAdmins() {
       password: defaultPassword,
       role: "OPERATOR" as AdminRole,
     },
+    {
+      email: "jose.escalante@dimcultura.com",
+      name: "JOSÉ ANTONIO ESCALANTE DELGADO",
+      password: defaultPassword,
+      role: "OPERATOR" as AdminRole,
+    },
   ];
 
   for (const admin of admins) {
