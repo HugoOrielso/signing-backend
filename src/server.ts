@@ -51,8 +51,11 @@ app.use(requestIdMiddleware);
 app.get("/", (_req: Request, res: Response) => {
   return res.status(200).json("ok")
 })
+app.get("/health", (_req: Request, res: Response) => {
+  return res.status(200).json("ok")
+})
 
-app.get("pagare", testPagare)
+app.get("/pagare", testPagare)
 // donde tengas tus rutas principales
 app.use("/api/auth", authRouter);
 app.use("/api/admin", adminRouter);
