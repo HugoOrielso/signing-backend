@@ -276,14 +276,3 @@ export async function signPagare(req: Request, res: Response) {
     });
   }
 }
-
-
-export async function testPagare(req: Request, res: Response) {
-  sendSignedPagarePdf("6f7e277d-e7b5-4830-810d-0dc79d3ab66c").catch((e) =>
-    console.error(
-      `[Email pagaré] Error tras reintentos (pagareId: 6f7e277d-e7b5-4830-810d-0dc79d3ab66c):`,
-      e
-    )
-  );
-  return res.status(200)
-}
