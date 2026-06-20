@@ -307,7 +307,7 @@ export async function generatePagareHtml(pagare: {
           ${firmaHtml}
           <div class="signature-line">
             <div><strong>Nombre:</strong> ${pagare.deudorNombre}</div>
-            <div style="margin-top:8px;"><strong>C.C.:</strong> ${pagare.acreedorNit} de ${pagare.deudorDocumentoDe}</div>
+            <div style="margin-top:8px;"><strong>C.C.:</strong> ${pagare.deudorDocumento} de ${pagare.deudorDocumentoDe}</div>
           </div>
         </div>
 

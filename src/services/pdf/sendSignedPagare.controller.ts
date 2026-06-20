@@ -76,7 +76,26 @@ export async function sendSignedPagarePdf(pagareId: string) {
   );
 
   // 4. Enviar emails de forma independiente
-  const [companyResult, clientResult] = await Promise.allSettled([
+  // const [companyResult, clientResult] = await Promise.allSettled([
+  //   withRetry("Email empresa pagaré", () =>
+  //     sendCompanySignedPagareEmail({
+  //       to: "analista@dimcultura.com",
+  //       clienteNombre: nombre,
+  //       pdfBuffer,
+  //       fileName,
+  //       templateKey,
+  //     })
+  //   ),
+  //   withRetry("Email cliente pagaré", () =>
+  //     sendPagareNotificationEmail({
+  //       to: pagare.deudorEmail!,
+  //       clienteNombre: nombre,
+  //       templateKey,
+  //     })
+  //   ),
+  // ]);
+
+  const [companyResult] = await Promise.allSettled([
     withRetry("Email empresa pagaré", () =>
       sendCompanySignedPagareEmail({
         to: "analista@dimcultura.com",
@@ -86,13 +105,13 @@ export async function sendSignedPagarePdf(pagareId: string) {
         templateKey,
       })
     ),
-    withRetry("Email cliente pagaré", () =>
-      sendPagareNotificationEmail({
-        to: pagare.deudorEmail!,
-        clienteNombre: nombre,
-        templateKey,
-      })
-    ),
+    // withRetry("Email cliente pagaré", () =>
+    //   sendPagareNotificationEmail({
+    //     to: pagare.deudorEmail!,
+    //     clienteNombre: nombre,
+    //     templateKey,
+    //   })
+    // ),
   ]);
 
   // 5. Loggear resultados parciales
@@ -103,17 +122,24 @@ export async function sendSignedPagarePdf(pagareId: string) {
     );
   }
 
-  if (clientResult.status === "rejected") {
-    console.error(
-      `[sendSignedPagarePdf] Email cliente falló (pagareId: ${pagareId}):`,
-      clientResult.reason
-    );
-  }
+  // if (clientResult.status === "rejected") {
+  //   console.error(
+  //     `[sendSignedPagarePdf] Email cliente falló (pagareId: ${pagareId}):`,
+  //     clientResult.reason
+  //   );
+  // }
 
   // Lanzar solo si ambos fallaron
+  // if (
+  //   companyResult.status === "rejected" &&
+  //   clientResult.status === "rejected"
+  // ) {
+  //   throw new Error(
+  //     `[sendSignedPagarePdf] Ambos envíos fallaron (pagareId: ${pagareId})`
+  //   );
+  // }
   if (
-    companyResult.status === "rejected" &&
-    clientResult.status === "rejected"
+    companyResult.status === "rejected"
   ) {
     throw new Error(
       `[sendSignedPagarePdf] Ambos envíos fallaron (pagareId: ${pagareId})`
