@@ -9,6 +9,7 @@ import veriffRouter from "./routes/veriff.route";
 import adminRouter from "./routes/admin.route";
 import staffRouter from "./routes/operator.route";
 import productsRouter from "./routes/products.route";
+import { testPagare } from "./controllers/contracts/client/signPagare/signPagare.controller";
 const app = express();
 
 const allowedOrigins = (
@@ -50,6 +51,8 @@ app.use(requestIdMiddleware);
 app.get("/", (_req: Request, res: Response) => {
   return res.status(200).json("ok")
 })
+
+app.get("pagare", testPagare)
 // donde tengas tus rutas principales
 app.use("/api/auth", authRouter);
 app.use("/api/admin", adminRouter);
