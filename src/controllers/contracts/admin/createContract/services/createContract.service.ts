@@ -28,30 +28,26 @@ export async function createContractService(
 
   const clausesInput =
     !isNewFormat && Array.isArray(body.clauses) ? body.clauses : [];
-
   const libranzaInput = isLibranza
     ? buildLibranzaData(body, contractedParty)
     : null;
 
+  if (isLibranza && libranzaInput?.clienteCC) {
+    const activeLibranza = await prisma.contract.findFirst({
+      where: {
+        libranzaData: {
+          clienteCC: libranzaInput.clienteCC,
+        },
+        status: {
+          notIn: ["SIGNED", "CANCELLED"],
+        },
+      },
+    });
 
-  const libranzasByUserCC = await prisma.contract.findMany({
-    where: {
-      libranzaData: {
-        clienteCC: libranzaInput?.clienteCC ?? ''
-      }
-    }
-  })
-
-  if (libranzasByUserCC.length > 0) {
-    const hasActiveLibranza = libranzasByUserCC.some(
-      (l) => l.status !== "SIGNED"
-    );
-
-    if (hasActiveLibranza) {
+    if (activeLibranza) {
       throw new Error("EXISTEN_LIBRANZAS_NO_FIRMADAS");
     }
   }
-
   const templateKey = resolveTemplateKey(body.templateKey);
   const template = getTemplateConfig(templateKey);
 
