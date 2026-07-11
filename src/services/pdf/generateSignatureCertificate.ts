@@ -1,70 +1,160 @@
+import path from "node:path";
+import fs from "node:fs";
 import puppeteer from "puppeteer";
-import { ContractCertData, generateCertificateHtml, SignerCertData } from "./generateCertificate";
+
+import {
+  ContractCertData,
+  generateCertificateHtml,
+  SignerCertData,
+} from "./generateCertificate";
+
+import {
+  getTemplateConfig,
+  resolveTemplateKey,
+} from "../../lib/email/templateConfig";
 
 export type { ContractCertData, SignerCertData };
+
+type LocalLogoResult = {
+  base64: string;
+  mime: string;
+};
+
+function getLocalTemplateLogo(
+  templateKey?: string | null
+): LocalLogoResult | null {
+  const resolvedTemplateKey = resolveTemplateKey(templateKey);
+  const template = getTemplateConfig(resolvedTemplateKey);
+  const logoRef = template.logoFile;
+
+  const possiblePaths = [
+    path.join(process.cwd(), "src", "public", logoRef),
+    path.join(process.cwd(), "public", logoRef),
+    path.join(process.cwd(), "src", "public", "assets", logoRef),
+    path.join(process.cwd(), "public", "assets", logoRef),
+  ];
+
+  for (const logoPath of possiblePaths) {
+    if (!fs.existsSync(logoPath)) {
+      continue;
+    }
+
+    const ext = path.extname(logoPath).slice(1).toLowerCase();
+
+    const mime =
+      ext === "jpg" || ext === "jpeg"
+        ? "image/jpeg"
+        : ext === "svg"
+          ? "image/svg+xml"
+          : ext === "webp"
+            ? "image/webp"
+            : "image/png";
+
+    const base64 = fs.readFileSync(logoPath).toString("base64");
+
+
+    return {
+      base64,
+      mime,
+    };
+  }
+
+  console.warn("[CERT LOGO LOCAL] Logo no encontrado", {
+    templateKey: resolvedTemplateKey,
+    logoRef,
+    possiblePaths,
+  });
+
+  return null;
+}
 
 export async function generateSignatureCertificatePdf(
   data: ContractCertData
 ): Promise<Buffer> {
-  let browser;
+  let browser: Awaited<ReturnType<typeof puppeteer.launch>> | undefined;
 
   try {
-    const html = generateCertificateHtml(data);
+    const logo = getLocalTemplateLogo(data.templateKey);
+
+    const html = generateCertificateHtml(data, {
+      logoBase64: logo?.base64,
+      logoMime: logo?.mime,
+    });
+
     const isProduction = process.env.NODE_ENV === "production";
 
     browser = await puppeteer.launch({
       headless: true,
       executablePath: isProduction
-        ? process.env.PUPPETEER_EXECUTABLE_PATH ?? "/usr/bin/chromium-browser"
+        ? process.env.PUPPETEER_EXECUTABLE_PATH ??
+          "/usr/bin/chromium-browser"
         : undefined,
       args: isProduction
         ? [
-          "--no-sandbox",
-          "--disable-setuid-sandbox",
-          "--disable-dev-shm-usage",
-          "--disable-gpu",
-        ]
+            "--no-sandbox",
+            "--disable-setuid-sandbox",
+            "--disable-dev-shm-usage",
+            "--disable-gpu",
+          ]
         : [],
     });
 
     const page = await browser.newPage();
-    page.setDefaultTimeout(30000);
-    page.setDefaultNavigationTimeout(30000);
+
+    page.setDefaultTimeout(30_000);
+    page.setDefaultNavigationTimeout(30_000);
+
+    page.on("request", (request) => {
+      const url = request.url();
+
+      if (url.startsWith("http://") || url.startsWith("https://")) {
+        console.warn("[CERT EXTERNAL REQUEST]", url);
+      }
+    });
+
+    page.on("requestfailed", (request) => {
+      console.warn("[CERT REQUEST FAILED]", {
+        url: request.url(),
+        error: request.failure()?.errorText,
+      });
+    });
 
     await page.setContent(html, {
       waitUntil: "domcontentloaded",
-      timeout: 30000,
+      timeout: 30_000,
     });
 
-    await page.waitForFunction(
-      `Array.from(document.images).every(img => img.complete)`,
-      { timeout: 5000 }
-    ).catch(() => null);
+    await page.evaluate(async () => {
+      await document.fonts.ready;
+    });
 
-    const pdfBuffer = await page.pdf({
+    const rawPdf = await page.pdf({
       format: "A4",
       printBackground: true,
-      margin: { top: "0", right: "0", bottom: "0", left: "0" },
+      margin: {
+        top: "0",
+        right: "0",
+        bottom: "0",
+        left: "0",
+      },
       preferCSSPageSize: true,
     });
 
-    await browser.close();
-    browser = undefined;
+    const pdfBuffer = Buffer.from(rawPdf);
 
-    return Buffer.from(pdfBuffer);
+
+    return pdfBuffer;
   } finally {
     if (browser) {
       try {
         await browser.close();
-      } catch { }
+      } catch (error) {
+        console.warn("[CERT BROWSER CLOSE ERROR]", error);
+      }
     }
   }
 }
 
-/**
- * Construye el ContractCertData a partir del contrato de Prisma.
- * Llamar desde sendSignedContractPdf después de que el contrato está completamente firmado.
- */
 export function buildCertDataFromContract(contract: {
   contractNumber?: string | null;
   title: string;
@@ -90,21 +180,23 @@ export function buildCertDataFromContract(contract: {
   }>;
 }): ContractCertData {
   const signers: SignerCertData[] = contract.signers
-    .filter((s) => s.signatures.length > 0)
-    .map((s) => {
-      const sig = s.signatures[0];
+    .filter((signer) => signer.signatures.length > 0)
+    .map((signer) => {
+      const signature = signer.signatures[0];
+
       return {
-        name: s.name,
-        email: s.email,
-        phone: s.phone,
-        role: s.partyRole,
-        signedAt: sig.signedAt,
-        ipAddress: sig.ipAddress,
-        userAgent: sig.userAgent,
-        documentHash: sig.documentHash ?? "",
-        signatureType: sig.type as SignerCertData["signatureType"],
-        typedValue: sig.typedValue,
-        otpVerified: sig.otpVerified ?? false,
+        name: signer.name,
+        email: signer.email,
+        phone: signer.phone,
+        role: signer.partyRole,
+        signedAt: signature.signedAt,
+        ipAddress: signature.ipAddress,
+        userAgent: signature.userAgent,
+        documentHash: signature.documentHash ?? "",
+        signatureType:
+          signature.type as SignerCertData["signatureType"],
+        typedValue: signature.typedValue,
+        otpVerified: signature.otpVerified ?? false,
       };
     });
 

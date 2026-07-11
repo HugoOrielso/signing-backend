@@ -213,11 +213,8 @@ export async function sendCompanySignedContractEmail({
     attachments: [
       {
         filename: fileName,
-        content: pdfBuffer,
-      },
-      ...(certBuffer && certFileName
-        ? [{ filename: certFileName, content: certBuffer }]
-        : []),
+        content: pdfBuffer.toString("base64"),
+      }
     ],
     html: `
 <!DOCTYPE html>
@@ -350,6 +347,62 @@ export async function sendCompanySignedContractEmail({
 </body>
 </html>
 `,
+  });
+
+  if (result.error) {
+    console.dir(result, { depth: null });
+    console.dir(result, { depth: null });
+    throw new Error(
+      `Resend error (${result.error.statusCode}): ${result.error.message}`
+    );
+  }
+
+  return result;
+}
+
+
+export async function sendCompanyCertificateEmail({
+  to,
+  clienteNombre,
+  certBuffer,
+  certFileName,
+  templateKey,
+}: {
+  to: string;
+  clienteNombre: string;
+  certBuffer: Buffer;
+  certFileName: string;
+  templateKey: TemplateKey;
+}) {
+  const template = getTemplateConfig(templateKey);
+
+  const from =
+    process.env.EMAIL_FROM ||
+    `${template.nombre} <contact@dimcultura.com>`;
+
+  const result = await resend.emails.send({
+    from,
+    to,
+    subject: `📄 Certificado de firma — ${clienteNombre}`,
+    attachments: [
+      {
+        filename: certFileName,
+        content: certBuffer.toString("base64"),
+      },
+    ],
+    html: `
+      <h2>Certificado de firma electrónica</h2>
+
+      <p>
+        Se adjunta el certificado de firma correspondiente a la libranza
+        firmada por <strong>${clienteNombre}</strong>.
+      </p>
+
+      <p>
+        El certificado contiene la fecha, IP, hash y demás evidencias
+        técnicas del proceso de firma.
+      </p>
+    `,
   });
 
   if (result.error) {

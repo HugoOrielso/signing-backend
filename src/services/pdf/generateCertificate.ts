@@ -103,19 +103,47 @@ function signerBlock(signer: SignerCertData, index: number): string {
     </div>
   `;
 }
-
-export function generateCertificateHtml(data: ContractCertData): string {
+type GenerateCertificateHtmlOptions = {
+  logoBase64?: string;
+  logoMime?: string;
+};
+export function generateCertificateHtml(
+  data: ContractCertData,
+  options: GenerateCertificateHtmlOptions = {}
+): string { 
   
-  console.log("[CERT DATA TEMPLATE KEY]", data.templateKey);
 
   const templateKey = resolveTemplateKey(data.templateKey);
-  console.log("[CERT RESOLVED TEMPLATE KEY]", templateKey);
 
   const template = getTemplateConfig(templateKey);
-  console.log("[CERT TEMPLATE]", template.nombre, template.logoEmailUrl);
   const signersHtml = data.signers.map((s, i) => signerBlock(s, i)).join("");
   const contractDisplayNumber = data.contractNumber ?? data.consecutivo ?? "—";
-
+const logoHtml = options.logoBase64
+  ? `
+    <img
+      class="header-logo"
+      src="data:${options.logoMime ?? "image/png"};base64,${options.logoBase64}"
+      alt="${template.nombre}"
+    />
+  `
+  : `
+    <div
+      style="
+        width:80px;
+        height:60px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        border:1px solid #d9e6ff;
+        border-radius:10px;
+        color:#2563eb;
+        font-size:24px;
+        font-weight:800;
+      "
+    >
+      D
+    </div>
+  `;
   return `<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -123,7 +151,7 @@ export function generateCertificateHtml(data: ContractCertData): string {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Certificado de Firma — ${contractDisplayNumber}</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
 
     *, *::before, *::after {
       box-sizing: border-box;
@@ -150,7 +178,7 @@ export function generateCertificateHtml(data: ContractCertData): string {
     }
 
     html, body {
-      font-family: 'Inter', sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
       font-size: 11pt;
       color: var(--text);
       background: var(--bg-page);
@@ -359,7 +387,7 @@ export function generateCertificateHtml(data: ContractCertData): string {
     }
 
     .mono {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: "Courier New", Courier, monospace;
       font-size: 8.4pt !important;
     }
 
@@ -401,7 +429,7 @@ export function generateCertificateHtml(data: ContractCertData): string {
     }
 
     .hash-value {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: "Courier New", Courier, monospace;
       font-size: 8.3pt;
       color: var(--hash-text);
       word-break: break-all;
@@ -453,14 +481,22 @@ export function generateCertificateHtml(data: ContractCertData): string {
 <body>
   <div class="page">
 
-    <div style="padding: 5px; display: flex; flex-direction: column;background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%); border-bottom: 1px solid var(--border-soft); items-center; justify-content: center;">
+<div
+  style="
+    padding:5px;
+    display:flex;
+    flex-direction:column;
+    background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);
+    border-bottom:1px solid var(--border-soft);
+    align-items:center;
+    justify-content:center;
+  "
+>
       <div style ="display:flex; justify-content: space-evenly; align-items:center; gap: 15px;"> 
         <div class="header-top">
-<img
-  class="header-logo"
-  src="${template.logoEmailUrl}"
-  alt="${template.nombre}"
-/>
+<div class="header-top">
+  ${logoHtml}
+</div>
         </div>
         <div style="display:flex;flex-direction:column;align-items:center; justify-content:start;">
           <div>

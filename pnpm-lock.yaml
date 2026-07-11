@@ -44,6 +44,9 @@ importers:
       multer:
         specifier: ^2.1.1
         version: 2.1.1
+      pdf-lib:
+        specifier: ^1.17.1
+        version: 1.17.1
       pg:
         specifier: ^8.20.0
         version: 8.20.0

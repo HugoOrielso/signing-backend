@@ -1,9 +1,11 @@
 import { prisma } from "../../database/db";
 import {
+  sendCompanyCertificateEmail,
   sendCompanySignedContractEmail,
   sendSignatureNotificationEmail,
 } from "../../lib/email/sendSignedLibranza";
 import { resolveTemplateKey } from "../../lib/email/templateConfig";
+import { normalizePdf } from "../../utils/normalizePdf";
 import {
   buildCertDataFromContract,
   generateSignatureCertificatePdf,
@@ -82,14 +84,18 @@ export async function sendSignedContractPdf(contractId: string) {
   const safeName = buildSafeName(contract.libranzaData.clienteNombre, nombre);
 
   // 3. Generar PDFs para la empresa (admin + certificado) en paralelo con reintentos
-  const [adminPdfBuffer, certBuffer] = await Promise.all([
+  const [adminPdfBuffer, rawCertBuffer] = await Promise.all([
     withRetry("PDF admin", () =>
       generateContractPdf(contract, undefined, "admin")
     ),
     withRetry("Certificado firma", () =>
-      generateSignatureCertificatePdf(buildCertDataFromContract(contract))
+      generateSignatureCertificatePdf(
+        buildCertDataFromContract(contract)
+      )
     ),
   ]);
+
+  const certBuffer = await normalizePdf(rawCertBuffer);
 
   const templateKey = resolveTemplateKey(contract.templateKey);
   const fileName = `libranza-${safeName}.pdf`;
@@ -97,18 +103,31 @@ export async function sendSignedContractPdf(contractId: string) {
 
   // 4. Enviar ambos emails de forma independiente:
   //    si uno falla, el otro sigue adelante
-  const [companyResult, clientResult] = await Promise.allSettled([
-    withRetry("Email empresa", () =>
+  const [
+    companyContractResult,
+    companyCertificateResult,
+    clientResult,
+  ] = await Promise.allSettled([
+    withRetry("Email empresa - libranza", () =>
       sendCompanySignedContractEmail({
         to: "analista@dimcultura.com",
         clienteNombre: nombre,
         pdfBuffer: adminPdfBuffer,
         fileName,
+        templateKey,
+      })
+    ),
+
+    withRetry("Email empresa - certificado", () =>
+      sendCompanyCertificateEmail({
+        to: "analista@dimcultura.com",
+        clienteNombre: nombre,
         certBuffer,
         certFileName,
         templateKey,
       })
     ),
+
     withRetry("Email cliente", () =>
       sendSignatureNotificationEmail({
         to: email,
@@ -119,10 +138,18 @@ export async function sendSignedContractPdf(contractId: string) {
     ),
   ]);
 
-  if (companyResult.status === "rejected") {
+
+  if (companyContractResult.status === "rejected") {
     console.error(
       `[sendSignedContractPdf] Email empresa falló (contractId: ${contractId}):`,
-      companyResult.reason
+      companyContractResult.reason
+    );
+  }
+  
+  if (companyCertificateResult.status === "rejected") {
+    console.error(
+      `[sendSignedContractPdf] Email empresa falló (contractId: ${contractId}):`,
+      companyCertificateResult.reason
     );
   }
 
@@ -136,7 +163,8 @@ export async function sendSignedContractPdf(contractId: string) {
 
   // Lanzar solo si ambos fallaron
   if (
-    companyResult.status === "rejected" &&
+    companyContractResult.status === "rejected" &&
+    companyCertificateResult.status === "rejected" &&
     clientResult.status === "rejected"
   ) {
     throw new Error(

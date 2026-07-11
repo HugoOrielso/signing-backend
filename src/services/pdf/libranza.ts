@@ -178,7 +178,7 @@ export async function generateLibranzaHtml(
     </tr>`).join("");
 
   const logoHeight =
-    resolvedTemplateKey === "gruculcolplus" ? 76 : 52;
+    resolvedTemplateKey === "gruculcolplus" ? 96 : 100;
 
   const logoHtml = logoBase64
     ? `<img src="data:${logoMime};base64,${logoBase64}" style="height:${logoHeight}px;width:auto" alt="${escHtml(template.nombre)}">`
@@ -210,9 +210,9 @@ export async function generateLibranzaHtml(
   <div style="flex-shrink:0">${logoHtml}</div>
 
   <div style="text-align:center;flex:1;margin:0 8px">
-<div style="font-size:11px;font-weight:700">${escHtml(template.subtitulo)}</div>
-<div style="font-size:15px;font-weight:900">${escHtml(template.nombre)}</div>
-<div style="font-size:9px;font-style:italic">"${escHtml(template.slogan)}"</div>
+<div style="font-size:14px;font-weight:700">${escHtml(template.subtitulo)}</div>
+<div style="font-size:19px;font-weight:900">${escHtml(template.nombre)}</div>
+<div style="font-size:11px;font-style:italic">"${escHtml(template.slogan)}"</div>
 <div style="font-size:8px;margin-top:1px">Nit. ${escHtml(template.nit)} · Tel. 310 207 98 00 / 311 861 01 61</div>
   </div>
 
@@ -228,7 +228,7 @@ export async function generateLibranzaHtml(
     <div style="display:flex;align-items:center;gap:2px">
       <span style="font-weight:700;white-space:nowrap">FECHA:</span>
       <span style="text-align:center;padding:0px">${escHtml(fechaParts[0] || "")}</span>
-      <span style="font-weight:700;font-size:10px;margin-left:3px">  LIBRANZA - ${escHtml(options.consecutivo ?? "")}</span>
+      <span style="font-weight:700;font-size:14px;margin-left:3px">  LIBRANZA - ${escHtml(options.consecutivo ?? "")}</span>
     </div>
     <div style="display:flex;gap:4px;margin-top:3px">
       <span style="font-weight:700;white-space:nowrap">CLAVE:</span>
