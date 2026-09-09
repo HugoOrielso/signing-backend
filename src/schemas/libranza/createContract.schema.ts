@@ -413,11 +413,11 @@
             path: ["numeroCuotas"],
             message: "Debe ser un número entero",
           });
-        } else if (cuotas < 10 || cuotas > 22) {
+        } else if (cuotas < 10 || cuotas > 36) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             path: ["numeroCuotas"],
-            message: "El número de cuotas debe estar entre 10 y 22",
+            message: "El número de cuotas debe estar entre 10 y 36",
           });
         }
       }
@@ -684,11 +684,11 @@
             path: ["numeroCuotas"],
             message: "Debe ser un número entero",
           });
-        } else if (cuotas < 10 || cuotas > 22) {
+        } else if (cuotas < 10 || cuotas > 36) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             path: ["numeroCuotas"],
-            message: "El número de cuotas debe estar entre 10 y 22",
+            message: "El número de cuotas debe estar entre 10 y 36",
           });
         }
       }

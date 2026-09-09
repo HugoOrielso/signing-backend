@@ -32,9 +32,13 @@ export async function createContractService(
     ? buildLibranzaData(body, contractedParty)
     : null;
 
+  const templateKey = resolveTemplateKey(body.templateKey);
+  const template = getTemplateConfig(templateKey);
+
   if (isLibranza && libranzaInput?.clienteCC) {
-    const activeLibranza = await prisma.contract.findFirst({
+    const activeLibranzaSameCompany = await prisma.contract.findFirst({
       where: {
+        templateKey,
         libranzaData: {
           clienteCC: libranzaInput.clienteCC,
         },
@@ -44,12 +48,10 @@ export async function createContractService(
       },
     });
 
-    if (activeLibranza) {
-      throw new Error("EXISTEN_LIBRANZAS_NO_FIRMADAS");
+    if (activeLibranzaSameCompany) {
+      throw new Error("EXISTE_LIBRANZA_ACTIVA_MISMA_EMPRESA");
     }
   }
-  const templateKey = resolveTemplateKey(body.templateKey);
-  const template = getTemplateConfig(templateKey);
 
   if (isLibranza) {
     contractData.title = `Libranza ${template.nombre} - ${contractedParty?.name ?? libranzaInput?.clienteNombre ?? "Cliente"

@@ -413,11 +413,11 @@ export const rejectedSchema = z
       }
     }
 
-    if (data.numeroCuotas < 10 || data.numeroCuotas > 22) {
+    if (data.numeroCuotas < 10 || data.numeroCuotas > 36) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["numeroCuotas"],
-        message: "El número de cuotas debe estar entre 10 y 22",
+        message: "El número de cuotas debe estar entre 10 y 36",
       });
     }
 
