@@ -82,7 +82,7 @@ export async function seedAdmins() {
       role: "OPERATOR" as AdminRole,
     },
     {
-      email: "rafaelortiz999@yahoo.com",
+      email: "rafaelortiz999@dimcultura.com",
       name: "RAFAEL VICENTE ORTIZ DE LA CRUZ",
       password: defaultPassword,
       role: "OPERATOR" as AdminRole,
