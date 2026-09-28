@@ -86,6 +86,18 @@ export async function seedAdmins() {
       name: "RAFAEL VICENTE ORTIZ DE LA CRUZ",
       password: defaultPassword,
       role: "OPERATOR" as AdminRole,
+    },
+    {
+      email: "jose_2570@dimcultura.com",
+      name: "JOSE CARLOS RACERO PRADA",
+      password: defaultPassword,
+      role: "OPERATOR" as AdminRole,
+    },
+    {
+      email: "alcira_1021@dimcultura.com",
+      name: "ALCIRA",
+      password: defaultPassword,
+      role: "OPERATOR" as AdminRole,
     }
   ];
 
