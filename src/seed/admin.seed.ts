@@ -95,12 +95,6 @@ export async function seedAdmins() {
     },
     {
       email: "alcira_1021@dimcultura.com",
-      name: "ALCIRA",
-      password: defaultPassword,
-      role: "OPERATOR" as AdminRole,
-    },
-    {
-      email: "alcira_1021@dimcultura.com",
       name: "ALCIRA DEL CARMEN MONTES MARTINEZ",
       password: defaultPassword,
       role: "OPERATOR" as AdminRole,
