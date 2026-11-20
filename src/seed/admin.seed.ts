@@ -111,6 +111,13 @@ export async function seedAdmins() {
       password: defaultPassword,
       role: "OPERATOR" as AdminRole,
     }
+    ,
+    {
+      email: "linda.espinel@dimcultura.com",
+      name: "LINDA KATHERINE ESPINEL NIETO",
+      password: defaultPassword,
+      role: "OPERATOR" as AdminRole,
+    }
   ];
 
   for (const admin of admins) {
