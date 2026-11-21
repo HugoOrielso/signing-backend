@@ -1,266 +1,173 @@
-// seeds/products.seed.ts
-
 import { prisma } from "../database/db";
 
+// INGRESAR
+const productsToActivate = [
+  { code: "ADN0005", name: "MANUAL DE CONTABILIDAD NO CONTADORES 1TOM", prices: [100000] },
+  { code: "ATL0005", name: "ATLAS DE BILOGIA 1TM", prices: [100000] },
+  { code: "ATL0009", name: "ATLAS ANATOMIA ESCRITIVAS 1TM 1CD", prices: [100000] },
+  { code: "ATL0011", name: "ATLAS HISTORIA UNIVERSAL EL TIEMPO", prices: [100000] },
+  { code: "ATL0017", name: "ATLAS LITERATURA 1TM", prices: [100000] },
+  { code: "CDR0011", name: "ESTUCHE INTERACTIVO ENC IDIARCA", prices: [100000] },
+  { code: "COR0004", name: "INVENTA TUS MENU BAJO EN CALORIAS", prices: [100000] },
+  { code: "COR0005", name: "INVENTA TUS MENU COCINA COLOMBIANA", prices: [100000] },
+  { code: "DIC0023", name: "DICC DE MEDICINA OCEANO MOSBY 1TM", prices: [100000] },
+  { code: "DIC0033", name: "DICC INTERNET 1TM", prices: [100000] },
+  { code: "DIC0034", name: "DICC SINONIMOS Y ANTONIMOS COMPAC 1TM", prices: [100000] },
+  { code: "DIC0046", name: "MULTIDICCIONARIO NAUTA", prices: [100000] },
+  { code: "DIC0056", name: "DICC POLIFUNCIONAL DE SINONIMO Y ANT 1TM+1CD", prices: [100000] },
+  { code: "DIC0073", name: "DICC ENC ESPASA 1TM+1CD", prices: [100000] },
+  { code: "DOC0008", name: "COMO ESTUDIAR MEJOR 2TM+1CD", prices: [100000] },
+  { code: "DOC0013", name: "INTELIGENCIA EMOCIONAL EDUCAR NUESTROS HIJOS", prices: [100000] },
+  { code: "DOC0016", name: "ENC DE LA PEDAGOGIA 5TM+1CD", prices: [100000] },
+  { code: "DOC0032", name: "GUIA DEL MAESTRO 10TM 2VH", prices: [100000] },
+  { code: "DOC0036", name: "CIENCIAS Y TECNOLOGIA 2TM+1CD", prices: [100000] },
+  { code: "DOC0039", name: "DIDACTICA CREATIVA PRESCOLAR 1TM+1CD", prices: [100000] },
+  { code: "DOC0046", name: "COMO DESARROLLAR LA INTELIGENCIA 3TM+1CD", prices: [100000] },
+  { code: "DOC0048", name: "COMO MEJORAR EL APRENDIZAJE EN EL AULA 3TM +1CD", prices: [100000] },
+  { code: "DOC0049", name: "COMO ESTIMULAR EL DESARROLLO DEL NIÑO 3TM+1CD", prices: [100000] },
+  { code: "DOC0054", name: "EL MALETIN DE SANTIGO 1TM", prices: [100000] },
+  { code: "DOC0066", name: "BIBLIOTECA JUEGOS ACTIVIDADES ESCOLARE", prices: [100000] },
+  { code: "DOC0075", name: "AULA PRACTICA DE PRIMARIA 6TM", prices: [100000] },
+  { code: "DOC0078", name: "TECNOLOGIA APLICADA 1TM", prices: [100000] },
+  { code: "DOC0080", name: "SISTEMA DE ESTUDIO Y ORIENTACION", prices: [100000] },
+  { code: "DOC0081", name: "TECNICAS DE LA COMUNICACION ORAL ESCRI 2TM", prices: [100000] },
+  { code: "DOC0082", name: "CIENCIA DEL IDIOMA Y ARTE GRMATICAL 5TM +CD", prices: [100000] },
+  { code: "DOC0171", name: "AULA PRACTICA PARA EL DOCENTE DE PRIMARI CYPRES", prices: [100000] },
+  { code: "ENC0001", name: "CURSO ORIENTACION DIDAC 7TM +CD", prices: [100000] },
+  { code: "ENC0010", name: "PRESCOLAR ACTIVA TOMO # 4", prices: [100000] },
+  { code: "ENC0011", name: "PRIMARIA ACTIVA DE COLOMBIA 4T", prices: [100000] },
+  { code: "ENC0021", name: "CONSULTOR TEMATICO PRACTICO 8TM", prices: [100000] },
+  { code: "ENC0032", name: "MI PRESCOLAR REZZA 4TOM", prices: [100000] },
+  { code: "ENC0047", name: "PRECEPTOR ENC TEMATICA 4T+1CD", prices: [100000] },
+  { code: "ENC0049", name: "DINAMICA ENC TEMATICA ILUSTRADA 8T+2CD", prices: [100000] },
+  { code: "ENC0070", name: "NUEVA ENC TEMATICA ESTUDIANTIL 4T+1CD", prices: [100000] },
+  { code: "ENC0079", name: "ENC ESCOLAR 4T", prices: [100000] },
+  { code: "ENC0090", name: "ENC ESCOLAR INTERACTIVA1TM", prices: [100000] },
+  { code: "ENC0097", name: "ENC DINAMICA 8TM", prices: [100000] },
+  { code: "ENC0098", name: "ENC AUTODIDACTICA INTERACTIVA 8TM", prices: [100000] },
+  { code: "END0004", name: "NUEVA ENC DEPORTES 3TM", prices: [100000] },
+  { code: "HGI0025", name: "GUIA DEL ESTUDIANTE 1TM", prices: [100000] },
+  { code: "HIG0008", name: "ATLAS GEOGRAFIA UNIVERSAL DE COLOMBIA RUSTICO 1TM", prices: [100000] },
+  { code: "HIG0020", name: "CONSISA DE COLOMBIA 1TM", prices: [100000] },
+  { code: "HIG0022", name: "HISTORIA DE LAS FUERZAS MILITARES 6TM", prices: [100000] },
+  { code: "HIG0023", name: "HISTORIA SIN FRONTERAS", prices: [100000] },
+  { code: "HIG0025", name: "GUIA DEL ESTUDIANTE 5TM VALMORA", prices: [100000] },
+  { code: "INA0004", name: "EASY ENGLISH CURSO DE INGLES 9TM+6CDROM+5DVD", prices: [100000] },
+  { code: "INA0015", name: "THE BIG BAG ENGLISH BOOK ESTUCHE", prices: [100000] },
+  { code: "INA0018", name: "CURSO DE INGLES 120 HORAS 1TM +6CD", prices: [100000] },
+  { code: "INA0021", name: "EASY ENGLISH BEGNNER BASIC+2CD+1DVD", prices: [100000] },
+  { code: "INA0025", name: "INGLES BEGINNER BASIC - COLEGIOS", prices: [100000] },
+  { code: "INA0026", name: "INGLES BEGINNER BASIC - UNIVERSIDAD", prices: [100000] },
+  { code: "INF0013", name: "MI CASITA DE VIRTUDES 10DVD", prices: [100000] },
+  { code: "INF0024", name: "LOS AMIGOS DE MARIA PASCUAL 1TM", prices: [100000] },
+  { code: "INF0053", name: "CUENTOS INFANTILES BILIGUES 2T DVD", prices: [100000] },
+  { code: "INF0058", name: "LOS NIÑOS GENIALES 2TM", prices: [100000] },
+  { code: "INF0078", name: "EL AUTOBUS DE ANA MARIA 1ESTUCHE", prices: [100000] },
+  { code: "INF0101", name: "MI PRIMERA ENC DEL ARTE 1TM +CD", prices: [100000] },
+  { code: "INF0117", name: "MI PRESCOLAR 3TM", prices: [100000] },
+  { code: "ING0007", name: "ANUARIO AÑO 98", prices: [100000] },
+  { code: "ING0011", name: "ENC HOTELES Y RESTAURANTES 5TM", prices: [100000] },
+  { code: "ING0015", name: "TU HIJO ESMILACION TEMPRANA 2TM", prices: [100000] },
+  { code: "ING0017", name: "HIMNOS DE COLOMBIA FUERZAS ARMADAS 1TM", prices: [100000] },
+  { code: "INI0001", name: "APRENDAMOS INGLES CON PUPO 6TM 3DVD", prices: [100000] },
+  { code: "INI0004", name: "EL MUNDO MAGICO DEL INGLES 1TM", prices: [100000] },
+  { code: "INS0006", name: "CURSO PRACTICO INFORMATICA 12CD", prices: [100000] },
+  { code: "INS0008", name: "MANUAL AVANZADO COMPUTACION 1TM +CD", prices: [100000] },
+  { code: "INS0022", name: "PROGRAMA EXCEL 20007 AVANZADO", prices: [100000] },
+  { code: "INS0023", name: "MANUAL DE WINDOWS 7 1T+1CD", prices: [100000] },
+  { code: "INS0025", name: "CONTROL PLUS ADVANCE 2 NUEVO VERDE", prices: [100000] },
+  { code: "INS0026", name: "CURSO BASICO DE SISTEMA OBS NARANJA", prices: [100000] },
+  { code: "INS0027", name: "EXCEL AVANZADO 2010 APLICADO OBS VERDE", prices: [100000] },
+  { code: "INS0033", name: "PERFORMANCE # 1", prices: [100000] },
+  { code: "INS0034", name: "PERFORMANCE # 2", prices: [100000] },
+  { code: "INS0035", name: "REDES SOCIALES", prices: [100000] },
+  { code: "INS0036", name: "PROGRAMA ACCESS", prices: [100000] },
+  { code: "INS0038", name: "MEGA SOLUCIONES EN SISTEMA USB", prices: [100000] },
+  { code: "INS0039", name: "MEGA SOLUCIONES EXCEL FINANCIERO TARJETA", prices: [100000] },
+  { code: "INS0040", name: "WINDOWS 8 1 TARJETA", prices: [100000] },
+  { code: "MED0044", name: "LA SALUD EN LA TERCERA EDAD 1TM", prices: [100000] },
+  { code: "MED0052", name: "ANATOMIA Y SALUD CORPORAL 1T+1CD", prices: [100000] },
+  { code: "MED0055", name: "MANUAL DE URGENCIAS MEDICAS 1TM+DVD", prices: [100000] },
+  { code: "MED0109", name: "MN BASICO DE ENDODONCIA 1TM +CD ZAMORA", prices: [100000] },
+  { code: "MNH0002", name: "MUJER CREATIVA MIL IDEAS PATRON COS 1T", prices: [100000] },
+  { code: "MNH0010", name: "DECORA REPUJADO EN METAL 1TM +1CD", prices: [100000] },
+  { code: "MNH0014", name: "ARTESANIA COMPLETA TECN FACIL", prices: [100000] },
+  { code: "OBT0010", name: "MANUAL DEL GANADERO ACTUAL 2TM+CD", prices: [100000] },
+  { code: "OBT0012", name: "MANUAL DE CULTIVOS ORGANICOS U ALEOPATIA1TM", prices: [100000] },
+  { code: "OBT0050", name: "MANUAL DE NUTRICION ANIMAL 1TM", prices: [100000] },
+  { code: "OBT0083", name: "AGRICULTURA ORGANICA URBANA", prices: [100000] },
+  { code: "OBT0116", name: "BIBILOTECA DE BILOGIA 1TM", prices: [100000] },
+  { code: "PSF0004", name: "GUIA MEDICA 1TM +CD", prices: [100000] },
+  { code: "PSF0009", name: "LAS DROGAS EDUCACION Y PREVENCION", prices: [100000] },
+  { code: "PSF0014", name: "LA FAMILIA NUCLEO DE VALORES 1TM", prices: [100000] },
+  { code: "PSF0016", name: "PROGRAMA DESARROLLO INTELEGENTE EMOCIONAL 4TM", prices: [100000] },
+  { code: "PSF0027", name: "PROGRAMA EDUCATIVO SEXUALIDAD 4TM 1VH", prices: [100000] },
+  { code: "PSF0028", name: "GUIA FAMILIAR 3TM", prices: [100000] },
+  { code: "PSF0061", name: "GUIA PARA NUEVOS PADRES 2TM", prices: [100000] },
+  { code: "PSF0092", name: "BRUJULAS TALERES DE SEXUALIDAD ESTUCHE", prices: [100000] },
+  { code: "PSF0096", name: "HERRAMIENTAS PEDAGOGICAS", prices: [100000] },
+  { code: "R00003", name: "MULTIMEDIA MEGA MEMORIA 4 CD", prices: [100000] },
+  { code: "R00004", name: "MEGA EXPERT INGLES LECTURA MEMORIA CAJA NEGRA", prices: [100000] },
+  { code: "R00005", name: "CAJA NEGRA DE USB", prices: [100000] },
+  { code: "R00006", name: "TARJETA DE PINES LECTURA WEB", prices: [100000] },
+  { code: "R00007", name: "MEGA EXPERT FAMILY", prices: [100000] },
+  { code: "R00008", name: "P*2D5 OFIMATICA (SOBRE TARJETA PIN ONLINE JAVIER)", prices: [100000] },
+  { code: "R00014", name: "USB MEGA EXPERT", prices: [100000] },
+  { code: "R00015", name: "TARJETAS PVC MEGAEXP TERMICA", prices: [100000] },
+];
+
+// SACAR
+const codesToDeactivate = [
+  "DOC0189",
+  "DOC0190",
+  "DOC0191",
+  "DOC0192",
+  "DOC0194",
+  "DOC0195",
+  "DOC0196",
+  "MED0060",
+  "MED0073",
+  "MED0135",
+  "MNH0020",
+  "MNH0030",
+  "MNH0074",
+  "OBT0088",
+  "OBT0144",
+  "REL0053",
+  "REL0054",
+  "REL0055",
+  "SLL0097",
+  "SLL0110",
+  "SLL0111",
+  "SLL0112",
+  "SLL0113",
+];
+
 export async function seedProducts() {
-  const products = [
-    {
-      code: "VD001",
-      name: "COLECCIÓN VIRTUAL DE VALORES EN FAMILIA",
-      prices: [1000000, 1250000, 1350000],
-    },
-    {
-      code: "VD002",
-      name: "COLECCIÓN OBRAS MAESTRAS DEL RELATO BREVE",
-      prices: [1000000, 1250000, 1350000],
-    },
-    {
-      code: "VD003",
-      name: "COLECCIÓN VIDAS Y OBRAS DE LOS SANTOS CATÓLICOS",
-      prices: [1000000, 1250000, 1350000],
-    },
-    {
-      code: "VD004",
-      name: "COLECCIÓN LOS BEBES GENIALES",
-      prices: [1000000, 1250000, 1350000],
-    },
-    {
-      code: "VD005",
-      name: "COLECCIÓN DE DIBUJO Y PINTURA",
-      prices: [700000, 800000, 900000],
-    },
-    {
-      code: "VD006",
-      name: "COLECCIÓN PRESIDENTES DE COLOMBIA",
-      prices: [400000, 500000, 600000],
-    },
-    {
-      code: "VG001",
-      name: "CURSO VIRTUAL MULTILINGÜISMO PARA NIÑOS",
-      prices: [500000, 600000, 792000],
-    },
-    {
-      code: "VG002",
-      name: "MIS PRIMERAS PALABRAS",
-      prices: [462000, 490000, 550000],
-    },
-    {
-      code: "VG003",
-      name: "CONSTRUYENDO EL SISTEMA SOLAR",
-      prices: [190000, 250000, 350000],
-    },
-    {
-      code: "VG004",
-      name: "EL PRINCIPITO EL NIÑO SOÑADOR",
-      prices: [220000, 320000, 370000],
-    },
-    {
-      code: "VG005",
-      name: "COLECCIÓN HISTORIA LAS SIETE MARAVILLAS DEL MUNDO",
-      prices: [264000, 528000, 594000],
-    },
-    {
-      code: "DOC0189",
-      name: "GRAFIKIDS MAYUSCULAS CURSIVAS",
-      prices: [65000],
-    },
-    {
-      code: "DOC0190",
-      name: "GRAFIKIDS LINEAS CURSIVAS",
-      prices: [65000],
-    },
-    {
-      code: "DOC0191",
-      name: "GRAFIKIDS ORTOGRAFIA",
-      prices: [65000],
-    },
-    {
-      code: "DOC0192",
-      name: "GRAFIKIDS SUMA Y RESTA",
-      prices: [65000],
-    },
-    {
-      code: "DOC0194",
-      name: "GRAFIKIDS NUMEROS",
-      prices: [65000],
-    },
-    {
-      code: "DOC0195",
-      name: "GRAFIKIDS MINUSCULAS CURSIVA",
-      prices: [65000],
-    },
-    {
-      code: "DOC0196",
-      name: "GRAFIKIDS MINUSCULA IMPRENTA",
-      prices: [65000],
-    },
-    {
-      code: "ENC0001",
-      name: "CURSO ORIENTACION DIDAC 7TM +CD",
-      prices: [350000],
-    },
-    {
-      code: "ENC0070",
-      name: "NUEVA ENC TEMATICA ESTUDIANTIL 4T+1CD",
-      prices: [350000],
-    },
-    {
-      code: "INA0021",
-      name: "EASY ENGLISH BEGNNER BASIC+2CD+1DVD",
-      prices: [180000],
-    },
-    {
-      code: "INS0023",
-      name: "MANUAL DE WINDOWS 7 1T+1CD",
-      prices: [150000],
-    },
-    {
-      code: "MED0060",
-      name: "MANUAL DE RADIOLOGIA MAXILOFACIAL 1T",
-      prices: [250000],
-    },
-    {
-      code: "MED0073",
-      name: "ODONTOLOGIA PARA LA HIGIENE ORAL",
-      prices: [150000],
-    },
-    {
-      code: "MED0109",
-      name: "MN BASICO DE ENDODONCIA 1TM +CD ZAMORA",
-      prices: [150000],
-    },
-    {
-      code: "MED0135",
-      name: "MECANICA DENTAL",
-      prices: [350000],
-    },
-    {
-      code: "MNH0020",
-      name: "CORTES Y PEINADOS PASA A PASO",
-      prices: [250000],
-    },
-    {
-      code: "MNH0030",
-      name: "NUEVAS TENDENCIAS PELUQUERIA ACTUAL",
-      prices: [250000],
-    },
-    {
-      code: "MNH0074",
-      name: "THE BRIDES BOOK 10 TM",
-      prices: [250000],
-    },
-    {
-      code: "OBT0088",
-      name: "MANUAL GANADERO ACTUALIZADO 1T+1CD",
-      prices: [450000],
-    },
-    {
-      code: "OBT0144",
-      name: "BIBLIA DE LOS MATERIALES DE CONSTRUCCION LEXUS",
-      prices: [350000],
-    },
-    {
-      code: "REL0053",
-      name: "HISTORIAS DE LA BIBLIA PARA PINTAR TOMO 01",
-      prices: [65000],
-    },
-    {
-      code: "REL0054",
-      name: "HISTORIAS DE LA BIBLIA PARA PINTAR TOMO 02",
-      prices: [65000],
-    },
-    {
-      code: "REL0055",
-      name: "HISTORIAS DE LA BIBLIA PARA PINTAR TOMO 03",
-      prices: [65000],
-    },
-    {
-      code: "VP003",
-      name: "LOS DEBERES DEL NIÑO EN EL HOGAR",
-      prices: [20000, 45000],
-    },
-    {
-      code: "VP004",
-      name: "LOS DERECHOS DEL NIÑO EN EL HOGAR",
-      prices: [20000, 45000],
-    },
-    {
-      code: "VD007",
-      name: "ACTUALIZACION",
-      prices: [0], 
-    },
-    {
-      code: "VD008",
-      name: "ACTUALIZACION",
-      prices: [0], 
-    },
-    {
-      code: "VP001",
-      name: "COLECCIÓN MEDIO AMBIENTE",
-      prices: [0], 
-    },
-    {
-      code: "VP002",
-      name: "MANUAL DEL INGENIERO INDUSTRIAL",
-      prices: [0], 
-    },
-    {
-      code: "SLL0097",
-      name: "CARITAS DE EXPRESION",
-      prices: [0], 
-    },
-    {
-      code: "SLL0110",
-      name: "MULTIFIGURAS",
-      prices: [0],
-    },
-    {
-      code: "SLL0111",
-      name: "APARATO DIGESTIVO",
-      prices: [0],
-    },
-    {
-      code: "SLL0112",
-      name: "MUSCULOS",
-      prices: [0], 
-    },
-    {
-      code: "SLL0113",
-      name: "SIXTEMA OSEO Y CRANEO",
-      prices: [0],
-    },
+  await prisma.$transaction([
+    ...productsToActivate.map(({ code, name, prices }) =>
+      prisma.productCatalog.upsert({
+        where: { code },
+        update: { status: "ACTIVE" },
+        create: {
+          code,
+          name,
+          status: "ACTIVE",
+          prices: {
+            create: prices.map((amount, index) => ({
+              amount,
+              order: index + 1,
+              label: `Precio ${index + 1}`,
+            })),
+          },
+        },
+      }),
+    ),
+    prisma.productCatalog.updateMany({
+      where: { code: { in: codesToDeactivate } },
+      data: { status: "INACTIVE" },
+    }),
+  ]);
 
-  ];
-
-  for (const item of products) {
-    const product = await prisma.productCatalog.upsert({
-      where: {
-        code: item.code,
-      },
-      update: {
-        name: item.name,
-      },
-      create: {
-        code: item.code,
-        name: item.name,
-      },
-    });
-
-    await prisma.productPrice.deleteMany({
-      where: {
-        productId: product.id,
-      },
-    });
-
-    await prisma.productPrice.createMany({
-      data: item.prices.map((amount, index) => ({
-        productId: product.id,
-        amount,
-        order: index + 1,
-        label: `Precio ${index + 1}`,
-      })),
-    });
-  }
-
-  console.log("✅ Productos verificados (seed seguro)");
+  console.log("Catálogo de productos actualizado.");
 }
